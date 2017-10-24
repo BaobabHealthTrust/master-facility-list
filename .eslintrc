@@ -1,3 +1,9 @@
 {
-  "extends": "loopback"
+    "extends": "loopback",
+    "rules": {
+        "camelcase": "warn",
+        "semi": "off",
+        "quotes": "warn",
+        "indent": "off"
+    }
 }

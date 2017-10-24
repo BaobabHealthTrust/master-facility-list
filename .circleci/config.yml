@@ -34,9 +34,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      #- run: yarn test
-
-      # start Loopback Server
-      - run: yarn start
-
-
+      run: yarn test
