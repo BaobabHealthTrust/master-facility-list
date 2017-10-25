@@ -23,6 +23,26 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mfl-container {
+  width: 90%;
+}
+
+.mfl-table thead tr th {
+  font-weight: 100;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.title {
+  width: 100%;
 }
