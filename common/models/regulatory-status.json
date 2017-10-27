@@ -1,0 +1,27 @@
+{
+  "name": "RegulatoryStatus",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "facility_regulatory_status": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignKey": "facility_regulatory_status_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

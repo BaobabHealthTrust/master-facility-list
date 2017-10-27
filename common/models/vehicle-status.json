@@ -1,0 +1,38 @@
+{
+  "name": "VehicleStatus",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "total_motor_vehicle_ambulance": {
+      "type": "number"
+    },
+    "total_cars": {
+      "type": "number"
+    },
+    "total_motor_cycles": {
+      "type": "number"
+    },
+    "total_motor_cycle_ambulance": {
+      "type": "number"
+    },
+    "total_bicycles": {
+      "type": "number"
+    },
+    "total_other_vehicles": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasOne",
+      "model": "Facility",
+      "foreignKey": "facility_vehicle_status_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

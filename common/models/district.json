@@ -1,0 +1,33 @@
+{
+  "name": "District",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "district_name": {
+      "type": "string",
+      "required": true
+    },
+    "zone_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "locations": {
+      "type": "hasMany",
+      "model": "Location",
+      "foreignKey": "district_id"
+    },
+    "zone": {
+      "type": "belongsTo",
+      "model": "Zone",
+      "foreignKey": "zone_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

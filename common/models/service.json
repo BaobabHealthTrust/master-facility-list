@@ -1,0 +1,41 @@
+{
+  "name": "Service",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "service_name": {
+      "type": "string",
+      "required": true
+    },
+    "service_description": {
+      "type": "string"
+    },
+    "service_type_id": {
+      "type": "number",
+      "required": true
+    },
+    "service_category_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignKey": "service_id",
+      "through": "FacilityService"
+    },
+    "serviceType": {
+      "type": "belongsTo",
+      "model": "ServiceType",
+      "foreignKey": "service_type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

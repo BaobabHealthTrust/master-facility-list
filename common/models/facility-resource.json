@@ -1,0 +1,40 @@
+{
+  "name": "FacilityResource",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "facility_id": {
+      "type": "number",
+      "required": true
+    },
+    "resource_id": {
+      "type": "number",
+      "required": true
+    },
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "resource": {
+      "type": "belongsTo",
+      "model": "Resource",
+      "foreignKey": "resource_id"
+    },
+    "facility": {
+      "type": "belongsTo",
+      "model": "Facility",
+      "foreignKey": "facility_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
