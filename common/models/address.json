@@ -1,0 +1,31 @@
+{
+  "name": "Address",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "physical_address": {
+      "type": "string",
+      "required": true
+    },
+    "postal_address": {
+      "type": "string"
+    },
+    "facility_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasOne",
+      "model": "Facility",
+      "foreignKey": "facility_address_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

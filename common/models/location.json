@@ -1,0 +1,41 @@
+{
+  "name": "Location",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "catchment_area": {
+      "type": "string",
+      "required": true
+    },
+    "catchment_population": {
+      "type": "number",
+      "required": true
+    },
+    "district_id": {
+      "type": "number",
+      "required": true
+    },
+    "facility_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasOne",
+      "model": "Facility",
+      "foreignKey": "facility_location_id"
+    },
+    "district": {
+      "type": "belongsTo",
+      "model": "District",
+      "foreignKey": "district_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

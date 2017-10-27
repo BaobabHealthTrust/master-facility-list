@@ -1,0 +1,25 @@
+{
+  "name": "Geolocation",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "datum": {
+      "type": "number",
+      "required": true
+    },
+    "geolocation": {
+      "type": "geopoint"
+    },
+    "facility_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

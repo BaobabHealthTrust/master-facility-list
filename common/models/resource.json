@@ -1,0 +1,32 @@
+{
+  "name": "Resource",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "resource_name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "resource_type_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignKey": "resource_id",
+      "through": "FacilityResource"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

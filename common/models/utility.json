@@ -1,0 +1,37 @@
+{
+  "name": "Utility",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "utility_name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "utility_type_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignKey": "utility_id",
+      "through": "FacilityUtility"
+    },
+    "utilityType": {
+      "type": "belongsTo",
+      "model": "UtilityType",
+      "foreignKey": "utility_type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

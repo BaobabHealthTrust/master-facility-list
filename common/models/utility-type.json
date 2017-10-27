@@ -1,0 +1,27 @@
+{
+  "name": "UtilityType",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "utility_type": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "utilities": {
+      "type": "hasMany",
+      "model": "Utility",
+      "foreignKey": "utility_type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

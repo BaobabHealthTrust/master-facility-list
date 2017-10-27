@@ -1,0 +1,32 @@
+{
+  "name": "BedCapacityStatus",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "total_maternity_beds": {
+      "type": "number",
+      "required": true
+    },
+    "total_delivery_beds": {
+      "type": "number",
+      "required": true
+    },
+    "total_inpatient_beds": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasOne",
+      "model": "Facility",
+      "foreignKey": "facility_bed_capacity_status_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
