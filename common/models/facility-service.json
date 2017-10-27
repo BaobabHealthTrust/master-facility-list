@@ -1,0 +1,33 @@
+{
+  "name": "FacilityService",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "service_id": {
+      "type": "number",
+      "required": true
+    },
+    "facility_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "service": {
+      "type": "belongsTo",
+      "model": "Service",
+      "foreignKey": "service_id"
+    },
+    "facility": {
+      "type": "belongsTo",
+      "model": "Facility",
+      "foreignKey": "facility_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

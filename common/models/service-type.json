@@ -1,0 +1,27 @@
+{
+  "name": "ServiceType",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "service_type": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "services": {
+      "type": "hasMany",
+      "model": "Service",
+      "foreignKey": "service_type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
