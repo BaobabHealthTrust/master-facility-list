@@ -16,7 +16,7 @@ const testData = {
     facility_operational_status_id: 1,
     facility_regulatory_status_id: 1,
     facility_contact_person_id: 1,
-    facility_location_id: 1
+    facility_location_id: 1,
 };
 
 const facility = Facility.create(testData);
@@ -29,22 +29,22 @@ describe("GET /Facilities", () => {
             .set("Accept", "application/json")
             .expect(200)
             .end((err, res) => {
-                //console.log(res.body[0]);
                 const facilityId = res.body[0].id;
 
                 const facilityAddress = {
                     physical_address: "Area 3 near minbus depot",
-                    facility_id: facilityId
+                    facility_id: facilityId,
                 };
 
                 const address = FacilityAddress.create(facilityAddress);
 
                 Promise.all([address]).then(values => {
-                    //console.log(values[0].id);
                     const addressId = values[0].id;
 
                     describe("GET /facility", () => {
-                        it("should return a facility of a particular address", done => {
+                        it("should return a \
+                            facility of a particular \
+                            address", done => {
                             request
                                 .get(
                                     "/api/Addresses/" +
@@ -55,7 +55,8 @@ describe("GET /Facilities", () => {
                                 .expect(200)
                                 .end((err, res) => {
                                         res
-                                        .body.facility_name.should.equal("Bwaila Hospital");
+                                        .body.facility_name
+                                        .should.equal("Bwaila Hospital");
                                 });
                             done();
                         });
