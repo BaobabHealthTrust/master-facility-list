@@ -23,7 +23,7 @@
     "facilities": {
       "type": "hasOne",
       "model": "Facility",
-      "foreignKey": "facility_address_id"
+      "foreignKey": "id"
     }
   },
   "acls": [],

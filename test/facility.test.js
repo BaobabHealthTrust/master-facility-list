@@ -79,7 +79,7 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
                         .set("Accept", "application/json")
                         .expect(200)
                         .end((err, res) => {
-                            res.body.length.should.equal(1);
+                            res.body.length.should.equal(2);
                             const facilityId = res.body[0].id;
 
                             describe("PUT /Facilities", () => {
