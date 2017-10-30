@@ -5,23 +5,24 @@ const server = require("../server/server");
 const request = require("supertest")(server);
 
 const Facility = server.models.Facility;
-const RegulatoryStatus = server.models.RegulatoryStatus;
+const OperationalStatus = server.models.OperationalStatus;
 
-const regulatoryStatusData = {
-    facility_regulatory_status: "Registered",
+const operationalStatusData = {
+    facility_operational_status: "Functional",
 };
 
-const regulatoryStatus = RegulatoryStatus.create(regulatoryStatusData);
+const operationalStatus = OperationalStatus.create(operationalStatusData);
 
-describe("GET /RegulatoryStatuses", () => {
-    it("should return successfully one regulatory status\
-                 that was added", done => {
+describe("GET /OperationalStatuses", () => {
+    it("should return a particular \
+        operational status \
+        which was created", done => {
         request
-            .get("/api/RegulatoryStatuses")
+            .get("/api/OperationalStatuses")
             .set("Accept", "application/json")
             .expect(200)
             .end((err, res) => {
-                const regulatoryStatusId = res.body[0].id;
+                const operationalStatusId = res.body[0].id;
 
                 const testData = {
                     facility_name: "Bwaila Hospital",
@@ -29,8 +30,8 @@ describe("GET /RegulatoryStatuses", () => {
                     facility_date_opened: "2017-10-25T13:27:53.703Z",
                     facility_type_id: 1,
                     facility_owner_id: 1,
-                    facility_operational_status_id: 1,
-                    facility_regulatory_status_id: regulatoryStatusId,
+                    facility_operational_status_id: operationalStatusId,
+                    facility_regulatory_status_id: 1,
                     facility_contact_person_id: 1,
                     facility_location_id: 1,
                 };
@@ -41,23 +42,21 @@ describe("GET /RegulatoryStatuses", () => {
                     facility_date_opened: "2017-10-25T13:27:53.703Z",
                     facility_type_id: 1,
                     facility_owner_id: 1,
-                    facility_operational_status_id: 1,
-                    facility_regulatory_status_id: regulatoryStatusId,
+                    facility_operational_status_id: operationalStatusId,
+                    facility_regulatory_status_id: 1,
                     facility_contact_person_id: 1,
                     facility_location_id: 1,
                 };
-
                 const facility = Facility.create([testData, testData2]);
-
                 Promise.all([facility]).then(values => {
-                    describe("GET /facility", () => {
+                    describe("GET /OperationalStatuses/id/facilities", () => {
                         it("should return \
-                            all facilities of a \
-                            particular regulatory status", done => {
+                        all facilities of a \
+                        particular operational status", done => {
                             request
                                 .get(
-                                    "/api/RegulatoryStatuses/" +
-                                        regulatoryStatusId +
+                                    "/api/OperationalStatuses/" +
+                                        operationalStatusId +
                                         "/facilities"
                                 )
                                 .set("Accept", "application/json")
@@ -72,7 +71,6 @@ describe("GET /RegulatoryStatuses", () => {
                     });
                 });
             });
-
         done();
     });
 });

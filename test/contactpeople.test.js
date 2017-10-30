@@ -5,7 +5,7 @@ const server = require("../server/server");
 const request = require("supertest")(server);
 
 const Facility = server.models.Facility;
-const FacilityAddress = server.models.Address;
+const ContactPeople = server.models.ContactPeople;
 
 const testData = {
     facility_name: "Bwaila Hospital",
@@ -31,30 +31,31 @@ describe("GET /Facilities", () => {
             .end((err, res) => {
                 const facilityId = res.body[0].id;
 
-                const facilityAddress = {
-                    physical_address: "Area 3 near minbus depot",
+                const contactPeopleData = {
+                    contact_person_fullname: "Lyton Paul Nyemba",
+                    contact_person_phone: '+265 884 21 37 81',
                     facility_id: facilityId,
                 };
 
-                const address = FacilityAddress.create(facilityAddress);
+                const contactPeople = ContactPeople.create(contactPeopleData);
 
-                Promise.all([address]).then(values => {
-                    const addressId = values[0].id;
+                Promise.all([contactPeople]).then(values => {
+                    const personId = values[0].id;
 
                     describe("GET /facility", () => {
-                        it("should return a \
-                            facility of a particular \
-                            address", done => {
+                        it("should return \
+                            contact person of a particular \
+                            facility", done => {
                             request
                                 .get(
-                                    "/api/Addresses/" +
-                                        addressId +
+                                    "/api/ContactPeople/" +
+                                        personId +
                                         "/facilities"
                                 )
                                 .set("Accept", "application/json")
                                 .expect(200)
                                 .end((err, res) => {
-                                        res
+                                        console.log(res
                                         .body
                                         .facility_name
                                         .should.equal("Bwaila Hospital");
