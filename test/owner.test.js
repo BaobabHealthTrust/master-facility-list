@@ -8,7 +8,7 @@ const Facility = server.models.Facility;
 const FacilityOwner = server.models.Owner;
 
 const facilityOwnerData = {
-    facility_owner: "Private"
+    facility_owner: "Private",
 };
 
 FacilityOwner.create(facilityOwnerData).then(resp => {
@@ -23,7 +23,7 @@ FacilityOwner.create(facilityOwnerData).then(resp => {
         facility_operational_status_id: 1,
         facility_regulatory_status_id: 1,
         facility_contact_person_id: 1,
-        facility_location_id: 1
+        facility_location_id: 1,
     };
 
     const testData2 = {
@@ -35,7 +35,7 @@ FacilityOwner.create(facilityOwnerData).then(resp => {
         facility_operational_status_id: 1,
         facility_regulatory_status_id: 1,
         facility_contact_person_id: 1,
-        facility_location_id: 1
+        facility_location_id: 1,
     };
 
     Facility.create([testData, testData2]).then(values => {

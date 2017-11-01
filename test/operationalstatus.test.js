@@ -8,7 +8,7 @@ const Facility = server.models.Facility;
 const OperationalStatus = server.models.OperationalStatus;
 
 const operationalStatusData = {
-    facility_operational_status: "Functional"
+    facility_operational_status: "Functional",
 };
 
 OperationalStatus.create(operationalStatusData).then(resp => {

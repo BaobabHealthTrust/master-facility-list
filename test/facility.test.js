@@ -21,19 +21,19 @@ const FacilityService = server.models.FacilityService;
 const FacilityAddress = server.models.Address;
 
 const facilityType = FacilityType.create({
-    facility_type: "District Hospital"
+    facility_type: "District Hospital",
 });
 
 const faciltyOwner = FacilityOwner.create({
-    facility_owner: "Malawi Government"
+    facility_owner: "Malawi Government",
 });
 
 const operationalStatus = OperationalStatus.create({
-    facility_operational_status: "Functional"
+    facility_operational_status: "Functional",
 });
 
 const regulatoryStatus = RegulatoryStatus.create({
-    facility_regulatory_status: "Registered"
+    facility_regulatory_status: "Registered",
 });
 
 Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
@@ -45,12 +45,12 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
             facility_type_id: values[0].id,
             facility_owner_id: values[1].id,
             facility_operational_status_id: values[2].id,
-            facility_regulatory_status_id: values[3].id
+            facility_regulatory_status_id: values[3].id,
         };
 
         const facilityEdit = Object.assign({}, testData, {
             facility_name: "Chitipa",
-            facility_code: "CP01002"
+            facility_code: "CP01002",
         });
 
         Facility.create(testData).then(resp => {
@@ -67,7 +67,6 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
                         });
                 });
             });
-            
             describe("GET /Facilities/{id}/facilityType", () => {
                 it("should fetch the correct facility type", done => {
                     request
@@ -157,7 +156,7 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
 
             const geolocate = {
                 datum: 10,
-                facility_id: facilityId
+                facility_id: facilityId,
             };
 
             Geolocation.create(geolocate).then(resp => {
@@ -185,7 +184,7 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
                 catchment_area: "Area 3",
                 catchment_population: 5000,
                 district_id: 34,
-                facility_id: facilityId
+                facility_id: facilityId,
             };
 
             Location.create(locationData).then(resp => {
@@ -209,7 +208,7 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
                 contact_person_fullname: "Lyton Nyemba",
                 contact_person_phone: "+265 884 21 37 81",
                 contact_person_email: "lytonnyemba@gmail.com",
-                facility_id: facilityId
+                facility_id: facilityId,
             };
 
             ContactPeople.create(contactData).then(resp => {
@@ -237,18 +236,18 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
 
             const resource = Resource.create({
                 resource_name: "Computer",
-                resource_type_id: "1"
+                resource_type_id: "1",
             });
 
             const utility = Utility.create({
                 utility_name: "ESCOM",
-                utility_type_id: "1"
+                utility_type_id: "1",
             });
 
             const service = Service.create({
                 service_name: "Surgery",
                 service_type_id: 1,
-                service_category_id: 1
+                service_category_id: 1,
             });
 
             Promise.all([resource, utility, service]).then(res => {
@@ -259,22 +258,22 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
                 const facilityResource = {
                     facility_id: facilityId,
                     resource_id: resource_id,
-                    quantity: 50
+                    quantity: 50,
                 };
 
                 const facilityUtility = {
                     facility_id: facilityId,
-                    utility_id: utility_id
+                    utility_id: utility_id,
                 };
 
                 const facilityService = {
                     service_id: service_id,
-                    facility_id: facilityId
+                    facility_id: facilityId,
                 };
 
                 const facilityAddress = {
                     physical_address: "Area 3 near minbus depot",
-                    facility_id: facilityId
+                    facility_id: facilityId,
                 };
 
                 FacilityResource.create(facilityResource).then(resp => {

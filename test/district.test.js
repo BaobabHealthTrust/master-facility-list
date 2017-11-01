@@ -20,7 +20,7 @@ const testData = {
 
 const districtData = {
 	district_name: "Nkhata Bay",
-	zone_id: 1
+	zone_id: 1,
 };
 
 const facility = Facility.create(testData);
@@ -34,7 +34,7 @@ Promise.all([facility, district]).then(values => {
 		catchment_area: "Along M5 in Mkondezi village",
 		catchment_population: 150000,
 		district_id: districtId,
-		facility_id: facilityId
+		facility_id: facilityId,
 	};
 
 	const location = Location.create(locationData);

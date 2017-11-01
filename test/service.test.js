@@ -56,7 +56,6 @@ Promise.all([facility, service]).then((values) => {
 			 	.equal("Nkhata Bay Hospital");
 			 	done();
 			 });
-			 
 		});
 	});
 });

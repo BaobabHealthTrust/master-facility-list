@@ -23,16 +23,16 @@ Facility.create(testData).then(resp => {
 
     const geopointData = {
         lat: -33.13627,
-        lng: 9.12365
+        lng: 9.12365,
     };
 
     const geolocationData = {
         datum: 20,
         geolocation: geopointData,
-        facility_id: facilityId
+        facility_id: facilityId,
     };
 
-    Geolocation.create(geolocationData).then( resp => {
+    Geolocation.create(geolocationData).then(resp => {
         const geolocationId = resp.id;
 
         describe("GET /Geolocations/{id}/facility", () => {
@@ -44,7 +44,9 @@ Facility.create(testData).then(resp => {
                     .set("Accept", "application/json")
                     .expect(200)
                     .end((err, res) => {
-                        res.body.facility_name.should.equal("Dedza District Hospital");
+                        res.body
+                        .facility_name
+                        .should.equal("Dedza District Hospital");
                         done();
                     });
             });

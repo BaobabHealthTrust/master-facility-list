@@ -5,7 +5,6 @@ const server = require("../server/server");
 const request = require("supertest")(server);
 
 describe("Address", () => {
-
     const Facility = server.models.Facility;
     const FacilityAddress = server.models.Address;
 
@@ -33,7 +32,7 @@ describe("Address", () => {
 
                     const facilityAddress = {
                         physical_address: "Area 3 near minbus depot",
-                        facility_id: facilityId
+                        facility_id: facilityId,
                     };
 
                     const address = FacilityAddress.create(facilityAddress);

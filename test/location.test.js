@@ -24,7 +24,7 @@ Facility.create(testData).then(resp => {
         catchment_area: "Ntchisi Rural",
         catchment_population: 200000,
         district_id: 2,
-        facility_id: facilityId
+        facility_id: facilityId,
     };
 
     Location.create(locationData).then(resp => {
@@ -39,7 +39,9 @@ Facility.create(testData).then(resp => {
                     .set("Accept", "application/json")
                     .expect(200)
                     .end((err, res) => {
-                        res.body.facility_name.should.equal("Chilunga Health Center");
+                        res.body
+                        .facility_name
+                        .should.equal("Chilunga Health Center");
                         done();
                     });
             });

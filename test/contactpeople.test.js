@@ -14,7 +14,7 @@ const testData = {
     facility_type_id: 1,
     facility_owner_id: 1,
     facility_operational_status_id: 1,
-    facility_regulatory_status_id: 1
+    facility_regulatory_status_id: 1,
 };
 
 Facility.create(testData).then(resp => {
@@ -23,7 +23,7 @@ Facility.create(testData).then(resp => {
     const contactPeopleData = {
         contact_person_fullname: "Lyton Paul Nyemba",
         contact_person_phone: "+265 884 21 37 81",
-        facility_id: facilityId
+        facility_id: facilityId,
     };
 
     ContactPeople.create(contactPeopleData).then(resp => {

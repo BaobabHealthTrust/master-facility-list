@@ -8,7 +8,7 @@ const Facility = server.models.Facility;
 const FacilityType = server.models.FacilityType;
 
 const facilityTypeData = {
-    facility_type: "Public"
+    facility_type: "Public",
 };
 
 FacilityType.create(facilityTypeData).then(resp => {
@@ -21,7 +21,7 @@ FacilityType.create(facilityTypeData).then(resp => {
         facility_type_id: facilityTypeId,
         facility_owner_id: 1,
         facility_operational_status_id: 1,
-        facility_regulatory_status_id: 1
+        facility_regulatory_status_id: 1,
     };
 
     const testData2 = {
@@ -31,7 +31,7 @@ FacilityType.create(facilityTypeData).then(resp => {
         facility_type_id: facilityTypeId,
         facility_owner_id: 1,
         facility_operational_status_id: 1,
-        facility_regulatory_status_id: 1
+        facility_regulatory_status_id: 1,
     };
 
     Facility.create([testData, testData2]).then(resp => {
