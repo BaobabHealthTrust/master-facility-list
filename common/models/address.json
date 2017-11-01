@@ -20,10 +20,10 @@
   },
   "validations": [],
   "relations": {
-    "facilities": {
-      "type": "hasOne",
+    "facility": {
+      "type": "belongsTo",
       "model": "Facility",
-      "foreignKey": "id"
+      "foreignKey": "facility_id"
     }
   },
   "acls": [],
