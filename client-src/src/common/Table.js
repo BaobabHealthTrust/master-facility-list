@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Table } from "react-materialize";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Table } from 'react-materialize';
+import { Link } from 'react-router-dom';
 
 class MflTable extends Component {
     constructor(props) {
@@ -16,10 +16,15 @@ class MflTable extends Component {
             return (
                 <tr>
                     {record.map(cell => {
-                        if (cell.toLowerCase() == "view") {
+                        if (cell.toLowerCase() == 'view') {
                             return (
                                 <td>
-                                    <Link className="btn btn-primary" to="/facilities/1">Show</Link>
+                                    <Link
+                                        className="btn btn-primary"
+                                        to="/facilities/1"
+                                    >
+                                        Show
+                                    </Link>
                                 </td>
                             );
                         }
@@ -32,7 +37,7 @@ class MflTable extends Component {
         return (
             <div>
                 <Table
-                    striped
+                    hoverable
                     className="mfl-table z-depth-2 centered responsive-table"
                 >
                     <thead className="grey">
