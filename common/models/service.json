@@ -18,8 +18,7 @@
       "required": true
     },
     "service_category_id": {
-      "type": "number",
-      "required": true
+      "type": "number"
     }
   },
   "validations": [],
@@ -34,6 +33,11 @@
       "type": "belongsTo",
       "model": "ServiceType",
       "foreignKey": "service_type_id"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "Service",
+      "foreignKey": "service_category_id"
     }
   },
   "acls": [],

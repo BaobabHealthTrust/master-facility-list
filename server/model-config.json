@@ -110,5 +110,9 @@
   "FacilityResource": {
     "dataSource": "db",
     "public": true
+  },
+  "ResourceType": {
+    "dataSource": "db",
+    "public": true
   }
 }
