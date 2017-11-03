@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import Summary from './Summary';
+import React, { Component } from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import Summary from "./Summary";
+import FacilityLocation from "./FacilityLocation";
+import FacilityResources from "./FacilityResources";
 
 class FacilityDetails extends Component {
     render() {
@@ -37,11 +39,11 @@ class FacilityDetails extends Component {
                     />
                     <Route
                         path={`${this.props.match.url}/locations`}
-                        render={() => <h1>Facility Locations</h1>}
+                        component={FacilityLocation}
                     />
                     <Route
                         path={`${this.props.match.url}/resources`}
-                        render={() => <h1>Facility Resources</h1>}
+                        component={FacilityResources}
                     />
                 </Switch>
             </div>
