@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import Facilitydetails from "./FacilityDetails";
+import Card from "../common/MflCard";
 
 class FacilityLocation extends Component {
 	render() {
+		const locationData = [
+			["catchment area", "urban"],
+			["population", "-5,096,555"],
+			["District", "lilongwe"],
+			["zone", "central"]
+		];
+		const weatherData = [["sunny", ""], ["max temp", ""], ["min temo", ""]];
+
 		return (
 			<div className="container">
 				<h6 className="mfl-summary-subheader">
@@ -17,87 +26,13 @@ class FacilityLocation extends Component {
 					</div>
 					<div className="col m6 z-depth">
 						<div className="row z-depth-2">
-							<p className="center mfl-summary-header">
-								location
-							</p>
-
-							<table>
-								<tbody>
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											catchment area
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											urban
-										</td>
-									</tr>
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											population
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											-5,096,555
-										</td>
-									</tr>
-
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											District
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											lilongwe
-										</td>
-									</tr>
-
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											zone
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											central
-										</td>
-									</tr>
-								</tbody>
-							</table>
+							<Card heading="location" data={locationData} />
 						</div>
 						<div className="row z-depth-2">
-							<p className="center mfl-summary-header">
-								todays weather details
-							</p>
-
-							<table>
-								<tbody>
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											sunny
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											japhat gondwe
-										</td>
-									</tr>
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											max temp :34 Degrees
-										</td>
-										<td className="right-align mfl-summary-subtext">
-											<i class="material-icons">
-												brightness_5
-											</i>
-										</td>
-									</tr>
-
-									<tr className="mfl-card-row">
-										<td className="mfl-summary-subheader">
-											min temp:18 Degrees
-										</td>
-										<td className="right-align mfl-summary-subtext">
-										<i class="material-icons">
-												brightness_5
-											</i>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+							<Card
+								heading="todays weather details"
+								data={weatherData}
+							/>
 						</div>
 					</div>
 				</div>

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Summary from "./Summary";
-import FacilityLocation from "./FacilityLocation";
-import FacilityResources from "./FacilityResources";
+import Location from "./FacilityLocation";
+import Resources from "./FacilityResources";
+import Utilities from "./FacilityUtility";
 
 class FacilityDetails extends Component {
     render() {
@@ -25,11 +26,19 @@ class FacilityDetails extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#">UTILITIES</a>
+                                <Link to="/facilities/1/utilities">
+                                    UTILITIES
+                                </Link>
                             </li>
                         </ul>
                     </div>
                 </nav>
+                <h6 className="mfl-summary-subheader mfl-card-row">
+                    {"Bwaila District Hospital".toUpperCase()}
+                </h6>
+                <h5 className="mfl-summary-subtext mfl-card-row">
+                    {"ll00001,lilongwe".toUpperCase()}
+                </h5>
                 <br />
                 <Switch>
                     <Route
@@ -39,11 +48,15 @@ class FacilityDetails extends Component {
                     />
                     <Route
                         path={`${this.props.match.url}/locations`}
-                        component={FacilityLocation}
+                        component={Location}
                     />
                     <Route
                         path={`${this.props.match.url}/resources`}
-                        component={FacilityResources}
+                        component={Resources}
+                    />
+                    <Route
+                        path={`${this.props.match.url}/utilities`}
+                        component={Utilities}
                     />
                 </Switch>
             </div>
