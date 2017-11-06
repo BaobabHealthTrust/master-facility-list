@@ -39,8 +39,14 @@
 
 .mfl-card-row td {
     padding: 0px;
+    
 }
 
+.mfl-table-card {
+    padding: 0px;
+    height: 100px;
+    
+}
 body {
     font-family: "Source Sans Pro", sans-serif;
 }
@@ -66,4 +72,10 @@ body {
 
 .mfl-summary-subtext {
     font-size: 12px;
+}
+.mfl-title{
+    margin-left: 150px;
+}
+.mfl-div{
+    height: 400px;
 }

@@ -4,6 +4,7 @@ import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtility";
+import MyMapComponent from "./MyMapComponent";
 
 class FacilityDetails extends Component {
     render() {
@@ -30,13 +31,19 @@ class FacilityDetails extends Component {
                                     UTILITIES
                                 </Link>
                             </li>
+
+                            <li>
+                                <Link to="/facilities/1/MyMapComponent">
+                                    UTILITIES
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </nav>
-                <h6 className="mfl-summary-subheader mfl-card-row">
+                <h6 className="mfl-summary-subheader mfl-title">
                     {"Bwaila District Hospital".toUpperCase()}
                 </h6>
-                <h5 className="mfl-summary-subtext mfl-card-row">
+                <h5 className="mfl-summary-subtext mfl-title">
                     {"ll00001,lilongwe".toUpperCase()}
                 </h5>
                 <br />
@@ -57,6 +64,11 @@ class FacilityDetails extends Component {
                     <Route
                         path={`${this.props.match.url}/utilities`}
                         component={Utilities}
+                    />
+
+                    <Route
+                        path={`${this.props.match.url}/MyMapComponent`}
+                        component={MyMapComponent}
                     />
                 </Switch>
             </div>

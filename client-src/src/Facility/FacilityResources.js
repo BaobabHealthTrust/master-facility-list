@@ -51,8 +51,8 @@ class FacilityResources extends Component {
 
                     <div className="col m4 s12">
                         <Card
-                            heading="computer resources"
-                            data={computerData}
+                            heading="generator resources"
+                            data={generatorData}
                         />
                     </div>
                 </div>
@@ -60,8 +60,8 @@ class FacilityResources extends Component {
                 <div className="row">
                     <div className="col m4 s12">
                         <Card
-                            heading="transport resources"
-                            data={transportData}
+                            heading="computer resources"
+                            data={computerData}
                         />
                     </div>
                     <div className="col m4 s12">

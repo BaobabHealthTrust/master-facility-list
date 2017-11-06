@@ -4,7 +4,7 @@ export default ({ heading, data }) => {
         <div className=" z-depth-2 mlf-w-9 mfl-p-5">
             <p className="center mfl-summary-header">{heading}</p>
 
-            <table>
+            <table className="mfl-card-row mfl-table-card">
                 <tbody>
                     {data.map(row => {
                         return (
