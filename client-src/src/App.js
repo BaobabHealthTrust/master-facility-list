@@ -2,40 +2,24 @@ import React, { Component } from 'react';
 import './App.css';
 import Table from './common/Table';
 import Navbar from './Navbar';
+import FacilityList from './Facility/FacilityList';
+import { Route, Switch } from 'react-router-dom';
+import FacilityDetails from './Facility/FacilityDetails';
 
 class App extends Component {
     render() {
-        const data = {
-            headers: [
-                'CODE',
-                'NAME',
-                'COMMON NAME',
-                'OWNERSHIP',
-                'TYPE',
-                'STATUS',
-                'DISTRICT',
-                'DATE OPENED'
-            ],
-            records: [
-                [
-                    '001',
-                    'Misuku',
-                    'chitipa',
-                    'CHAM',
-                    'PUBLIC',
-                    'OPERATIONAL',
-                    'CHITIPA',
-                    'MAY 1987'
-                ]
-            ]
-        };
         return (
             <div>
                 <Navbar />
-                <br />
-                <div className="container mfl-container">
-                    <Table data={data} />
-                </div>
+                <Switch>
+                    <Route exact path="/facilities" component={FacilityList} />
+                    <Route path="/facilities/:id" component={FacilityDetails} />
+                    <Route
+                        exact
+                        path="/"
+                        render={() => <h1>This is homepage</h1>}
+                    />
+                </Switch>
             </div>
         );
     }
