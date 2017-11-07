@@ -12,7 +12,7 @@ import {
 	Put,
 	Patch,
 	withAxios
-} from "react-axios";
+} from "axios";
 import {
 	withScriptjs,
 	withGoogleMap,
