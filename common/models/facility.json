@@ -31,18 +31,6 @@
     "facility_regulatory_status_id": {
       "type": "number",
       "required": true
-    },
-    "facility_address_id": {
-      "type": "number",
-      "required": true
-    },
-    "facility_contact_person_id": {
-      "type": "number",
-      "required": true
-    },
-    "facility_location_id": {
-      "type": "number",
-      "required": true
     }
   },
   "validations": [],

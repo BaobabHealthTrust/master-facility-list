@@ -25,10 +25,10 @@
   },
   "validations": [],
   "relations": {
-    "facilities": {
-      "type": "hasOne",
+    "facility": {
+      "type": "belongsTo",
       "model": "Facility",
-      "foreignKey": "facility_location_id"
+      "foreignKey": "facility_id"
     },
     "district": {
       "type": "belongsTo",

@@ -24,10 +24,10 @@
   },
   "validations": [],
   "relations": {
-    "facilities": {
-      "type": "hasOne",
+    "facility": {
+      "type": "belongsTo",
       "model": "Facility",
-      "foreignKey": "facility_contact_person_id"
+      "foreignKey": "facility_id"
     }
   },
   "acls": [],

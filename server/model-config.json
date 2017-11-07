@@ -71,10 +71,6 @@
     "dataSource": "db",
     "public": true
   },
-  "VehicleStatus": {
-    "dataSource": "db",
-    "public": true
-  },
   "FacilityUtility": {
     "dataSource": "db",
     "public": true
@@ -84,10 +80,6 @@
     "public": true
   },
   "RegulatoryStatus": {
-    "dataSource": "db",
-    "public": true
-  },
-  "BedCapacityStatus": {
     "dataSource": "db",
     "public": true
   },

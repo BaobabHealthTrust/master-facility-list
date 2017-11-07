@@ -17,10 +17,11 @@
   },
   "validations": [],
   "relations": {
-    "locations": {
+    "facilities": {
       "type": "hasMany",
-      "model": "Location",
-      "foreignKey": "district_id"
+      "model": "Facility",
+      "foreignKey": "district_id",
+      "through": "Location"
     },
     "zone": {
       "type": "belongsTo",

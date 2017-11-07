@@ -19,8 +19,7 @@
     "facilities": {
       "type": "hasMany",
       "model": "Facility",
-      "foreignKey": "facility_type_id",
-      "through": "Facility"
+      "foreignKey": "facility_type_id"
     }
   },
   "acls": [],
