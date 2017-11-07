@@ -19,7 +19,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "facility": {
+      "type": "belongsTo",
+      "model": "Facility",
+      "foreignKey": "facility_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }
