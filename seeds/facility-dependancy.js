@@ -1159,5 +1159,6 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
       .catch(err => console.error(err));
   })
   .catch(err => console.error(err));
+  //this is fake data script
 
 
