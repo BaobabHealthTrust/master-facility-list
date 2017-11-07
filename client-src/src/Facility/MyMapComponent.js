@@ -1,6 +1,18 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Summary from "./Summary";
+
+import {
+	AxiosProvider,
+	Request,
+	Get,
+	Delete,
+	Head,
+	Post,
+	Put,
+	Patch,
+	withAxios
+} from "react-axios";
 import {
 	withScriptjs,
 	withGoogleMap,
@@ -18,7 +30,9 @@ class MyMapComponent extends Component {
 					defaultCenter={{ lat: -13.9626121, lng: 33.7741195 }}
 				>
 					{props.isMarkerShown && (
-						<Marker position={{ lat: -13.9626121, lng: 33.7741195 }} />
+						<Marker
+							position={{ lat: -13.9626121, lng: 33.7741195 }}
+						/>
 					)}
 				</GoogleMap>
 			))
