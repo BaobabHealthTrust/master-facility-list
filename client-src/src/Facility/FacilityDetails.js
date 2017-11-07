@@ -5,7 +5,6 @@ import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtility";
 import MyMapComponent from "./MyMapComponent";
-import MapWithAMarkerInfoWindow from "./MapWithAMarkerInfoWindow";
 
 class FacilityDetails extends Component {
     render() {
@@ -70,12 +69,6 @@ class FacilityDetails extends Component {
                     <Route
                         path={`${this.props.match.url}/MyMapComponent`}
                         component={MyMapComponent}
-                    />
-
-                    <Route
-                        path={`${this.props.match
-                            .url}/MapWithAMarkerInfoWindow`}
-                        component={MapWithAMarkerInfoWindow}
                     />
                 </Switch>
             </div>
