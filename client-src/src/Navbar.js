@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.png';
+import { Link } from 'react-router-dom';
 
 const maximizeSearch = e => {
     document.getElementById('searchbar').className = 'mfl-full-screen-search';
@@ -61,13 +62,13 @@ const Navbar = () => {
                     className="right mfl-pr-10 hide-on-med-and-down"
                 >
                     <li>
-                        <a href="#">HOME</a>
+                        <Link to="/">HOME</Link>
                     </li>
                     <li>
                         <a href="#">ABOUT</a>
                     </li>
-                    <li>
-                        <a href="#">FACILITIES</a>
+                    <li className="active">
+                        <Link to="/facilities">FACILITIES</Link>
                     </li>
                     <li>
                         <a href="#">FEEDBACK</a>
