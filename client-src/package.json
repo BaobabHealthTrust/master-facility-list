@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.0",
+    "loopback-connector-mysql": "^5.2.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-google-maps": "^9.2.2",

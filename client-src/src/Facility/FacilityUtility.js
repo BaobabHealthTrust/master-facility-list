@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
+import FacilityDetails from "./FacilityDetails";
 
 class Utilities extends Component {
     render() {
