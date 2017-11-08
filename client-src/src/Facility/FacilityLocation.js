@@ -11,7 +11,7 @@ class FacilityLocation extends Component {
 			["District", "lilongwe"],
 			["zone", "central"]
 		];
-		const weatherData = [["sunny", ""], ["max temp", ""], ["min temo", ""]];
+		const weatherData = [["sunny", " "], ["max temp", ""], ["min temo", ""]];
 
 		return (
 			<div className="container">
@@ -31,7 +31,8 @@ class FacilityLocation extends Component {
 
 					<div className="col m6">
 						<div className="row">
-							<Card heading="location" data={locationData} />
+							<Card heading="location" data={locationData}  />
+							
 						</div>
 						<div className="row">
 							<Card
