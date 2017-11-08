@@ -1,34 +1,24 @@
 {
-  "name": "Resource",
+  "name": "ResourceType",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "resource_name": {
+    "resource_type": {
       "type": "string",
       "required": true
     },
     "description": {
       "type": "string"
-    },
-    "resource_type_id": {
-      "type": "number",
-      "required": true
     }
   },
   "validations": [],
   "relations": {
-    "facilities": {
+    "resources": {
       "type": "hasMany",
-      "model": "Facility",
-      "foreignKey": "resource_id",
-      "through": "FacilityResource"
-    },
-    "resourceType": {
-      "type": "belongsTo",
-      "model": "ResourceType",
+      "model": "Resource",
       "foreignKey": "resource_type_id"
     }
   },
