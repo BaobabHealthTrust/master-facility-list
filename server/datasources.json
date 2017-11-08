@@ -1,6 +1,12 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
+  "mysql": {
+  	"host": "localhost",
+  	"port": 3306,
+  	"url": "mysql://root:root@localhost/mflApi",
+  	"database": "mflApi",
+  	"password": "root",
+    "name": "mysql",
+    "user": "root",
+    "connector": "mysql"
  }
 }
