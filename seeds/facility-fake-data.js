@@ -8,7 +8,7 @@ const dataSource = server.dataSources.mysql;
 // Load the full build.
 var _ = require("lodash");
 // Load the core build.
-var _ = require("lodash/core");
+var _c = require("lodash/core");
 // Load the FP build for immutable auto-curried iteratee-first data-last methods.
 var fp = require("lodash/fp");
 
@@ -34,7 +34,7 @@ const facilityData = {
 	facility_type_id: 1,
 	facility_owner_id: 2,
 	facility_operational_status_id: 3,
-	facility_regulatory_status_id: 4
+	facility_regulatory_status_id: 4,
 };
 
 const facilityFake = Facility.create(facilityData);

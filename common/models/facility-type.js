@@ -5,10 +5,10 @@ module.exports = function(Facilitytype) {
 		Facilitytype.create({
 			"facility_type": "Dispensary",
 			"description": "Not really a facility",
-		}).then( resp => {
-			cb(null,resp);
-		}).catch( err => {
-			cb(err,null);
+		}).then(resp => {
+			cb(null, resp);
+		}).catch(err => {
+			cb(err, null);
 		});
 	}
 
