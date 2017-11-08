@@ -36,7 +36,7 @@ for (var i = 0; i <= 20; i++) {
 			facility_type_id: dependencyId,
 			facility_owner_id: dependencyId,
 			facility_operational_status_id: dependencyId,
-			facility_regulatory_status_id: dependencyId
+			facility_regulatory_status_id: dependencyId,
 		};
 
 		const facilityFake = Facility.create(facilityData);
