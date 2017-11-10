@@ -1,3 +1,4 @@
+ "use strict";
 require('dotenv').config();
 
 let db_url = "mysql://";
@@ -15,7 +16,7 @@ module.exports = {
 		url: db_url,
 		database: process.env.MYSQL_DATABASE,
 		user: process.env.MYSQL_USER,
-		password: process.env.MYSQL_PASSWORD,		
+		password: process.env.MYSQL_PASSWORD,
 		connector: "mysql"
-	}
+	},
 }

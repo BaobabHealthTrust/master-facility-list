@@ -4,7 +4,6 @@ const should = require("chai").should();
 const server = require("../server/server");
 const request = require("supertest")(server);
 
-
 const Facility = server.models.Facility;
 const Location = server.models.Location;
 
