@@ -53,38 +53,38 @@ Promise.all([
 	for (var i = 0; i <= 20; i++) {
 		const randOperationalIndex = faker.random.number({
 			min: 0,
-			max: maxValueOperational
+			max: maxValueOperational,
 		});
 		const operationalStatusId = val[0][randOperationalIndex].id;
 
 		const randRegulatoryIndex = faker.random.number({
 			min: 0,
-			max: maxValueRegulatory
+			max: maxValueRegulatory,
 		});
 		const regulatoryStatusId = val[1][randRegulatoryIndex].id;
 
 		const randOwnerIndex = faker.random.number({
 			min: 0,
-			max: maxValueOwner
+			max: maxValueOwner,
 		});
 		const ownerId = val[2][randOwnerIndex].id;
 
 		const randFacilityTypeIndex = faker.random.number({
 			min: 0,
-			max: maxValueFacilityType
+			max: maxValueFacilityType,
 		});
 		const facilityTypeId = val[3][randFacilityTypeIndex].id;
 
 		// facilityresource id and quantity
 		const randResourceIndex = faker.random.number({
 			min: 0,
-			max: maxValueResource
+			max: maxValueResource,
 		});
 		const resourceId = val[4][randResourceIndex].id;
 
 		const resourceQuantity = faker.random.number({
 			min: 0,
-			max: 200
+			max: 200,
 		});
 		// close resource id and quantity
 
@@ -102,7 +102,7 @@ Promise.all([
 		// service id
 		const randServiceIndex = faker.random.number({
 			min: 0,
-			max: maxValueService
+			max: maxValueService,
 		});
 		const serviceId = val[5][randServiceIndex].id;
 		// end service
@@ -110,7 +110,7 @@ Promise.all([
 		// utility id
 		const randUtilityIndex = faker.random.number({
 			min: 0,
-			max: maxValueUtility
+			max: maxValueUtility,
 		});
 		const utilityId = val[5][randUtilityIndex].id;
 		// end utility
@@ -118,7 +118,7 @@ Promise.all([
 		// Geolocation
 		const datam = faker.random.number({
 			min: 0,
-			max: 50
+			max: 50,
 		});
 		const latval = faker.address.latitude();
 		const longval = faker.address.longitude();
