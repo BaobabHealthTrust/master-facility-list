@@ -4,7 +4,7 @@ const server = require("../server/server");
 const dataSource = server.dataSources.db;
 
 console.log("Hie Nyemba");
-//const District = server.models.District;
+// const District = server.models.District;
 const Zone = server.models.Zone;
 const zoneData = [
   {
