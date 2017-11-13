@@ -3,7 +3,6 @@
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 
-console.log("Hie Nyemba");
 // const District = server.models.District;
 const Zone = server.models.Zone;
 const zoneData = [
@@ -34,4 +33,5 @@ Promise.all([
        district and zone are created"
     );
     console.log(values[0][0].id);
+    dataSource.disconnect();
   });
