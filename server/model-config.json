@@ -115,10 +115,6 @@
     "dataSource": "db",
     "public": true
   },
-  "FacilityFeedback": {
-    "dataSource": "db",
-    "public": true
-  },
   "Feedback": {
     "dataSource": "db",
     "public": true
