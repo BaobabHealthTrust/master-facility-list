@@ -93,6 +93,12 @@
       "model": "Geolocation",
       "foreignKey": "facility_id",
       "primaryKey": "id"
+    },
+    "feedbacks": {
+      "type": "hasMany",
+      "model": "Feedback",
+      "foreignKey": "facility_id",
+      "through": "FacilityFeedback"
     }
   },
   "acls": [],

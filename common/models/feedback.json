@@ -1,0 +1,36 @@
+{
+  "name": "Feedback",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string"
+    },
+    "type_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignKey": "feedback_id",
+      "through": "FacilityFeedback"
+    },
+    "feedbackType": {
+      "type": "belongsTo",
+      "model": "FeedbackType",
+      "foreignKey": "type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
