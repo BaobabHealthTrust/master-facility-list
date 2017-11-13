@@ -19,12 +19,6 @@
   },
   "validations": [],
   "relations": {
-    "facilities": {
-      "type": "hasMany",
-      "model": "Facility",
-      "foreignKey": "feedback_id",
-      "through": "FacilityFeedback"
-    },
     "feedbackType": {
       "type": "belongsTo",
       "model": "FeedbackType",
