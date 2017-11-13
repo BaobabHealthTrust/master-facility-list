@@ -190,7 +190,6 @@ Promise.all([
       owner, operationalStatus \
       , district, zone and regulatoryStatus are created"
     );
-    console.log(zoneValues[5]);
     // close here and disconnect...
     const resourceTypeTransport = {
       resource_type: "Transport",
