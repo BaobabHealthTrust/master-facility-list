@@ -1,0 +1,27 @@
+{
+  "name": "FeedbackType",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "feedback_type": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "feedbacks": {
+      "type": "hasMany",
+      "model": "Feedback",
+      "foreignKey": "type_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
