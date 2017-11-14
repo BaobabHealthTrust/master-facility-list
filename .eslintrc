@@ -2,8 +2,9 @@
     "extends": "loopback",
     "rules": {
         "camelcase": "warn",
+        "comma-dangle": "off",
         "semi": "off",
-        "quotes": "warn",
+        "quotes": "off",
         "indent": "off"
     }
 }

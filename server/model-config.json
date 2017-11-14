@@ -114,5 +114,13 @@
   "ResourceType": {
     "dataSource": "db",
     "public": true
+  },
+  "Feedback": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FeedbackType": {
+    "dataSource": "db",
+    "public": true
   }
 }

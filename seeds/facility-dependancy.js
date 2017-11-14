@@ -1,12 +1,13 @@
 "use strict";
 
 const server = require("../server/server");
-const dataSource = server.dataSources.mysql;
+const dataSource = server.dataSources.db;
 
 const FacilityType = server.models.FacilityType;
 const Owner = server.models.Owner;
 const OperationalStatus = server.models.OperationalStatus;
 const RegulatoryStatus = server.models.RegulatoryStatus;
+const Zone = server.models.Zone;
 
 /* This will go */
 
@@ -128,12 +129,17 @@ const regulatoryStatuses = [
 
 const regulatoryStatus = RegulatoryStatus.create(regulatoryStatuses);
 
-Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
+Promise.all([
+  facilityType,
+  owner,
+  operationalStatus,
+  regulatoryStatus,
+])
   .then(values => {
     console.log(
       "fake data for facilityType, \
       owner, operationalStatus \
-      and regulatoryStatus are created"
+      , district, zone and regulatoryStatus are created"
     );
     // close here and disconnect...
     const resourceTypeTransport = {
@@ -539,7 +545,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                       description: "These are therapeutics services",
                     };
 
-                    const serviceTypeTherapeuticsPromise = ServiceType.create(
+                    const serviceTypeTherapeuticsPromise = ServiceType
+                    .create(
                       serviceTypeTherapeutics
                     );
 
@@ -549,14 +556,16 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                         "These are Prosthetics and Medical Devices services",
                     };
 
-                    const serviceTypeProstheticsPromise = ServiceType.create(
+                    const serviceTypeProstheticsPromise = ServiceType
+                    .create(
                       serviceTypeProsthetics
                     );
                     const serviceTypeNutrition = {
                       service_type: "Nutrition",
                       description: "These are nutrition services",
                     };
-                    const serviceTypeNutritionPromise = ServiceType.create(
+                    const serviceTypeNutritionPromise = ServiceType
+                    .create(
                       serviceTypeNutrition
                     );
                     const serviceTypeCommunityHealth = {
@@ -569,28 +578,27 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                       serviceTypeCommunityHealth
                     );
                     const serviceTypeReproductiveAndChild = {
-                      service_type: "Reproductive and\
+                      service_type:
+                        "Reproductive and\
                        child Health Services",
                       description:
                         "These are reproductive \
                         and child health services",
                     };
-                    const serviceTypeReproductiveAndChildPromise = ServiceType
-                    .create(
+                    const serviceTypeReproductiveAndChildPromise =
+                    ServiceType.create(
                       serviceTypeReproductiveAndChild
                     );
                     const serviceTypeVaccination = {
                       service_type: "Vaccination",
-                      description:
-                        "These are vaccination services",
+                      description: "These are vaccination services",
                     };
                     const serviceTypeVaccinationPromise = ServiceType.create(
                       serviceTypeVaccination
                     );
                     const serviceTypeDiagnostic = {
                       service_type: "Diagnostic Services",
-                      description:
-                        "These are diagnostic services",
+                      description: "These are diagnostic services",
                     };
                     const serviceTypeDiagnosticPromise = ServiceType.create(
                       serviceTypeDiagnostic
@@ -765,8 +773,7 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                         const vaccinationData = [
                           {
                             service_name: "Rotavirus",
-                            service_description:
-                              "This is rotavirus service",
+                            service_description: "This is rotavirus service",
                             service_type_id: serviceTypeVaccinationId,
                             service_category_id: 0,
                           },
@@ -778,14 +785,14 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                             service_category_id: 0,
                           },
                         ];
-                        const serviceVaccination = Service
-                        .create(vaccinationData);
+                        const serviceVaccination = Service.create(
+                          vaccinationData
+                        );
 
                         const serviceTypeDiagnosticId = values[7].id;
                         const laboratoryData = {
                           service_name: "Laboratory",
-                          service_description:
-                            "This is laboratory service",
+                          service_description: "This is laboratory service",
                           service_type_id: serviceTypeDiagnosticId,
                           service_category_id: 0,
                         };
@@ -864,8 +871,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                               service_type_id: serviceTypeClinicalId,
                               service_category_id: mciId,
                             };
-                            const serviceCommunityMicronutrient = Service
-                            .create(
+                            const serviceCommunityMicronutrient =
+                            Service.create(
                               serviceCommunityMicronutrientData
                             );
                             const serviceCommunityVitaminAData = {
@@ -878,8 +885,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                               service_type_id: serviceTypeClinicalId,
                               service_category_id: mciId,
                             };
-                            const serviceCommunityVitaminA = Service
-                            .create(
+                            const serviceCommunityVitaminA =
+                            Service.create(
                               serviceCommunityVitaminAData
                             );
 
@@ -911,7 +918,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                 "First Line Uncomplicated Treatment",
                               service_description:
                                 "This is a first line uncomplicated treatment",
-                              service_type_id: serviceTypeClinicalId,
+                              service_type_id:
+                              serviceTypeClinicalId,
                               service_category_id: malariaId,
                             };
                             const serviceFirstLine = Service.create(
@@ -958,7 +966,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                               },
                               {
                                 service_name: "ITN Distribution",
-                                service_description: "This is ITN \
+                                service_description:
+                                  "This is ITN \
                                 distribution service",
                                 service_type_id:
                                 serviceTypeReproductiveAndChildId,
@@ -971,7 +980,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                             const deliveryId = values[10].id;
                             const deliverysubData = [
                               {
-                                service_name: "Neonatal resuscitation \
+                                service_name:
+                                  "Neonatal resuscitation \
                                 (institutional)",
                                 service_description:
                                   "This is neonatal \
@@ -982,7 +992,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                               },
                               {
                                 service_name: "Post-natal consultation",
-                                service_description: "This is post-natal \
+                                service_description:
+                                  "This is post-natal \
                                 consultation service",
                                 service_type_id:
                                 serviceTypeReproductiveAndChildId,
@@ -998,12 +1009,14 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                 service_name: "Parasitology",
                                 service_description:
                                   "This is Parasitology Service",
-                                service_type_id: serviceTypeDiagnosticId,
+                                service_type_id:
+                                serviceTypeDiagnosticId,
                                 service_category_id: laboratoryId,
                               },
                               {
                                 service_name: "Clinical Chemistry",
-                                service_description: "This is \
+                                service_description:
+                                  "This is \
                                 clinical chemistry service",
                                 service_type_id:
                                 serviceTypeDiagnosticId,
@@ -1017,14 +1030,15 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                             const radiologysubData = [
                               {
                                 service_name: "X-ray",
-                                service_description:
-                                  "This is X-ray Service",
-                                service_type_id: serviceTypeDiagnosticId,
+                                service_description: "This is X-ray Service",
+                                service_type_id:
+                                serviceTypeDiagnosticId,
                                 service_category_id: radiologyId,
                               },
                               {
                                 service_name: "Ultrasound",
-                                service_description: "This is \
+                                service_description:
+                                  "This is \
                                 ultrasound service",
                                 service_type_id:
                                 serviceTypeDiagnosticId,
@@ -1064,7 +1078,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                     service_name: "Pneumonia treatment",
                                     service_description:
                                       "This is Pneumonia treatment Service",
-                                    service_type_id: serviceTypeClinicalId,
+                                    service_type_id:
+                                    serviceTypeClinicalId,
                                     service_category_id: ariId,
                                   },
                                   {
@@ -1073,7 +1088,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                     service_description:
                                       "This is treatment \
                                       of severe pneumonia (Oxygen)",
-                                    service_type_id: serviceTypeClinicalId,
+                                    service_type_id:
+                                    serviceTypeClinicalId,
                                     service_category_id: ariId,
                                   },
                                 ];
@@ -1086,13 +1102,15 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   {
                                     service_name: "ORS",
                                     service_description: "This is ORS Service",
-                                    service_type_id: serviceTypeClinicalId,
+                                    service_type_id:
+                                    serviceTypeClinicalId,
                                     service_category_id: diarrhoeaId,
                                   },
                                   {
                                     service_name: "ZINC",
                                     service_description: "This is ZINC Service",
-                                    service_type_id: serviceTypeClinicalId,
+                                    service_type_id:
+                                    serviceTypeClinicalId,
                                     service_category_id: diarrhoeaId,
                                   },
                                   {
@@ -1101,7 +1119,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                       diarrhoea (IV Fluids)",
                                     service_description:
                                       "This is IV Fluids Service",
-                                    service_type_id: serviceTypeClinicalId,
+                                    service_type_id:
+                                    serviceTypeClinicalId,
                                     service_category_id: diarrhoeaId,
                                   },
                                 ];
@@ -1114,7 +1133,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   service_name: "Adult less than 36 kg",
                                   service_description:
                                     "This is adult less than 36 kgs",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: firstlineId,
                                 };
                                 const serviceAdultless36 = Service.create(
@@ -1124,7 +1144,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   service_name: "Adult more than 36 kg",
                                   service_description:
                                     "This is adult more than 36 kgs",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: firstlineId,
                                 };
                                 const serviceAdultmore36 = Service.create(
@@ -1135,7 +1156,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   service_description:
                                     "This is a service of \
                                     children less than 15 kgs",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: firstlineId,
                                 };
                                 const serviceChildrenless15 = Service.create(
@@ -1146,7 +1168,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   service_description:
                                     "This is a service \
                                     of children more than 15 kgs",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: firstlineId,
                                 };
                                 const serviceChildrenmore15 = Service.create(
@@ -1157,7 +1180,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                   service_name: "Adult, Injectable Artesunate",
                                   service_description:
                                     "This is artesunate service for adult",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: tocmId,
                                 };
                                 const serviceAdultIArt = Service.create(
@@ -1168,7 +1192,8 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                     "Children, Injectable Artesunate",
                                   service_description:
                                     "This is artesunate service for children",
-                                  service_type_id: serviceTypeClinicalId,
+                                  service_type_id:
+                                  serviceTypeClinicalId,
                                   service_category_id: tocmId,
                                 };
                                 const serviceChildrenIArt = Service.create(
@@ -1190,12 +1215,21 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                       services are created"
                                     );
                                     dataSource.disconnect();
-                                  }).catch(err => console.error(err));
-                              }).catch(err => console.error(err));
-                          }).catch(err => console.error(err));
-                      }).catch(err => console.error(err));
-                  }).catch(err => console.error(err));
-              }).catch(err => console.error(err));
-          }).catch(err => console.error(err));
-      }).catch(err => console.error(err));
-  }).catch(err => console.error(err));
+                                  })
+                                  .catch(err => console.error(err));
+                              })
+                              .catch(err => console.error(err));
+                          })
+                          .catch(err => console.error(err));
+                      })
+                      .catch(err => console.error(err));
+                  })
+                  .catch(err => console.error(err));
+              })
+              .catch(err => console.error(err));
+          })
+          .catch(err => console.error(err));
+      })
+      .catch(err => console.error(err));
+  })
+  .catch(err => console.error(err));
