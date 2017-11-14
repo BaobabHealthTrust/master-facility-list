@@ -3,6 +3,7 @@
 const should = require("chai").should();
 const server = require("../server/server");
 const request = require("supertest")(server);
+process.env["NODE_ENV"] = "development";
 
 const Facility = server.models.Facility;
 const Geolocation = server.models.Geolocation;
