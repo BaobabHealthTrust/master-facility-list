@@ -7,7 +7,6 @@ const FacilityType = server.models.FacilityType;
 const Owner = server.models.Owner;
 const OperationalStatus = server.models.OperationalStatus;
 const RegulatoryStatus = server.models.RegulatoryStatus;
-const District = server.models.District;
 const Zone = server.models.Zone;
 
 /* This will go */
@@ -129,60 +128,12 @@ const regulatoryStatuses = [
 ];
 
 const regulatoryStatus = RegulatoryStatus.create(regulatoryStatuses);
-const districtData = [
-  {
-    district_name: "Nkhata Bay",
-    zone_id: 3,
-  },
-  {
-    district_name: "Blantyre",
-    zone_id: 5,
-  },
-  {
-    district_name: "Lilongwe",
-    zone_id: 2,
-  },
-  {
-    district_name: "Dedza",
-    zone_id: 2,
-  },
-  {
-    district_name: "Kasungu",
-    zone_id: 1,
-  },
-  {
-    district_name: "Mzuzu",
-    zone_id: 3,
-  },
-  {
-    district_name: "Karonga",
-    zone_id: 3,
-  },
-  {
-    district_name: "Nsanje",
-    zone_id: 5,
-  },
-  {
-    district_name: "Ntchisi",
-    zone_id: 1,
-  },
-  {
-    district_name: "Nchinji",
-    zone_id: 2,
-  },
-  {
-    district_name: "Mzimba",
-    zone_id: 3,
-  },
-];
 
-const districtValues = District.create(districtData);
 Promise.all([
   facilityType,
   owner,
   operationalStatus,
   regulatoryStatus,
-  districtValues,
 ])
   .then(values => {
     console.log(
