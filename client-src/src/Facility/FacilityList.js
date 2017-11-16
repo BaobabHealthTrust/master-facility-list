@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import Table from '../common/Table';
 import { connect } from 'react-redux';
-import getFacilities from '../actions/get-facilities';
+import fetchFacilities from '../actions/get-facilities';
 import { truncate } from 'lodash';
 import moment from 'moment';
 
 class FacilityList extends Component {
     componentDidMount() {
-        this.props.getFacilities();
+        if (this.props.facilities.length == 0) {
+            this.props.fetchFacilities();
+        }
     }
 
     render() {
@@ -27,6 +29,7 @@ class FacilityList extends Component {
 
         this.props.facilities.forEach(facility => {
             data.records.push([
+                facility.id,
                 '002',
                 facility.facility_name.toUpperCase(),
                 'Common Name'.toUpperCase(),
@@ -55,4 +58,4 @@ const mapStateToProps = state => {
     return { facilities: state.facilities };
 };
 
-export default connect(mapStateToProps, { getFacilities })(FacilityList);
+export default connect(mapStateToProps, { fetchFacilities })(FacilityList);
