@@ -6,13 +6,15 @@ class MflTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            redirect: false
+            redirect: false,
+            redirectLink: null
         };
     }
 
-    handleRedirect() {
+    handleRedirect(id) {
         this.setState(prevState => ({
-            redirect: !prevState.redirect
+            redirect: !prevState.redirect,
+            redirectLink: `/facilities/${id}`
         }));
     }
 
@@ -26,7 +28,7 @@ class MflTable extends Component {
             {
                 if (!this.state.redirect) {
                     return (
-                        <tr onClick={this.handleRedirect.bind(this)}>
+                        <tr onClick={this.handleRedirect.bind(this, id)}>
                             {record
                                 .filter((cell, index) => index != 0)
                                 .map(cell => {
@@ -42,7 +44,7 @@ class MflTable extends Component {
                     );
                 }
 
-                return <Redirect to="/facilities/1" />;
+                return <Redirect to={this.state.redirectLink} />;
             }
         });
 
