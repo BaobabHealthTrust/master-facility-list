@@ -6,6 +6,9 @@
     font-weight: 100;
     border-radius: 0;
 }
+.mfl-table tbody tr {
+    cursor: pointer;
+}
 
 .mfl-full-screen-search {
     width: 100%;
@@ -39,16 +42,14 @@
 
 .mfl-card-row td {
     padding: 0px;
-    
 }
 
 .mfl-table-card {
     padding: 0px;
     height: 100px;
-    
 }
 body {
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 .mfl-summary-header,
 .mfl-summary-subheader {
@@ -59,9 +60,10 @@ body {
 }
 
 .mfl-summary-subheader {
-    border-bottom: none;,
+    border-bottom: none;
     font-size: 10px;
 }
+
 .mfl-summary-text,
 .mfl-summary-subtext {
     color: #ccc;
@@ -73,9 +75,9 @@ body {
 .mfl-summary-subtext {
     font-size: 12px;
 }
-.mfl-title{
+.mfl-title {
     margin-left: 150px;
 }
-.mfl-div{
+.mfl-div {
     height: 400px;
 }

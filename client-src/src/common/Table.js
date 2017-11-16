@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import { Table } from 'react-materialize';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 class MflTable extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            redirect: false
+        };
+    }
+
+    handleRedirect() {
+        this.setState(prevState => ({
+            redirect: !prevState.redirect
+        }));
     }
 
     render() {
@@ -13,17 +22,28 @@ class MflTable extends Component {
         });
 
         const headerRecords = this.props.data.records.map(record => {
-            return (
-                <tr>
-                    {record.map(cell => {
-                        return (
-                            <td>
-                                <span className="truncate">{cell}</span>
-                            </td>
-                        );
-                    })}
-                </tr>
-            );
+            const id = record.filter((cell, i) => i == 0);
+            {
+                if (!this.state.redirect) {
+                    return (
+                        <tr onClick={this.handleRedirect.bind(this)}>
+                            {record
+                                .filter((cell, index) => index != 0)
+                                .map(cell => {
+                                    return (
+                                        <td>
+                                            <span className="truncate">
+                                                {cell}
+                                            </span>
+                                        </td>
+                                    );
+                                })}
+                        </tr>
+                    );
+                }
+
+                return <Redirect to="/facilities/1" />;
+            }
         });
 
         return (
