@@ -16,19 +16,11 @@ class MflTable extends Component {
             return (
                 <tr>
                     {record.map(cell => {
-                        if (cell.toLowerCase() == 'view') {
-                            return (
-                                <td>
-                                    <Link
-                                        className="btn btn-primary"
-                                        to="/facilities/1"
-                                    >
-                                        Show
-                                    </Link>
-                                </td>
-                            );
-                        }
-                        return <td>{cell}</td>;
+                        return (
+                            <td>
+                                <span className="truncate">{cell}</span>
+                            </td>
+                        );
                     })}
                 </tr>
             );
