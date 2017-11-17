@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { Table } from 'react-materialize';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 class MflTable extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            redirect: false,
+            redirectLink: null
+        };
+    }
+
+    handleRedirect(id) {
+        this.setState(prevState => ({
+            redirect: !prevState.redirect,
+            redirectLink: `/facilities/${id}`
+        }));
     }
 
     render() {
@@ -13,25 +24,28 @@ class MflTable extends Component {
         });
 
         const headerRecords = this.props.data.records.map(record => {
-            return (
-                <tr>
-                    {record.map(cell => {
-                        if (cell.toLowerCase() == 'view') {
-                            return (
-                                <td>
-                                    <Link
-                                        className="btn btn-primary"
-                                        to="/facilities/1"
-                                    >
-                                        Show
-                                    </Link>
-                                </td>
-                            );
-                        }
-                        return <td>{cell}</td>;
-                    })}
-                </tr>
-            );
+            const id = record.filter((cell, i) => i == 0);
+            {
+                if (!this.state.redirect) {
+                    return (
+                        <tr onClick={this.handleRedirect.bind(this, id)}>
+                            {record
+                                .filter((cell, index) => index != 0)
+                                .map(cell => {
+                                    return (
+                                        <td>
+                                            <span className="truncate">
+                                                {cell}
+                                            </span>
+                                        </td>
+                                    );
+                                })}
+                        </tr>
+                    );
+                }
+
+                return <Redirect to={this.state.redirectLink} />;
+            }
         });
 
         return (

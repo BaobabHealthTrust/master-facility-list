@@ -19,7 +19,12 @@
   },
   "devDependencies": {
     "flexboxgrid": "^6.3.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.2",
     "react-materialize": "^1.0.16",
-    "react-router-dom": "^4.2.2"
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3"
   }
 }
