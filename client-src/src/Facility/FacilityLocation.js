@@ -2,16 +2,43 @@ import React, { Component } from "react";
 import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
 import MyMapComponent from "./MyMapComponent";
+import { connect } from 'react-redux';
+import ShowLocation from '../actions/showLocation';
+import fetchFacilitiesDetails from '../actions/showfacility-details';
+
 
 class FacilityLocation extends Component {
+
+	componentDidMount() {
+        if (this.props.facilityDetails.length == 0) {
+            this.props.fetchFacilitiesDetails();
+        }
+    }
+
+
 	render() {
-		const locationData = [
-			["catchment area", "urban"],
-			["population", "-5,096,555"],
-			["District", "lilongwe"],
-			["zone", "central"]
-		];
-		const weatherData = [["sunny", " "], ["max temp", ""], ["min temo", ""]];
+		const locationData = [];
+		const weatherData = [];
+
+		
+		this.props.facilityDetails.forEach(facility => {
+			locationData.push(
+				["catchment area", facility.locations.catchment_area],
+				["population",facility.locations.catchment_population],
+				["district",facility.contactPeople.contact_person_phone],
+				["zone",facility.contactPeople.contact_person_phone]
+			);
+
+			 weatherData.push(
+				["sunny", facility.addresses.postal_address],
+				["max temp", ],
+				["min temp",]
+			 );
+			
+});
+
+
+
 
 		return (
 			<div className="container">
@@ -47,4 +74,8 @@ class FacilityLocation extends Component {
 	}
 }
 
-export default FacilityLocation;
+const mapStateToProps = state => {
+    return { facilityDetails: state.facilityDetails };
+};
+
+export default connect(mapStateToProps, { fetchFacilitiesDetails })(FacilityLocation);

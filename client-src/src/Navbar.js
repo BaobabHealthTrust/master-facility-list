@@ -93,6 +93,8 @@ const Navbar = () => {
                     <li>
                         <a href="#">CONTACTS</a>
                     </li>
+    
+
                 </ul>
             </div>
         </nav>
