@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
-import { connect } from 'react-redux';
-import fetchResources from '../actions/showResource';
 
 class FacilityResources extends Component {
-    componentDidMount() {
-        if (this.props.facilities.length == 0) {
-            this.props.fetchResources();
-        }
-    }
     render() {
-        const transportData = [
-            []
-        ];
+        const transportData = [[]];
 
         const bedData = [
             ["maternity beds", "12"],
@@ -34,16 +25,12 @@ class FacilityResources extends Component {
             ["Tablets", "9"],
             ["touchscreen", "3"]
         ];
-       
 
         this.props.facilities.forEach(facility => {
             console.log(facility);
-});
+        });
 
-
-
-  
-       console.log(this.props.resources)
+        console.log(this.props.resources);
         const buildingData = [["staff", "12"], ["other", "10"]];
         return (
             <div className="container">
@@ -87,8 +74,4 @@ class FacilityResources extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return { facilities: state.facilities };
-};
-
-export default connect(mapStateToProps, { fetchResources })(FacilityResources);
+export default FacilityResources;

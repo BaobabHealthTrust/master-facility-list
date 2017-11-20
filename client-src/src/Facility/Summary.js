@@ -1,51 +1,41 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import { connect } from 'react-redux';
-import fetchFacilitiesDetails from '../actions/showfacility-details';
+import { connect } from "react-redux";
+import fetchFacilities from "../actions/get-facilities";
+import setCurrentDetails from "../actions/set-current-details";
+
 class Summary extends Component {
     componentDidMount() {
-        if (this.props.facilityDetails.length == 0) {
-            this.props.fetchFacilitiesDetails();
-        }
+        const id = this.props.match.params.id;
+        this.props.setCurrentDetails(this.props.facilities, id);
     }
+
     render() {
-        const contactPersonData = [];
+        const contactPersonData = [
+            ["Fullname", "Someone"],
+            ["email", "Somewhere"],
+            ["phone", "123456"]
+        ];
 
-        const addressData = [];
+        const addressData = [
+            ["postal address", "Some Address"],
+            ["District", "lilongwe"],
+            ["zone", "central"]
+        ];
 
-        const ownershipData = [];
-
-         this.props.facilityDetails.forEach(facility => {
-                        contactPersonData.push(
-                            ["Fullname", facility.contactPeople.contact_person_fullname],
-                            ["email",facility.contactPeople.contact_person_email],
-                            ["phone",facility.contactPeople.contact_person_phone]
-                        );
-            
-                         addressData.push(
-                            ["postal address", facility.addresses.postal_address],
-                            ["District", "lilongwe"],
-                            ["zone", "central"]
-                         );
-                         ownershipData.push(
-                            ["owner", facility.owner.facility_owner],
-                            ["operational Status", facility.operationalStatus.facility_operational_status],
-                            ["regulatory Status", facility.regulatoryStatus.facility_regulatory_status]
-                         );
-        });
-        
-
-
-
+        const ownershipData = [
+            ["owner", "Some Owner"],
+            ["operational Status", "Some Status"],
+            ["regulatory Status", "Some Other Status"]
+        ];
 
         return (
             <div className="container">
-                
                 <div className="row z-depth-2">
                     <div className="col m6 s12">
                         <p className="center mfl-summary-header">Common Name</p>
                         <p className="center mfl-summary-text">
-                            Bottom Hospital
+                            {this.props.current.facility_name}
                         </p>
                         <br />
                         <p className="center mfl-summary-header">
@@ -91,10 +81,12 @@ class Summary extends Component {
         );
     }
 }
+
 const mapStateToProps = state => {
-    return { facilityDetails: state.facilityDetails };
+    return {
+        facilities: state.facilities.list,
+        current: state.facilities.currentDetails
+    };
 };
 
-export default connect(mapStateToProps, { fetchFacilitiesDetails })(Summary);
-
-
+export default connect(mapStateToProps, { setCurrentDetails })(Summary);

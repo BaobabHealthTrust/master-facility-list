@@ -2,20 +2,10 @@ import React, { Component } from "react";
 import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
 import MyMapComponent from "./MyMapComponent";
-import { connect } from 'react-redux';
-import ShowLocation from '../actions/showLocation';
-import fetchFacilitiesDetails from '../actions/showfacility-details';
 
 
 class FacilityLocation extends Component {
-
-	componentDidMount() {
-        if (this.props.facilityDetails.length == 0) {
-            this.props.fetchFacilitiesDetails();
-        }
-    }
-
-
+	
 	render() {
 		const locationData = [];
 		const weatherData = [];
@@ -74,8 +64,5 @@ class FacilityLocation extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-    return { facilityDetails: state.facilityDetails };
-};
 
-export default connect(mapStateToProps, { fetchFacilitiesDetails })(FacilityLocation);
+export default FacilityLocation;
