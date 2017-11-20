@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import Table from '../common/Table';
-import { connect } from 'react-redux';
-import fetchFacilities from '../actions/get-facilities';
-import { truncate } from 'lodash';
-import moment from 'moment';
+import React, { Component } from "react";
+import Table from "../common/Table";
+import { connect } from "react-redux";
+import fetchFacilities from "../actions/get-facilities";
+import { truncate } from "lodash";
+import moment from "moment";
 
 class FacilityList extends Component {
     componentDidMount() {
@@ -15,14 +15,14 @@ class FacilityList extends Component {
     render() {
         const data = {
             headers: [
-                'CODE',
-                'NAME',
-                'COMMON NAME',
-                'OWNERSHIP',
-                'TYPE',
-                'STATUS',
-                'DISTRICT',
-                'DATE OPENED'
+                "CODE",
+                "NAME",
+                "COMMON NAME",
+                "OWNERSHIP",
+                "TYPE",
+                "STATUS",
+                "DISTRICT",
+                "DATE OPENED"
             ],
             records: []
         };
@@ -30,9 +30,9 @@ class FacilityList extends Component {
         this.props.facilities.forEach(facility => {
             data.records.push([
                 facility.id,
-                '002',
+                "002",
                 facility.facility_name.toUpperCase(),
-                'Common Name'.toUpperCase(),
+                "Common Name".toUpperCase(),
                 facility.owner.facility_owner.toUpperCase(),
                 facility.facilityType.facility_type.toUpperCase(),
                 truncate(
@@ -40,7 +40,7 @@ class FacilityList extends Component {
                     { length: 12 }
                 ),
                 facility.locations.district.district_name.toUpperCase(),
-                moment(facility.facility_date_opened).format('MMM Do YY')
+                moment(facility.facility_date_opened).format("MMM Do YY")
             ]);
         });
 
@@ -55,7 +55,7 @@ class FacilityList extends Component {
 }
 
 const mapStateToProps = state => {
-    return { facilities: state.facilities };
+    return { facilities: state.facilities.list };
 };
 
 export default connect(mapStateToProps, { fetchFacilities })(FacilityList);

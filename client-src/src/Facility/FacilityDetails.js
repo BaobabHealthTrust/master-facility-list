@@ -23,7 +23,7 @@ class FacilityDetails extends Component {
                             </li>
                             <li>
                                 <Link to="/facilities/1/resources">
-                                   RESOURCES
+                                    RESOURCES
                                 </Link>
                             </li>
                             <li>
@@ -48,11 +48,7 @@ class FacilityDetails extends Component {
                 </h5>
                 <br />
                 <Switch>
-                    <Route
-                        exact
-                        path={`${this.props.match.url}`}
-                        component={Summary}
-                    />
+                    <Route exact path="/facilities/:id" component={Summary} />
                     <Route
                         path={`${this.props.match.url}/locations`}
                         component={Location}
