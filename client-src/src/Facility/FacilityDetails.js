@@ -23,7 +23,7 @@ class FacilityDetails extends Component {
                             </li>
                             <li>
                                 <Link to="/facilities/1/resources">
-                                    RESOURCES
+                                   RESOURCES
                                 </Link>
                             </li>
                             <li>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import FacilityDetails from "./FacilityDetails";
+import { connect } from 'react-redux';
+import ShowUtility from '../actions/showUtility';
 
 class Utilities extends Component {
     render() {
@@ -43,4 +45,9 @@ class Utilities extends Component {
     }
 }
 
-export default Utilities;
+const mapStateToProps = state => {
+    return { showUtility: state.showUtility };
+};
+
+export default connect(mapStateToProps, { ShowUtility })(Utilities);
+

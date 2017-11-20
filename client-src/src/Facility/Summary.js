@@ -1,25 +1,42 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-
+import { connect } from 'react-redux';
+import fetchFacilitiesDetails from '../actions/showfacility-details';
 class Summary extends Component {
+    componentDidMount() {
+        if (this.props.facilityDetails.length == 0) {
+            this.props.fetchFacilitiesDetails();
+        }
+    }
     render() {
-        const contactPersonData = [
-            ["Fullname", "Japhat Gondwe"],
-            ["email", "jgondwe@gmail.com"],
-            ["phone", "+265888122301"]
-        ];
+        const contactPersonData = [];
 
-        const addressData = [
-            ["postal address", "p.o box 334"],
-            ["District", "lilongwe"],
-            ["zone", "central"]
-        ];
+        const addressData = [];
 
-        const ownershipData = [
-            ["owner", "malawi goevernment"],
-            ["operational status", "operation"],
-            ["regulation status", "licensed"]
-        ];
+        const ownershipData = [];
+
+         this.props.facilityDetails.forEach(facility => {
+                        contactPersonData.push(
+                            ["Fullname", facility.contactPeople.contact_person_fullname],
+                            ["email",facility.contactPeople.contact_person_email],
+                            ["phone",facility.contactPeople.contact_person_phone]
+                        );
+            
+                         addressData.push(
+                            ["postal address", facility.addresses.postal_address],
+                            ["District", "lilongwe"],
+                            ["zone", "central"]
+                         );
+                         ownershipData.push(
+                            ["owner", facility.owner.facility_owner],
+                            ["operational Status", facility.operationalStatus.facility_operational_status],
+                            ["regulatory Status", facility.regulatoryStatus.facility_regulatory_status]
+                         );
+        });
+        
+
+
+
 
         return (
             <div className="container">
@@ -74,5 +91,10 @@ class Summary extends Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return { facilityDetails: state.facilityDetails };
+};
 
-export default Summary;
+export default connect(mapStateToProps, { fetchFacilitiesDetails })(Summary);
+
+
