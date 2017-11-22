@@ -1,8 +1,11 @@
 import React from "react";
-export default ({ heading, data }) => {
+export default ({ heading, data, icon }) => {
     return (
-        <div className=" z-depth-2 mlf-w-9 mfl-p-5">
-            <p className="center mfl-summary-header">{heading}</p>
+        <div className=" z-depth-2 mlf-w-9 mfl-p-2 mfl-bm-5">
+            <p className="center mfl-summary-header mfl-p-2">
+                <i class="material-icons mfl-icon left">{icon}</i>
+                {heading}
+            </p>
 
             <table className="mfl-card-row mfl-table-card">
                 <tbody>

@@ -40,6 +40,10 @@
     width: 90%;
 }
 
+.mfl-bm-5 {
+    margin-bottom: 5%;
+}
+
 .mfl-card-row td {
     padding: 0px;
 }
@@ -49,22 +53,23 @@
     padding: 0px;
     height: 100px;
 }
-.mfl-bottom-margin{
-    margin-bottom:-40px;
-    font-weight:bolder;
-    color:#ccc;
+.mfl-bottom-margin {
+    margin-bottom: -40px;
+    font-weight: bolder;
+    color: #ccc;
 }
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
 }
 .mfl-summary-header,
 .mfl-summary-subheader {
-    border-bottom: 1px solid #ccc;
-    color: #ccc;
+    width: 70%;
+    margin: 20px auto;
+    border-bottom: 1px solid #a6a6a6;
+    color: #a6a6a6;
     text-transform: uppercase;
     font-size: 12px;
 }
-
 
 .mfl-summary-subheader {
     border-bottom: none;
@@ -73,7 +78,9 @@ body {
 
 .mfl-summary-text,
 .mfl-summary-subtext {
-    color: #ccc;
+    width: 70%;
+    margin: 20px auto;
+    color: #666;
     text-transform: uppercase;
     font-size: 16px;
     font-weight: bold;
@@ -90,3 +97,20 @@ body {
     height: 400px;
 }
 
+.mfl-titles h5,
+h6 {
+    margin-top: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: -5px;
+}
+
+.mfl-titles h6 {
+    margin-bottom: 25px;
+}
+
+.mfl-icon {
+    color: #666;
+}
