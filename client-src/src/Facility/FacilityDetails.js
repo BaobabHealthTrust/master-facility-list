@@ -40,17 +40,19 @@ class FacilityDetails extends Component {
                         </ul>
                     </div>
                 </nav>
-                <h6 className="mfl-summary-subheader mfl-title">
-                    {"Bwaila District Hospital".toUpperCase()}
-                </h6>
-                <h5 className="mfl-summary-subtext mfl-title">
-                    {"ll00001,lilongwe".toUpperCase()}
-                </h5>
+                <div className="container">
+                    <h6 className="mfl-summary-subheader mfl-title">
+                        {"Bwaila District Hospital".toUpperCase()}
+                    </h6>
+                    <h5 className="mfl-summary-subtext mfl-title">
+                        {"ll00001,lilongwe".toUpperCase()}
+                    </h5>
+                </div>
                 <br />
                 <Switch>
                     <Route exact path="/facilities/:id" component={Summary} />
                     <Route
-                        path={`${this.props.match.url}/locations`}
+                        exact path="/facilities/:id/locations"
                         component={Location}
                     />
                     <Route

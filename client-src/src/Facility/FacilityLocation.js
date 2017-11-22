@@ -7,28 +7,18 @@ import MyMapComponent from "./MyMapComponent";
 class FacilityLocation extends Component {
 	
 	render() {
-		const locationData = [];
-		const weatherData = [];
+		const locationData = [
+			["catchment area", "Some Catchment"],
+			["population","Some Population"],
+			["district","Some District"],
+			["zone","Some Zone"]
+		];
 
-		
-		this.props.facilityDetails.forEach(facility => {
-			locationData.push(
-				["catchment area", facility.locations.catchment_area],
-				["population",facility.locations.catchment_population],
-				["district",facility.contactPeople.contact_person_phone],
-				["zone",facility.contactPeople.contact_person_phone]
-			);
-
-			 weatherData.push(
-				["sunny", facility.addresses.postal_address],
-				["max temp", ],
-				["min temp",]
-			 );
-			
-});
-
-
-
+		const weatherData = [
+			["sunny", "Some Forecast"],
+			["max temp", "Some Max Temo"],
+			["min temp", "Some Min Temp"]
+		];
 
 		return (
 			<div className="container">
