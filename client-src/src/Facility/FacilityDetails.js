@@ -4,20 +4,23 @@ import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtility";
-import MyMapComponent from "./MyMapComponent";
+import { connect } from "react-redux";
 
 class FacilityDetails extends Component {
     render() {
+        const id = this.props.current.id;
+        const summaryLink = `/facilities/${id}`;
+        const locationsLink = `/facilities/${id}/locations`;
         return (
             <div className="">
                 <nav>
                     <div class="nav-wrapper blue accent-1">
                         <ul class="left">
                             <li className="active">
-                                <Link to="/facilities/1">SUMMARY</Link>
+                                <Link to={summaryLink}>SUMMARY</Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/locations">
+                                <Link to={locationsLink}>
                                     CONTACTS AND LOCATIONS
                                 </Link>
                             </li>
@@ -35,8 +38,14 @@ class FacilityDetails extends Component {
                     </div>
                 </nav>
                 <div className="container mfl-titles">
-                    <h5>Bwaila District Hospital</h5>
-                    <h6>0011102, Lilongwe</h6>
+                    <h5>{this.props.current.facility_name}</h5>
+                    <h6>
+                        0011102,{" "}
+                        {this.props.current.locations
+                            ? this.props.current.locations.district
+                                  .district_name
+                            : ""}
+                    </h6>
                 </div>
 
                 <Switch>
@@ -55,15 +64,14 @@ class FacilityDetails extends Component {
                         path={`${this.props.match.url}/utilities`}
                         component={Utilities}
                     />
-
-                    <Route
-                        path={`${this.props.match.url}/MyMapComponent`}
-                        component={MyMapComponent}
-                    />
                 </Switch>
             </div>
         );
     }
 }
 
-export default FacilityDetails;
+const mapStateToProps = state => {
+    return { current: state.facilities.currentDetails };
+};
+
+export default connect(mapStateToProps, null)(FacilityDetails);
