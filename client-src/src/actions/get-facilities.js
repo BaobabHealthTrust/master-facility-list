@@ -9,6 +9,7 @@ export default function fetchFacilities() {
             "owner",
             "facilityType",
             "operationalStatus",
+            "contactPeople",
             { locations: "district" }
         ]
     };

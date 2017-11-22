@@ -26,9 +26,7 @@ class FacilityResources extends Component {
             ["touchscreen", "3"]
         ];
 
-        this.props.facilities.forEach(facility => {
-            console.log(facility);
-        });
+       
 
         console.log(this.props.resources);
         const buildingData = [["staff", "12"], ["other", "10"]];

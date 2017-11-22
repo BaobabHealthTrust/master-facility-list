@@ -11,7 +11,7 @@ class FacilityDetails extends Component {
         return (
             <div className="">
                 <nav>
-                    <div class="nav-wrapper grey darken-2">
+                    <div class="nav-wrapper blue accent-1">
                         <ul class="left hide-on-med-and-down">
                             <li className="active">
                                 <Link to="/facilities/1">SUMMARY</Link>
@@ -31,26 +31,21 @@ class FacilityDetails extends Component {
                                     UTILITIES
                                 </Link>
                             </li>
-
-                            <li>
-                                <Link to="/facilities/1/MapWithAMarkerInfoWindow">
-                                    UTILITIES
-                                </Link>
-                            </li>
                         </ul>
                     </div>
                 </nav>
-                <div className="container">
-                    <h6 className="mfl-summary-subheader mfl-title">
+                <div className="mfl-table-card mfl-bottom-margin">
+                    <h6 className=" mfl-summary-subtext mfl-title">
                         {"Bwaila District Hospital".toUpperCase()}
                     </h6>
-                    <h5 className="mfl-summary-subtext mfl-title">
+                    <h5 className=" mfl-summary-subheader mfl-title">
                         {"ll00001,lilongwe".toUpperCase()}
                     </h5>
                 </div>
-                <br />
+               
                 <Switch>
                     <Route exact path="/facilities/:id" component={Summary} />
+
                     <Route
                         exact path="/facilities/:id/locations"
                         component={Location}
