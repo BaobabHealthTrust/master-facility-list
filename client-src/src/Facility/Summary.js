@@ -6,6 +6,12 @@ import setCurrentDetails from "../actions/set-current-details";
 import fetchCurrentDetails from "../actions/fetch-current-details";
 
 class Summary extends Component {
+    constructor() {
+        super();
+        this.state = {
+            contactPersonData: []
+        }
+    }
     componentDidMount() {
         const id = this.props.match.params.id;
 
@@ -14,17 +20,21 @@ class Summary extends Component {
         }
         
         this.props.fetchCurrentDetails(id);
-    }
+
+        
+        }
+    
 
     render() {
+        
         const contactPersonData = [
-            ["Fullname", "Someone"],
-            ["email", "Somewhere"],
-            ["phone", "123456"]
+            ["Fullname", "this.props.current.contactPeople.contact_person_fullname"],
+            ["email", "Some Email"],
+            ["phone", "Some Phone"]
         ];
 
         const addressData = [
-            ["postal address", "Some Address"],
+            ["postal address", ],
             ["District", "lilongwe"],
             ["zone", "central"]
         ];
@@ -52,24 +62,22 @@ class Summary extends Component {
 
                     <div className="col m6 s12">
                         <p className="center mfl-summary-header">DATE OPENED</p>
-                        <p className="center mfl-summary-text">May 1987</p>
+                        <p className="center mfl-summary-text">{this.props.current.facility_date_opened}</p>
 
                         <br />
 
                         <p className="center mfl-summary-header">
                             Facility Type
                         </p>
-                        <p className="center mfl-summary-text">Hospital</p>
+                        <p className="center mfl-summary-text">{1+1}</p>
                     </div>
                 </div>
-
-                <br />
 
                 <div className="row">
                     <div className="col m4 s12">
                         <Card
                             heading="contact person"
-                            data={contactPersonData}
+                            data={this.state.contactPersonData}
                         />
                     </div>
                     <div className="col m4 s12">
@@ -91,7 +99,8 @@ class Summary extends Component {
 const mapStateToProps = state => {
     return {
         facilities: state.facilities.list,
-        current: state.facilities.currentDetails
+        current: state.facilities.currentDetails,
+        IsFetched: state.IsFetched
     };
 };
 

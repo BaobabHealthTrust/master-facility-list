@@ -13,7 +13,7 @@ const restoreSearch = e => {
 const Navbar = () => {
     return (
         <nav>
-            <div className="nav-wrapper grey darken-3">
+            <div className="nav-wrapper blue darken-4">
                 <a href="#" className="center hide-on-med-and-up">
                     Master Health Facility Register
                 </a>

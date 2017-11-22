@@ -44,9 +44,15 @@
     padding: 0px;
 }
 
-.mfl-table-card {
+.mfl-table-card,
+.mfl-bottom-margin {
     padding: 0px;
     height: 100px;
+}
+.mfl-bottom-margin{
+    margin-bottom:-40px;
+    font-weight:bolder;
+    color:#ccc;
 }
 body {
     font-family: 'Source Sans Pro', sans-serif;
@@ -59,6 +65,7 @@ body {
     font-size: 12px;
 }
 
+
 .mfl-summary-subheader {
     border-bottom: none;
     font-size: 10px;
@@ -70,6 +77,7 @@ body {
     text-transform: uppercase;
     font-size: 16px;
     font-weight: bold;
+    padding-top: 10px;
 }
 
 .mfl-summary-subtext {
@@ -81,3 +89,4 @@ body {
 .mfl-div {
     height: 400px;
 }
+
