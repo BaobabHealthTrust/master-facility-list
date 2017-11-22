@@ -8,6 +8,7 @@ export default function fetchCurrentDetails(id) {
             "owner",
             "facilityType",
             "operationalStatus",
+            "regulatoryStatus",
             "contactPeople",
             "addresses",
             { locations: "district" }

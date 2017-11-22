@@ -19,7 +19,7 @@ export default (
         case "FETCH_FACILITY_DETAILS":
             return {
                 list: state.list,
-                currentDetails: action.payload.data
+                currentDetails: Object.assign({}, ...state.currentDetails, action.payload.data)
             };
         default:
             return state;
