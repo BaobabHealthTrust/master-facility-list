@@ -16,6 +16,11 @@ export default (
                 list: state.list,
                 currentDetails: action.payload[0]
             };
+        case "FETCH_FACILITY_DETAILS":
+            return {
+                list: state.list,
+                currentDetails: action.payload.data
+            };
         default:
             return state;
     }

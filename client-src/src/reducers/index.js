@@ -1,12 +1,8 @@
-import { combineReducers } from 'redux';
-import FacilitiesReducer from './facilities-reducer';
-
+import { combineReducers } from "redux";
+import FacilitiesReducer from "./facilities-reducer";
 
 const rootReducer = combineReducers({
-    facilities: FacilitiesReducer,
-    facilityDetails: FacilitiesReducer,
-    showResource:FacilitiesReducer,
-    showLocation:FacilitiesReducer
+    facilities: FacilitiesReducer
 });
 
 export default rootReducer;

@@ -3,11 +3,17 @@ import Card from "../common/MflCard";
 import { connect } from "react-redux";
 import fetchFacilities from "../actions/get-facilities";
 import setCurrentDetails from "../actions/set-current-details";
+import fetchCurrentDetails from "../actions/fetch-current-details";
 
 class Summary extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.props.setCurrentDetails(this.props.facilities, id);
+
+        if(this.props.facilities.length > 0) {
+            this.props.setCurrentDetails(this.props.facilities, id);
+        }
+        
+        this.props.fetchCurrentDetails(id);
     }
 
     render() {
@@ -41,7 +47,7 @@ class Summary extends Component {
                         <p className="center mfl-summary-header">
                             Facility Code
                         </p>
-                        <p className="center mfl-summary-text">LL00111</p>
+                        <p className="center mfl-summary-text">{this.props.current.facility_code}</p>
                     </div>
 
                     <div className="col m6 s12">
@@ -89,4 +95,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { setCurrentDetails })(Summary);
+export default connect(mapStateToProps, { setCurrentDetails, fetchCurrentDetails })(Summary);
