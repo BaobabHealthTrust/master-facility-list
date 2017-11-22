@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table } from 'react-materialize';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { Table } from "react-materialize";
+import { Link, Redirect } from "react-router-dom";
 
 class MflTable extends Component {
     constructor(props) {

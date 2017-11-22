@@ -4,7 +4,7 @@ export default function fetchFacilities() {
     const END_POINT = "http://192.168.2.252:3000/api/";
     const RESOURCE = "Facilities";
     const FILTER = {
-        limit: 10,
+        limit: 15,
         include: [
             "owner",
             "facilityType",
