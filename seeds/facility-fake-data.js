@@ -144,15 +144,20 @@ Promise.all([
 		const districtId = val[7][randDistrictIndex].id;
 
 		// end location
+		const facilityCode = faker.random.number({
+			min: 1000,
+			max: 9000
+		});
 
 		const facilityData = {
 			facility_name: faker.name.findName(),
-			facility_code: faker.internet.email(),
+			facility_code: facilityCode,
 			facility_date_opened: "2017-10-25T13:27:53.703Z",
 			facility_type_id: facilityTypeId,
 			facility_owner_id: ownerId,
 			facility_operational_status_id: operationalStatusId,
-			facility_regulatory_status_id: regulatoryStatusId
+			facility_regulatory_status_id: regulatoryStatusId,
+			district_id: districtId,
 		};
 
 		const facilityFake = Facility.create(facilityData);
@@ -197,14 +202,13 @@ Promise.all([
 				const geolocationData = {
 					datum: datam,
 					geolocation: geopointData,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const geolocations = Geolocation.create(geolocationData);
 				const locationData = {
 					catchment_area: catchmentArea,
 					catchment_population: catchmentPopulation,
-					district_id: districtId,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const locations = Location.create(locationData);
 
@@ -215,7 +219,7 @@ Promise.all([
 					facilityServices,
 					facilityUtilities,
 					geolocations,
-					locations
+					locations,
 				]).then(resvalues => {
 					console.log(
 						"All dependencies in association with\
@@ -229,7 +233,7 @@ Promise.all([
 					facility_id: values[0].id,
 					resource_id: resourceId,
 					quantity: resourceQuantity,
-					description: faker.lorem.sentence()
+					description: faker.lorem.sentence(),
 				};
 				const facilityResources = FacilityResource.create(
 					facilityResourceData
@@ -237,26 +241,26 @@ Promise.all([
 				const addressData = {
 					physical_address: physicalAddress,
 					postal_address: postalAddress,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const addresses = Address.create(addressData);
 				const contactData = {
 					contact_person_fullname: fullname,
 					contact_person_phone: phone,
 					contact_person_email: email,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const contacts = ContactPeople.create(contactData);
 				const facilityServiceData = {
 					service_id: serviceId,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const facilityServices = FacilityService.create(
 					facilityServiceData
 				);
 				const facilityUtilityData = {
 					facility_id: values[0].id,
-					utility_id: utilityId
+					utility_id: utilityId,
 				};
 				const facilityUtilities = FacilityUtility.create(
 					facilityUtilityData
@@ -264,14 +268,13 @@ Promise.all([
 				const geolocationData = {
 					datum: datam,
 					geolocation: geopointData,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const geolocations = Geolocation.create(geolocationData);
 				const locationData = {
 					catchment_area: catchmentArea,
 					catchment_population: catchmentPopulation,
-					district_id: districtId,
-					facility_id: values[0].id
+					facility_id: values[0].id,
 				};
 				const locations = Location.create(locationData);
 
@@ -282,7 +285,7 @@ Promise.all([
 					facilityServices,
 					facilityUtilities,
 					geolocations,
-					locations
+					locations,
 				]).then(resvalues => {
 					console.log(
 						"All dependencies in association with\

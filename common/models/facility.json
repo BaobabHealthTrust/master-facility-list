@@ -31,6 +31,10 @@
     "facility_regulatory_status_id": {
       "type": "number",
       "required": true
+    },
+    "district_id": {
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],
@@ -93,6 +97,11 @@
       "model": "Geolocation",
       "foreignKey": "facility_id",
       "primaryKey": "id"
+    },
+    "district": {
+      "type": "belongsTo",
+      "model": "District",
+      "foreignKey": "district_id"
     }
   },
   "acls": [],

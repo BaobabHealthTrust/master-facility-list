@@ -19,6 +19,7 @@ const FacilityUtility = server.models.FacilityUtility;
 const Service = server.models.Service;
 const FacilityService = server.models.FacilityService;
 const FacilityAddress = server.models.Address;
+const District = server.models.District;
 
 const facilityType = FacilityType.create({
     facility_type: "District Hospital",
@@ -35,8 +36,17 @@ const operationalStatus = OperationalStatus.create({
 const regulatoryStatus = RegulatoryStatus.create({
     facility_regulatory_status: "Registered",
 });
+const district = District.create({
+    district_name: "Nkhata-Bay",
+    zone_id: 1,
+});
 
-Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
+Promise.all([facilityType,
+    faciltyOwner,
+    operationalStatus,
+    regulatoryStatus,
+    district,
+    ])
     .then(values => {
         const testData = {
             facility_name: "Lyton Clinic",
@@ -46,6 +56,7 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
             facility_owner_id: values[1].id,
             facility_operational_status_id: values[2].id,
             facility_regulatory_status_id: values[3].id,
+            district_id: values[4].id,
         };
 
         const facilityEdit = Object.assign({}, testData, {
@@ -183,7 +194,6 @@ Promise.all([facilityType, faciltyOwner, operationalStatus, regulatoryStatus])
             const locationData = {
                 catchment_area: "Area 3",
                 catchment_population: 5000,
-                district_id: 34,
                 facility_id: facilityId,
             };
 
