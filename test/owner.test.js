@@ -22,8 +22,7 @@ FacilityOwner.create(facilityOwnerData).then(resp => {
         facility_owner_id: ownerId,
         facility_operational_status_id: 1,
         facility_regulatory_status_id: 1,
-        facility_contact_person_id: 1,
-        facility_location_id: 1,
+        district_id: 1,
     };
 
     const testData2 = {
@@ -34,8 +33,7 @@ FacilityOwner.create(facilityOwnerData).then(resp => {
         facility_owner_id: ownerId,
         facility_operational_status_id: 1,
         facility_regulatory_status_id: 1,
-        facility_contact_person_id: 1,
-        facility_location_id: 1,
+        district_id: 1,
     };
 
     Facility.create([testData, testData2]).then(values => {

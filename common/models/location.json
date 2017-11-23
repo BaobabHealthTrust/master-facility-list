@@ -14,10 +14,6 @@
       "type": "number",
       "required": true
     },
-    "district_id": {
-      "type": "number",
-      "required": true
-    },
     "facility_id": {
       "type": "number",
       "required": true
@@ -29,11 +25,6 @@
       "type": "belongsTo",
       "model": "Facility",
       "foreignKey": "facility_id"
-    },
-    "district": {
-      "type": "belongsTo",
-      "model": "District",
-      "foreignKey": "district_id"
     }
   },
   "acls": [],
