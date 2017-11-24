@@ -1,9 +1,12 @@
 'use strict';
+const json2xls = require('json2xls');
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
+
+app.use(json2xls.middleware);
 
 app.start = function() {
   // start the web server

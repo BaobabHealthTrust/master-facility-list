@@ -2,10 +2,12 @@
 
 var PdfPrinter = require("pdfmake");
 var moment = require("moment");
+var json2xls = require("json2xls");
+var json2csv = require("json2csv");
+
 var fs = require("fs");
 module.exports = function(Facility) {
-	Facility.download = function(inputData, cb) {
-		console.log(inputData.format);
+	Facility.download = function(inputData, res, cb) {
 		Facility.find(
 			{
 				where: inputData.where,
@@ -35,7 +37,6 @@ module.exports = function(Facility) {
 				];
 				queriedDetails.forEach(details => {
 					const jsonDetails = details.toJSON();
-					console.log(jsonDetails);
 					body.push([
 						jsonDetails.facility_code,
 						jsonDetails.facility_name,
@@ -51,6 +52,7 @@ module.exports = function(Facility) {
 						)
 					]);
 				});
+
 				if (inputData.format == "pdf") {
 					var fonts = {
 						Roboto: {
@@ -130,9 +132,8 @@ module.exports = function(Facility) {
 											{
 												text:
 													"Downloaded on: " +
-													moment(currentDate)
-													.format(
-											"MMMM Do YYYY, h:mm:ss a"
+													moment(currentDate).format(
+										"MMMM Do YYYY, h:mm:ss a"
 													),
 												style: "tableHeader"
 											}
@@ -157,19 +158,99 @@ module.exports = function(Facility) {
 						]
 					};
 					var pdfDoc = printer.createPdfKitDocument(docDefinition);
-					pdfDoc.pipe(fs.createWriteStream("facilities.pdf"));
+					var pdfFile = pdfDoc.pipe(
+						fs.createWriteStream("facilities.pdf")
+					);
 					pdfDoc.end();
-				} else {
-					console.log("file format not supported");
 				}
-				cb(null, queriedDetails);
+
+				if (inputData.format == "excel") {
+					const jsonArrayData = [];
+					queriedDetails.forEach(details => {
+						const jsonDetails = details.toJSON();
+						jsonArrayData.push({
+							CODE: jsonDetails.facility_code,
+							NAME: jsonDetails.facility_name,
+							"COMMON NAME": jsonDetails.facility_name,
+							OWNERSHIP: jsonDetails.owner.facility_owner,
+							TYPE: jsonDetails.facilityType.facility_type,
+							STATUS:
+								jsonDetails.operationalStatus
+									.facility_operational_status,
+							ZONE: jsonDetails.district.zone.zone_name,
+							DISTRICT: jsonDetails.district.district_name,
+							"DATE OPENED": moment(
+								jsonDetails.facility_date_opened
+							).format("MMM Do YY"),
+						});
+					});
+
+					res.xls("data.xlsx", jsonArrayData);
+
+					// fs.writeFileSync("facilities.xlsx", xlsDetails, "binary");
+				}
+
+				if (inputData.format == "csv") {
+					var fields = [
+						"CODE",
+						"NAME",
+						"COMMON NAME",
+						"OWNERSHIP",
+						"TYPE",
+						"STATUS",
+						"ZONE",
+						"DISTRICT",
+						"DATE OPENED",
+					];
+					const csvArrayData = [];
+					queriedDetails.forEach(details => {
+						const jsonDetails = details.toJSON();
+						csvArrayData.push({
+							CODE: jsonDetails.facility_code,
+							NAME: jsonDetails.facility_name,
+							"COMMON NAME": jsonDetails.facility_name,
+							OWNERSHIP: jsonDetails.owner.facility_owner,
+							TYPE: jsonDetails.facilityType.facility_type,
+							STATUS:
+								jsonDetails.operationalStatus
+									.facility_operational_status,
+							ZONE: jsonDetails.district.zone.zone_name,
+							DISTRICT: jsonDetails.district.district_name,
+							"DATE OPENED": moment(
+								jsonDetails.facility_date_opened
+							).format("MMM Do YY"),
+						});
+					});
+					var csvDetails = json2csv({
+						data: csvArrayData,
+						fields: fields,
+					});
+					const datetime = new Date();
+					res.set("Expires", "Tue, 03 Jul 2001 06:00:00 GMT");
+					res.set(
+						"Cache-Control",
+						"max-age=0, no-cache, must-revalidate, proxy-revalidate"
+					);
+					res.set("Last-Modified", datetime + "GMT");
+					res.set("Content-Type", "application/force-download");
+					res.set("Content-Type", "application/octet-stream");
+					res.set(
+						"Content-Disposition",
+						"attachment;filename=facilities.csv"
+					);
+					res.set("Content-Transfer-Encoding", "binary");
+					res.send(csvDetails);
+				}
 			}
 		);
 	};
 
 	Facility.remoteMethod("download", {
 		description: "Download all facilities of your choice",
-		accepts: {arg: "data", type: "object"},
-		returns: {arg: "facilities", type: "blob"}
+		accepts: [
+			{arg: "data", type: "object"},
+			{arg: "res", type: "object", http: {source: "res"}}
+		],
+		returns: {}
 	});
 };
