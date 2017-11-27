@@ -253,4 +253,14 @@ module.exports = function(Facility) {
 		],
 		returns: {}
 	});
+	Facility.downloadOne = function(inputData, res, cb) {
+	}
+	Facility.remoteMethod("/id/download", {
+		description: "Download one facility with all details",
+		accepts: [
+		    {arg: "data", type: "object"},
+		    {arg: "res", type: "object", http: {source: "res"}}
+		],
+		returns: {}
+	});
 };
