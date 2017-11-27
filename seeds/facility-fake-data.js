@@ -53,7 +53,7 @@ Promise.all([
 	const numberOfFacilities = process.argv[2];
 	console.log("Number of facilities are " + numberOfFacilities);
 
-	for (var i = 0; i <= numberOfFacilities; i++) {
+	for (let i = 0; i <= numberOfFacilities; i++) {
 		const randOperationalIndex = faker.random.number({
 			min: 0,
 			max: maxValueOperational
@@ -134,7 +134,7 @@ Promise.all([
 		const facilityFake = Facility.create(facilityData);
 		if (i != numberOfFacilities) {
 			Promise.all([facilityFake]).then(values => {
-				for (var pivotValues = 0; pivotValues <= 9; pivotValues++) {
+				for (let pivotValues = 0; pivotValues <= 9; pivotValues++) {
 					// facilityresource id and quantity
 					const randResourceIndex = faker.random.number({
 						min: 0,
@@ -226,7 +226,7 @@ Promise.all([
 			});
 		} else {
 			Promise.all([facilityFake]).then(values => {
-				for (var pivotValues = 0; pivotValues <= 10; pivotValues++) {
+				for (let pivotValues = 0; pivotValues <= 10; pivotValues++) {
 					// facilityresource id and quantity
 					const randResourceIndex = faker.random.number({
 						min: 0,

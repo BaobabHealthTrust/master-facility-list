@@ -1,11 +1,11 @@
 "use strict";
 
-var PdfPrinter = require("pdfmake");
-var moment = require("moment");
-var json2xls = require("json2xls");
-var json2csv = require("json2csv");
+const PdfPrinter = require("pdfmake");
+const moment = require("moment");
+const json2xls = require("json2xls");
+const json2csv = require("json2csv");
 
-var fs = require("fs");
+const fs = require("fs");
 module.exports = function(Facility) {
 	Facility.download = function(inputData, res, cb) {
 		Facility.find(
@@ -54,7 +54,7 @@ module.exports = function(Facility) {
 				});
 
 				if (inputData.format == "pdf") {
-					var fonts = {
+					const fonts = {
 						Roboto: {
 							normal: "./node_modules/fontkit/Roboto-Regular.ttf",
 							bold: "./node_modules/fontkit/Roboto-Medium.ttf",
@@ -64,9 +64,9 @@ module.exports = function(Facility) {
 						}
 					};
 
-					var currentDate = new Date();
-					var printer = new PdfPrinter(fonts);
-					var docDefinition = {
+					const currentDate = new Date();
+					const printer = new PdfPrinter(fonts);
+					const docDefinition = {
 						footer: function(currentPage, pageCount) {
 							return {
 								margin: 10,
@@ -157,8 +157,8 @@ module.exports = function(Facility) {
 							}
 						]
 					};
-					var pdfDoc = printer.createPdfKitDocument(docDefinition);
-					var pdfFile = pdfDoc.pipe(
+					const pdfDoc = printer.createPdfKitDocument(docDefinition);
+					const pdfFile = pdfDoc.pipe(
 						fs.createWriteStream("facilities.pdf")
 					);
 					pdfDoc.end();
@@ -191,7 +191,7 @@ module.exports = function(Facility) {
 				}
 
 				if (inputData.format == "csv") {
-					var fields = [
+					const fields = [
 						"CODE",
 						"NAME",
 						"COMMON NAME",
@@ -221,7 +221,7 @@ module.exports = function(Facility) {
 							).format("MMM Do YY"),
 						});
 					});
-					var csvDetails = json2csv({
+					const csvDetails = json2csv({
 						data: csvArrayData,
 						fields: fields,
 					});
