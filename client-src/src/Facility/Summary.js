@@ -35,17 +35,6 @@ class Summary extends Component {
               ]
             : [];
 
-        const addressData = this.props.current.addresses
-            ? [
-                  [
-                      "postal address",
-                      this.props.current.addresses.postal_address
-                  ],
-                  ["District", "lilongwe"],
-                  ["zone", "central"]
-              ]
-            : [];
-
         const ownershipData =
             this.props.current.owner &&
             this.props.current.operationalStatus &&
@@ -80,8 +69,10 @@ class Summary extends Component {
                         <br />
                         <p className="mfl-summary-header">Facility Code</p>
                         <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">filter_1</i>
-                            {this.props.current.facility_code}
+                            <i class="material-icons mfl-icon left">map</i>
+                            {this.props.current.district
+                                ? this.props.current.district.zone.zone_name
+                                : ""}
                         </p>
                     </div>
 

@@ -11,6 +11,26 @@ class FacilityDetails extends Component {
         const id = this.props.current.id;
         const summaryLink = `/facilities/${id}`;
         const locationsLink = `/facilities/${id}/locations`;
+        const resourcesLink = `/facilities/${id}/resources`;
+        let badgeClass = "new badge";
+
+        if (this.props.current.operationalStatus) {
+            switch (this.props.current.operationalStatus
+                .facility_operational_status) {
+                case "Closed":
+                    badgeClass = "new badge red";
+                    break;
+                case "Functional":
+                    badgeClass = "new badge green";
+                    break;
+                case "Pending Operation (Under construction)":
+                    badgeClass = "new badge orange";
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return (
             <div className="">
                 <nav>
@@ -25,9 +45,7 @@ class FacilityDetails extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/resources">
-                                    RESOURCES
-                                </Link>
+                                <Link to={resourcesLink}>RESOURCES</Link>
                             </li>
                             <li>
                                 <Link to="/facilities/1/utilities">
@@ -38,40 +56,69 @@ class FacilityDetails extends Component {
                     </div>
                 </nav>
                 <div className="container mfl-titles">
-                    <h5>{this.props.current.facility_name}</h5>
+                    <h5>
+                        {this.props.current.facility_name}
+                        {this.props.current.operationalStatus ? (
+                            <span
+                                id="badge"
+                                className={badgeClass}
+                                data-badge-caption={
+                                    this.props.current.operationalStatus
+                                        .facility_operational_status
+                                }
+                            />
+                        ) : (
+                            ""
+                        )}
+                    </h5>
                     <h6>
-                        0011102,{" "}
-                        {this.props.current.locations
-                            ? this.props.current.locations.district
-                                  .district_name
+                        {this.props.current.facility_code},&nbsp;
+                        {this.props.current.district
+                            ? this.props.current.district.district_name
                             : ""}
                     </h6>
                 </div>
+                {this.props.isError ? (
+                    <blockquote>
+                        <h4>
+                            "Sorry, we cannot connect to the Server. Please
+                            check your Network"
+                        </h4>
+                    </blockquote>
+                ) : (
+                    <Switch>
+                        <Route
+                            exact
+                            path="/facilities/:id"
+                            component={Summary}
+                        />
 
-                <Switch>
-                    <Route exact path="/facilities/:id" component={Summary} />
-
-                    <Route
-                        exact
-                        path="/facilities/:id/locations"
-                        component={Location}
-                    />
-                    <Route
-                        path={`${this.props.match.url}/resources`}
-                        component={Resources}
-                    />
-                    <Route
-                        path={`${this.props.match.url}/utilities`}
-                        component={Utilities}
-                    />
-                </Switch>
+                        <Route
+                            exact
+                            path="/facilities/:id/locations"
+                            component={Location}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/resources"
+                            component={Resources}
+                        />
+                        <Route
+                            path={`${this.props.match.url}/utilities`}
+                            component={Utilities}
+                        />
+                    </Switch>
+                )}
             </div>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return { current: state.facilities.currentDetails };
+    return {
+        current: state.facilities.currentDetails,
+        isError: state.facilities.isNetworkError
+    };
 };
 
 export default connect(mapStateToProps, null)(FacilityDetails);

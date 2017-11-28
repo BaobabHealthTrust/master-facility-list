@@ -11,7 +11,8 @@ export default function fetchCurrentDetails(id) {
             "regulatoryStatus",
             "contactPeople",
             "addresses",
-            { locations: "district" }
+            "locations",
+            { district: "zone" }
         ]
     };
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
