@@ -1,13 +1,13 @@
-import React from 'react';
-import logo from './logo.png';
-import { Link } from 'react-router-dom';
+import React from "react";
+import logo from "./logo.png";
+import { Link } from "react-router-dom";
 
 const maximizeSearch = e => {
-    document.getElementById('searchbar').className = 'mfl-full-screen-search';
+    document.getElementById("searchbar").className = "mfl-full-screen-search";
 };
 const restoreSearch = e => {
-    document.getElementById('searchbar').className =
-        'left mfl-normal-search hide-on-small-only';
+    document.getElementById("searchbar").className =
+        "left mfl-normal-search hide-on-small-only";
 };
 
 const Navbar = () => {
@@ -93,8 +93,6 @@ const Navbar = () => {
                     <li>
                         <a href="#">CONTACTS</a>
                     </li>
-    
-
                 </ul>
             </div>
         </nav>

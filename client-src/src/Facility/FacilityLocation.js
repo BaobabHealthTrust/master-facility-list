@@ -28,11 +28,7 @@ class FacilityLocation extends Component {
                       "population",
                       this.props.current.locations.catchment_population
                   ],
-                  [
-                      "district",
-                      this.props.current.locations.district.district_name
-                  ],
-                  ["zone", "Northern Zone"]
+                  ["district", this.props.current.district.district_name]
               ]
             : [];
 
@@ -42,12 +38,20 @@ class FacilityLocation extends Component {
             ["min temp", "Some Min Temp"]
         ];
 
+        const addressData = this.props.current.addresses
+            ? [
+                  ["physical", this.props.current.addresses.physical_address],
+                  ["postal", this.props.current.addresses.postal_address],
+                  ["zone", this.props.current.district.zone.zone_name]
+              ]
+            : [];
+
         return (
             <div className="container">
                 <div className="row">
                     <div className="col m6 s12">
-                        <div className="z-depth-2 mfl-w-9">
-                            <MFLGoogleMap isMarkerShown />
+                        <div className="z-depth-2">
+                            {/* <MFLGoogleMap isMarkerShown /> */}
                         </div>
                     </div>
 
@@ -63,7 +67,7 @@ class FacilityLocation extends Component {
                             <Card
                                 heading="Address"
                                 icon="location_city"
-                                data={weatherData}
+                                data={addressData}
                             />
                         </div>
                         <div className="row">

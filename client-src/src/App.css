@@ -114,3 +114,8 @@ h6 {
 .mfl-icon {
     color: #666;
 }
+
+.mfl-download {
+    position: relative !important;
+    margin-top: 30px;
+}

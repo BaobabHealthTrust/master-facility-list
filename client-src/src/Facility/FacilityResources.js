@@ -1,9 +1,36 @@
 import React, { Component } from "react";
-import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
+import fetchCurrentResources from "../actions/fetch-current-resources";
+import setCurrentDetails from "../actions/set-current-details";
+import fetchCurrentDetails from "../actions/fetch-current-details";
+import fetchResourceTypes from "../actions/fetch-resource-types";
+import { connect } from "react-redux";
+import { uniq, chunk } from "lodash";
 
 class FacilityResources extends Component {
+    async componentDidMount() {
+        const id = this.props.match.params.id;
+
+        if (this.props.facilities.length > 0) {
+            await this.props.setCurrentDetails(this.props.facilities, id);
+        }
+
+        await this.props.fetchCurrentDetails(id);
+        await this.props.fetchResourceTypes();
+        await this.props.fetchCurrentResources(id);
+    }
+
     render() {
+        const resourceTypeIds = uniq(
+            this.props.resources.map(res => res.resource_type_id)
+        );
+
+        const presentTypes = this.props.resourceTypes.filter(res =>
+            resourceTypeIds.includes(res.id)
+        );
+
+        const cards = chunk(presentTypes, 3);
+
         const transportData = [[]];
 
         const bedData = [
@@ -26,50 +53,44 @@ class FacilityResources extends Component {
             ["touchscreen", "3"]
         ];
 
-       
-
-        console.log(this.props.resources);
         const buildingData = [["staff", "12"], ["other", "10"]];
+
         return (
             <div className="container">
                 <br />
-
-                <div className="row">
-                    <div className="col m4 s12">
-                        <Card
-                            heading="transport resources"
-                            data={transportData}
-                        />
-                    </div>
-                    <div className="col m4 s12">
-                        <Card heading="bed resources" data={bedData} />
-                    </div>
-
-                    <div className="col m4 s12">
-                        <Card
-                            heading="generator resources"
-                            data={generatorData}
-                        />
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col m4 s12">
-                        <Card
-                            heading="computer resources"
-                            data={computerData}
-                        />
-                    </div>
-                    <div className="col m4 s12">
-                        <Card
-                            heading="building resources"
-                            data={buildingData}
-                        />
-                    </div>
-                </div>
+                {cards.map(card => {
+                    return (
+                        <div className="row">
+                            {card.map(type => {
+                                return (
+                                    <div className="col m4 s12">
+                                        <Card
+                                            heading={type.resource_type}
+                                            data={transportData}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
             </div>
         );
     }
 }
 
-export default FacilityResources;
+const mapStateToProps = state => {
+    return {
+        resources: state.facilities.currentResources,
+        facilities: state.facilities.list,
+        isLoading: state.facilities.isLoading,
+        resourceTypes: state.dependancies.resourceTypes
+    };
+};
+
+export default connect(mapStateToProps, {
+    fetchCurrentResources,
+    fetchCurrentDetails,
+    setCurrentDetails,
+    fetchResourceTypes
+})(FacilityResources);
