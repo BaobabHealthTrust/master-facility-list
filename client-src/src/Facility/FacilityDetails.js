@@ -3,7 +3,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
-import Utilities from "./FacilityUtility";
+import Utilities from "./FacilityUtilities";
 import { connect } from "react-redux";
 
 class FacilityDetails extends Component {
@@ -12,6 +12,8 @@ class FacilityDetails extends Component {
         const summaryLink = `/facilities/${id}`;
         const locationsLink = `/facilities/${id}/locations`;
         const resourcesLink = `/facilities/${id}/resources`;
+        const utilitiesLink = `/facilities/${id}/utilities`;
+
         let badgeClass = "new badge";
 
         if (this.props.current.operationalStatus) {
@@ -48,9 +50,7 @@ class FacilityDetails extends Component {
                                 <Link to={resourcesLink}>RESOURCES</Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/utilities">
-                                    UTILITIES
-                                </Link>
+                                <Link to={utilitiesLink}>UTILITIES</Link>
                             </li>
                         </ul>
                     </div>
@@ -104,7 +104,8 @@ class FacilityDetails extends Component {
                             component={Resources}
                         />
                         <Route
-                            path={`${this.props.match.url}/utilities`}
+                            exact
+                            path="/facilities/:id/utilities"
                             component={Utilities}
                         />
                     </Switch>

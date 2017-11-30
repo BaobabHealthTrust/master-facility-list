@@ -5,7 +5,6 @@ import fetchFacilities from "../actions/get-facilities";
 import { truncate } from "lodash";
 import moment from "moment";
 import Pagination from "../common/Pagination";
-import fileDownload from "js-file-download";
 import downloadFacilities from "../actions/download-facilities";
 import MflDownload from "../common/MflDownload";
 
@@ -65,7 +64,7 @@ class FacilityList extends Component {
                 ) : (
                     <div>
                         <MflDownload
-                            handler={this.handleDownload}
+                            action={this.props.downloadFacilities}
                             fileName="facilities"
                         />
                         <Table data={data} />
