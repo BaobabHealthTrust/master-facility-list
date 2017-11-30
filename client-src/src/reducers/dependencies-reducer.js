@@ -13,6 +13,12 @@ export default (
                 utilityTypes: state.utilityTypes,
                 serviceTypes: state.serviceTypes
             };
+        case "FETCH_UTILITY_TYPES":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: action.payload.data,
+                serviceTypes: state.serviceTypes
+            };
         default:
             return state;
     }

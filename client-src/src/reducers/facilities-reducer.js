@@ -3,6 +3,7 @@ export default (
         list: [],
         currentDetails: {},
         currentResources: [],
+        currentUtilities: [],
         isNetworkError: false,
         isLoading: true
     },
@@ -23,6 +24,7 @@ export default (
                 list: state.list.concat(action.payload.data),
                 currentDetails: state.currentDetails,
                 currentResources: state.currentResources,
+                currentUtilities: state.currentUtilities,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -31,6 +33,7 @@ export default (
                 list: state.list,
                 currentDetails: action.payload[0],
                 currentResources: state.currentResources,
+                currentUtilities: state.currentUtilities,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -39,6 +42,7 @@ export default (
                 list: state.list,
                 currentDetails: action.payload.data,
                 currentResources: state.currentResources,
+                currentUtilities: state.currentUtilities,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -47,6 +51,16 @@ export default (
                 list: state.list,
                 currentDetails: state.currentDetails,
                 currentResources: action.payload.data,
+                currentUtilities: state.currentUtilities,
+                isNetworkError: false,
+                isLoading: false
+            };
+        case "FETCH_CURRENT_UTILITIES":
+            return {
+                list: state.list,
+                currentDetails: state.currentDetails,
+                currentResources: state.currentResources,
+                currentUtilities: action.payload.data,
                 isNetworkError: false,
                 isLoading: false
             };

@@ -51,7 +51,7 @@ class FacilityLocation extends Component {
                 <div className="row">
                     <div className="col m6 s12">
                         <div className="z-depth-2">
-                            {/* <MFLGoogleMap isMarkerShown /> */}
+                            <MFLGoogleMap isMarkerShown />
                         </div>
                     </div>
 

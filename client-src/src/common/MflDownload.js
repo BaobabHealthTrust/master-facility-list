@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import downloadFacilities from "../actions/download-facilities";
 import fileDownload from "js-file-download";
 
 class MflDownload extends Component {
@@ -9,7 +8,7 @@ class MflDownload extends Component {
     }
 
     async handleDownload(format, fileName) {
-        await this.props.downloadFacilities(format);
+        await this.props.action(format);
         await fileDownload(this.props.download, fileName);
     }
 
@@ -65,4 +64,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { downloadFacilities })(MflDownload);
+export default connect(mapStateToProps)(MflDownload);

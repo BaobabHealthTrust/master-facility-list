@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import fetchCurrentResources from "../actions/fetch-current-resources";
+import fetchCurrentUtilities from "../actions/fetch-current-utilities";
 import setCurrentDetails from "../actions/set-current-details";
 import fetchCurrentDetails from "../actions/fetch-current-details";
-import fetchResourceTypes from "../actions/fetch-resource-types";
+import fetchUtilityTypes from "../actions/fetch-utility-types";
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 
-class FacilityResources extends Component {
+class FacilityUtilities extends Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
 
@@ -16,32 +16,30 @@ class FacilityResources extends Component {
         }
 
         await this.props.fetchCurrentDetails(id);
-        await this.props.fetchResourceTypes();
-        await this.props.fetchCurrentResources(id);
+        await this.props.fetchUtilityTypes();
+        await this.props.fetchCurrentUtilities(id);
     }
 
-    getResourceTypeIcon(resourceType) {
-        switch (resourceType.toUpperCase()) {
-            case "TRANSPORT":
-                return "directions_bus";
-            case "BEDS":
-                return "airline_seat_individual_suite";
-            case "GENERATORS":
-                return "flash_off";
-            case "COMPUTERS":
-                return "computer";
-            case "HOUSING":
-                return "home";
+    getResourceTypeIcon(utilityType) {
+        switch (utilityType.toUpperCase()) {
+            case "ENERGY PROVIDER":
+                return "lightbulb_outline";
+            case "WATER PROVIDER":
+                return "opacity";
+            case "WASTE DISPOSAL":
+                return "wc";
+            case "NETWORK PROVIDER":
+                return "wifi";
             default:
                 return "local_hospital";
         }
     }
 
     render() {
-        const presentTypes = this.props.resourceTypes.filter(res =>
+        const presentTypes = this.props.utilityTypes.filter(util =>
             uniq(
-                this.props.resources.map(res => res.resource.resource_type_id)
-            ).includes(res.id)
+                this.props.utilities.map(util => util.utility.utility_type_id)
+            ).includes(util.id)
         );
 
         const cards = chunk(presentTypes, 3);
@@ -53,23 +51,20 @@ class FacilityResources extends Component {
                     return (
                         <div className="row">
                             {card.map(type => {
-                                const data = this.props.resources
+                                const data = this.props.utilities
                                     .filter(
-                                        res =>
-                                            res.resource.resource_type_id ===
+                                        util =>
+                                            util.utility.utility_type_id ===
                                             type.id
                                     )
-                                    .map(res => [
-                                        res.resource.resource_name,
-                                        res.quantity
-                                    ]);
+                                    .map(util => [util.utility.utility_name]);
                                 return (
                                     <div className="col m4 s12">
                                         <Card
-                                            heading={type.resource_type}
+                                            heading={type.utility_type}
                                             data={data}
                                             icon={this.getResourceTypeIcon(
-                                                type.resource_type
+                                                type.utility_type
                                             )}
                                         />
                                     </div>
@@ -85,16 +80,16 @@ class FacilityResources extends Component {
 
 const mapStateToProps = state => {
     return {
-        resources: state.facilities.currentResources,
+        utilities: state.facilities.currentUtilities,
         facilities: state.facilities.list,
         isLoading: state.facilities.isLoading,
-        resourceTypes: state.dependancies.resourceTypes
+        utilityTypes: state.dependancies.utilityTypes
     };
 };
 
 export default connect(mapStateToProps, {
-    fetchCurrentResources,
+    fetchCurrentUtilities,
     fetchCurrentDetails,
     setCurrentDetails,
-    fetchResourceTypes
-})(FacilityResources);
+    fetchUtilityTypes
+})(FacilityUtilities);

@@ -16,7 +16,13 @@ export default ({ heading, data, icon }) => {
                                     {row[0]}
                                 </td>
                                 <td className="right-align mfl-summary-subtext">
-                                    {row[1]}
+                                    {row[1] ? (
+                                        row[1]
+                                    ) : (
+                                        <i class="material-icons mfl-icon right">
+                                            check
+                                        </i>
+                                    )}
                                 </td>
                             </tr>
                         );
