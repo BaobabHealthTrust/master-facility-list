@@ -1,3 +1,5 @@
+"use strict";
+
 const moment = require("moment");
 const json2xls = require("json2xls");
 

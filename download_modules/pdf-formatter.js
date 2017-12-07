@@ -1,19 +1,23 @@
+"use strict";
+
 const PdfPrinter = require("pdfmake");
 const moment = require("moment");
 const fs = require("fs");
+const path = require("path");
+const mime = require("mime");
 
 module.exports = function(queriedDetails, res) {
 	const body = [
 		[
-			{ text: "CODE", style: "tableHeader" },
-			{ text: "NAME", style: "tableHeader" },
-			{ text: "COMMON NAME", style: "tableHeader" },
-			{ text: "OWNERSHIP", style: "tableHeader" },
-			{ text: "TYPE", style: "tableHeader" },
-			{ text: "STATUS", style: "tableHeader" },
-			{ text: "ZONE", style: "tableHeader" },
-			{ text: "DISTRICT", style: "tableHeader" },
-			{ text: "DATE OPENED", style: "tableHeader" }
+			{text: "CODE", style: "tableHeader"},
+			{text: "NAME", style: "tableHeader"},
+			{text: "COMMON NAME", style: "tableHeader"},
+			{text: "OWNERSHIP", style: "tableHeader"},
+			{text: "TYPE", style: "tableHeader"},
+			{text: "STATUS", style: "tableHeader"},
+			{text: "ZONE", style: "tableHeader"},
+			{text: "DISTRICT", style: "tableHeader"},
+			{text: "DATE OPENED", style: "tableHeader"}
 		]
 	];
 	queriedDetails.forEach(details => {
@@ -47,23 +51,21 @@ module.exports = function(queriedDetails, res) {
 			return {
 				margin: 10,
 				columns: [
-				    {
-				style: "header",
-				margin: [10, 0, 0, 0],
-				columns: [
 					{
-						image: "./images/malawi.png",
-						width: 20
-					}
-
-				]
-			},
+						style: "header",
+						margin: [10, 0, 0, 0],
+						columns: [
+							{
+								image: "./images/malawi.png",
+								width: 20
+							}
+						]
+					},
 					{
 						fontSize: 9,
 						text: [
 							{
-								text:
-									+currentPage.toString()
+								text: +currentPage.toString()
 							}
 						],
 						alignment: "right"
@@ -72,7 +74,6 @@ module.exports = function(queriedDetails, res) {
 			};
 		},
 		content: [
-		   
 			{
 				style: "header",
 				margin: [10, 0, 0, 0],
@@ -108,7 +109,7 @@ module.exports = function(queriedDetails, res) {
 				text:
 					"Date downloaded: " +
 					moment(currentDate).format("MMM Do YYYY"),
-					alignment: "right"
+				alignment: "right"
 			},
 
 			{
@@ -125,7 +126,8 @@ module.exports = function(queriedDetails, res) {
 					}
 				]
 			},
-			{   margin: [-37, 0, 0, 0],
+			{
+				margin: [-37, 0, 0, 0],
 				style: "tableExample",
 				table: {
 					headerRows: 1,
