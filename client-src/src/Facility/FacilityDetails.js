@@ -4,6 +4,7 @@ import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
+import Services from "./FacilityServices";
 import { connect } from "react-redux";
 
 class FacilityDetails extends Component {
@@ -13,6 +14,7 @@ class FacilityDetails extends Component {
         const locationsLink = `/facilities/${id}/locations`;
         const resourcesLink = `/facilities/${id}/resources`;
         const utilitiesLink = `/facilities/${id}/utilities`;
+        const servicesLink = `/facilities/${id}/services`;
 
         let badgeClass = "new badge";
 
@@ -51,6 +53,9 @@ class FacilityDetails extends Component {
                             </li>
                             <li>
                                 <Link to={utilitiesLink}>UTILITIES</Link>
+                            </li>
+                            <li>
+                                <Link to={servicesLink}>SERVICES</Link>
                             </li>
                         </ul>
                     </div>
@@ -107,6 +112,11 @@ class FacilityDetails extends Component {
                             exact
                             path="/facilities/:id/utilities"
                             component={Utilities}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/services"
+                            component={Services}
                         />
                     </Switch>
                 )}
