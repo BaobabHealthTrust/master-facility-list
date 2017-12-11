@@ -119,3 +119,10 @@ h6 {
     position: relative !important;
     margin-top: 30px;
 }
+
+.mfl-tabs a {
+    color: #0d47a1 !important;
+}
+.indicator {
+    background-color: #0d47a1 !important;
+}

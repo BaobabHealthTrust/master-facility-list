@@ -1,0 +1,70 @@
+import React, { Component } from "react";
+import setCurrentDetails from "../actions/set-current-details";
+import fetchCurrentDetails from "../actions/fetch-current-details";
+import Container from "./ServicesContainer";
+import fetchCurrentServices from "../actions/fetch-current-services";
+import { connect } from "react-redux";
+
+class FacilityServices extends Component {
+    async componentDidMount() {
+        const id = this.props.match.params.id;
+
+        if (this.props.facilities.length > 0) {
+            this.props.setCurrentDetails(this.props.facilities, id);
+        }
+
+        await this.props.fetchCurrentDetails(id);
+        await this.props.fetchCurrentServices(id);
+    }
+
+    render() {
+        const clinicalServices = this.props.services.filter(service => {
+            return (
+                service.service.serviceType.service_type.toUpperCase() ===
+                "CLINICAL SERVICES"
+            );
+        });
+
+        console.log(clinicalServices);
+
+        return (
+            <div className="container">
+                <div className="nav-content">
+                    <ul className="tabs blue accent-1 mfl-tabs">
+                        <li className="tab">
+                            <a href="#clinical">Clinical</a>
+                        </li>
+                        <li className="tab">
+                            <a href="#test2">Community Health</a>
+                        </li>
+                        <li className="tab">
+                            <a href="#test3">Reproductive</a>
+                        </li>
+                        <li className="tab">
+                            <a href="#test4">Other Services</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <br />
+
+                <div id="clinical" class="col s12">
+                    <Container services={clinicalServices} />
+                </div>
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = store => {
+    return {
+        facilities: store.facilities.list,
+        services: store.facilities.currentServices
+    };
+};
+
+export default connect(mapStateToProps, {
+    setCurrentDetails,
+    fetchCurrentDetails,
+    fetchCurrentServices
+})(FacilityServices);

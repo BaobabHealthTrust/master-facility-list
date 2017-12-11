@@ -4,6 +4,7 @@ export default (
         currentDetails: {},
         currentResources: [],
         currentUtilities: [],
+        currentServices: [],
         isNetworkError: false,
         isLoading: true
     },
@@ -14,6 +15,7 @@ export default (
             list: state.list,
             currentDetails: state.currentDetails,
             currentResources: state.currentResources,
+            currentServices: state.currentServices,
             isNetworkError: true,
             isLoading: false
         };
@@ -25,6 +27,7 @@ export default (
                 currentDetails: state.currentDetails,
                 currentResources: state.currentResources,
                 currentUtilities: state.currentUtilities,
+                currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -34,6 +37,7 @@ export default (
                 currentDetails: action.payload[0],
                 currentResources: state.currentResources,
                 currentUtilities: state.currentUtilities,
+                currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -43,6 +47,7 @@ export default (
                 currentDetails: action.payload.data,
                 currentResources: state.currentResources,
                 currentUtilities: state.currentUtilities,
+                currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -52,6 +57,7 @@ export default (
                 currentDetails: state.currentDetails,
                 currentResources: action.payload.data,
                 currentUtilities: state.currentUtilities,
+                currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false
             };
@@ -61,6 +67,17 @@ export default (
                 currentDetails: state.currentDetails,
                 currentResources: state.currentResources,
                 currentUtilities: action.payload.data,
+                currentServices: state.currentServices,
+                isNetworkError: false,
+                isLoading: false
+            };
+        case "FETCH_CURRENT_SERVICES":
+            return {
+                list: state.list,
+                currentDetails: state.currentDetails,
+                currentResources: state.currentResources,
+                currentUtilities: state.currentUtilities,
+                currentServices: action.payload.data,
                 isNetworkError: false,
                 isLoading: false
             };
