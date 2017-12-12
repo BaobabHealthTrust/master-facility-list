@@ -2,9 +2,18 @@
 
 const PdfPrinter = require("pdfmake");
 const moment = require("moment");
+const uniq = require("lodash");
 const fs = require("fs");
 
-module.exports = function(queriedDetails, res) {
+module.exports = function(
+	queriedDetails,
+	serviceDetails,
+	serviceTypeDetails,
+	resourceDetails,
+	resourceTypeDetails,
+	utilityDetails,
+	utilityTypeDetails
+) {
 	let facilityName = "";
 	let facilityCode = "";
 	let population = "";
@@ -17,110 +26,173 @@ module.exports = function(queriedDetails, res) {
 	let facilityType = "";
 	let facilityOwner = "";
 	let dateOpened = "";
-	const body2 = [];
+	const bodyServices = [];
+	const bodyResources = [];
+	const bodyUtilities = [];
 
-	const body = [
-		[
-			{text: "CODE", style: "tableHeader"},
-			{text: "NAME", style: "tableHeader"},
-			{text: "COMMON NAME", style: "tableHeader"},
-			{text: "OWNERSHIP", style: "tableHeader"},
-			{text: "TYPE", style: "tableHeader"},
-			{text: "STATUS", style: "tableHeader"},
-			{text: "ZONE", style: "tableHeader"},
-			{text: "DISTRICT", style: "tableHeader"},
-			{text: "DATE OPENED", style: "tableHeader"}
-		]
-	];
-	queriedDetails.forEach(details => {
-		const jsonDetails = details.toJSON();
-		console.log(jsonDetails);
-		facilityName = jsonDetails.facility_name.toUpperCase();
-		facilityLocation = jsonDetails.addresses.physical_address;
-		population = jsonDetails.locations.catchment_population;
-		district = jsonDetails.district.district_name;
-		zone = jsonDetails.district.zone.zone_name;
-		facilityCode = jsonDetails.facility_code;
-		facilityRegulatoryStatus =
-			jsonDetails.regulatoryStatus.facility_regulatory_status;
-		facilityOperationalStatus =
-			jsonDetails.operationalStatus.facility_operational_status;
-		commonName = jsonDetails.facility_name;
-		facilityType = jsonDetails.facilityType.facility_type;
-		facilityOwner = jsonDetails.owner.facility_owner;
-		dateOpened = moment(jsonDetails.facility_date_opened).format(
-			"MMM Do YY"
-		);
-		body2.push([
-			{
-				border: [false, true, false, false],
-				fillColor: "#eeeeee",
-				text: "border:\n[false, true, false, false]"
-			},
-			{
-				border: [false, false, false, false],
-				fillColor: "#dddddd",
-				text: "border:\n[false, false, false, false]"
-			},
-			{
-				border: [true, true, true, true],
-				fillColor: "#eeeeee",
-				text: "border:\n[true, true, true, true]"
-			}
-		],
-		[
-			{
-				rowSpan: 3,
-				border: [true, true, true, true],
-				fillColor: "#eeeeff",
-				text: "rowSpan: 3\n\nborder:\n[true, true, true, true]"
-			},
-			{
-				border: undefined,
-				fillColor: "#eeeeee",
-				text: "border:\nundefined"
-			},
-			{
-				border: [true, false, false, false],
-				fillColor: "#dddddd",
-				text: "border:\n[true, false, false, false]"
-			}
-		],
-		[
-			"",
-			{
-				colSpan: 2,
-				border: [true, true, true, true],
-				fillColor: "#eeffee",
-				text: "colSpan: 2\n\nborder:\n[true, true, true, true]"
-			},
-			""
-		],
-		[
-			"",
-			{
-				border: undefined,
-				fillColor: "#eeeeee",
-				text: "border:\nundefined"
-			},
-			{
-				border: [false, false, true, true],
-				fillColor: "#dddddd",
-				text: "border:\n[false, false, true, true]"
-			}
-		]);
-		body.push([
-			jsonDetails.facility_code,
-			jsonDetails.facility_name,
-			jsonDetails.facility_name,
-			jsonDetails.owner.facility_owner,
-			jsonDetails.facilityType.facility_type,
-			jsonDetails.operationalStatus.facility_operational_status,
-			jsonDetails.district.zone.zone_name,
-			jsonDetails.district.district_name,
-			moment(jsonDetails.facility_date_opened).format("MMM Do YY")
-		]);
+	const jsonDetails = queriedDetails[0].toJSON();
+	facilityName = jsonDetails.facility_name.toUpperCase();
+	facilityLocation = jsonDetails.addresses.physical_address;
+	population = jsonDetails.locations.catchment_population;
+	district = jsonDetails.district.district_name;
+	zone = jsonDetails.district.zone.zone_name;
+	facilityCode = jsonDetails.facility_code;
+	facilityRegulatoryStatus =
+		jsonDetails.regulatoryStatus.facility_regulatory_status;
+	facilityOperationalStatus =
+		jsonDetails.operationalStatus.facility_operational_status;
+	commonName = jsonDetails.facility_name;
+	facilityType = jsonDetails.facilityType.facility_type;
+	facilityOwner = jsonDetails.owner.facility_owner;
+	dateOpened = moment(jsonDetails.facility_date_opened).format("MMM Do YY");
+
+	const presentServiceTypes = serviceTypeDetails.filter(serviceTypes => {
+		return uniq(
+			serviceDetails.map(services => {
+				const jsonServiceDetails = services.toJSON();
+				return jsonServiceDetails.service.serviceType.id;
+			})
+		).includes(serviceTypes.id);
 	});
+
+	presentServiceTypes.map(serviceType => {
+		bodyServices.push([
+			{
+				colSpan: 3,
+				border: [false, false, false, true],
+				fillColor: "#ffffff",
+				text: serviceType.service_type
+			},
+			"",
+			""
+		]);
+		serviceDetails
+			.filter(service => {
+				const jsonServiceDetails = service.toJSON();
+				return (
+					jsonServiceDetails.service.service_type_id ===
+					serviceType.id
+				);
+			})
+			.map(res => {
+				const jsonRes = res.toJSON();
+				bodyServices.push(
+					[
+						{
+							colSpan: 3,
+							border: [false, false, false, false],
+							fillColor: "#ffffff",
+							text: "==>" + jsonRes.service.service_name,
+							fontSize: 8
+						},
+						"",
+						""
+					],
+					[
+						{
+							colSpan: 3,
+							border: [false, false, false, false],
+							fillColor: "#ffffff",
+							text: "====>" + jsonRes.service.service_name,
+							fontSize: 8
+						},
+						"",
+						""
+					]
+				);
+			});
+	});
+
+	const presentResourceTypes = resourceTypeDetails.filter(resourceTypes => {
+		return uniq(
+			resourceDetails.map(resources => {
+				const jsonResourceDetails = resources.toJSON();
+				return jsonResourceDetails.resource.resourceType.id;
+			})
+		).includes(resourceTypes.id);
+	});
+
+	presentResourceTypes.map(resourceType => {
+		bodyResources.push([
+			{
+				colSpan: 3,
+				border: [false, false, false, true],
+				fillColor: "#ffffff",
+				text: resourceType.resource_type
+			},
+			"",
+			""
+		]);
+		resourceDetails
+			.filter(resource => {
+				const jsonResourceDetails = resource.toJSON();
+				return (
+					jsonResourceDetails.resource.resource_type_id ===
+					resourceType.id
+				);
+			})
+			.map(res => {
+				const jsonRes = res.toJSON();
+				bodyResources.push([
+					{
+						colSpan: 3,
+						border: [false, false, false, false],
+						fillColor: "#ffffff",
+						text: "==>" + jsonRes.resource.resource_name,
+						fontSize: 8
+					},
+					"",
+					""
+				]);
+			});
+	});
+
+	const presentUtilityTypes = utilityTypeDetails.filter(utilityTypes => {
+		return uniq(
+			utilityDetails.map(utilities => {
+				const jsonUtilityDetails = utilities.toJSON();
+				return jsonUtilityDetails.utility.utilityType.id;
+			})
+		).includes(utilityTypes.id);
+	});
+
+	console.log(presentUtilityTypes);
+
+    presentUtilityTypes.map(utilityType => {
+		bodyUtilities.push([
+			{
+				colSpan: 3,
+				border: [false, false, false, true],
+				fillColor: "#ffffff",
+				text: utilityType.utility_type
+			},
+			"",
+			""
+		]);
+		utilityDetails
+			.filter(utility => {
+				const jsonUtilityDetails = utility.toJSON();
+				return (
+					jsonUtilityDetails.utility.utility_type_id ===
+					utilityType.id
+				);
+			})
+			.map(res => {
+				const jsonRes = res.toJSON();
+				bodyUtilities.push([
+					{
+						colSpan: 3,
+						border: [false, false, false, false],
+						fillColor: "#ffffff",
+						text: "==>" + jsonRes.utility.utility_name,
+						fontSize: 8
+					},
+					"",
+					""
+				]);
+			});
+	});
+
 	const fonts = {
 		Roboto: {
 			normal: "./node_modules/fontkit/Roboto-Regular.ttf",
@@ -351,14 +423,12 @@ module.exports = function(queriedDetails, res) {
 						[
 							{
 								border: [true, true, false, true],
-								text: "FACILITY SUMMARY",
-								fontSize: 8
+								text: "FACILITY SUMMARY"
 							},
 
 							{
-								border: [true, true, false, true],
-								text: "DEPENDENCIES",
-								fontSize: 8
+								border: [true, true, true, true],
+								text: "SERVICES"
 							}
 						],
 						[
@@ -752,9 +822,68 @@ module.exports = function(queriedDetails, res) {
 								}
 							},
 							{
+								border: [true, true, true, true],
 								style: "tableExample",
 								table: {
-									body: body2
+									body: bodyServices
+								},
+								layout: {
+									defaultBorder: false
+								}
+							}
+						],
+						[
+							{
+								border: [true, true, false, true],
+								text: "",
+								fontSize: 8
+							},
+
+							{
+								border: [true, true, true, true],
+								text: "RESOURCES"
+							}
+						],
+						[
+							{
+								border: [true, true, false, true],
+								text: "",
+								fontSize: 8
+							},
+							{
+								border: [true, true, true, true],
+								style: "tableExample",
+								table: {
+									body: bodyResources
+								},
+								layout: {
+									defaultBorder: false
+								}
+							}
+						],
+						[
+							{
+								border: [true, true, false, true],
+								text: "",
+								fontSize: 8
+							},
+
+							{
+								border: [true, true, true, true],
+								text: "UTILITIES"
+							}
+						],
+						[
+							{
+								border: [true, true, false, true],
+								text: "",
+								fontSize: 8
+							},
+							{
+								border: [true, true, true, true],
+								style: "tableExample",
+								table: {
+									body: bodyUtilities
 								},
 								layout: {
 									defaultBorder: false
