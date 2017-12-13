@@ -1,21 +1,20 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export default function fetchCurrentResources(id) {
+export default searchTerm => {
     const END_POINT = `${settings.hostname}/api/`;
-    const RESOURCE = `FacilityServices/`;
-
+    const RESOURCE = 'Facilities';
+    const REGEX = `.*${searchTerm}`;
     const FILTER = {
         where: {
-            facility_id: id
+            facility_name: { regexp: REGEX }
         },
-        include: { service: ['serviceType', 'category'] }
+        limit: 10
     };
-
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);
     return {
-        type: 'FETCH_CURRENT_SERVICES',
+        type: 'FETCH_QUICK_SEARCH',
         payload: request
     };
-}
+};
