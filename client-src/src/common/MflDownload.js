@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import fileDownload from "js-file-download";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import fileDownload from 'js-file-download';
 
 class MflDownload extends Component {
     constructor(props) {
@@ -30,10 +30,13 @@ class MflDownload extends Component {
                     </li>
                     <li>
                         <a
-                            className="btn-floating green darken-1"
+                            className="btn-floating green darken-1 tooltipped"
+                            data-position="top"
+                            data-delay="50"
+                            data-tooltip="Excel Format"
                             onClick={this.handleDownload.bind(
                                 this,
-                                "excel",
+                                'excel',
                                 excelFormat
                             )}
                         >
@@ -45,7 +48,7 @@ class MflDownload extends Component {
                             className="btn-floating green darken-3"
                             onClick={this.handleDownload.bind(
                                 this,
-                                "csv",
+                                'csv',
                                 csvFormat
                             )}
                         >
