@@ -2,7 +2,8 @@ export default (
     state = {
         resourceTypes: [],
         utilityTypes: [],
-        serviceTypes: []
+        serviceTypes: [],
+        districts: []
     },
     action
 ) => {
@@ -11,14 +12,23 @@ export default (
             return {
                 resourceTypes: action.payload.data,
                 utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes
+                serviceTypes: state.serviceTypes,
+                districts: state.districts
             };
         case "FETCH_UTILITY_TYPES":
             return {
                 resourceTypes: state.resourceTypes,
                 utilityTypes: action.payload.data,
-                serviceTypes: state.serviceTypes
+                serviceTypes: state.serviceTypes,
+                districts: state.districts
             };
+        case "FETCH_DISTRICTS":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: state.utilityTypes,
+                serviceTypes: state.serviceTypes,
+                districts: action.payload.data
+            }
         default:
             return state;
     }

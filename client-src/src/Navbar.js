@@ -4,12 +4,14 @@ import Menu from './Header/Menu';
 import { Link } from 'react-router-dom';
 import quickSearch from './actions/quick-search-facilities';
 import { connect } from 'react-redux';
+import Table from './common/Table';
+import hideSearchContainer from './actions/hide-search-container';
 
 class Navbar extends Component {
     constructor() {
         super();
         this.state = {
-            isSearchResultsContainer: false
+            isSearchBarBlurred: false,
         };
     }
 
@@ -19,22 +21,20 @@ class Navbar extends Component {
     }
 
     restoreSearch(e) {
-        this.setState({
-            isSearchResultsContainer: false
-        });
+        // this.props.hideSearchContainer(true);
 
         document.getElementById('searchbar').className =
             'left mfl-normal-search hide-on-small-only';
     }
 
-    async handleQuickSearch(e) {
+    handleQuickSearch(e) {
         if (e.key == 'Enter') {
+            this.setState({
+                isSearchBarBlurred: false
+            })
             e.preventDefault();
-            await this.props.quickSearch(e.target.value);
-            this.setState(prevState => ({
-                isSearchResultsContainer: !prevState.isSearchResultsContainer
-            }));
-            await console.log(this.props.searchResults);
+            this.props.quickSearch(e.target.value);
+            this.props.hideSearchContainer(false);
         }
     }
 
@@ -90,20 +90,29 @@ class Navbar extends Component {
                         <Menu />
                     </div>
                 </nav>
-                {this.state.isSearchResultsContainer ? (
+                {!this.props.isSearchContainerHidden ? (
                     <div className="mfl-search-results-container">
                         <div className="container">
                             <h5>Search Results</h5>
-                            <ul>
-                                {this.props.searchResults.map(result => {
-                                    return <li>{result.facility_name}</li>;
-                                })}
-                            </ul>
+                            <Table
+                                data={{
+                                    headers: [],
+                                    records: this.props.searchResults.map(
+                                        result => {
+                                            return [
+                                                result.id,
+                                                result.facility_code,
+                                                result.facility_name
+                                            ];
+                                        }
+                                    )
+                                }}
+                            />
                         </div>
                     </div>
                 ) : (
-                    <div />
-                )}
+                        <div />
+                    )}
             </div>
         );
     }
@@ -111,7 +120,8 @@ class Navbar extends Component {
 
 const mapStateToProps = state => {
     return {
-        searchResults: state.searchResults.quickSearchFacilities
+        searchResults: state.searchResults.quickSearchFacilities,
+        isSearchContainerHidden: state.globalContainers.isSearchContainerHidden
     };
 };
-export default connect(mapStateToProps, { quickSearch })(Navbar);
+export default connect(mapStateToProps, { quickSearch, hideSearchContainer })(Navbar);

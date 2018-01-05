@@ -9,7 +9,7 @@ export default searchTerm => {
         where: {
             facility_name: { regexp: REGEX }
         },
-        limit: 10
+        limit: 5
     };
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);

@@ -7,12 +7,29 @@ import moment from "moment";
 import Pagination from "../common/Pagination";
 import downloadFacilities from "../actions/download-facilities";
 import MflDownload from "../common/MflDownload";
+import SearchModal from "./SearchModal";
+import { Row, Input } from "react-materialize";
+import fetchDistricts from "../actions/fetch-districts";
 
 class FacilityList extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isAdvancedSearch: false
+        }
+    }
+
     componentDidMount() {
+        this.props.fetchDistricts();
         if (this.props.facilities.length == 0) {
             this.props.fetchFacilities(1);
         }
+    }
+
+    handleClose() {
+        this.setState({
+            isAdvancedSearch: false
+        })
     }
 
     render() {
@@ -62,15 +79,22 @@ class FacilityList extends Component {
                         </h4>
                     </blockquote>
                 ) : (
-                    <div>
-                        <MflDownload
-                            action={this.props.downloadFacilities}
-                            fileName="facilities"
-                        />
-                        <Table data={data} />
-                        <Pagination />
-                    </div>
-                )}
+                            <div>
+                                {this.state.isAdvancedSearch ? (
+                                    <SearchModal handleClose={() => this.handleClose()} />
+                                ) : (
+                                        <div>
+                                            <MflDownload
+                                                action={this.props.downloadFacilities}
+                                                fileName="facilities"
+                                            />
+                                            <a class="btn-flat mfl-advanced-search left" onClick={(e) => this.setState({ isAdvancedSearch: true })}>Advanced Search</a>
+                                            <Table data={data} />
+                                            <Pagination />
+                                        </div>
+                                    )}
+                            </div>
+                        )}
             </div>
         );
     }
@@ -87,5 +111,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     fetchFacilities,
-    downloadFacilities
+    downloadFacilities,
+    fetchDistricts
 })(FacilityList);

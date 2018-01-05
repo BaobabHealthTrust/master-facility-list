@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Table } from "react-materialize";
 import { Link, Redirect } from "react-router-dom";
+import hideSearchContainer from "../actions/hide-search-container";
+import { connect } from "react-redux";
 
 class MflTable extends Component {
     constructor(props) {
@@ -43,7 +45,7 @@ class MflTable extends Component {
                         </tr>
                     );
                 }
-
+                this.props.hideSearchContainer(true);
                 return <Redirect to={this.state.redirectLink} />;
             }
         });
@@ -64,5 +66,7 @@ class MflTable extends Component {
         );
     }
 }
-
-export default MflTable;
+const mapStateToProps = (store) => {
+    return {}
+}
+export default connect(mapStateToProps, { hideSearchContainer })(MflTable);
