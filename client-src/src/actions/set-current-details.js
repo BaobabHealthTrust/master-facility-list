@@ -1,8 +1,8 @@
 export default function setCurrentDetails(facilities, id) {
-    const details = facilities.filter(facility => facility.id == id);
-
+    let details = facilities.filter(facility => facility.id == id);
+    details = details.length > 0 ? details : null;
     return {
-        type: "SET_CURRENT_DETAILS",
+        type: 'SET_CURRENT_DETAILS',
         payload: details
     };
 }

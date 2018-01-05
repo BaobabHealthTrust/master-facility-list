@@ -21,7 +21,7 @@ export default (
         };
     }
     switch (action.type) {
-        case "FETCH_FACILITIES":
+        case 'FETCH_FACILITIES':
             return {
                 list: state.list.concat(action.payload.data),
                 currentDetails: state.currentDetails,
@@ -31,7 +31,7 @@ export default (
                 isNetworkError: false,
                 isLoading: false
             };
-        case "SET_CURRENT_DETAILS":
+        case 'SET_CURRENT_DETAILS':
             return {
                 list: state.list,
                 currentDetails: action.payload[0],
@@ -41,7 +41,7 @@ export default (
                 isNetworkError: false,
                 isLoading: false
             };
-        case "FETCH_FACILITY_DETAILS":
+        case 'FETCH_FACILITY_DETAILS':
             return {
                 list: state.list,
                 currentDetails: action.payload.data,
@@ -51,7 +51,7 @@ export default (
                 isNetworkError: false,
                 isLoading: false
             };
-        case "FETCH_CURRENT_RESOURCES":
+        case 'FETCH_CURRENT_RESOURCES':
             return {
                 list: state.list,
                 currentDetails: state.currentDetails,
@@ -61,7 +61,7 @@ export default (
                 isNetworkError: false,
                 isLoading: false
             };
-        case "FETCH_CURRENT_UTILITIES":
+        case 'FETCH_CURRENT_UTILITIES':
             return {
                 list: state.list,
                 currentDetails: state.currentDetails,
@@ -71,7 +71,7 @@ export default (
                 isNetworkError: false,
                 isLoading: false
             };
-        case "FETCH_CURRENT_SERVICES":
+        case 'FETCH_CURRENT_SERVICES':
             return {
                 list: state.list,
                 currentDetails: state.currentDetails,

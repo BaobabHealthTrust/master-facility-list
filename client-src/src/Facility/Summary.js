@@ -1,57 +1,58 @@
-import React, { Component } from "react";
-import Card from "../common/MflCard";
-import { connect } from "react-redux";
-import fetchFacilities from "../actions/get-facilities";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
-import moment from "moment";
+import React, { Component } from 'react';
+import Card from '../common/MflCard';
+import { connect } from 'react-redux';
+import fetchFacilities from '../actions/get-facilities';
+import setCurrentDetails from '../actions/set-current-details';
+import fetchCurrentDetails from '../actions/fetch-current-details';
+import moment from 'moment';
 
 class Summary extends Component {
-    componentDidMount() {
+    async componentDidMount() {
         const id = this.props.match.params.id;
 
-        if (this.props.facilities.length > 0) {
-            this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         this.props.fetchCurrentDetails(id);
+    }
+
+    componentWillReceiveProps(newProps) {
+        const newId = newProps.match.params.id;
+        newProps.fetchCurrentDetails(newId);
     }
 
     render() {
         const contactPersonData = this.props.current.contactPeople
             ? [
-                  [
-                      "Fullname",
-                      this.props.current.contactPeople.contact_person_fullname
-                  ],
-                  [
-                      "email",
-                      this.props.current.contactPeople.contact_person_email
-                  ],
-                  [
-                      "phone",
-                      this.props.current.contactPeople.contact_person_phone
-                  ]
-              ]
+                [
+                    'Fullname',
+                    this.props.current.contactPeople.contact_person_fullname
+                ],
+                [
+                    'email',
+                    this.props.current.contactPeople.contact_person_email
+                ],
+                [
+                    'phone',
+                    this.props.current.contactPeople.contact_person_phone
+                ]
+            ]
             : [];
 
         const ownershipData =
             this.props.current.owner &&
-            this.props.current.operationalStatus &&
-            this.props.current.regulatoryStatus
+                this.props.current.operationalStatus &&
+                this.props.current.regulatoryStatus
                 ? [
-                      ["owner", this.props.current.owner.facility_owner],
-                      [
-                          "operational Status",
-                          this.props.current.operationalStatus
-                              .facility_operational_status
-                      ],
-                      [
-                          "regulatory Status",
-                          this.props.current.regulatoryStatus
-                              .facility_regulatory_status
-                      ]
-                  ]
+                    ['owner', this.props.current.owner.facility_owner],
+                    [
+                        'operational Status',
+                        this.props.current.operationalStatus
+                            .facility_operational_status
+                    ],
+                    [
+                        'regulatory Status',
+                        this.props.current.regulatoryStatus
+                            .facility_regulatory_status
+                    ]
+                ]
                 : [];
 
         return (
@@ -72,7 +73,7 @@ class Summary extends Component {
                             <i class="material-icons mfl-icon left">map</i>
                             {this.props.current.district
                                 ? this.props.current.district.zone.zone_name
-                                : ""}
+                                : ''}
                         </p>
                     </div>
 
@@ -82,7 +83,7 @@ class Summary extends Component {
                             <i class="material-icons mfl-icon left">today</i>
                             {moment(
                                 this.props.current.facility_date_opened
-                            ).format("MMMM Do YYYY")}
+                            ).format('MMMM Do YYYY')}
                         </p>
 
                         <br />
@@ -94,7 +95,7 @@ class Summary extends Component {
                             </i>
                             {this.props.current.facilityType
                                 ? this.props.current.facilityType.facility_type
-                                : ""}
+                                : ''}
                         </p>
                     </div>
                 </div>
