@@ -81,6 +81,9 @@ Promise.all([
 		// address randomization
 		const physicalAddress = faker.address.streetAddress();
 		const postalAddress = faker.address.secondaryAddress();
+		const village = faker.address.streetAddress();
+		const ta = faker.address.streetName();
+
 		// end address
 
 		// contact person
@@ -121,9 +124,10 @@ Promise.all([
 		});
 
 		const facilityData = {
-			facility_name: faker.name.findName(),
 			facility_code: facilityCode,
-			facility_date_opened: "2017-10-25T13:27:53.703Z",
+			facility_name: faker.name.findName(),
+			common_name: faker.company.companyName(),
+			facility_date_opened: faker.date.recent(),
 			facility_type_id: facilityTypeId,
 			facility_owner_id: ownerId,
 			facility_operational_status_id: operationalStatusId,
@@ -188,6 +192,8 @@ Promise.all([
 				const addressData = {
 					physical_address: physicalAddress,
 					postal_address: postalAddress,
+					village: village,
+					ta: ta,
 					facility_id: values[0].id
 				};
 				const addresses = Address.create(addressData);

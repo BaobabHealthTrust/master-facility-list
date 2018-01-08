@@ -5,7 +5,8 @@ const moment = require("moment");
 const generatePdfFile = require("../../download_modules/pdf-formatter");
 const generateCsvFile = require("../../download_modules/csv-formatter");
 const generateExcelFile = require("../../download_modules/excel-formatter");
-const generatePdfFileForOneFacility = require("../../download_modules/pdf-one-facility-formatter");
+const generatePdfFileForOneFacility =
+require("../../download_modules/pdf-one-facility-formatter");
 const server = require("../../server/server");
 const FacilityService = server.models.FacilityService;
 const ServiceType = server.models.ServiceType;
@@ -14,7 +15,8 @@ const ResourceType = server.models.ResourceType;
 const FacilityUtility = server.models.FacilityUtility;
 const UtilityType = server.models.UtilityType;
 
-const getFacilityService = require("../../download_modules/get-facility-services");
+const getFacilityService =
+require("../../download_modules/get-facility-services");
 
 const fs = require("fs");
 
@@ -30,7 +32,7 @@ module.exports = function(Facility) {
 					"operationalStatus",
 					"owner",
 					"facilityType",
-					{ district: "zone" }
+					{district: "zone"}
 				]
 			},
 			function(err, queriedDetails) {
@@ -52,8 +54,8 @@ module.exports = function(Facility) {
 	Facility.remoteMethod("download", {
 		description: "Download all facilities of your choice",
 		accepts: [
-			{ arg: "data", type: "object" },
-			{ arg: "res", type: "object", http: { source: "res" } }
+			{arg: "data", type: "object"},
+			{arg: "res", type: "object", http: {source: "res"}}
 		],
 		returns: {}
 	});
@@ -70,15 +72,15 @@ module.exports = function(Facility) {
 					"owner",
 					"facilityType",
 					"addresses",
-					{ district: "zone" }
+					{district: "zone"}
 				]
 			},
 			function(err, queriedDetails) {
-				facilityId = { facility_id: queriedDetails[0].id };
+				facilityId = {facility_id: queriedDetails[0].id};
 				server.models.FacilityService.find(
 					{
 						where: facilityId,
-						include: { service: ["serviceType", "category"] }
+						include: {service: ["serviceType", "category"]}
 					},
 					function(err, serviceDetails) {
 						server.models.ServiceType.find(function(
@@ -88,7 +90,7 @@ module.exports = function(Facility) {
 							server.models.FacilityResource.find(
 								{
 									where: facilityId,
-									include: { resource: "resourceType" }
+									include: {resource: "resourceType"}
 								},
 								function(err, resourceDetails) {
 									server.models.ResourceType.find(function(
@@ -108,7 +110,7 @@ module.exports = function(Facility) {
 														err,
 														utilityTypeDetails
 													) {
-														generatePdfFileForOneFacility(
+											 generatePdfFileForOneFacility(
 															queriedDetails,
 															serviceDetails,
 															serviceTypeDetails,
@@ -132,7 +134,7 @@ module.exports = function(Facility) {
 	};
 	Facility.remoteMethod("downloadOne", {
 		description: "Download one facility with all details",
-		accepts: { arg: "data", type: "object" },
-		returns: { arg: "facilities", type: "blob" }
+		accepts: {arg: "data", type: "object"},
+		returns: {arg: "facilities", type: "blob"}
 	});
 };

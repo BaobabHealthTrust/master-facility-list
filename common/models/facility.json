@@ -6,11 +6,15 @@
     "validateUpsert": true
   },
   "properties": {
+    "facility_code": {
+      "type": "string",
+      "required": true
+    },
     "facility_name": {
       "type": "string",
       "required": true
     },
-    "facility_code": {
+    "common_name": {
       "type": "string"
     },
     "facility_date_opened": {
