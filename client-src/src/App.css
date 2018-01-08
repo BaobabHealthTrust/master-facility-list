@@ -79,7 +79,7 @@
     color: #ccc;
 }
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
 }
 .mfl-summary-header,
 .mfl-summary-subheader {
@@ -179,7 +179,8 @@ h6 {
     padding: 10px;
 }
 
-.tabs .tab a:hover, .tabs .tab a.active {
+.tabs .tab a:hover,
+.tabs .tab a.active {
     color: white !important;
 }
 
@@ -196,5 +197,16 @@ select.mfl-select {
 }
 
 .modal-content {
-    height: 600px;
+    height: 400px;
+}
+
+.mfl-close {
+    font-size: 10px !important;
+    margin-left: 5px !important;
+    border-radius: 100% !important;
+    background: #ccc;
+}
+
+.mfl-close:hover {
+    cursor: pointer;
 }

@@ -1,3 +1,3 @@
 export default {
-    hostname: 'http://41.217.217.177:3000'
+    hostname: "http://192.168.2.252:3000"
 };
