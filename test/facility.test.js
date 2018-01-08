@@ -49,8 +49,9 @@ Promise.all([facilityType,
     ])
     .then(values => {
         const testData = {
-            facility_name: "Lyton Clinic",
             facility_code: "NB01042",
+            facility_name: "Nkhata-Bay Clinic",
+            common_name: "Jonilenge",
             facility_date_opened: "2017-10-25T13:27:53.703Z",
             facility_type_id: values[0].id,
             facility_owner_id: values[1].id,
@@ -138,6 +139,25 @@ Promise.all([facilityType,
                         .end((err, res) => {
                             res.body.facility_operational_status.should.equal(
                                 "Functional"
+                            );
+                            done();
+                        });
+                });
+            });
+
+             describe("GET /Facilities/{id}/", () => {
+                it("should return the common name \
+                 of a facility", done => {
+                    request
+                        .get(
+                            "/api/Facilities/" +
+                                facilityId
+                        )
+                        .set("Accept", "application/json")
+                        .expect(200)
+                        .end((err, res) => {
+                            res.body.common_name.should.equal(
+                                "Jonilenge"
                             );
                             done();
                         });
