@@ -10,17 +10,19 @@ import MflDownload from "../common/MflDownload";
 import SearchModal from "./SearchModal";
 import { Row, Input } from "react-materialize";
 import fetchDistricts from "../actions/fetch-districts";
+import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 
 class FacilityList extends Component {
     constructor() {
         super();
         this.state = {
             isAdvancedSearch: false
-        }
+        };
     }
 
     componentDidMount() {
         this.props.fetchDistricts();
+        this.props.fetchOperationalStatuses();
         if (this.props.facilities.length == 0) {
             this.props.fetchFacilities(1);
         }
@@ -29,7 +31,7 @@ class FacilityList extends Component {
     handleClose() {
         this.setState({
             isAdvancedSearch: false
-        })
+        });
     }
 
     render() {
@@ -79,22 +81,33 @@ class FacilityList extends Component {
                         </h4>
                     </blockquote>
                 ) : (
+                    <div>
+                        {this.state.isAdvancedSearch ? (
+                            <SearchModal
+                                handleClose={() => this.handleClose()}
+                            />
+                        ) : (
                             <div>
-                                {this.state.isAdvancedSearch ? (
-                                    <SearchModal handleClose={() => this.handleClose()} />
-                                ) : (
-                                        <div>
-                                            <MflDownload
-                                                action={this.props.downloadFacilities}
-                                                fileName="facilities"
-                                            />
-                                            <a class="btn-flat mfl-advanced-search left" onClick={(e) => this.setState({ isAdvancedSearch: true })}>Advanced Search</a>
-                                            <Table data={data} />
-                                            <Pagination />
-                                        </div>
-                                    )}
+                                <MflDownload
+                                    action={this.props.downloadFacilities}
+                                    fileName="facilities"
+                                />
+                                <a
+                                    class="btn-flat mfl-advanced-search left"
+                                    onClick={e =>
+                                        this.setState({
+                                            isAdvancedSearch: true
+                                        })
+                                    }
+                                >
+                                    Advanced Search
+                                </a>
+                                <Table data={data} />
+                                <Pagination />
                             </div>
                         )}
+                    </div>
+                )}
             </div>
         );
     }
@@ -112,5 +125,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     fetchFacilities,
     downloadFacilities,
-    fetchDistricts
+    fetchDistricts,
+    fetchOperationalStatuses
 })(FacilityList);

@@ -4,8 +4,11 @@ import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
 import { connect } from "react-redux";
 import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
+import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import { remove, pull } from "lodash";
 import SearchTag from "./AdvancedSearch/SearchTag";
+import { map, intersection } from "lodash";
+import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -19,9 +22,8 @@ class SearchModal extends Component {
         return entities.filter(e => ids.includes(e.id.toString()));
     }
 
-    handleAddSearchValue(e, type) {
-        this.props.addSearchValues(e, type);
-        alert("we are so cool");
+    async handleAddSearchValue(e, type) {
+        await this.props.addSearchValues(e, type);
     }
 
     render() {
@@ -41,6 +43,17 @@ class SearchModal extends Component {
                             </a>
                         </span>
                     </div>
+
+                    <span>
+                        {this.props.results.length} Facilities Match Your
+                        Criteria
+                    </span>
+                    {this.props.results.length > 0 ? (
+                        <span className="right">Get Search Results</span>
+                    ) : (
+                        ""
+                    )}
+
                     <Tabs
                         className="tab-demo z-depth-1 blue text-white"
                         onChange={(t, v) =>
@@ -55,20 +68,44 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Location" ? (
                                 <AdvancedLocation
                                     districts={this.props.districts}
-                                    handleChange={(e, type) =>
-                                        this.handleAddSearchValue(e, type)
-                                    }
+                                    handleChange={async (e, type) => {
+                                        await this.props.addSearchValues(
+                                            e,
+                                            type
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
                                 />
                             ) : (
                                 ""
                             )}
                         </Tab>
                         <Tab
-                            title="Facility Type"
+                            title="Ownership and Regulation"
                             className="advanced-search-container"
                             active
                         >
-                            Facility Type
+                            {this.state.activeTab ===
+                            "Ownership and Regulation" ? (
+                                <AdvancedOwnershipRegulation
+                                    operationalStatuses={
+                                        this.props.operationalStatuses
+                                    }
+                                    handleChange={async (e, type) => {
+                                        await this.props.addSearchValues(
+                                            e,
+                                            type
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
                         <Tab title="Services">Test 3</Tab>
                         <Tab title="Resources">Test 4</Tab>
@@ -76,6 +113,7 @@ class SearchModal extends Component {
                 </div>
                 <div class="modal-footer">
                     <div className="advanced-search-tag-container">
+                        {/* DISPLAY TAGS FOR DISTRICT VALUES */}
                         {this.getObjectFromIds(
                             this.props.searchValues.districtValues,
                             this.props.districts
@@ -85,12 +123,44 @@ class SearchModal extends Component {
                                     name={entity.district_name}
                                     id={entity.id}
                                     actionType={"REMOVE_DISTRICT_VALUES"}
-                                    removeSearchValues={(id, actionType) =>
-                                        this.props.removeSearchValues(
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
                                             id,
                                             actionType
-                                        )
-                                    }
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
+                        {this.getObjectFromIds(
+                            this.props.searchValues.operationalStatusValues,
+                            this.props.operationalStatuses
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.facility_operational_status}
+                                    id={entity.id}
+                                    actionType={"REMOVE_DISTRICT_VALUES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.prop.searchValues
+                                        );
+                                    }}
                                 />
                             );
                         })}
@@ -104,11 +174,16 @@ class SearchModal extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        districts: state.dependancies.districts
+        districts: state.dependancies.districts,
+        operationalStatuses: state.dependancies.operationalStatuses,
+        results: intersection(
+            map(state.searchResults.advancedSearchFacilities)
+        )[0]
     };
 };
 
 export default connect(mapStateToProps, {
     addSearchValues,
-    removeSearchValues
+    removeSearchValues,
+    fetchBasicDetailsResults
 })(SearchModal);
