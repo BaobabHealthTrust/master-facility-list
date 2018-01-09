@@ -10,6 +10,7 @@ import MflDownload from "../common/MflDownload";
 import SearchModal from "./SearchModal";
 import { Row, Input } from "react-materialize";
 import fetchDistricts from "../actions/fetch-districts";
+import fetchFacilityTypes from "../actions/fetch-facility-types";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 
 class FacilityList extends Component {
@@ -23,6 +24,7 @@ class FacilityList extends Component {
     componentDidMount() {
         this.props.fetchDistricts();
         this.props.fetchOperationalStatuses();
+        this.props.fetchFacilityTypes();
         if (this.props.facilities.length == 0) {
             this.props.fetchFacilities(1);
         }
@@ -126,5 +128,6 @@ export default connect(mapStateToProps, {
     fetchFacilities,
     downloadFacilities,
     fetchDistricts,
-    fetchOperationalStatuses
+    fetchOperationalStatuses,
+    fetchFacilityTypes
 })(FacilityList);

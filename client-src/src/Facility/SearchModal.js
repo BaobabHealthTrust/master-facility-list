@@ -93,6 +93,7 @@ class SearchModal extends Component {
                                     operationalStatuses={
                                         this.props.operationalStatuses
                                     }
+                                    facilityTypes={this.props.facilityTypes}
                                     handleChange={async (e, type) => {
                                         await this.props.addSearchValues(
                                             e,
@@ -148,7 +149,9 @@ class SearchModal extends Component {
                                 <SearchTag
                                     name={entity.facility_operational_status}
                                     id={entity.id}
-                                    actionType={"REMOVE_DISTRICT_VALUES"}
+                                    actionType={
+                                        "REMOVE_OPERATIONAL_STATUS_VALUES"
+                                    }
                                     removeSearchValues={async (
                                         id,
                                         actionType
@@ -158,7 +161,33 @@ class SearchModal extends Component {
                                             actionType
                                         );
                                         await this.props.fetchBasicDetailsResults(
-                                            this.prop.searchValues
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
+                        {this.getObjectFromIds(
+                            this.props.searchValues.facilityTypeValues,
+                            this.props.facilityTypes
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.facility_type}
+                                    id={entity.id}
+                                    actionType={"REMOVE_FACILITY_TYPE_VALUES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
                                         );
                                     }}
                                 />
@@ -175,6 +204,7 @@ const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
         districts: state.dependancies.districts,
+        facilityTypes: state.dependancies.facilityTypes,
         operationalStatuses: state.dependancies.operationalStatuses,
         results: intersection(
             map(state.searchResults.advancedSearchFacilities)
