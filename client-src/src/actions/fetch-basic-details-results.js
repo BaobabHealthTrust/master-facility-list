@@ -1,26 +1,46 @@
 import axios from "axios";
 import settings from "../settings";
+import { map } from "lodash";
 
 export default searchValues => {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `Facilities/`;
 
+    const query = [];
+
+    if (searchValues.districtValues.length > 0) {
+        query.push({
+            district_id: {
+                inq: searchValues.districtValues.map(v => Number(v))
+            }
+        });
+    }
+
+    if (searchValues.operationalStatusValues.length > 0) {
+        query.push({
+            facility_operational_status_id: {
+                inq: searchValues.operationalStatusValues.map(v => Number(v))
+            }
+        });
+    }
+
+    if (searchValues.facilityTypeValues.length > 0) {
+        query.push({
+            facility_type_id: {
+                inq: searchValues.facilityTypeValues.map(v => Number(v))
+            }
+        });
+    }
+
+    if (query.length === 0) {
+        query.push({
+            id: 0
+        });
+    }
+
     const FILTER = {
         where: {
-            and: [
-                {
-                    district_id: {
-                        inq: searchValues.districtValues.map(v => Number(v))
-                    }
-                },
-                {
-                    facility_operational_status_id: {
-                        inq: searchValues.operationalStatusValues.map(v =>
-                            Number(v)
-                        )
-                    }
-                }
-            ]
+            and: query
         },
         fields: {
             id: true

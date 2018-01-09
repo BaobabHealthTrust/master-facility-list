@@ -15,6 +15,13 @@ class AdvancedOwnershipRegulation extends Component {
             ));
         }
 
+        let facilityTypeOptions = <option>Select Facility Types</option>;
+        if (this.props.facilityTypes.length > 0) {
+            facilityTypeOptions = this.props.facilityTypes.map(o => (
+                <option value={o.id}>{o.facility_type}</option>
+            ));
+        }
+
         return (
             <div className="container mfl-tm-5">
                 <select
@@ -28,6 +35,16 @@ class AdvancedOwnershipRegulation extends Component {
                 >
                     <option value="0">-- Select Operational Status --</option>
                     {operationalStatusOptions}
+                </select>
+                <br />
+                <select
+                    className="browser-default"
+                    onChange={e =>
+                        this.props.handleChange(e, "ADD_FACILITY_TYPE_VALUES")
+                    }
+                >
+                    <option value="0">-- Select Facility Types --</option>
+                    {facilityTypeOptions}
                 </select>
             </div>
         );

@@ -4,7 +4,8 @@ export default (
         utilityTypes: [],
         serviceTypes: [],
         districts: [],
-        operationalStatuses: []
+        operationalStatuses: [],
+        facilityTypes: []
     },
     action
 ) => {
@@ -15,7 +16,8 @@ export default (
                 utilityTypes: state.utilityTypes,
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
-                operationalStatuses: state.operationalStatuses
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes
             };
         case "FETCH_UTILITY_TYPES":
             return {
@@ -23,7 +25,8 @@ export default (
                 utilityTypes: action.payload.data,
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
-                operationalStatuses: state.operationalStatuses
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes
             };
         case "FETCH_DISTRICTS":
             return {
@@ -31,7 +34,8 @@ export default (
                 utilityTypes: state.utilityTypes,
                 serviceTypes: state.serviceTypes,
                 districts: action.payload.data,
-                operationalStatuses: state.operationalStatuses
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes
             };
         case "FETCH_OPERATIONAL_STATUSES":
             return {
@@ -39,7 +43,17 @@ export default (
                 utilityTypes: state.utilityTypes,
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
-                operationalStatuses: action.payload.data
+                operationalStatuses: action.payload.data,
+                facilityTypes: state.facilityTypes
+            };
+        case "FETCH_FACILITY_TYPES":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: state.utilityTypes,
+                serviceTypes: state.serviceTypes,
+                districts: state.districts,
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: action.payload.data
             };
         default:
             return state;
