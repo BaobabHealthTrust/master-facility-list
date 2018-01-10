@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import Card from "../common/MflCard";
 
 class ServicesContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         const topLevelServices = this.props.services.filter(service => {
             return service.service.service_category_id === 0;

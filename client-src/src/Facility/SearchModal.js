@@ -5,10 +5,10 @@ import { connect } from "react-redux";
 import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
-import { remove, pull } from "lodash";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
+import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -26,6 +26,11 @@ class SearchModal extends Component {
         await this.props.addSearchValues(e, type);
     }
 
+    async getSearchResults(e) {
+        await this.props.fetchAdvancedSearchResults(this.props.results);
+        await this.props.handleClose(e);
+    }
+
     render() {
         return (
             <div id="advanced-search" ref="advancedSearch" class="modal-lg">
@@ -37,22 +42,30 @@ class SearchModal extends Component {
                         <span className="mfl-modal-close right">
                             <a
                                 href="#!"
-                                onClick={e => this.props.handleClose(e)}
+                                onClick={e => this.getSearchResults(e)}
                             >
                                 <i class="material-icons">close</i>
                             </a>
                         </span>
                     </div>
-
-                    <span>
-                        {this.props.results.length} Facilities Match Your
-                        Criteria
-                    </span>
-                    {this.props.results.length > 0 ? (
-                        <span className="right">Get Search Results</span>
-                    ) : (
-                        ""
-                    )}
+                    <div className="mfl-search-feedback">
+                        <span>
+                            <strong>{this.props.results.length}</strong>{" "}
+                            Facilities Match Your Criteria
+                        </span>
+                        {this.props.results.length > 0 ? (
+                            <span className="right">
+                                <a
+                                    className="btn mfl-get-results-btn"
+                                    onClick={e => this.getSearchResults(e)}
+                                >
+                                    Get Search Results
+                                </a>
+                            </span>
+                        ) : (
+                            ""
+                        )}
+                    </div>
 
                     <Tabs
                         className="tab-demo z-depth-1 blue text-white"
@@ -215,5 +228,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     addSearchValues,
     removeSearchValues,
-    fetchBasicDetailsResults
+    fetchBasicDetailsResults,
+    fetchAdvancedSearchResults
 })(SearchModal);

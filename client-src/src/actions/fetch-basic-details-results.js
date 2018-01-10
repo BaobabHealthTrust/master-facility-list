@@ -51,7 +51,7 @@ export default searchValues => {
     const request = axios.get(URL);
 
     return {
-        type: "FETCH_DISTRICT_RESULTS",
+        type: "FETCH_BASIC_DETAILS_RESULTS",
         payload: request
     };
 };

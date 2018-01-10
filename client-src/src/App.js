@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import './App.css';
-import Table from './common/Table';
-import Navbar from './Navbar';
-import FacilityList from './Facility/FacilityList';
-import { Route, Switch } from 'react-router-dom';
-import FacilityDetails from './Facility/FacilityDetails';
+import React, { Component } from "react";
+import "./App.css";
+import Table from "./common/Table";
+import Navbar from "./Navbar";
+import FacilitiesHome from "./Facility/FacilitiesHome";
+import { Route, Switch } from "react-router-dom";
+import FacilityDetails from "./Facility/FacilityDetails";
 
 class App extends Component {
     render() {
@@ -12,7 +12,11 @@ class App extends Component {
             <div>
                 <Navbar />
                 <Switch>
-                    <Route exact path="/facilities" component={FacilityList} />
+                    <Route
+                        exact
+                        path="/facilities"
+                        component={FacilitiesHome}
+                    />
                     <Route path="/facilities/:id" component={FacilityDetails} />
                     <Route
                         exact

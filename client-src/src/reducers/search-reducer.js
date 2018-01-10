@@ -2,8 +2,9 @@ export default (
     state = {
         quickSearchFacilities: [],
         advancedSearchFacilities: {
-            districtResultsFacilities: []
-        }
+            basicDetailsFacilities: []
+        },
+        advancedSearchResults: []
     },
     action
 ) => {
@@ -11,14 +12,22 @@ export default (
         case "FETCH_QUICK_SEARCH":
             return {
                 quickSearchFacilities: action.payload.data,
-                advancedSearchFacilities: state.advancedSearchFacilities
+                advancedSearchFacilities: state.advancedSearchFacilities,
+                advancedSearchResults: state.advancedSearchResults
             };
-        case "FETCH_DISTRICT_RESULTS":
+        case "FETCH_BASIC_DETAILS_RESULTS":
             return {
                 quickSearchFacilities: state.quickSearchFacilities,
                 advancedSearchFacilities: {
-                    districtResultsFacilities: action.payload.data
-                }
+                    basicDetailsFacilities: action.payload.data
+                },
+                advancedSearchResults: state.advancedSearchResults
+            };
+        case "FETCH_ADVANCED_SEARCH_RESULTS":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: state.advancedSearchFacilities,
+                advancedSearchResults: action.payload.data
             };
         default:
             return state;

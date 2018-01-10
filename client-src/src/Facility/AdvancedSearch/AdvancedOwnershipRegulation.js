@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
 class AdvancedOwnershipRegulation extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let operationalStatusOptions = (
             <option>Select Operational Status</option>
