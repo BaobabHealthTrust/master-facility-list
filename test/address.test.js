@@ -17,7 +17,7 @@ describe("Address", () => {
         facility_owner_id: 1,
         facility_operational_status_id: 1,
         facility_regulatory_status_id: 1,
-        district_id: 1,
+        district_id: 1
     };
 
     const facility = Facility.create(testData);
@@ -37,7 +37,7 @@ describe("Address", () => {
                         postal_address: "P.O Box 69",
                         village: "Mkondezi",
                         ta: "Mkumbira",
-                        facility_id: facilityId,
+                        facility_id: facilityId
                     };
 
                     const address = FacilityAddress.create(facilityAddress);
@@ -68,10 +68,7 @@ describe("Address", () => {
                             a village of a particular \
                             address", done => {
                                 request
-                                    .get(
-                                        "/api/Addresses/" +
-                                            addressId
-                                    )
+                                    .get("/api/Addresses/" + addressId)
                                     .set("Accept", "application/json")
                                     .expect(200)
                                     .end((err, res) => {
@@ -85,16 +82,11 @@ describe("Address", () => {
                             a ta of a particular \
                             address", done => {
                                 request
-                                    .get(
-                                        "/api/Addresses/" +
-                                            addressId
-                                    )
+                                    .get("/api/Addresses/" + addressId)
                                     .set("Accept", "application/json")
                                     .expect(200)
                                     .end((err, res) => {
-                                        res.body.ta.should.equal(
-                                            "Mkumbira"
-                                        );
+                                        res.body.ta.should.equal("Mkumbira");
                                         done();
                                     });
                             });

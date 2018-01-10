@@ -1,53 +1,46 @@
 {
-  "initial:before": {
-    "loopback#favicon": {}
-  },
-  "initial": {
-    "compression": {},
-    "cors": {
-      "params": {
-        "origin": true,
-        "credentials": true,
-        "maxAge": 86400
-      }
+    "initial:before": {
+        "loopback#favicon": {}
     },
-    "helmet#xssFilter": {},
-    "helmet#frameguard": {
-      "params": [
-        "deny"
-      ]
+    "initial": {
+        "compression": {},
+        "cors": {
+            "params": {
+                "origin": true,
+                "credentials": true,
+                "maxAge": 86400
+            }
+        },
+        "helmet#xssFilter": {},
+        "helmet#frameguard": {
+            "params": ["deny"]
+        },
+        "helmet#hsts": {
+            "params": {
+                "maxAge": 0,
+                "includeSubdomains": true
+            }
+        },
+        "helmet#hidePoweredBy": {},
+        "helmet#ieNoOpen": {},
+        "helmet#noSniff": {},
+        "helmet#noCache": {
+            "enabled": false
+        }
     },
-    "helmet#hsts": {
-      "params": {
-        "maxAge": 0,
-        "includeSubdomains": true
-      }
+    "session": {},
+    "auth": {},
+    "parse": {},
+    "routes": {
+        "loopback#rest": {
+            "paths": ["${restApiRoot}"]
+        }
     },
-    "helmet#hidePoweredBy": {},
-    "helmet#ieNoOpen": {},
-    "helmet#noSniff": {},
-    "helmet#noCache": {
-      "enabled": false
+    "files": {},
+    "final": {
+        "loopback#urlNotFound": {}
+    },
+    "final:after": {
+        "strong-error-handler": {}
     }
-  },
-  "session": {},
-  "auth": {},
-  "parse": {},
-  "routes": {
-    "loopback#rest": {
-      "paths": [
-        "${restApiRoot}"
-      ]
-    }
-  },
-  "files": {
-    "loopback#static": {
-      "params": "$!../client" 
-    },
-  "final": {
-    "loopback#urlNotFound": {}
-  },
-  "final:after": {
-    "strong-error-handler": {}
-  }
 }
