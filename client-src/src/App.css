@@ -210,3 +210,16 @@ select.mfl-select {
 .mfl-close:hover {
     cursor: pointer;
 }
+
+.mfl-search-feedback {
+    text-transform: uppercase;
+    margin: 5px 0px;
+    background: #666;
+    padding: 10px;
+    color: white;
+}
+
+.mfl-get-results-btn {
+    margin-top: -7px;
+    margin-right: -6px;
+}

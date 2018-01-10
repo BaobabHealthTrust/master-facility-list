@@ -1,9 +1,6 @@
 import React from "react";
 
 class SearchTag extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <div class="chip">
