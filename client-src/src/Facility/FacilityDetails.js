@@ -1,79 +1,135 @@
-import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import Summary from "./Summary";
-import Location from "./FacilityLocation";
-import Resources from "./FacilityResources";
-import Utilities from "./FacilityUtility";
-import MyMapComponent from "./MyMapComponent";
+import React, { Component } from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
+import Summary from './Summary';
+import Location from './FacilityLocation';
+import Resources from './FacilityResources';
+import Utilities from './FacilityUtilities';
+import Services from './FacilityServices';
+import { connect } from 'react-redux';
 
 class FacilityDetails extends Component {
     render() {
+        const id = this.props.match.params.id;
+        const summaryLink = `/facilities/${id}`;
+        const locationsLink = `/facilities/${id}/locations`;
+        const resourcesLink = `/facilities/${id}/resources`;
+        const utilitiesLink = `/facilities/${id}/utilities`;
+        const servicesLink = `/facilities/${id}/services`;
+
+        let badgeClass = 'new badge';
+
+        if (this.props.current.operationalStatus) {
+            switch (this.props.current.operationalStatus
+                .facility_operational_status) {
+                case 'Closed':
+                    badgeClass = 'new badge red';
+                    break;
+                case 'Functional':
+                    badgeClass = 'new badge green';
+                    break;
+                case 'Pending Operation (Under construction)':
+                    badgeClass = 'new badge orange';
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return (
             <div className="">
                 <nav>
-                    <div class="nav-wrapper grey darken-2">
-                        <ul class="left hide-on-med-and-down">
+                    <div class="nav-wrapper blue accent-1">
+                        <ul class="left">
                             <li className="active">
-                                <Link to="/facilities/1">SUMMARY</Link>
+                                <Link to={summaryLink}>SUMMARY</Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/locations">
+                                <Link to={locationsLink}>
                                     CONTACTS AND LOCATIONS
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/resources">
-                                    RESOURCES
-                                </Link>
+                                <Link to={resourcesLink}>RESOURCES</Link>
                             </li>
                             <li>
-                                <Link to="/facilities/1/utilities">
-                                    UTILITIES
-                                </Link>
+                                <Link to={utilitiesLink}>UTILITIES</Link>
                             </li>
-
                             <li>
-                                <Link to="/facilities/1/MapWithAMarkerInfoWindow">
-                                    UTILITIES
-                                </Link>
+                                <Link to={servicesLink}>SERVICES</Link>
                             </li>
                         </ul>
                     </div>
                 </nav>
-                <h6 className="mfl-summary-subheader mfl-title">
-                    {"Bwaila District Hospital".toUpperCase()}
-                </h6>
-                <h5 className="mfl-summary-subtext mfl-title">
-                    {"ll00001,lilongwe".toUpperCase()}
-                </h5>
-                <br />
-                <Switch>
-                    <Route
-                        exact
-                        path={`${this.props.match.url}`}
-                        component={Summary}
-                    />
-                    <Route
-                        path={`${this.props.match.url}/locations`}
-                        component={Location}
-                    />
-                    <Route
-                        path={`${this.props.match.url}/resources`}
-                        component={Resources}
-                    />
-                    <Route
-                        path={`${this.props.match.url}/utilities`}
-                        component={Utilities}
-                    />
+                <div className="container mfl-titles">
+                    <h5>
+                        {this.props.current.facility_name}
+                        {this.props.current.operationalStatus ? (
+                            <span
+                                id="badge"
+                                className={badgeClass}
+                                data-badge-caption={
+                                    this.props.current.operationalStatus
+                                        .facility_operational_status
+                                }
+                            />
+                        ) : (
+                            ''
+                        )}
+                    </h5>
+                    <h6>
+                        {this.props.current.facility_code},&nbsp;
+                        {this.props.current.district
+                            ? this.props.current.district.district_name
+                            : ''}
+                    </h6>
+                </div>
+                {this.props.isError ? (
+                    <blockquote>
+                        <h4>
+                            "Sorry, we cannot connect to the Server. Please
+                            check your Network"
+                        </h4>
+                    </blockquote>
+                ) : (
+                    <Switch>
+                        <Route
+                            exact
+                            path="/facilities/:id"
+                            component={Summary}
+                        />
 
-                    <Route
-                        path={`${this.props.match.url}/MyMapComponent`}
-                        component={MyMapComponent}
-                    />
-                </Switch>
+                        <Route
+                            exact
+                            path="/facilities/:id/locations"
+                            component={Location}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/resources"
+                            component={Resources}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/utilities"
+                            component={Utilities}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/services"
+                            component={Services}
+                        />
+                    </Switch>
+                )}
             </div>
         );
     }
 }
 
-export default FacilityDetails;
+const mapStateToProps = state => {
+    return {
+        current: state.facilities.currentDetails,
+        isError: state.facilities.isNetworkError
+    };
+};
+
+export default connect(mapStateToProps, null)(FacilityDetails);

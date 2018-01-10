@@ -14,105 +14,105 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "mysql"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": false
   },
   "Facility": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "FacilityType": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Address": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "OperationalStatus": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Utility": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "UtilityType": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "FacilityService": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Service": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "ServiceType": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "FacilityUtility": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Owner": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "RegulatoryStatus": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "ContactPeople": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Resource": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Location": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "District": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Zone": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Geolocation": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "FacilityResource": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "ResourceType": {
-    "dataSource": "db",
+    "dataSource": "mysql",
     "public": true
   },
   "Feedback": {
