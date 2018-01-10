@@ -33,8 +33,10 @@
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0",
     "loopback-connector-mysql": "^5.2.0",
+    "js-file-download": "^0.4.1",
     "mocha": "^4.0.1",
     "nsp": "^2.1.0",
+    "react-file-download": "^0.3.5",
     "supertest": "^3.0.0"
   },
   "repository": {
