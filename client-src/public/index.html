@@ -8,7 +8,7 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <title>React App</title>
+    <title>Master Facility List</title>
 </head>
 
 <body>
@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <title>Master Facility List</title>
     </head>
 
     <body>
@@ -34,7 +33,11 @@
         <div id="root"></div>
 
         <script>
-            $(document).ready(function () { $(".button-collapse").sideNav(); })
+            $(document).ready(function () {
+                // $('.select').material_select();
+                $('.button-collapse').sideNav();
+                $('.tooltipped').tooltip({ delay: 10 });
+            });
         </script>
     </body>
 

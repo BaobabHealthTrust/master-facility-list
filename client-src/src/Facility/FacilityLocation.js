@@ -1,49 +1,97 @@
 import React, { Component } from "react";
 import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
-import MyMapComponent from "./MyMapComponent";
+import setCurrentDetails from "../actions/set-current-details";
+import fetchCurrentDetails from "../actions/fetch-current-details";
+import { connect } from "react-redux";
+import MFLGoogleMap from "../common/MFLGoogleMap";
 
 class FacilityLocation extends Component {
-	render() {
-		const locationData = [
-			["catchment area", "urban"],
-			["population", "-5,096,555"],
-			["District", "lilongwe"],
-			["zone", "central"]
-		];
-		const weatherData = [["sunny", ""], ["max temp", ""], ["min temo", ""]];
+    componentDidMount() {
+        const id = this.props.match.params.id;
 
-		return (
-			<div className="container">
-				<div className="row">
-					<div className="col m6">
-						<MyMapComponent
-							isMarkerShown
-							googleMapURL="https://maps.googleapis.com/maps/api/js?key= AIzaSyB-MrJ0WnBYzAA1A2SwzyCX4UTnDi-fjw8
-&v=3.exp&libraries=geometry,drawing,places"
-							loadingElement={<div style={{ height: `100%` }} />}
-							containerElement={
-								<div style={{ height: `400px` }} />
-							}
-							mapElement={<div style={{ height: `100%` }} />}
-						/>
-					</div>
+        if (this.props.facilities.length > 0) {
+            this.props.setCurrentDetails(this.props.facilities, id);
+        }
 
-					<div className="col m6">
-						<div className="row">
-							<Card heading="location" data={locationData} />
-						</div>
-						<div className="row">
-							<Card
-								heading="todays weather details"
-								data={weatherData}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+        this.props.fetchCurrentDetails(id);
+    }
+
+    render() {
+        const locationData = this.props.current.locations
+            ? [
+                  [
+                      "catchment area",
+                      this.props.current.locations.catchment_area
+                  ],
+                  [
+                      "population",
+                      this.props.current.locations.catchment_population
+                  ],
+                  ["district", this.props.current.district.district_name]
+              ]
+            : [];
+
+        const weatherData = [
+            ["sunny", "Some Forecast"],
+            ["max temp", "Some Max Temo"],
+            ["min temp", "Some Min Temp"]
+        ];
+
+        const addressData = this.props.current.addresses
+            ? [
+                  ["physical", this.props.current.addresses.physical_address],
+                  ["postal", this.props.current.addresses.postal_address],
+                  ["zone", this.props.current.district.zone.zone_name]
+              ]
+            : [];
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col m6 s12">
+                        <div className="z-depth-2">
+                            <MFLGoogleMap isMarkerShown />
+                        </div>
+                    </div>
+
+                    <div className="col m6 s12">
+                        <div className="row">
+                            <Card
+                                heading="Location"
+                                icon="location_on"
+                                data={locationData}
+                            />
+                        </div>
+                        <div className="row">
+                            <Card
+                                heading="Address"
+                                icon="location_city"
+                                data={addressData}
+                            />
+                        </div>
+                        <div className="row">
+                            <Card
+                                heading="todays weather details"
+                                icon="cloud"
+                                data={weatherData}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
-export default FacilityLocation;
+const mapStateToProps = state => {
+    return {
+        facilities: state.facilities.list,
+        current: state.facilities.currentDetails
+    };
+};
+
+export default connect(mapStateToProps, {
+    setCurrentDetails,
+    fetchCurrentDetails
+})(FacilityLocation);
