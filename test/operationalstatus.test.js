@@ -22,6 +22,7 @@ OperationalStatus.create(operationalStatusData).then(resp => {
         facility_owner_id: 1,
         facility_operational_status_id: operationalStatusId,
         facility_regulatory_status_id: 1,
+        district_id: 1,
     };
 
     const testData2 = {
@@ -32,6 +33,7 @@ OperationalStatus.create(operationalStatusData).then(resp => {
         facility_owner_id: 1,
         facility_operational_status_id: operationalStatusId,
         facility_regulatory_status_id: 1,
+        district_id: 1,
     };
 
     Facility.create([testData, testData2]).then(values => {
