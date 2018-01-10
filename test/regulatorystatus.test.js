@@ -31,8 +31,7 @@ describe("GET /RegulatoryStatuses", () => {
                     facility_owner_id: 1,
                     facility_operational_status_id: 1,
                     facility_regulatory_status_id: regulatoryStatusId,
-                    facility_contact_person_id: 1,
-                    facility_location_id: 1,
+                    district_id: 1,
                 };
 
                 const testData2 = {
@@ -43,8 +42,7 @@ describe("GET /RegulatoryStatuses", () => {
                     facility_owner_id: 1,
                     facility_operational_status_id: 1,
                     facility_regulatory_status_id: regulatoryStatusId,
-                    facility_contact_person_id: 1,
-                    facility_location_id: 1,
+                    district_id: 1,
                 };
 
                 const facility = Facility.create([testData, testData2]);

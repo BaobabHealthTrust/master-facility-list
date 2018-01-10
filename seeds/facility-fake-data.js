@@ -53,7 +53,7 @@ Promise.all([
 	const numberOfFacilities = process.argv[2];
 	console.log("Number of facilities are " + numberOfFacilities);
 
-	for (var i = 0; i <= numberOfFacilities; i++) {
+	for (let i = 0; i <= numberOfFacilities; i++) {
 		const randOperationalIndex = faker.random.number({
 			min: 0,
 			max: maxValueOperational
@@ -78,22 +78,12 @@ Promise.all([
 		});
 		const facilityTypeId = val[3][randFacilityTypeIndex].id;
 
-		// facilityresource id and quantity
-		const randResourceIndex = faker.random.number({
-			min: 0,
-			max: maxValueResource
-		});
-		const resourceId = val[4][randResourceIndex].id;
-
-		const resourceQuantity = faker.random.number({
-			min: 0,
-			max: 200
-		});
-		// close resource id and quantity
-
 		// address randomization
 		const physicalAddress = faker.address.streetAddress();
 		const postalAddress = faker.address.secondaryAddress();
+		const village = faker.address.streetAddress();
+		const ta = faker.address.streetName();
+
 		// end address
 
 		// contact person
@@ -101,22 +91,6 @@ Promise.all([
 		const phone = faker.phone.phoneNumber();
 		const email = faker.internet.email();
 		// end contact
-
-		// service id
-		const randServiceIndex = faker.random.number({
-			min: 0,
-			max: maxValueService
-		});
-		const serviceId = val[5][randServiceIndex].id;
-		// end service
-
-		// utility id
-		const randUtilityIndex = faker.random.number({
-			min: 0,
-			max: maxValueUtility
-		});
-		const utilityId = val[5][randUtilityIndex].id;
-		// end utility
 
 		// Geolocation
 		const datam = faker.random.number({
@@ -144,32 +118,82 @@ Promise.all([
 		const districtId = val[7][randDistrictIndex].id;
 
 		// end location
+		const facilityCode = faker.random.number({
+			min: 1000,
+			max: 9000
+		});
 
 		const facilityData = {
+			facility_code: facilityCode,
 			facility_name: faker.name.findName(),
-			facility_code: faker.internet.email(),
-			facility_date_opened: "2017-10-25T13:27:53.703Z",
+			common_name: faker.company.companyName(),
+			facility_date_opened: faker.date.recent(),
 			facility_type_id: facilityTypeId,
 			facility_owner_id: ownerId,
 			facility_operational_status_id: operationalStatusId,
-			facility_regulatory_status_id: regulatoryStatusId
+			facility_regulatory_status_id: regulatoryStatusId,
+			district_id: districtId
 		};
 
 		const facilityFake = Facility.create(facilityData);
 		if (i != numberOfFacilities) {
 			Promise.all([facilityFake]).then(values => {
-				const facilityResourceData = {
-					facility_id: values[0].id,
-					resource_id: resourceId,
-					quantity: resourceQuantity,
-					description: faker.lorem.sentence()
-				};
-				const facilityResources = FacilityResource.create(
-					facilityResourceData
-				);
+				for (let pivotValues = 0; pivotValues <= 9; pivotValues++) {
+					// facilityresource id and quantity
+					const randResourceIndex = faker.random.number({
+						min: 0,
+						max: maxValueResource
+					});
+					const resourceId = val[4][randResourceIndex].id;
+
+					const resourceQuantity = faker.random.number({
+						min: 0,
+						max: 200
+					});
+					// close resource id and quantity
+					const facilityResourceData = {
+						facility_id: values[0].id,
+						resource_id: resourceId,
+						quantity: resourceQuantity,
+						description: faker.lorem.sentence()
+					};
+					const facilityResources = FacilityResource.create(
+						facilityResourceData
+					);
+					// service id
+					const randServiceIndex = faker.random.number({
+						min: 0,
+						max: maxValueService
+					});
+					const serviceId = val[5][randServiceIndex].id;
+					// end service
+					const facilityServiceData = {
+						service_id: serviceId,
+						facility_id: values[0].id
+					};
+					const facilityServices = FacilityService.create(
+						facilityServiceData
+					);
+					// utility id
+					const randUtilityIndex = faker.random.number({
+						min: 0,
+						max: maxValueUtility
+					});
+					const utilityId = val[5][randUtilityIndex].id;
+					// end utility
+					const facilityUtilityData = {
+						facility_id: values[0].id,
+						utility_id: utilityId
+					};
+					const facilityUtilities = FacilityUtility.create(
+						facilityUtilityData
+					);
+				}
 				const addressData = {
 					physical_address: physicalAddress,
 					postal_address: postalAddress,
+					village: village,
+					ta: ta,
 					facility_id: values[0].id
 				};
 				const addresses = Address.create(addressData);
@@ -180,20 +204,7 @@ Promise.all([
 					facility_id: values[0].id
 				};
 				const contacts = ContactPeople.create(contactData);
-				const facilityServiceData = {
-					service_id: serviceId,
-					facility_id: values[0].id
-				};
-				const facilityServices = FacilityService.create(
-					facilityServiceData
-				);
-				const facilityUtilityData = {
-					facility_id: values[0].id,
-					utility_id: utilityId
-				};
-				const facilityUtilities = FacilityUtility.create(
-					facilityUtilityData
-				);
+
 				const geolocationData = {
 					datum: datam,
 					geolocation: geopointData,
@@ -203,17 +214,13 @@ Promise.all([
 				const locationData = {
 					catchment_area: catchmentArea,
 					catchment_population: catchmentPopulation,
-					district_id: districtId,
 					facility_id: values[0].id
 				};
 				const locations = Location.create(locationData);
 
 				Promise.all([
-					facilityResources,
 					addresses,
 					contacts,
-					facilityServices,
-					facilityUtilities,
 					geolocations,
 					locations
 				]).then(resvalues => {
@@ -225,15 +232,57 @@ Promise.all([
 			});
 		} else {
 			Promise.all([facilityFake]).then(values => {
-				const facilityResourceData = {
-					facility_id: values[0].id,
-					resource_id: resourceId,
-					quantity: resourceQuantity,
-					description: faker.lorem.sentence()
-				};
-				const facilityResources = FacilityResource.create(
-					facilityResourceData
-				);
+				for (let pivotValues = 0; pivotValues <= 10; pivotValues++) {
+					// facilityresource id and quantity
+					const randResourceIndex = faker.random.number({
+						min: 0,
+						max: maxValueResource
+					});
+					const resourceId = val[4][randResourceIndex].id;
+
+					const resourceQuantity = faker.random.number({
+						min: 0,
+						max: 200
+					});
+					// close resource id and quantity
+					const facilityResourceData = {
+						facility_id: values[0].id,
+						resource_id: resourceId,
+						quantity: resourceQuantity,
+						description: faker.lorem.sentence()
+					};
+					const facilityResources = FacilityResource.create(
+						facilityResourceData
+					);
+					// service id
+					const randServiceIndex = faker.random.number({
+						min: 0,
+						max: maxValueService
+					});
+					const serviceId = val[5][randServiceIndex].id;
+					// end service
+					const facilityServiceData = {
+						service_id: serviceId,
+						facility_id: values[0].id
+					};
+					const facilityServices = FacilityService.create(
+						facilityServiceData
+					);
+					// utility id
+					const randUtilityIndex = faker.random.number({
+						min: 0,
+						max: maxValueUtility
+					});
+					const utilityId = val[5][randUtilityIndex].id;
+					// end utility
+					const facilityUtilityData = {
+						facility_id: values[0].id,
+						utility_id: utilityId
+					};
+					const facilityUtilities = FacilityUtility.create(
+						facilityUtilityData
+					);
+				}
 				const addressData = {
 					physical_address: physicalAddress,
 					postal_address: postalAddress,
@@ -247,20 +296,7 @@ Promise.all([
 					facility_id: values[0].id
 				};
 				const contacts = ContactPeople.create(contactData);
-				const facilityServiceData = {
-					service_id: serviceId,
-					facility_id: values[0].id
-				};
-				const facilityServices = FacilityService.create(
-					facilityServiceData
-				);
-				const facilityUtilityData = {
-					facility_id: values[0].id,
-					utility_id: utilityId
-				};
-				const facilityUtilities = FacilityUtility.create(
-					facilityUtilityData
-				);
+
 				const geolocationData = {
 					datum: datam,
 					geolocation: geopointData,
@@ -270,17 +306,13 @@ Promise.all([
 				const locationData = {
 					catchment_area: catchmentArea,
 					catchment_population: catchmentPopulation,
-					district_id: districtId,
 					facility_id: values[0].id
 				};
 				const locations = Location.create(locationData);
 
 				Promise.all([
-					facilityResources,
 					addresses,
 					contacts,
-					facilityServices,
-					facilityUtilities,
 					geolocations,
 					locations
 				]).then(resvalues => {

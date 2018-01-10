@@ -137,8 +137,8 @@ Promise.all([
 ])
   .then(values => {
     console.log(
-      "fake data for facilityType, \
-      owner, operationalStatus \
+      "fake data for facilityType,\
+      owner, operationalStatus\
       , district, zone and regulatoryStatus are created"
     );
     // close here and disconnect...
@@ -300,8 +300,8 @@ Promise.all([
         ])
           .then(values => {
             console.log(
-              "All transport, beds, \
-              generator, housing and \
+              "All transport, beds,\
+              generator, housing and\
               computer resources are created"
             );
             const utilityTypeEnergyProvider = {
@@ -527,8 +527,8 @@ Promise.all([
                 ])
                   .then(values => {
                     console.log(
-                      "All energy, water, \
-                      waste disposal and \
+                      "All energy, water,\
+                      waste disposal and\
                       network utilities are created"
                     );
                     const serviceTypeClinical = {
@@ -580,9 +580,9 @@ Promise.all([
                     const serviceTypeReproductiveAndChild = {
                       service_type:
                         "Reproductive and\
-                       child Health Services",
+                        child Health Services",
                       description:
-                        "These are reproductive \
+                        "These are reproductive\
                         and child health services",
                     };
                     const serviceTypeReproductiveAndChildPromise =
@@ -692,8 +692,8 @@ Promise.all([
                             service_name:
                               "Vitamin A supplementation in pregnat women",
                             service_description:
-                              "This is Vitamin A \
-                              supplementation in \
+                              "This is Vitamin A\
+                              supplementation in\
                               pregnat women service",
                             service_type_id: serviceTypeNutritionId,
                             service_category_id: 0,
@@ -702,8 +702,8 @@ Promise.all([
                             service_name:
                               "Management of severe malnutrition (children)",
                             service_description:
-                              "This is Management \
-                              of severe malnutrition \
+                              "This is Management\
+                              of severe malnutrition\
                               (children) service",
                             service_type_id: serviceTypeNutritionId,
                             service_category_id: 0,
@@ -716,10 +716,10 @@ Promise.all([
                           },
                           {
                             service_name:
-                              "Vitamin A supplementation \
+                              "Vitamin A supplementation\
                               in infants and children 6-59 months",
                             service_description:
-                              "This is Vitamin A supplementation \
+                              "This is Vitamin A supplementation\
                               in infants and children 6-59 months service",
                             service_type_id: serviceTypeNutritionId,
                             service_category_id: 0,
@@ -825,10 +825,10 @@ Promise.all([
                         ])
                           .then(values => {
                             console.log(
-                              "OPD, IPD, Therapeutics, \
-                              Prosthetics, Nutrition, \
-                              Reproductive and Child Health, \
-                              community health and MCI \
+                              "OPD, IPD, Therapeutics,\
+                              Prosthetics, Nutrition,\
+                              Reproductive and Child Health,\
+                              community health and MCI\
                               services are created"
                             );
                             const mciId = values[2].id;
@@ -967,8 +967,8 @@ Promise.all([
                               {
                                 service_name: "ITN Distribution",
                                 service_description:
-                                  "This is ITN \
-                                distribution service",
+                                  "This is ITN\
+                                  distribution service",
                                 service_type_id:
                                 serviceTypeReproductiveAndChildId,
                                 service_category_id: antenatalId,
@@ -981,10 +981,10 @@ Promise.all([
                             const deliverysubData = [
                               {
                                 service_name:
-                                  "Neonatal resuscitation \
-                                (institutional)",
+                                  "Neonatal resuscitation\
+                                  (institutional)",
                                 service_description:
-                                  "This is neonatal \
+                                  "This is neonatal\
                                   resuscitation Service",
                                 service_type_id:
                                 serviceTypeReproductiveAndChildId,
@@ -993,8 +993,8 @@ Promise.all([
                               {
                                 service_name: "Post-natal consultation",
                                 service_description:
-                                  "This is post-natal \
-                                consultation service",
+                                  "This is post-natal\
+                                  consultation service",
                                 service_type_id:
                                 serviceTypeReproductiveAndChildId,
                                 service_category_id: deliveryId,
@@ -1016,8 +1016,8 @@ Promise.all([
                               {
                                 service_name: "Clinical Chemistry",
                                 service_description:
-                                  "This is \
-                                clinical chemistry service",
+                                  "This is\
+                                  clinical chemistry service",
                                 service_type_id:
                                 serviceTypeDiagnosticId,
                                 service_category_id: laboratoryId,
@@ -1038,8 +1038,8 @@ Promise.all([
                               {
                                 service_name: "Ultrasound",
                                 service_description:
-                                  "This is \
-                                ultrasound service",
+                                  "This is\
+                                  ultrasound service",
                                 service_type_id:
                                 serviceTypeDiagnosticId,
                                 service_category_id: radiologyId,
@@ -1068,8 +1068,8 @@ Promise.all([
                             ])
                               .then(values => {
                                 console.log(
-                                  "ARI, community management, \
-                                  Radiology and Diarrhoea \
+                                  "ARI, community management,\
+                                  Radiology and Diarrhoea\
                                   services are created"
                                 );
                                 const ariId = values[0].id;
@@ -1086,7 +1086,7 @@ Promise.all([
                                     service_name:
                                       "Treatment of severe pneumonia(Oxygen)",
                                     service_description:
-                                      "This is treatment \
+                                      "This is treatment\
                                       of severe pneumonia (Oxygen)",
                                     service_type_id:
                                     serviceTypeClinicalId,
@@ -1115,7 +1115,7 @@ Promise.all([
                                   },
                                   {
                                     service_name:
-                                      "Treatment of severe \
+                                      "Treatment of severe\
                                       diarrhoea (IV Fluids)",
                                     service_description:
                                       "This is IV Fluids Service",
@@ -1154,7 +1154,7 @@ Promise.all([
                                 const childrenless15Data = {
                                   service_name: "Children less than 15 kg",
                                   service_description:
-                                    "This is a service of \
+                                    "This is a service of\
                                     children less than 15 kgs",
                                   service_type_id:
                                   serviceTypeClinicalId,
@@ -1166,7 +1166,7 @@ Promise.all([
                                 const childrenmore15Data = {
                                   service_name: "Children more than 15 kg",
                                   service_description:
-                                    "This is a service \
+                                    "This is a service\
                                     of children more than 15 kgs",
                                   service_type_id:
                                   serviceTypeClinicalId,
@@ -1211,7 +1211,7 @@ Promise.all([
                                 ])
                                   .then(values => {
                                     console.log(
-                                      "ARI sub and diarrhoea \
+                                      "ARI sub and diarrhoea\
                                       services are created"
                                     );
                                     dataSource.disconnect();

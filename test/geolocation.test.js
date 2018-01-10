@@ -16,7 +16,7 @@ const testData = {
     facility_owner_id: 1,
     facility_operational_status_id: 1,
     facility_regulatory_status_id: 1,
-    facility_contact_person_id: 1,
+    district_id: 1,
 };
 
 Facility.create(testData).then(resp => {

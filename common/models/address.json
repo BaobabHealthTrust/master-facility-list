@@ -13,6 +13,12 @@
     "postal_address": {
       "type": "string"
     },
+    "village": {
+      "type": "string"
+    },
+    "ta": {
+      "type": "string"
+    },
     "facility_id": {
       "type": "number",
       "required": true

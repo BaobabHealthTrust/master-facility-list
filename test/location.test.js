@@ -15,6 +15,7 @@ const testData = {
     facility_owner_id: 1,
     facility_operational_status_id: 1,
     facility_regulatory_status_id: 1,
+    district_id: 1,
 };
 
 Facility.create(testData).then(resp => {
@@ -23,7 +24,6 @@ Facility.create(testData).then(resp => {
     const locationData = {
         catchment_area: "Ntchisi Rural",
         catchment_population: 200000,
-        district_id: 2,
         facility_id: facilityId,
     };
 

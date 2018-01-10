@@ -20,8 +20,7 @@
     "facilities": {
       "type": "hasMany",
       "model": "Facility",
-      "foreignKey": "district_id",
-      "through": "Location"
+      "foreignKey": "district_id"
     },
     "zone": {
       "type": "belongsTo",
