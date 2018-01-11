@@ -9,9 +9,9 @@ export default ({ heading, data, icon }) => {
 
             <table className="mfl-card-row mfl-table-card">
                 <tbody>
-                    {data.map(row => {
+                    {data.map((row,index) => {
                         return (
-                            <tr className="mfl-card-row">
+                            <tr key={index} className="mfl-card-row">
                                 <td className="mfl-summary-subheader">
                                     {row[0]}
                                 </td>

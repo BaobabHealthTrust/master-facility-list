@@ -1,4 +1,4 @@
-import { uniq, without, pull } from "lodash";
+import { uniq, pull } from "lodash";
 
 export default (
     state = {

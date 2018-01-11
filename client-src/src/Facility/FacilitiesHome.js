@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import fetchFacilities from "../actions/get-facilities";
 import downloadFacilities from "../actions/download-facilities";
 import SearchModal from "./SearchModal";
-import { Row, Input } from "react-materialize";
 import fetchDistricts from "../actions/fetch-districts";
 import fetchFacilityTypes from "../actions/fetch-facility-types";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
@@ -22,7 +21,7 @@ class FacilitiesHome extends Component {
         this.props.fetchDistricts();
         this.props.fetchOperationalStatuses();
         this.props.fetchFacilityTypes();
-        if (this.props.facilities.length == 0) {
+        if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
     }
@@ -52,13 +51,6 @@ class FacilitiesHome extends Component {
     }
 
     render() {
-        let dataSource = this.props.facilities;
-
-        if (this.state.isShowSearchResults) {
-            dataSource = this.props.searchResults;
-        } else {
-            dataSource = this.props.facilities;
-        }
 
         return (
             <div className="container mfl-container">

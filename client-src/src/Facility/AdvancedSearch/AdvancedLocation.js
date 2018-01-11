@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 
 class AdvancedLocation extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let options = <option>Select District</option>;
         if (this.props.districts.length > 0) {
             options = this.props.districts.map(d => (
-                <option value={d.id}>{d.district_name}</option>
+                <option key={d.id} value={d.id}>{d.district_name}</option>
             ));
         }
 

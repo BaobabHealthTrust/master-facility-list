@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Facilitydetails from "./FacilityDetails";
 import Card from "../common/MflCard";
 import setCurrentDetails from "../actions/set-current-details";
 import fetchCurrentDetails from "../actions/fetch-current-details";

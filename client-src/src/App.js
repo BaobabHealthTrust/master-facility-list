@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import Table from "./common/Table";
 import Navbar from "./Navbar";
 import FacilitiesHome from "./Facility/FacilitiesHome";
 import { Route, Switch } from "react-router-dom";

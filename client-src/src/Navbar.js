@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
 import Menu from './Header/Menu';
-import { Link } from 'react-router-dom';
 import quickSearch from './actions/quick-search-facilities';
 import { connect } from 'react-redux';
 import Table from './common/Table';
@@ -21,14 +20,14 @@ class Navbar extends Component {
     }
 
     restoreSearch(e) {
-        // this.props.hideSearchContainer(true);
+         this.props.hideSearchContainer(true);
 
         document.getElementById('searchbar').className =
             'left mfl-normal-search hide-on-small-only';
     }
 
     handleQuickSearch(e) {
-        if (e.key == 'Enter') {
+        if (e.key === 'Enter') {
             this.setState({
                 isSearchBarBlurred: false
             })
@@ -43,7 +42,7 @@ class Navbar extends Component {
             <div>
                 <nav>
                     <div className="nav-wrapper blue darken-4">
-                        <a href="#" className="center hide-on-med-and-up">
+                        <a href="" className="center hide-on-med-and-up">
                             Master Health Facility Register
                         </a>
 
@@ -52,11 +51,11 @@ class Navbar extends Component {
                         </div>
 
                         <a
-                            href="#"
+                            href=""
                             data-activates="mobile-demo"
-                            class="button-collapse"
+                            className="button-collapse"
                         >
-                            <i class="material-icons">menu</i>
+                            <i className="material-icons">menu</i>
                         </a>
 
                         <div className="left hide-on-med-and-down mfl-pl-2">
@@ -67,7 +66,7 @@ class Navbar extends Component {
                             className="left hide-on-small-only mfl-normal-search"
                             id="searchbar"
                         >
-                            <div class="input-field">
+                            <div className="input-field">
                                 <input
                                     id="search"
                                     type="search"
@@ -76,11 +75,11 @@ class Navbar extends Component {
                                     onBlur={e => this.restoreSearch(e)}
                                     onKeyPress={e => this.handleQuickSearch(e)}
                                 />
-                                <label class="label-icon" for="search">
-                                    <i class="material-icons">search</i>
+                                <label className="label-icon" for="search">
+                                    <i className="material-icons">search</i>
                                 </label>
                                 <i
-                                    class="material-icons"
+                                    className="material-icons"
                                     onClick={e => this.restoreSearch(e)}
                                 >
                                     close

@@ -27,7 +27,7 @@ class Menu extends Component {
                     }
 
                     <li>
-                        <a href="#">ABOUT</a>
+                        <a href="">ABOUT</a>
                     </li>
                     {
                         this.state.activePage === "facilities" ? (
@@ -39,27 +39,27 @@ class Menu extends Component {
                                 </li>)
                     }
                     <li>
-                        <a href="#">FEEDBACK</a>
+                        <a href="">FEEDBACK</a>
                     </li>
                     <li>
-                        <a href="#">CONTACTS</a>
+                        <a href="">CONTACTS</a>
                     </li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     <li>
-                        <a href="#">HOME</a>
+                        <a href="">HOME</a>
                     </li>
                     <li>
-                        <a href="#">ABOUT</a>
+                        <a href="">ABOUT</a>
                     </li>
                     <li>
-                        <a href="#">FACILITIES</a>
+                        <a href="">FACILITIES</a>
                     </li>
                     <li>
-                        <a href="#">FEEDBACK</a>
+                        <a href="">FEEDBACK</a>
                     </li>
                     <li>
-                        <a href="#">CONTACTS</a>
+                        <a href="">CONTACTS</a>
                     </li>
                 </ul>
             </div>
