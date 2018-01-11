@@ -18,6 +18,21 @@ class AdvancedOwnershipRegulation extends Component {
             ));
         }
 
+        let facilityOwnerOptions = <option>Select Facility Owner</option>;
+        if (this.props.facilityOwners.length > 0) {
+            facilityOwnerOptions = this.props.facilityOwners.map(fo => (
+                <option value={fo.id}>{fo.facility_owner}</option>
+            ));
+        }
+
+        // let regulatoryStatusOptions = <option>Select Regulatory Status</option>;
+        // if (this.props.regulatoryStatuses.length > 0) {
+        //     regulatoryStatusOptions = this.props.regulatoryStatuses.map(rs => (
+        //         <option value={rs.id}>{rs.facility_regulatory_status}</option>
+        //     ));
+        // }
+
+
         return (
             <div className="container mfl-tm-5">
                 <select
@@ -42,6 +57,26 @@ class AdvancedOwnershipRegulation extends Component {
                     <option value="0">-- Select Facility Types --</option>
                     {facilityTypeOptions}
                 </select>
+                <br />
+                <select
+                    className="browser-default"
+                    onChange={e =>
+                        this.props.handleChange(e, "ADD_FACILITY_OWNER_VALUES")
+                    }
+                >
+                    <option value="0">-- Select Facility Owners --</option>
+                    {facilityOwnerOptions}
+                </select>
+                <br />
+                {/* <select
+                    className="browser-default"
+                    onChange={e =>
+                        this.props.handleChange(e, "ADD_REGULATORY_STATUS_VALUES")
+                    }
+                >
+                    <option value="0">-- Select Regulatory Status --</option>
+                    {regulatoryStatusOptions}
+                </select> */}
             </div>
         );
     }

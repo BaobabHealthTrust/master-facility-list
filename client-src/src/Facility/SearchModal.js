@@ -107,6 +107,8 @@ class SearchModal extends Component {
                                         this.props.operationalStatuses
                                     }
                                     facilityTypes={this.props.facilityTypes}
+                                    facilityOwners={this.props.facilityOwners}
+                                    regulatoryStatuses={this.props.regulatoryStatuses}
                                     handleChange={async (e, type) => {
                                         await this.props.addSearchValues(
                                             e,
@@ -180,7 +182,7 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
-
+                    
                         {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
                         {this.getObjectFromIds(
                             this.props.searchValues.facilityTypeValues,
@@ -206,6 +208,56 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
+                        {/* DISPLAY TAGS FOR FACILITY OWNER VALUES */}
+                        {this.getObjectFromIds(
+                            this.props.searchValues.facilityOwnerValues,
+                            this.props.facilityOwners
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.facility_owner}
+                                    id={entity.id}
+                                    actionType={"REMOVE_FACILITY_OWNER_VALUES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })}
+                        {/* DISPLAY TAGS FOR REGULATORY STATUS VALUES
+                        {this.getObjectFromIds(
+                            this.props.searchValues.regulatoryStatusValues,
+                            this.props.regulatoryStatuses
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.facility_regulatory_status}
+                                    id={entity.id}
+                                    actionType={"REMOVE_REGULATORY_STATUS_VALUES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })} */}
                     </div>
                 </div>
             </div>
@@ -218,7 +270,9 @@ const mapStateToProps = state => {
         searchValues: state.advancedSearchValues,
         districts: state.dependancies.districts,
         facilityTypes: state.dependancies.facilityTypes,
+        facilityOwners: state.dependancies.facilityOwners,
         operationalStatuses: state.dependancies.operationalStatuses,
+        regulatoryStatuses: state.dependancies.regulatoryStatuses,
         results: intersection(
             map(state.searchResults.advancedSearchFacilities)
         )[0]

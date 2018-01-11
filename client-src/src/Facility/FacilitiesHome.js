@@ -5,7 +5,9 @@ import downloadFacilities from "../actions/download-facilities";
 import SearchModal from "./SearchModal";
 import fetchDistricts from "../actions/fetch-districts";
 import fetchFacilityTypes from "../actions/fetch-facility-types";
+import fetchFacilityOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
+import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
 import FacilityList from "./FacilityList";
 
 class FacilitiesHome extends Component {
@@ -21,6 +23,8 @@ class FacilitiesHome extends Component {
         this.props.fetchDistricts();
         this.props.fetchOperationalStatuses();
         this.props.fetchFacilityTypes();
+        this.props.fetchFacilityOwners();
+        this.props.fetchRegulatoryStatuses();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -119,5 +123,7 @@ export default connect(mapStateToProps, {
     downloadFacilities,
     fetchDistricts,
     fetchOperationalStatuses,
-    fetchFacilityTypes
+    fetchFacilityTypes,
+    fetchFacilityOwners,
+    fetchRegulatoryStatuses
 })(FacilitiesHome);
