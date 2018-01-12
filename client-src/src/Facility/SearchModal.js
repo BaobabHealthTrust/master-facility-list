@@ -181,7 +181,7 @@ class SearchModal extends Component {
                             );
                         })}
 
-                        {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
+                        {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
                         {this.getObjectFromIds(
                             this.props.searchValues.facilityTypeValues,
                             this.props.facilityTypes

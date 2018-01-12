@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Card from '../common/MflCard';
 import { connect } from 'react-redux';
-import fetchFacilities from '../actions/get-facilities';
 import setCurrentDetails from '../actions/set-current-details';
 import fetchCurrentDetails from '../actions/fetch-current-details';
 import moment from 'moment';

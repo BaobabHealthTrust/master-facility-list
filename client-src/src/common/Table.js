@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "react-materialize";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import hideSearchContainer from "../actions/hide-search-container";
 import { connect } from "react-redux";
 
@@ -26,13 +26,13 @@ class MflTable extends Component {
         });
 
         const headerRecords = this.props.data.records.map(record => {
-            const id = record.filter((cell, i) => i == 0);
+            const id = record.filter((cell, i) => i === 0);
             {
                 if (!this.state.redirect) {
                     return (
-                        <tr onClick={this.handleRedirect.bind(this, id)}>
+                        <tr key={id} onClick={this.handleRedirect.bind(this, id)}>
                             {record
-                                .filter((cell, index) => index != 0)
+                                .filter((cell, index) => index !== 0)
                                 .map(cell => {
                                     return (
                                         <td>
