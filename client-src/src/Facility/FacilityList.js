@@ -4,7 +4,6 @@ import Table from "../common/Table";
 import Pagination from "../common/Pagination";
 import { truncate } from "lodash";
 import moment from "moment";
-import PropTypes from "prop-types";
 
 export default class FacilityList extends React.Component {
     render() {
