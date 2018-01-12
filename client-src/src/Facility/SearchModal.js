@@ -30,6 +30,14 @@ class SearchModal extends Component {
         );
     }
 
+    // async handleRemoveSearchTag(id, actionType){
+    //     await this.props.removeSearchValues(id, actionType);
+    //     await this.props.fetchAdvancedSearchResults(
+    //         this.props.searchValues
+    //     );
+
+    // }
+
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
@@ -105,15 +113,7 @@ class SearchModal extends Component {
                                     facilityTypes={this.props.facilityTypes}
                                     facilityOwners={this.props.facilityOwners}
                                     regulatoryStatuses={this.props.regulatoryStatuses}
-                                    handleChange={async (e, type) => {
-                                        await this.props.addSearchValues(
-                                            e,
-                                            type
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
+                                    handleChange={(e, type) =>this.handleAddSearchValue(e,type)}
                                 />
                             ) : (
                                 ""
@@ -127,15 +127,7 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Facility Type" ? (
                                 <AdvancedFacilityType
                                     facilityTypes={this.props.facilityTypes}
-                                    handleChange={async (e, type) => {
-                                        await this.props.addSearchValues(
-                                            e,
-                                            type
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
+                                    handleChange={(e, type) =>this.handleAddSearchValue(e,type)}
                                 />
                             ) : (
                                 ""
