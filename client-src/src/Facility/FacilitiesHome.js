@@ -8,6 +8,8 @@ import fetchFacilityTypes from "../actions/fetch-facility-types";
 import fetchFacilityOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
+import fetchResourceTypes from "../actions/fetch-resource-types";
+
 import FacilityList from "./FacilityList";
 
 class FacilitiesHome extends Component {
@@ -25,6 +27,7 @@ class FacilitiesHome extends Component {
         this.props.fetchFacilityTypes();
         this.props.fetchFacilityOwners();
         this.props.fetchRegulatoryStatuses();
+        this.props.fetchResourceTypes();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -72,7 +75,9 @@ class FacilitiesHome extends Component {
                     </blockquote>
                 ) : (
                     <div>
-                        {this.state.isAdvancedSearch ? (
+                        {  console.log(this.props.resourceTypes)}
+                        {
+                            this.state.isAdvancedSearch ? (
                             <SearchModal
                                 handleClose={() => this.handleClose()}
                             />
@@ -114,7 +119,8 @@ const mapStateToProps = state => {
         isError: state.facilities.isNetworkError,
         isLoading: state.facilities.isLoading,
         download: state.downloads.data,
-        searchResults: state.searchResults.advancedSearchResults
+        searchResults: state.searchResults.advancedSearchResults,
+        resourceTypes: state.dependancies.resourceTypes
     };
 };
 
@@ -125,5 +131,6 @@ export default connect(mapStateToProps, {
     fetchOperationalStatuses,
     fetchFacilityTypes,
     fetchFacilityOwners,
-    fetchRegulatoryStatuses
+    fetchRegulatoryStatuses,
+    fetchResourceTypes
 })(FacilitiesHome);
