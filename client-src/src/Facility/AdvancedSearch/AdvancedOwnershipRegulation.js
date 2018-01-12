@@ -11,12 +11,6 @@ class AdvancedOwnershipRegulation extends Component {
             ));
         }
 
-        let facilityTypeOptions = <option>Select Facility Types</option>;
-        if (this.props.facilityTypes.length > 0) {
-            facilityTypeOptions = this.props.facilityTypes.map(o => (
-                <option value={o.id}>{o.facility_type}</option>
-            ));
-        }
 
         let facilityOwnerOptions = <option>Select Facility Owner</option>;
         if (this.props.facilityOwners.length > 0) {
@@ -25,12 +19,12 @@ class AdvancedOwnershipRegulation extends Component {
             ));
         }
 
-        // let regulatoryStatusOptions = <option>Select Regulatory Status</option>;
-        // if (this.props.regulatoryStatuses.length > 0) {
-        //     regulatoryStatusOptions = this.props.regulatoryStatuses.map(rs => (
-        //         <option value={rs.id}>{rs.facility_regulatory_status}</option>
-        //     ));
-        // }
+        let regulatoryStatusOptions = <option>Select Regulatory Status</option>;
+        if (this.props.regulatoryStatuses.length > 0) {
+            regulatoryStatusOptions = this.props.regulatoryStatuses.map(rs => (
+                <option value={rs.id}>{rs.facility_regulatory_status}</option>
+            ));
+        }
 
 
         return (
@@ -51,16 +45,6 @@ class AdvancedOwnershipRegulation extends Component {
                 <select
                     className="browser-default"
                     onChange={e =>
-                        this.props.handleChange(e, "ADD_FACILITY_TYPE_VALUES")
-                    }
-                >
-                    <option value="0">-- Select Facility Types --</option>
-                    {facilityTypeOptions}
-                </select>
-                <br />
-                <select
-                    className="browser-default"
-                    onChange={e =>
                         this.props.handleChange(e, "ADD_FACILITY_OWNER_VALUES")
                     }
                 >
@@ -68,7 +52,7 @@ class AdvancedOwnershipRegulation extends Component {
                     {facilityOwnerOptions}
                 </select>
                 <br />
-                {/* <select
+                <select
                     className="browser-default"
                     onChange={e =>
                         this.props.handleChange(e, "ADD_REGULATORY_STATUS_VALUES")
@@ -76,7 +60,7 @@ class AdvancedOwnershipRegulation extends Component {
                 >
                     <option value="0">-- Select Regulatory Status --</option>
                     {regulatoryStatusOptions}
-                </select> */}
+                </select>
             </div>
         );
     }

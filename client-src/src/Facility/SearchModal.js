@@ -8,6 +8,7 @@ import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
+import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 
 class SearchModal extends Component {
@@ -24,6 +25,9 @@ class SearchModal extends Component {
 
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
+        await this.props.fetchBasicDetailsResults(
+            this.props.searchValues
+        );
     }
 
     async getSearchResults(e) {
@@ -81,15 +85,7 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Location" ? (
                                 <AdvancedLocation
                                     districts={this.props.districts}
-                                    handleChange={async (e, type) => {
-                                        await this.props.addSearchValues(
-                                            e,
-                                            type
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
+                                    handleChange={ (e, type) =>this.handleAddSearchValue(e,type)}
                                 />
                             ) : (
                                 ""
@@ -109,6 +105,28 @@ class SearchModal extends Component {
                                     facilityTypes={this.props.facilityTypes}
                                     facilityOwners={this.props.facilityOwners}
                                     regulatoryStatuses={this.props.regulatoryStatuses}
+                                    handleChange={async (e, type) => {
+                                        await this.props.addSearchValues(
+                                            e,
+                                            type
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
+                        <Tab
+                            title="Facility Type"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Facility Type" ? (
+                                <AdvancedFacilityType
+                                    facilityTypes={this.props.facilityTypes}
                                     handleChange={async (e, type) => {
                                         await this.props.addSearchValues(
                                             e,
@@ -233,7 +251,7 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
-                        {/* DISPLAY TAGS FOR REGULATORY STATUS VALUES
+                        {/* {DISPLAY TAGS FOR REGULATORY STATUS VALUES} */}
                         {this.getObjectFromIds(
                             this.props.searchValues.regulatoryStatusValues,
                             this.props.regulatoryStatuses
@@ -257,7 +275,7 @@ class SearchModal extends Component {
                                     }}
                                 />
                             );
-                        })} */}
+                        })}
                     </div>
                 </div>
             </div>
