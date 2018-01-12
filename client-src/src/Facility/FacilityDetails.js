@@ -8,6 +8,12 @@ import Services from './FacilityServices';
 import { connect } from 'react-redux';
 
 class FacilityDetails extends Component {
+    constructor(){
+        super();
+        this.state ={
+           activePage: "summary"
+        }
+    }
     render() {
         const id = this.props.match.params.id;
         const summaryLink = `/facilities/${id}`;
@@ -40,14 +46,25 @@ class FacilityDetails extends Component {
                 <nav>
                     <div class="nav-wrapper blue accent-1">
                         <ul class="left">
+                        {this.state.activePage ==="summary" ? (
                             <li className="active">
-                                <Link to={summaryLink}>SUMMARY</Link>
-                            </li>
+                                <Link to={summaryLink} onclick={e => this.setState({activePage:"summary"})}>SUMMARY</Link>
+                            </li>):(
                             <li>
-                                <Link to={locationsLink}>
-                                    CONTACTS AND LOCATIONS
-                                </Link>
+                                <Link to={summaryLink} onclick={e => this.setState({activePage:"summary"})}>SUMMARY</Link>
                             </li>
+                            )
+                        }
+        
+                            {this.state.activePage ==="contactsandlocation" ? (
+                            <li className="active">
+                                <Link to={locationsLink} onclick={e => this.setState({activePage:"contactsandlocation"})}>CONTACTS AND LOCATION</Link>
+                            </li>):(
+                            <li>
+                                <Link to={locationsLink} onclick={e => this.setState({activePage:"contactsandlocation"})}>CONTACTS AND LOCATION</Link>
+                            </li>
+                            )
+                        }
                             <li>
                                 <Link to={resourcesLink}>RESOURCES</Link>
                             </li>
