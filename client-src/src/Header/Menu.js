@@ -5,7 +5,7 @@ class Menu extends Component {
     constructor() {
         super();
         this.state = {
-            activePage: null
+            activePage: "home"
         }
     }
 
