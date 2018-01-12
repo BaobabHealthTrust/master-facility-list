@@ -23,7 +23,6 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
             };
         case "FETCH_UTILITY_TYPES":
             return {
@@ -35,7 +34,6 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
             };
         case "FETCH_DISTRICTS":
             return {
@@ -47,8 +45,6 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
-
             };
         case "FETCH_OPERATIONAL_STATUSES":
             return {
@@ -60,7 +56,6 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
             };
         case "FETCH_FACILITY_TYPES":
             return {
@@ -72,7 +67,6 @@ export default (
                 facilityTypes: action.payload.data,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
             };
         case "FETCH_FACILITY_OWNERS":
             return {
@@ -84,8 +78,6 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: action.payload.data,
                 regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: state.searchResourceTypes
-
             };
         case "FETCH_REGULATORY_STATUSES":
             return {
@@ -97,23 +89,7 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: action.payload.data,
-                searchResourceTypes: state.searchResourceTypes.state
-
             };
-            case "FETCH_SEARCH_RESOURCE_TYPE":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                searchResourceTypes: action.payload.data
-
-            };
-
         default:
             return state;
     }
