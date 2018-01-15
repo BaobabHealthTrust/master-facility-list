@@ -10,6 +10,7 @@ import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
+import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -75,8 +76,8 @@ class SearchModal extends Component {
                                 </a>
                             </span>
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                     </div>
 
                     <Tabs
@@ -93,11 +94,11 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Location" ? (
                                 <AdvancedLocation
                                     districts={this.props.districts}
-                                    handleChange={ (e, type) =>this.handleAddSearchValue(e,type)}
+                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Ownership and Regulation"
@@ -105,19 +106,19 @@ class SearchModal extends Component {
                             active
                         >
                             {this.state.activeTab ===
-                            "Ownership and Regulation" ? (
-                                <AdvancedOwnershipRegulation
-                                    operationalStatuses={
-                                        this.props.operationalStatuses
-                                    }
-                                    facilityTypes={this.props.facilityTypes}
-                                    facilityOwners={this.props.facilityOwners}
-                                    regulatoryStatuses={this.props.regulatoryStatuses}
-                                    handleChange={(e, type) =>this.handleAddSearchValue(e,type)}
-                                />
-                            ) : (
-                                ""
-                            )}
+                                "Ownership and Regulation" ? (
+                                    <AdvancedOwnershipRegulation
+                                        operationalStatuses={
+                                            this.props.operationalStatuses
+                                        }
+                                        facilityTypes={this.props.facilityTypes}
+                                        facilityOwners={this.props.facilityOwners}
+                                        regulatoryStatuses={this.props.regulatoryStatuses}
+                                        handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                    />
+                                ) : (
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Facility Type"
@@ -127,14 +128,51 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Facility Type" ? (
                                 <AdvancedFacilityType
                                     facilityTypes={this.props.facilityTypes}
-                                    handleChange={(e, type) =>this.handleAddSearchValue(e,type)}
+                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
-                        <Tab title="Services">Test 3</Tab>
-                        <Tab title="Resources">Test 4</Tab>
+
+
+
+                        <Tab
+                            title="Facility Type"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Facility Type" ? (
+                                <AdvancedFacilityType
+                                    facilityTypes={this.props.facilityTypes}
+                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                />
+                            ) : (
+                                    ""
+                                )}
+                        </Tab>
+
+                        <Tab
+                            title="Resources"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab ===
+                                "Resources" ? (
+                                    <AdvancedResourceType
+                                        resourceTypeValues={
+                                            this.props.resourceTypeValues
+                                        }
+
+                                        resourceTypeValues={this.props.resourceTypeValues}
+                                        handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                        </Tab>
+
+                        <Tab title="Services">Test 4</Tab>
                     </Tabs>
                 </div>
                 <div class="modal-footer">
@@ -192,7 +230,7 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
-                    
+
                         {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
                         {this.getObjectFromIds(
                             this.props.searchValues.facilityTypeValues,
@@ -283,6 +321,7 @@ const mapStateToProps = state => {
         facilityOwners: state.dependancies.facilityOwners,
         operationalStatuses: state.dependancies.operationalStatuses,
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
+        resourceTypeValues: state.dependancies.resourceTypeValues,
         results: intersection(
             map(state.searchResults.advancedSearchFacilities)
         )[0]
