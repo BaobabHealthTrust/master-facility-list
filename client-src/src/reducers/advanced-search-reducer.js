@@ -6,7 +6,8 @@ export default (
         operationalStatusValues: [],
         facilityTypeValues: [],
         facilityOwnerValues: [],
-        regulatoryStatusValues: []
+        regulatoryStatusValues: [],
+        resourceTypeValue:[]
     },
     action
 ) => {
@@ -17,7 +18,8 @@ export default (
                 districtValues: uniq([...state.districtValues, action.payload]),
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.resourceTypeValue
             };
         case "ADD_OPERATIONAL_STATUS_VALUES":
             return {
@@ -28,7 +30,8 @@ export default (
                     action.payload
                 ]),
                 facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.resourceTypeValue
             };
         case "ADD_FACILITY_TYPE_VALUES":
             return {
@@ -39,7 +42,8 @@ export default (
                 districtValues: state.districtValues,
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue: state.resourceTypeValue
             };
         case "ADD_FACILITY_OWNER_VALUES":
             return {
@@ -50,7 +54,8 @@ export default (
                     ...state.facilityOwnerValues,
                     action.payload
                 ]),
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.resourceTypeValue
             };
             case "ADD_REGULATORY_STATUS_VALUES":
             return {
@@ -63,6 +68,22 @@ export default (
                     action.payload
                 ])
             };
+            case "ADD_RESOURCE_TYPE_VALUE":
+            return {
+                facilityTypeValues: state.facilityTypeValues,
+                districtValues: state.districtValues,
+                operationalStatusValues: state.operationalStatusValues,
+                facilityOwnerValues: state.facilityOwnerValues,
+                regulatoryStatusValues: uniq([
+                    ...state.facilityOwnerValues,
+                    action.payload
+                ]),
+                resourceTypeValue: uniq([
+                    ...state.resourceTypeValue,
+                    action.payload
+                ])
+            };
+
         case "REMOVE_DISTRICT_VALUES":
             return {
                 facilityTypeValues: state.facilityTypeValues,
@@ -73,6 +94,7 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues
+                
             };
         case "REMOVE_OPERATIONAL_STATUS_VALUES":
             return {
@@ -94,7 +116,8 @@ export default (
                 districtValues: state.districtValues,
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.resourceTypeValue
             };
         case "REMOVE_FACILITY_OWNER_VALUES":
             return {
@@ -105,7 +128,8 @@ export default (
                     state.facilityOwnerValues,
                     action.payload.toString()
                 ),
-                regulatoryStatusValues: state.regulatoryStatusValues
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.resourceTypeValue
             };
             case "REMOVE_REGULATORY_STATUS_VALUES":
             return {
@@ -115,8 +139,21 @@ export default (
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: pull(
                     state.regulatoryStatusValues,action.payload.toString()
-                )
+                ),
+                resourceTypeValue:state.resourceTypeValue
             };
+            case "REMOVE_RESOURCE_TYPE_VALUES":
+            return {
+                facilityTypeValues: state.facilityTypeValues,
+                districtValues: state.districtValues,
+                operationalStatusValues: state.operationalStatusValues,
+                facilityOwnerValues: state.facilityOwnerValues,
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                resourceTypeValue:state.pull(
+                    state.resourceTypeValue,action.payload.toString()
+                ),
+            };
+
         default:
             return state;
     }
