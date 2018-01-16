@@ -4,7 +4,8 @@ export default (
         advancedSearchFacilities: {
             basicDetailsFacilities: []
         },
-        advancedSearchResults: []
+        advancedSearchResults: [],
+        BasicSearchFacilityResources: []
     },
     action
 ) => {

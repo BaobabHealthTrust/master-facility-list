@@ -11,6 +11,7 @@ import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegul
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
+import fetchTypeInstances from "../actions/fetch-type-instances";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -24,20 +25,21 @@ class SearchModal extends Component {
         return entities.filter(e => ids.includes(e.id.toString()));
     }
 
-    async handleAddSearchValue(e, type) {
+    async handleAddSearchValue(e, type) {          
         await this.props.addSearchValues(e, type);
         await this.props.fetchBasicDetailsResults(
             this.props.searchValues
         );
     }
 
-    // async handleRemoveSearchTag(id, actionType){
-    //     await this.props.removeSearchValues(id, actionType);
+  async handleSearchTypeInstances(e){
+        await this.props.fetchTypeInstances(e);
     //     await this.props.fetchAdvancedSearchResults(
     //         this.props.searchValues
     //     );
+       await console.log(this.props.typeInstances);
 
-    // }
+     }
 
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
@@ -120,20 +122,7 @@ class SearchModal extends Component {
                                     ""
                                 )}
                         </Tab>
-                        <Tab
-                            title="Facility Type"
-                            className="advanced-search-container"
-                            active
-                        >
-                            {this.state.activeTab === "Facility Type" ? (
-                                <AdvancedFacilityType
-                                    facilityTypes={this.props.facilityTypes}
-                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
-                                />
-                            ) : (
-                                    ""
-                                )}
-                        </Tab>
+                     
 
 
 
@@ -160,12 +149,13 @@ class SearchModal extends Component {
                             {this.state.activeTab ===
                                 "Resources" ? (
                                     <AdvancedResourceType
-                                        resourceTypeValues={
-                                            this.props.resourceTypeValues
+                                        resourceTypes={
+                                            this.props.resourceTypes
                                         }
 
-                                        resourceTypeValues={this.props.resourceTypeValues}
-                                        handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                        resourceTypes={this.props.resourceTypes}
+                                        handleChange={(e) => this.handleSearchTypeInstances(e)}
+                                        handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
                                     />
                                 ) : (
                                     ""
@@ -306,6 +296,31 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
+                          {/* {DISPLAY TAGS FOR TYPE INSTANCES VALUES} */}
+                          {this.getObjectFromIds(
+                            this.props.searchValues.typeInstanceValues,
+                            this.props.typeInstances
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.resource_name}
+                                    id={entity.id}
+                                    actionType={"REMOVE_RESOURCE_TYPE_INSTANCES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>
@@ -321,7 +336,8 @@ const mapStateToProps = state => {
         facilityOwners: state.dependancies.facilityOwners,
         operationalStatuses: state.dependancies.operationalStatuses,
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
-        resourceTypeValues: state.dependancies.resourceTypeValues,
+        resourceTypes: state.dependancies.resourceTypes,
+        typeInstances: state.facilities.typeInstances,
         results: intersection(
             map(state.searchResults.advancedSearchFacilities)
         )[0]
@@ -332,5 +348,6 @@ export default connect(mapStateToProps, {
     addSearchValues,
     removeSearchValues,
     fetchBasicDetailsResults,
-    fetchAdvancedSearchResults
+    fetchAdvancedSearchResults,
+    fetchTypeInstances
 })(SearchModal);

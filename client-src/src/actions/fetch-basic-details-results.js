@@ -47,6 +47,14 @@ export default searchValues => {
         });
     }
 
+    if (searchValues.typeInstanceValues.length > 0) {
+        query.push({
+            id: {
+                inq: searchValues.typeInstanceValues.map(v => Number(v))
+            }
+        });
+    }
+
 
     if (query.length === 0) {
         query.push({
