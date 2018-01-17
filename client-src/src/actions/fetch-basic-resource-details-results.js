@@ -34,9 +34,9 @@ export default searchValues => {
 
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);
-
+    
     return {
-        type: "FETCH_BASIC_DETAILS_RESULTS",
+        type: "FETCH_BASIC_RESOURCE_DETAILS_RESULTS",
         payload: request
     };
 };
