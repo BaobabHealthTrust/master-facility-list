@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
+import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
-import { map, intersection } from "lodash";
+import { map, intersection, object } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
@@ -17,7 +18,7 @@ class SearchModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: "Location"
+            activeTab: "Location",
         };
     }
 
@@ -25,27 +26,27 @@ class SearchModal extends Component {
         return entities.filter(e => ids.includes(e.id.toString()));
     }
 
-    async handleAddSearchValue(e, type) {          
+    async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
-        await this.props.fetchBasicDetailsResults(
-            this.props.searchValues
-        );
+             if(this.props.searchValues.typeInstanceValues.length > 0){   
+                await this.props.fetchBasicResourceDetailsResults(
+                    this.props.searchValues
+                )}
+               await this.props.fetchBasicDetailsResults(
+                    this.props.searchValues
+              )
+            
     }
 
-  async handleSearchTypeInstances(e){
+    async handleSearchTypeInstances(e) {
         await this.props.fetchTypeInstances(e);
-    //     await this.props.fetchAdvancedSearchResults(
-    //         this.props.searchValues
-    //     );
-       await console.log(this.props.typeInstances);
-
-     }
+    }
 
     async getSearchResults(e) {
-        await this.props.fetchAdvancedSearchResults(this.props.results);
+        await this.props.fetchAdvancedSearchResults(this.state.finalSearchResults);
         await this.props.handleClose(e);
     }
-
+    
     render() {
         return (
             <div id="advanced-search" ref="advancedSearch" class="modal-lg">
@@ -65,7 +66,12 @@ class SearchModal extends Component {
                     </div>
                     <div className="mfl-search-feedback">
                         <span>
-                            <strong>{this.props.results.length}</strong>{" "}
+                            <strong>{
+                                 this.props.results.length > 0? (
+                                 this.props.results.length):"" 
+                                
+
+                                }</strong>{" "}
                             Facilities Match Your Criteria
                         </span>
                         {this.props.results.length > 0 ? (
@@ -122,7 +128,7 @@ class SearchModal extends Component {
                                     ""
                                 )}
                         </Tab>
-                     
+
 
 
 
@@ -296,8 +302,8 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
-                          {/* {DISPLAY TAGS FOR TYPE INSTANCES VALUES} */}
-                          {this.getObjectFromIds(
+                        {/* {DISPLAY TAGS FOR TYPE INSTANCES VALUES} */}
+                        {this.getObjectFromIds(
                             this.props.searchValues.typeInstanceValues,
                             this.props.typeInstances
                         ).map(entity => {
@@ -338,9 +344,7 @@ const mapStateToProps = state => {
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         resourceTypes: state.dependancies.resourceTypes,
         typeInstances: state.facilities.typeInstances,
-        results: intersection(
-            map(state.searchResults.advancedSearchFacilities)
-        )[0]
+        results: map(state.searchResults.advancedSearchFacilities),
     };
 };
 
@@ -349,5 +353,6 @@ export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults,
     fetchAdvancedSearchResults,
-    fetchTypeInstances
+    fetchTypeInstances,
+    fetchBasicResourceDetailsResults
 })(SearchModal);
