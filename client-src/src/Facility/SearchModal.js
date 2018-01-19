@@ -7,7 +7,7 @@ import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
-import { map, intersection, object } from "lodash";
+import { map, intersection} from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
@@ -28,24 +28,25 @@ class SearchModal extends Component {
 
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
-             if(this.props.searchValues.typeInstanceValues.length > 0){   
-                await this.props.fetchBasicResourceDetailsResults(
+         await this.props.fetchBasicResourceDetailsResults(
                     this.props.searchValues
-                )}
-               await this.props.fetchBasicDetailsResults(
+                )
+        await this.props.fetchBasicDetailsResults(
                     this.props.searchValues
               )
-            
-    }
 
+         
+    }
+    
     async handleSearchTypeInstances(e) {
         await this.props.fetchTypeInstances(e);
     }
 
     async getSearchResults(e) {
-        await this.props.fetchAdvancedSearchResults(this.state.finalSearchResults);
+        await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
     }
+    
     
     render() {
         return (
@@ -320,7 +321,7 @@ class SearchModal extends Component {
                                             id,
                                             actionType
                                         );
-                                        await this.props.fetchBasicDetailsResults(
+                                        await this.props.fetchBasicResourceDetailsResults(
                                             this.props.searchValues
                                         );
                                     }}
@@ -344,7 +345,8 @@ const mapStateToProps = state => {
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         resourceTypes: state.dependancies.resourceTypes,
         typeInstances: state.facilities.typeInstances,
-        results: map(state.searchResults.advancedSearchFacilities),
+        results:map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0}).reduce((resultsArray,currentArray) => {return intersection(resultsArray,currentArray)},map(state.searchResults.advancedSearchFacilities)[0])
+        
     };
 };
 

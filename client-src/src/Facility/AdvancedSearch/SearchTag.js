@@ -3,7 +3,7 @@ import React from "react";
 class SearchTag extends React.Component {
     render() {
         return (
-            <div class="chip">
+            <div className="chip">
                 {this.props.name}
                 <i
                     onClick={id =>

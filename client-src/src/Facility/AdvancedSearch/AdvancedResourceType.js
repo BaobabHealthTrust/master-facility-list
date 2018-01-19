@@ -19,6 +19,8 @@ class AdvancedResourceType extends Component {
 
         return (
             <div className="container mfl-tm-5">
+            <div className="row">
+             <div className ="col l6 m12 s12">
                 <select
                     className="browser-default"
                     onChange={e =>
@@ -28,7 +30,10 @@ class AdvancedResourceType extends Component {
                     <option value="0">-- Select Resource Type --</option>
                     {resourceTypeOptions}
                 </select>
-                <br/>
+                </div>
+                
+                <div className ="col l6 m12 s12">
+
                 {this.props.typeInstances.length>0?(
                 <select
                     className="browser-default"
@@ -40,6 +45,21 @@ class AdvancedResourceType extends Component {
                     {resourceTypeInstanceOptions}
                 </select>):""
             }
+            </div>
+            <div className="chip">
+                <i
+                    // onClick={id =>
+                    //     this.props.removeSearchValues(
+                    //         this.props.id,
+                    //         this.props.actionType
+                    //     )
+                    // }
+                    className="mfl-close material-icons"
+                >
+                    add
+                </i>
+            </div>
+            </div>
             </div>
         );
     }
