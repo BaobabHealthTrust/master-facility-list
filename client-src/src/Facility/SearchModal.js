@@ -12,6 +12,7 @@ import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegul
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
+import advancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import fetchTypeInstances from "../actions/fetch-type-instances";
 
 class SearchModal extends Component {
@@ -156,6 +157,27 @@ class SearchModal extends Component {
                             {this.state.activeTab ===
                                 "Resources" ? (
                                     <AdvancedResourceType
+                                        resourceTypes={
+                                            this.props.resourceTypes
+                                        }
+
+                                        resourceTypes={this.props.resourceTypes}
+                                        handleChange={(e) => this.handleSearchTypeInstances(e)}
+                                        handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                        </Tab>
+
+                        <Tab
+                            title="Utilities"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab ===
+                                "Utilities" ? (
+                                    <advancedUtilityType
                                         resourceTypes={
                                             this.props.resourceTypes
                                         }
@@ -345,7 +367,7 @@ const mapStateToProps = state => {
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         resourceTypes: state.dependancies.resourceTypes,
         typeInstances: state.facilities.typeInstances,
-        results:map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0}).reduce((resultsArray,currentArray) => {return intersection(resultsArray,currentArray)},map(state.searchResults.advancedSearchFacilities)[0])
+        results:map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0}).reduce((resultsArray,currentArray) => {return intersection(resultsArray,currentArray)},map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0})[0])
         
     };
 };

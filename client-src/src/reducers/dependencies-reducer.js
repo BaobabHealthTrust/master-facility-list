@@ -8,7 +8,8 @@ export default (
         facilityTypes: [],
         facilityOwners: [],
         regulatoryStatuses: [],
-        searchResourceTypes: []
+        searchResourceTypes: [],
+        utilityTypes :[]
     },
     action
 ) => {
@@ -23,6 +24,7 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
+                utilityTypes: state.utilityTypes
             };
         case "FETCH_UTILITY_TYPES":
             return {
