@@ -75,7 +75,6 @@ class FacilitiesHome extends Component {
                     </blockquote>
                 ) : (
                     <div>
-                        {  console.log(this.props.resourceTypes)}
                         {
                             this.state.isAdvancedSearch ? (
                             <SearchModal

@@ -36,7 +36,7 @@ export default searchValues => {
     const request = axios.get(URL);
     
     return {
-        type: "FETCH_BASIC_RESOURCE_DETAILS_RESULTS",
+        type: "FETCH_BASIC_RESOURCE_RESULTS",
         payload: request
     };
 };

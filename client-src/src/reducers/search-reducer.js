@@ -1,3 +1,4 @@
+import {map} from "lodash";
 export default (
     state = {
         quickSearchFacilities: [],
@@ -20,8 +21,19 @@ export default (
             return {
                 quickSearchFacilities: state.quickSearchFacilities,
                 advancedSearchFacilities: {
-                    basicDetailsFacilities: action.payload.data,
-                    basicDetailsFacilityResources: state.basicDetailsFacilityResources
+                    basicDetailsFacilities: map(action.payload.data,"id"),
+                    basicDetailsFacilityResources:state.advancedSearchFacilities.basicDetailsFacilityResources
+                },
+                advancedSearchResults: state.advancedSearchResults
+            };
+
+            case "FETCH_BASIC_RESOURCE_RESULTS":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: {
+                    basicDetailsFacilities:state.advancedSearchFacilities.basicDetailsFacilities,
+
+                    basicDetailsFacilityResources: map(action.payload.data, "facility_id")
                 },
                 advancedSearchResults: state.advancedSearchResults
             };
@@ -31,15 +43,6 @@ export default (
                 quickSearchFacilities: state.quickSearchFacilities,
                 advancedSearchFacilities: state.advancedSearchFacilities,
                 advancedSearchResults: action.payload.data
-            };
-        case "FETCH_BASIC_RESOURCE_DETAILS_RESULTS":
-            return {
-                quickSearchFacilities: state.quickSearchFacilities,
-                advancedSearchFacilities: {
-                    basicDetailsFacilities: state.basicDetailsFacilities,
-                    basicDetailsFacilityResources: action.payload.data
-                },
-                advancedSearchResults: state.advancedSearchResults
             };
         default:
             return state;
