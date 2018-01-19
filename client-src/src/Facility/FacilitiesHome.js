@@ -9,6 +9,7 @@ import fetchFacilityOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
 import fetchResourceTypes from "../actions/fetch-resource-types";
+import fetchUtilityTypes from "../actions/fetch-utility-types";
 
 import FacilityList from "./FacilityList";
 
@@ -28,6 +29,7 @@ class FacilitiesHome extends Component {
         this.props.fetchFacilityOwners();
         this.props.fetchRegulatoryStatuses();
         this.props.fetchResourceTypes();
+        this.props.fetchUtilityTypes();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -131,5 +133,6 @@ export default connect(mapStateToProps, {
     fetchFacilityTypes,
     fetchFacilityOwners,
     fetchRegulatoryStatuses,
-    fetchResourceTypes
+    fetchResourceTypes,
+    fetchUtilityTypes
 })(FacilitiesHome);

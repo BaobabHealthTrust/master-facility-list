@@ -2,21 +2,9 @@ import React, { Component } from "react";
 import {connect} from "react-redux";
 import addSearchSelectTag from "../../actions/add-search-select-tag";
 
-class AdvancedResourceType extends Component {
-    constructor(props){
-        super(props);
-        this.state ={
-            addSelectTag: [1]
-        };
-    }
+class advancedUtilityType extends Component {
 
-
-   async addResourceSelectTag(value)
-    {
-      
-      this.setState({addSelectTag:value});
-    }
-    
+   
     render() {
         let resourceTypeOptions = <option>Select Resource Type</option>;
         if (this.props.resourceTypes.length > 0) {
@@ -74,12 +62,11 @@ class AdvancedResourceType extends Component {
             </div>
         );
     }
-}
-const mapStateToprops = state => {
-    return{
-     typeInstances: state.facilities.typeInstances,
-     selectTagValue: state.advancedSearchValues.selectTagValue
-    }
-};
 
-export default connect(mapStateToprops,{addSearchSelectTag}) (AdvancedResourceType);
+
+
+
+
+}
+   
+export default  advancedUtilityType;

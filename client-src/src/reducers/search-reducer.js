@@ -3,7 +3,7 @@ export default (
     state = {
         quickSearchFacilities: [],
         advancedSearchFacilities: {
-            basicDetailsFacilities: [],
+            basicDetailsFacilities: [0],
             basicDetailsFacilityResources: []
         },
         advancedSearchResults: [],
