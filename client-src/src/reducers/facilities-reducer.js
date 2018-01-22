@@ -8,7 +8,8 @@ export default (
         isNetworkError: false,
         isLoading: true,
         typeResourceInstances: [],
-        typeUtilityInstances: []
+        typeUtilityInstances: [],
+        typeServiceInstances: []
     },
     action
 ) => {
@@ -21,7 +22,9 @@ export default (
             isNetworkError: true,
             isLoading: false,
             typeResourceInstances: state.typeResourceInstances,
-            typeUtilityInstances: state.typeUtilityInstances            
+            typeUtilityInstances: state.typeUtilityInstances,
+            typeServiceInstances: state.typeServiceInstances,
+
         };
     }
     switch (action.type) {
@@ -35,7 +38,8 @@ export default (
                 isNetworkError: false,
                 isLoading: false,
                 typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
 
             };
         case 'SET_CURRENT_DETAILS':
@@ -48,7 +52,8 @@ export default (
                 isNetworkError: false,
                 isLoading: false,
                 typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
 
             };
         case 'FETCH_FACILITY_DETAILS':
@@ -61,7 +66,9 @@ export default (
                 isNetworkError: false,
                 isLoading: false,
                 typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
+                
 
             };
         case 'FETCH_CURRENT_RESOURCES':
@@ -73,8 +80,9 @@ export default (
                 currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,                
-                typeUtilityInstances: state.typeUtilityInstances
+                typeResourceInstances: state.typeResourceInstances,
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
 
             };
         case 'FETCH_CURRENT_UTILITIES':
@@ -86,8 +94,9 @@ export default (
                 currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,                
-                typeUtilityInstances: state.typeUtilityInstances
+                typeResourceInstances: state.typeResourceInstances,
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
 
             };
         case 'FETCH_CURRENT_SERVICES':
@@ -99,11 +108,13 @@ export default (
                 currentServices: action.payload.data,
                 isNetworkError: false,
                 isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,                
-                typeUtilityInstances: state.typeUtilityInstances
+                typeResourceInstances: state.typeResourceInstances,
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
+                
 
             };
-            case 'FETCH_RESOURCE_TYPE_INSTANCES':
+        case 'FETCH_RESOURCE_TYPE_INSTANCES':
             return {
                 list: state.list,
                 currentDetails: state.currentDetails,
@@ -112,10 +123,11 @@ export default (
                 currentServices: state.currentServices,
                 isNetworkError: false,
                 isLoading: false,
-                typeResourceInstances: action.payload.data,               
-                typeUtilityInstances: state.typeUtilityInstances
+                typeResourceInstances: action.payload.data,
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: state.typeServiceInstances
             };
-            case 'FETCH_UTILITY_TYPE_INSTANCES':
+        case 'FETCH_UTILITY_TYPE_INSTANCES':
             return {
                 list: state.list,
                 currentDetails: state.currentDetails,
@@ -125,8 +137,25 @@ export default (
                 isNetworkError: false,
                 isLoading: false,
                 typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: action.payload.data                
+                typeUtilityInstances: action.payload.data,
+                typeServiceInstances: state.typeServiceInstances
             };
+
+            case 'FETCH_SERVICE_TYPE_INSTANCES':
+            return {
+                list: state.list,
+                currentDetails: state.currentDetails,
+                currentResources: state.currentResources,
+                currentUtilities: state.currentUtilities,
+                currentServices: state.currentServices,
+                isNetworkError: false,
+                isLoading: false,
+                typeResourceInstances: state.typeResourceInstances,
+                typeUtilityInstances: state.typeUtilityInstances,
+                typeServiceInstances: action.payload.data,
+            };
+
+
         default:
             return state;
     }
