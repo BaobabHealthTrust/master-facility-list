@@ -11,10 +11,10 @@ class AdvancedUtilityType extends Component {
             ));
         }
 
-        let resourceTypeInstanceOptions = <option>Select Instance Type</option>;
-        if (this.props.typeInstances.length > 0) {
-            resourceTypeInstanceOptions = this.props.typeInstances.map(ti => (
-                <option key={ti.id} value={ti.id}>{ti.resource_name}</option>
+        let utilityTypeInstanceOptions = <option>Select Instance Type</option>;
+        if (this.props.utilityTypes.length > 0) {
+            utilityTypeInstanceOptions = this.props.typeUtilityInstances.map(tui => (
+                <option key={tui.id} value={tui.id}>{tui.utility_name}</option>
             ));
         }
 
@@ -33,7 +33,7 @@ class AdvancedUtilityType extends Component {
 
                 
                     <br/>
-                {this.props.typeInstances.length>0?(
+                {this.props.typeUtilityInstances.length>0?(
                 <select
                     className="browser-default"
                     onChange={e =>
@@ -41,7 +41,7 @@ class AdvancedUtilityType extends Component {
                     }
                 >
                     <option value="0">-- Select Instance Type --</option>
-                    {resourceTypeInstanceOptions}
+                    {utilityTypeInstanceOptions}
                 </select>):""
             }
           
@@ -51,7 +51,7 @@ class AdvancedUtilityType extends Component {
 }
 const mapStateToprops = state => {
     return{
-     typeInstances: state.facilities.typeInstances,
+     typeUtilityInstances: state.facilities.typeUtilityInstances,
     }
 };
 

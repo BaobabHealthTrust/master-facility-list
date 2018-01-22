@@ -6,6 +6,7 @@ import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
+import fetchBasicUtilityDetailsResults from "../actions/fetch-basic-utility-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection} from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
@@ -14,6 +15,7 @@ import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
+import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -29,9 +31,12 @@ class SearchModal extends Component {
 
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
-         await this.props.fetchBasicResourceDetailsResults(
+        await this.props.fetchBasicResourceDetailsResults(
                     this.props.searchValues
                 )
+        await this.props.fetchBasicUtilityDetailsResults(
+            this.props.searchValues
+        )
         await this.props.fetchBasicDetailsResults(
                     this.props.searchValues
               )
@@ -39,8 +44,11 @@ class SearchModal extends Component {
         
     }
     
-    async handleSearchTypeInstances(e) {
+    async handleSearchTypeResourceInstances(e) {
         await this.props.fetchResourceTypeInstances(e);
+    }
+    async handleSearchTypeUtilityInstances(e) {
+        await this.props.fetchUtilityTypeInstances(e);
     }
 
     async getSearchResults(e) {
@@ -156,12 +164,8 @@ class SearchModal extends Component {
                             {this.state.activeTab ===
                                 "Resources" ? (
                                     <AdvancedResourceType
-                                        resourceTypes={
-                                            this.props.resourceTypes
-                                        }
-
                                         resourceTypes={this.props.resourceTypes}
-                                        handleChange={(e) => this.handleSearchTypeInstances(e)}
+                                        handleChange={(e) => this.handleSearchTypeResourceInstances(e)}
                                         handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
                                     />
                                 ) : (
@@ -176,12 +180,8 @@ class SearchModal extends Component {
                             {this.state.activeTab ===
                                 "Utilities" ? (
                                     <AdvancedUtilityType
-                                        utilityTypes={
-                                            this.props.utilityTypes
-                                        }
-
                                         utilityTypes={this.props.utilityTypes}
-                                        handleChange={(e) => this.handleSearchTypeInstances(e)}
+                                        handleChange={(e) => this.handleSearchTypeUtilityInstances(e)}
                                         handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
                                     />
                                 ) : (
@@ -323,7 +323,7 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
-                        {/* {DISPLAY TAGS FOR TYPE INSTANCES VALUES} */}
+                        {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
                         {this.getObjectFromIds(
                             this.props.searchValues.typeResourceInstanceValues,
                             this.props.typeResourceInstances
@@ -348,6 +348,31 @@ class SearchModal extends Component {
                                 />
                             );
                         })}
+                        {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
+                        {this.getObjectFromIds(
+                            this.props.searchValues.typeUtilityInstanceValues,
+                            this.props.typeUtilityInstances
+                        ).map(entity => {
+                            return (
+                                <SearchTag
+                                    name={entity.utility_name}
+                                    id={entity.id}
+                                    actionType={"REMOVE_UTILITY_TYPE_INSTANCES"}
+                                    removeSearchValues={async (
+                                        id,
+                                        actionType
+                                    ) => {
+                                        await this.props.removeSearchValues(
+                                            id,
+                                            actionType
+                                        );
+                                        await this.props.fetchBasicUtilityDetailsResults(
+                                            this.props.searchValues
+                                        );
+                                    }}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>
@@ -366,6 +391,7 @@ const mapStateToProps = state => {
         resourceTypes: state.dependancies.resourceTypes,
         utilityTypes: state.dependancies.utilityTypes,
         typeResourceInstances: state.facilities.typeResourceInstances,
+        typeUtilityInstances: state.facilities.typeUtilityInstances,
         results:map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0}).reduce((resultsArray,currentArray) => {return intersection(resultsArray,currentArray)},map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0})[0])
         
     };
@@ -377,5 +403,7 @@ export default connect(mapStateToProps, {
     fetchBasicDetailsResults,
     fetchAdvancedSearchResults,
     fetchResourceTypeInstances,
-    fetchBasicResourceDetailsResults
+    fetchUtilityTypeInstances,
+    fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults
 })(SearchModal);

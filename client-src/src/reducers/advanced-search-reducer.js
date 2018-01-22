@@ -21,7 +21,6 @@ export default (
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                UtilityTypes:state.UtilityTypes,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_OPERATIONAL_STATUS_VALUES":
@@ -35,7 +34,6 @@ export default (
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                UtilityTypes:state.UtilityTypes,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_FACILITY_TYPE_VALUES":
@@ -49,7 +47,6 @@ export default (
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                UtilityTypes:state.UtilityTypes,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_FACILITY_OWNER_VALUES":
@@ -63,7 +60,6 @@ export default (
                 ]),
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                UtilityTypes:state.UtilityTypes,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_REGULATORY_STATUS_VALUES":
@@ -77,7 +73,6 @@ export default (
                     action.payload
                 ]),
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                UtilityTypes:state.UtilityTypes,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_RESOURCE_TYPE_INSTANCE":
@@ -93,7 +88,7 @@ export default (
                 ]),
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
-        case "ADD_UTILITY_INSTANCE_TYPE":
+        case "ADD_UTILITY_TYPE_INSTANCE":
             return {
                 facilityTypeValues: state.facilityTypeValues,
                 districtValues: state.districtValues,
