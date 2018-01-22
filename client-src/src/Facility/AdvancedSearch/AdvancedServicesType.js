@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
+import addSearchSelectTag from "../../actions/add-search-select-tag";
 
-class AdvancedResourceType extends Component {
+class advancedUtilityType extends Component {
 
+   
     render() {
         let resourceTypeOptions = <option>Select Resource Type</option>;
         if (this.props.resourceTypes.length > 0) {
@@ -12,15 +14,16 @@ class AdvancedResourceType extends Component {
         }
 
         let resourceTypeInstanceOptions = <option>Select Instance Type</option>;
-        if (this.props.typeResourceInstances.length > 0) {
-            resourceTypeInstanceOptions = this.props.typeResourceInstances.map(ti => (
+        if (this.props.typeInstances.length > 0) {
+            resourceTypeInstanceOptions = this.props.typeInstances.map(ti => (
                 <option key={ti.id} value={ti.id}>{ti.resource_name}</option>
             ));
         }
 
         return (
             <div className="container mfl-tm-5">
-        
+            <div className="row">
+             <div className ="col l6 m12 s12">
                 <select
                     className="browser-default"
                     onChange={e =>
@@ -30,10 +33,11 @@ class AdvancedResourceType extends Component {
                     <option value="0">-- Select Resource Type --</option>
                     {resourceTypeOptions}
                 </select>
-
+                </div>
                 
-                    <br/>
-                {this.props.typeResourceInstances.length>0?(
+                <div className ="col l6 m12 s12">
+
+                {this.props.typeInstances.length>0?(
                 <select
                     className="browser-default"
                     onChange={e =>
@@ -44,15 +48,25 @@ class AdvancedResourceType extends Component {
                     {resourceTypeInstanceOptions}
                 </select>):""
             }
-          
+            </div>
+            <div className="chip">
+                <i
+                     onClick={(e) => this.setState({addSelectTag: this.state.addSelectTag++})}
+                     
+                    className="mfl-close material-icons"
+                >
+                    add
+                </i>
+            </div>
+            </div>
             </div>
         );
     }
-}
-const mapStateToprops = state => {
-    return{
-        typeResourceInstances: state.facilities.typeResourceInstances,
-    }
-};
 
-export default connect(mapStateToprops,{}) (AdvancedResourceType);
+
+
+
+
+}
+   
+export default  advancedUtilityType;

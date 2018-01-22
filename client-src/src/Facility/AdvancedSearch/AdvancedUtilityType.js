@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
-import addSearchSelectTag from "../../actions/add-search-select-tag";
 
-class advancedUtilityType extends Component {
+class AdvancedUtilityType extends Component {
 
-   
     render() {
-        let resourceTypeOptions = <option>Select Resource Type</option>;
-        if (this.props.resourceTypes.length > 0) {
-            resourceTypeOptions = this.props.resourceTypes.map(rt => (
-                <option key={rt.id} value={rt.id}>{rt.resource_type}</option>
+        let utilityTypeOptions = <option>Select Utility Type</option>;
+        if (this.props.utilityTypes.length > 0) {
+            utilityTypeOptions = this.props.utilityTypes.map(rt => (
+                <option key={rt.id} value={rt.id}>{rt.utility_type}</option>
             ));
         }
 
@@ -22,51 +20,39 @@ class advancedUtilityType extends Component {
 
         return (
             <div className="container mfl-tm-5">
-            <div className="row">
-             <div className ="col l6 m12 s12">
+        
                 <select
                     className="browser-default"
                     onChange={e =>
                         this.props.handleChange(e)
                     }
                 >
-                    <option value="0">-- Select Resource Type --</option>
-                    {resourceTypeOptions}
+                    <option value="0">-- Select Utility Type --</option>
+                    {utilityTypeOptions}
                 </select>
-                </div>
-                
-                <div className ="col l6 m12 s12">
 
+                
+                    <br/>
                 {this.props.typeInstances.length>0?(
                 <select
                     className="browser-default"
                     onChange={e =>
-                        this.props.handleChangeAddSearchValue(e, "ADD_RESOURCE_TYPE_INSTANCE")
+                        this.props.handleChangeAddSearchValue(e, "ADD_UTILITY_TYPE_INSTANCE")
                     }
                 >
                     <option value="0">-- Select Instance Type --</option>
                     {resourceTypeInstanceOptions}
                 </select>):""
             }
-            </div>
-            <div className="chip">
-                <i
-                     onClick={(e) => this.setState({addSelectTag: this.state.addSelectTag++})}
-                     
-                    className="mfl-close material-icons"
-                >
-                    add
-                </i>
-            </div>
-            </div>
+          
             </div>
         );
     }
-
-
-
-
-
 }
-   
-export default  advancedUtilityType;
+const mapStateToprops = state => {
+    return{
+     typeInstances: state.facilities.typeInstances,
+    }
+};
+
+export default connect(mapStateToprops,{}) (AdvancedUtilityType);

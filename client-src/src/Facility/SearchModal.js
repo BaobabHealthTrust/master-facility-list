@@ -12,8 +12,8 @@ import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegul
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
-import advancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
-import fetchTypeInstances from "../actions/fetch-type-instances";
+import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
+import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -36,18 +36,18 @@ class SearchModal extends Component {
                     this.props.searchValues
               )
 
-         
+        
     }
     
     async handleSearchTypeInstances(e) {
-        await this.props.fetchTypeInstances(e);
+        await this.props.fetchResourceTypeInstances(e);
     }
 
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
     }
-    
+  
     
     render() {
         return (
@@ -69,14 +69,13 @@ class SearchModal extends Component {
                     <div className="mfl-search-feedback">
                         <span>
                             <strong>{
-                                 this.props.results.length > 0? (
-                                 this.props.results.length):"" 
-                                
-
+                                 Array.isArray(this.props.results)?
+                                 (this.props.results.length):
+                                 "" 
                                 }</strong>{" "}
                             Facilities Match Your Criteria
                         </span>
-                        {this.props.results.length > 0 ? (
+                        { Array.isArray(this.props.results)? (
                             <span className="right">
                                 <a
                                     className="btn mfl-get-results-btn"
@@ -169,7 +168,6 @@ class SearchModal extends Component {
                                     ""
                                 )}
                         </Tab>
-
                         <Tab
                             title="Utilities"
                             className="advanced-search-container"
@@ -177,12 +175,12 @@ class SearchModal extends Component {
                         >
                             {this.state.activeTab ===
                                 "Utilities" ? (
-                                    <advancedUtilityType
-                                        resourceTypes={
-                                            this.props.resourceTypes
+                                    <AdvancedUtilityType
+                                        utilityTypes={
+                                            this.props.utilityTypes
                                         }
 
-                                        resourceTypes={this.props.resourceTypes}
+                                        utilityTypes={this.props.utilityTypes}
                                         handleChange={(e) => this.handleSearchTypeInstances(e)}
                                         handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
                                     />
@@ -327,8 +325,8 @@ class SearchModal extends Component {
                         })}
                         {/* {DISPLAY TAGS FOR TYPE INSTANCES VALUES} */}
                         {this.getObjectFromIds(
-                            this.props.searchValues.typeInstanceValues,
-                            this.props.typeInstances
+                            this.props.searchValues.typeResourceInstanceValues,
+                            this.props.typeResourceInstances
                         ).map(entity => {
                             return (
                                 <SearchTag
@@ -366,7 +364,8 @@ const mapStateToProps = state => {
         operationalStatuses: state.dependancies.operationalStatuses,
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         resourceTypes: state.dependancies.resourceTypes,
-        typeInstances: state.facilities.typeInstances,
+        utilityTypes: state.dependancies.utilityTypes,
+        typeResourceInstances: state.facilities.typeResourceInstances,
         results:map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0}).reduce((resultsArray,currentArray) => {return intersection(resultsArray,currentArray)},map(state.searchResults.advancedSearchFacilities).filter(filteredArray =>{return filteredArray.length >0})[0])
         
     };
@@ -377,6 +376,6 @@ export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults,
     fetchAdvancedSearchResults,
-    fetchTypeInstances,
+    fetchResourceTypeInstances,
     fetchBasicResourceDetailsResults
 })(SearchModal);
