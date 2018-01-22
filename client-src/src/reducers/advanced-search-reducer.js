@@ -7,9 +7,8 @@ export default (
         facilityTypeValues: [],
         facilityOwnerValues: [],
         regulatoryStatusValues: [],
-        resourceTypeValue: [],
-        typeInstanceValues: [],
-        selectTagValue: 1
+        typeResourceInstanceValues: [],
+        typeUtilityInstanceValues: []
     },
     action
 ) => {
@@ -21,9 +20,9 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                UtilityTypes:state.UtilityTypes,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_OPERATIONAL_STATUS_VALUES":
             return {
@@ -35,9 +34,9 @@ export default (
                 ]),
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                UtilityTypes:state.UtilityTypes,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_FACILITY_TYPE_VALUES":
             return {
@@ -49,9 +48,9 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                UtilityTypes:state.UtilityTypes,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_FACILITY_OWNER_VALUES":
             return {
@@ -63,9 +62,9 @@ export default (
                     action.payload
                 ]),
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                UtilityTypes:state.UtilityTypes,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_REGULATORY_STATUS_VALUES":
             return {
@@ -77,22 +76,9 @@ export default (
                     ...state.facilityOwnerValues,
                     action.payload
                 ]),
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
-            };
-        case "ADD_RESOURCE_TYPE_VALUE":
-            return {
-                facilityTypeValues: state.facilityTypeValues,
-                districtValues: state.districtValues,
-                operationalStatusValues: state.operationalStatusValues,
-                facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: uniq([
-                    ...state.resourceTypeValue,
-                    action.payload
-                ]),
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                UtilityTypes:state.UtilityTypes,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "ADD_RESOURCE_TYPE_INSTANCE":
             return {
@@ -101,26 +87,25 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: uniq([
-                    ...state.typeInstanceValues,
+                typeResourceInstanceValues: uniq([
+                    ...state.typeResourceInstanceValues,
                     action.payload
                 ]),
-                selectTagValue: state.selectTagValue
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
-            case "ADD_RESOURCE_SELECT_TAG":
+        case "ADD_UTILITY_INSTANCE_TYPE":
             return {
                 facilityTypeValues: state.facilityTypeValues,
                 districtValues: state.districtValues,
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue+action.payload
-    
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: uniq([
+                    ...state.typeUtilityInstanceValues,
+                    action.payload
+                ]),
             };
-
         case "REMOVE_DISTRICT_VALUES":
             return {
                 facilityTypeValues: state.facilityTypeValues,
@@ -131,9 +116,8 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "REMOVE_OPERATIONAL_STATUS_VALUES":
             return {
@@ -145,9 +129,8 @@ export default (
                 ),
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "REMOVE_FACILITY_TYPE_VALUES":
             return {
@@ -159,9 +142,8 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "REMOVE_FACILITY_OWNER_VALUES":
             return {
@@ -173,9 +155,8 @@ export default (
                     action.payload.toString()
                 ),
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "REMOVE_REGULATORY_STATUS_VALUES":
             return {
@@ -186,23 +167,8 @@ export default (
                 regulatoryStatusValues: pull(
                     state.regulatoryStatusValues, action.payload.toString()
                 ),
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: state.typeInstanceValues,
-                selectTagValue: state.selectTagValue
-            };
-        case "REMOVE_RESOURCE_TYPE_VALUES":
-            return {
-                facilityTypeValues: state.facilityTypeValues,
-                districtValues: state.districtValues,
-                operationalStatusValues: state.operationalStatusValues,
-                facilityOwnerValues: state.facilityOwnerValues,
-                regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: pull(
-                    state.resourceTypeValue, action.payload.toString()
-                ),
-                typeInstanceValues: state.typeInstanceValues
-
-       ,         selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
             };
         case "REMOVE_RESOURCE_TYPE_INSTANCES":
             return {
@@ -211,9 +177,18 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                resourceTypeValue: state.resourceTypeValue,
-                typeInstanceValues: pull(state.typeInstanceValues, action.payload.toString()),
-                selectTagValue: state.selectTagValue
+                typeResourceInstanceValues: pull(state.typeResourceInstanceValues, action.payload.toString()),
+                typeUtilityInstanceValues: state.typeUtilityInstanceValues
+            };
+        case "REMOVE_UTILITY_TYPE_INSTANCES":
+            return {
+                facilityTypeValues: state.facilityTypeValues,
+                districtValues: state.districtValues,
+                operationalStatusValues: state.operationalStatusValues,
+                facilityOwnerValues: state.facilityOwnerValues,
+                regulatoryStatusValues: state.regulatoryStatusValues,
+                typeResourceInstanceValues: state.typeResourceInstanceValues,
+                typeUtilityInstanceValues: pull(state.typeUtilityInstanceValues, action.payload.toString()),
             };
 
         default:

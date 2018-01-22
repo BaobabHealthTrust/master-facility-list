@@ -7,10 +7,10 @@ export default searchValues => {
 
     const query = [];
 
-    if (searchValues.typeInstanceValues.length > 0) {
+    if (searchValues.typeResourceInstanceValues.length > 0) {
         query.push({
             resource_id: {
-                inq: searchValues.typeInstanceValues.map(v => Number(v))
+                inq: searchValues.typeResourceInstanceValues.map(v => Number(v))
             }
         });
     }

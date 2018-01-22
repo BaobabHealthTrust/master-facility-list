@@ -10,6 +10,7 @@ import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
 import fetchResourceTypes from "../actions/fetch-resource-types";
 import fetchUtilityTypes from "../actions/fetch-utility-types";
+import fetchServiceTypes from "../actions/fetch-service-types";
 
 import FacilityList from "./FacilityList";
 
@@ -30,6 +31,7 @@ class FacilitiesHome extends Component {
         this.props.fetchRegulatoryStatuses();
         this.props.fetchResourceTypes();
         this.props.fetchUtilityTypes();
+        this.props.fetchServiceTypes();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -58,6 +60,8 @@ class FacilitiesHome extends Component {
             isAdvancedSearch: true
         });
     }
+
+    
 
     render() {
 
@@ -121,7 +125,6 @@ const mapStateToProps = state => {
         isLoading: state.facilities.isLoading,
         download: state.downloads.data,
         searchResults: state.searchResults.advancedSearchResults,
-        resourceTypes: state.dependancies.resourceTypes
     };
 };
 
@@ -134,5 +137,6 @@ export default connect(mapStateToProps, {
     fetchFacilityOwners,
     fetchRegulatoryStatuses,
     fetchResourceTypes,
-    fetchUtilityTypes
+    fetchUtilityTypes,
+    fetchServiceTypes
 })(FacilitiesHome);

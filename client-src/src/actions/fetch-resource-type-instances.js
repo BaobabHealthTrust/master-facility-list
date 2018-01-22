@@ -1,7 +1,7 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export default function fetchTypeInstances(e) {
+export default function fetchResourceTypeInstances(e) {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `Resources`;
 
@@ -14,7 +14,7 @@ export default function fetchTypeInstances(e) {
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);
     return {
-        type: 'FETCH_TYPE_INSTANCES',
+        type: 'FETCH_RESOURCE_TYPE_INSTANCES',
         payload: request
     };
 }
