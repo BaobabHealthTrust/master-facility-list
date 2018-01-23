@@ -1,13 +1,13 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export default function fetchResourceTypeInstances(e) {
+export default function fetchResourceTypeInstances(value) {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `Resources`;
 
     const FILTER = {
         where: {
-            resource_type_id: e.target.value
+            resource_type_id: value
         }
     };
 

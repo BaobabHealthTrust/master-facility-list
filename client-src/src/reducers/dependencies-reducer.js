@@ -9,7 +9,7 @@ export default (
         facilityOwners: [],
         regulatoryStatuses: [],
         searchResourceTypes: [],
-        serviceInstance:[]
+        serviceInstance: []
 
     },
     action
@@ -99,7 +99,7 @@ export default (
                 regulatoryStatuses: action.payload.data,
                 serviceInstance: state.serviceInstance
             };
-            case "FETCH_SERVICE_TYPES":
+        case "FETCH_SERVICE_TYPES":
             return {
                 resourceTypes: state.resourceTypes,
                 utilityTypes: state.utilityTypes,
@@ -108,7 +108,7 @@ export default (
                 operationalStatuses: state.operationalStatuses,
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
-                regulatoryStatuses: action.payload.data,
+                regulatoryStatuses: state.regulatoryStatuses,
                 serviceInstance: action.payload.data
             };
 
