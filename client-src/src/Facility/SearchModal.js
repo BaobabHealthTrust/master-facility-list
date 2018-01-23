@@ -25,12 +25,17 @@ class SearchModal extends Component {
         super(props);
         this.state = {
             activeTab: "Location",
+            id: this.props.searchValues.typeResourceInstanceValues,
+            entity: this.props.typeResourceInstances
         };
     }
 
     getObjectFromIds(ids, entities) {
         return entities.filter(e => ids.includes(e.id.toString()));
     }
+
+
+
 
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
@@ -49,8 +54,8 @@ class SearchModal extends Component {
 
     }
 
-    async handleSearchTypeResourceInstances(e) {
-        await this.props.fetchResourceTypeInstances(e);
+    async handleSearchTypeResourceInstances(value) {
+        await this.props.fetchResourceTypeInstances(value.target.value);
     }
     async handleSearchTypeUtilityInstances(e) {
         await this.props.fetchUtilityTypeInstances(e);
@@ -67,6 +72,7 @@ class SearchModal extends Component {
 
 
     render() {
+
         return (
             <div id="advanced-search" ref="advancedSearch" class="modal-lg">
                 <div class="modal-content">
@@ -174,7 +180,7 @@ class SearchModal extends Component {
                                 "Resources" ? (
                                     <AdvancedResourceType
                                         resourceTypes={this.props.resourceTypes}
-                                        handleChange={(e) => this.handleSearchTypeResourceInstances(e)}
+                                        handleChange={(value) => this.handleSearchTypeResourceInstances(value)}
                                         handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
                                     />
                                 ) : (

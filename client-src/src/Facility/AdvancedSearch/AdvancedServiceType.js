@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 class AdvancedServiceType extends Component {
 
     render() {
+        const serviceTypeId = (this.props.typeServiceInstances.length > 0 && this.props.typeServiceInstances[0].service_type_id) || 0;
+
         let serviceTypeOptions = <option>Select Service Type</option>;
         if (this.props.serviceTypes.length > 0) {
             serviceTypeOptions = this.props.serviceTypes.map(st => (
-                <option key={st.id} value={st.id}>{st.service_type}</option>
+                <option selected={st.id === serviceTypeId ? true : false} key={st.id} value={st.id}>{st.service_type}</option>
             ));
         }
 
@@ -20,7 +22,7 @@ class AdvancedServiceType extends Component {
 
         return (
             <div className="container mfl-tm-5">
-        
+
                 <select
                     className="browser-default"
                     onChange={e =>
@@ -31,28 +33,28 @@ class AdvancedServiceType extends Component {
                     {serviceTypeOptions}
                 </select>
 
-                
-                    <br/>
-                {this.props.typeServiceInstances.length>0?(
-                <select
-                    className="browser-default"
-                    onChange={e =>
-                        this.props.handleChangeAddSearchValue(e, "ADD_SERVICE_TYPE_INSTANCE")
-                    }
-                >
-                    <option value="0">-- Select Instance Type --</option>
-                    {serviceTypeInstanceOptions}
-                </select>):""
-            }
-          
+
+                <br />
+                {this.props.typeServiceInstances.length > 0 ? (
+                    <select
+                        className="browser-default"
+                        onChange={e =>
+                            this.props.handleChangeAddSearchValue(e, "ADD_SERVICE_TYPE_INSTANCE")
+                        }
+                    >
+                        <option value="0">-- Select Instance Type --</option>
+                        {serviceTypeInstanceOptions}
+                    </select>) : ""
+                }
+
             </div>
         );
     }
 }
 const mapStateToprops = state => {
-    return{
-     typeServiceInstances: state.facilities.typeServiceInstances,
+    return {
+        typeServiceInstances: state.facilities.typeServiceInstances,
     }
 };
 
-export default connect(mapStateToprops,{}) (AdvancedServiceType);
+export default connect(mapStateToprops, {})(AdvancedServiceType);
