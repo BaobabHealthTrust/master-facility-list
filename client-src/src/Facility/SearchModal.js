@@ -34,24 +34,32 @@ class SearchModal extends Component {
         return entities.filter(e => ids.includes(e.id.toString()));
     }
 
-
-
-
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
         await this.props.fetchBasicResourceDetailsResults(
             this.props.searchValues
-        )
+        );
         await this.props.fetchBasicUtilityDetailsResults(
             this.props.searchValues
-        )
+        );
         await this.props.fetchBasicServiceDetailsResults(
             this.props.searchValues
-        )
-        await this.props.fetchBasicDetailsResults(
-            this.props.searchValues
-        )
+        );
+        await this.props.fetchBasicDetailsResults(this.props.searchValues);
+    }
 
+    async handleRemoveResults() {
+        await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
+        await this.props.fetchBasicDetailsResults(this.props.searchValues);
+        await this.props.fetchBasicResourceDetailsResults(
+            this.props.searchValues
+        );
+        await this.props.fetchBasicUtilityDetailsResults(
+            this.props.searchValues
+        );
+        await this.props.fetchBasicServiceDetailsResults(
+            this.props.searchValues
+        );
     }
 
     async handleSearchTypeResourceInstances(value) {
@@ -64,15 +72,15 @@ class SearchModal extends Component {
         await this.props.fetchServiceTypeInstances(e);
     }
 
-
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
     }
-
+    // removeSearchResults() {
+    //     //alert("removed");
+    // }
 
     render() {
-
         return (
             <div id="advanced-search" ref="advancedSearch" class="modal-lg">
                 <div class="modal-content">
@@ -85,17 +93,22 @@ class SearchModal extends Component {
                                 href="#!"
                                 onClick={e => this.getSearchResults(e)}
                             >
-                                <i class="material-icons">close</i>
+                                <i
+                                    class="material-icons"
+                                    onClick={() => this.handleRemoveResults()}
+                                >
+                                    close
+                                </i>
                             </a>
                         </span>
                     </div>
                     <div className="mfl-search-feedback">
                         <span>
-                            <strong>{
-                                Array.isArray(this.props.results) ?
-                                    (this.props.results.length) :
-                                    ""
-                            }</strong>{" "}
+                            <strong>
+                                {Array.isArray(this.props.results)
+                                    ? this.props.results.length
+                                    : ""}
+                            </strong>{" "}
                             Facilities Match Your Criteria
                         </span>
                         {Array.isArray(this.props.results) ? (
@@ -108,8 +121,8 @@ class SearchModal extends Component {
                                 </a>
                             </span>
                         ) : (
-                                ""
-                            )}
+                            ""
+                        )}
                     </div>
 
                     <Tabs
@@ -126,11 +139,13 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Location" ? (
                                 <AdvancedLocation
                                     districts={this.props.districts}
-                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Ownership and Regulation"
@@ -138,23 +153,24 @@ class SearchModal extends Component {
                             active
                         >
                             {this.state.activeTab ===
-                                "Ownership and Regulation" ? (
-                                    <AdvancedOwnershipRegulation
-                                        operationalStatuses={
-                                            this.props.operationalStatuses
-                                        }
-                                        facilityTypes={this.props.facilityTypes}
-                                        facilityOwners={this.props.facilityOwners}
-                                        regulatoryStatuses={this.props.regulatoryStatuses}
-                                        handleChange={(e, type) => this.handleAddSearchValue(e, type)}
-                                    />
-                                ) : (
-                                    ""
-                                )}
+                            "Ownership and Regulation" ? (
+                                <AdvancedOwnershipRegulation
+                                    operationalStatuses={
+                                        this.props.operationalStatuses
+                                    }
+                                    facilityTypes={this.props.facilityTypes}
+                                    facilityOwners={this.props.facilityOwners}
+                                    regulatoryStatuses={
+                                        this.props.regulatoryStatuses
+                                    }
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
-
-
-
 
                         <Tab
                             title="Facility Type"
@@ -164,11 +180,13 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Facility Type" ? (
                                 <AdvancedFacilityType
                                     facilityTypes={this.props.facilityTypes}
-                                    handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
 
                         <Tab
@@ -176,50 +194,60 @@ class SearchModal extends Component {
                             className="advanced-search-container"
                             active
                         >
-                            {this.state.activeTab ===
-                                "Resources" ? (
-                                    <AdvancedResourceType
-                                        resourceTypes={this.props.resourceTypes}
-                                        handleChange={(value) => this.handleSearchTypeResourceInstances(value)}
-                                        handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
-                                    />
-                                ) : (
-                                    ""
-                                )}
+                            {this.state.activeTab === "Resources" ? (
+                                <AdvancedResourceType
+                                    resourceTypes={this.props.resourceTypes}
+                                    handleChange={value =>
+                                        this.handleSearchTypeResourceInstances(
+                                            value
+                                        )
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Utilities"
                             className="advanced-search-container"
                             active
                         >
-                            {this.state.activeTab ===
-                                "Utilities" ? (
-                                    <AdvancedUtilityType
-                                        utilityTypes={this.props.utilityTypes}
-                                        handleChange={(e) => this.handleSearchTypeUtilityInstances(e)}
-                                        handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
-                                    />
-                                ) : (
-                                    ""
-                                )}
+                            {this.state.activeTab === "Utilities" ? (
+                                <AdvancedUtilityType
+                                    utilityTypes={this.props.utilityTypes}
+                                    handleChange={e =>
+                                        this.handleSearchTypeUtilityInstances(e)
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Services"
                             className="advanced-search-container"
                             active
                         >
-                            {this.state.activeTab ===
-                                "Services" ? (
-                                    <AdvancedServiceType
-                                        serviceTypes={this.props.serviceTypes}
-                                        handleChange={(e) => this.handleSearchTypeServiceInstances(e)}
-                                        handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
-                                    />
-                                ) : (
-                                    ""
-                                )}
+                            {this.state.activeTab === "Services" ? (
+                                <AdvancedServiceType
+                                    serviceTypes={this.props.serviceTypes}
+                                    handleChange={e =>
+                                        this.handleSearchTypeServiceInstances(e)
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
-
                     </Tabs>
                 </div>
                 <div class="modal-footer">
@@ -337,7 +365,9 @@ class SearchModal extends Component {
                                 <SearchTag
                                     name={entity.facility_regulatory_status}
                                     id={entity.id}
-                                    actionType={"REMOVE_REGULATORY_STATUS_VALUES"}
+                                    actionType={
+                                        "REMOVE_REGULATORY_STATUS_VALUES"
+                                    }
                                     removeSearchValues={async (
                                         id,
                                         actionType
@@ -356,13 +386,15 @@ class SearchModal extends Component {
                         {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
                         {this.getObjectFromIds(
                             this.props.searchValues.typeResourceInstanceValues,
-                            this.props.typeResourceInstances
+                            this.props.resources
                         ).map(entity => {
                             return (
                                 <SearchTag
                                     name={entity.resource_name}
                                     id={entity.id}
-                                    actionType={"REMOVE_RESOURCE_TYPE_INSTANCES"}
+                                    actionType={
+                                        "REMOVE_RESOURCE_TYPE_INSTANCES"
+                                    }
                                     removeSearchValues={async (
                                         id,
                                         actionType
@@ -381,7 +413,7 @@ class SearchModal extends Component {
                         {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
                         {this.getObjectFromIds(
                             this.props.searchValues.typeUtilityInstanceValues,
-                            this.props.typeUtilityInstances
+                            this.props.utilities
                         ).map(entity => {
                             return (
                                 <SearchTag
@@ -406,7 +438,7 @@ class SearchModal extends Component {
                         {/* {DISPLAY TAGS FOR SERVICE TYPE INSTANCES VALUES} */}
                         {this.getObjectFromIds(
                             this.props.searchValues.typeServiceInstanceValues,
-                            this.props.typeServiceInstances
+                            this.props.services
                         ).map(entity => {
                             return (
                                 <SearchTag
@@ -449,8 +481,23 @@ const mapStateToProps = state => {
         typeResourceInstances: state.facilities.typeResourceInstances,
         typeUtilityInstances: state.facilities.typeUtilityInstances,
         typeServiceInstances: state.facilities.typeServiceInstances,
-        results: map(state.searchResults.advancedSearchFacilities).filter(filteredArray => { return filteredArray.length > 0 }).reduce((resultsArray, currentArray) => { return intersection(resultsArray, currentArray) }, map(state.searchResults.advancedSearchFacilities).filter(filteredArray => { return filteredArray.length > 0 })[0])
-
+        resources: state.facilities.resources,
+        utilities: state.facilities.utilities,
+        services: state.facilities.services,
+        results: map(state.searchResults.advancedSearchFacilities)
+            .filter(filteredArray => {
+                return filteredArray.length > 0;
+            })
+            .reduce(
+                (resultsArray, currentArray) => {
+                    return intersection(resultsArray, currentArray);
+                },
+                map(state.searchResults.advancedSearchFacilities).filter(
+                    filteredArray => {
+                        return filteredArray.length > 0;
+                    }
+                )[0]
+            )
     };
 };
 

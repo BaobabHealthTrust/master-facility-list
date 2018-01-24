@@ -9,7 +9,7 @@ export default (
         regulatoryStatusValues: [],
         typeResourceInstanceValues: [],
         typeUtilityInstanceValues: [],
-        typeServiceInstanceValues:[]
+        typeServiceInstanceValues: []
     },
     action
 ) => {
@@ -107,9 +107,9 @@ export default (
                     ...state.typeUtilityInstanceValues,
                     action.payload
                 ]),
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
-            case "ADD_SERVICE_TYPE_INSTANCE":
+        case "ADD_SERVICE_TYPE_INSTANCE":
             return {
                 facilityTypeValues: state.facilityTypeValues,
                 districtValues: state.districtValues,
@@ -118,7 +118,10 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: uniq([...state.typeServiceInstanceValues, action.payload])                
+                typeServiceInstanceValues: uniq([
+                    ...state.typeServiceInstanceValues,
+                    action.payload
+                ])
             };
         case "REMOVE_DISTRICT_VALUES":
             return {
@@ -132,7 +135,7 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_OPERATIONAL_STATUS_VALUES":
             return {
@@ -146,7 +149,7 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_FACILITY_TYPE_VALUES":
             return {
@@ -160,7 +163,7 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_FACILITY_OWNER_VALUES":
             return {
@@ -174,7 +177,7 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_REGULATORY_STATUS_VALUES":
             return {
@@ -183,11 +186,12 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: pull(
-                    state.regulatoryStatusValues, action.payload.toString()
+                    state.regulatoryStatusValues,
+                    action.payload.toString()
                 ),
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_RESOURCE_TYPE_INSTANCES":
             return {
@@ -196,9 +200,12 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
-                typeResourceInstanceValues: pull(state.typeResourceInstanceValues, action.payload.toString()),
+                typeResourceInstanceValues: pull(
+                    state.typeResourceInstanceValues,
+                    action.payload.toString()
+                ),
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
         case "REMOVE_UTILITY_TYPE_INSTANCES":
             return {
@@ -208,10 +215,13 @@ export default (
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
-                typeUtilityInstanceValues: pull(state.typeUtilityInstanceValues, action.payload.toString()),
-                typeServiceInstanceValues: state.typeServiceInstanceValues                
+                typeUtilityInstanceValues: pull(
+                    state.typeUtilityInstanceValues,
+                    action.payload.toString()
+                ),
+                typeServiceInstanceValues: state.typeServiceInstanceValues
             };
-            case "REMOVE_SERVICE_TYPE_INSTANCES":
+        case "REMOVE_SERVICE_TYPE_INSTANCES":
             return {
                 facilityTypeValues: state.facilityTypeValues,
                 districtValues: state.districtValues,
@@ -220,7 +230,21 @@ export default (
                 regulatoryStatusValues: state.regulatoryStatusValues,
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
                 typeUtilityInstanceValues: state.typeUtilityInstanceValues,
-                typeServiceInstanceValues: pull(state.typeServiceInstanceValues,action.payload.toString())               
+                typeServiceInstanceValues: pull(
+                    state.typeServiceInstanceValues,
+                    action.payload.toString()
+                )
+            };
+        case "REMOVE_ALL_SEARCH_VALUES":
+            return {
+                facilityTypeValues: [],
+                districtValues: [],
+                operationalStatusValues: [],
+                facilityOwnerValues: [],
+                regulatoryStatusValues: [],
+                typeResourceInstanceValues: [],
+                typeUtilityInstanceValues: [],
+                typeServiceInstanceValues: []
             };
         default:
             return state;

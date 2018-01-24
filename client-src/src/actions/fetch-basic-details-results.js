@@ -47,7 +47,6 @@ export default searchValues => {
         });
     }
 
-
     if (query.length === 0) {
         query.push({
             id: 0
