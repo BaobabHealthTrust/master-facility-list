@@ -11,6 +11,9 @@ import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
 import fetchResourceTypes from "../actions/fetch-resource-types";
 import fetchUtilityTypes from "../actions/fetch-utility-types";
 import fetchServiceTypes from "../actions/fetch-service-types";
+import fetchResources from "../actions/fetch-resources";
+import fetchUtilities from "../actions/fetch-utilities";
+import fetchServices from "../actions/fetch-services";
 
 import FacilityList from "./FacilityList";
 
@@ -32,6 +35,9 @@ class FacilitiesHome extends Component {
         this.props.fetchResourceTypes();
         this.props.fetchUtilityTypes();
         this.props.fetchServiceTypes();
+        this.props.fetchResources();
+        this.props.fetchUtilities();
+        this.props.fetchServices();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -61,10 +67,7 @@ class FacilitiesHome extends Component {
         });
     }
 
-    
-
     render() {
-
         return (
             <div className="container mfl-container">
                 <br />
@@ -81,8 +84,7 @@ class FacilitiesHome extends Component {
                     </blockquote>
                 ) : (
                     <div>
-                        {
-                            this.state.isAdvancedSearch ? (
+                        {this.state.isAdvancedSearch ? (
                             <SearchModal
                                 handleClose={() => this.handleClose()}
                             />
@@ -124,7 +126,7 @@ const mapStateToProps = state => {
         isError: state.facilities.isNetworkError,
         isLoading: state.facilities.isLoading,
         download: state.downloads.data,
-        searchResults: state.searchResults.advancedSearchResults,
+        searchResults: state.searchResults.advancedSearchResults
     };
 };
 
@@ -138,5 +140,8 @@ export default connect(mapStateToProps, {
     fetchRegulatoryStatuses,
     fetchResourceTypes,
     fetchUtilityTypes,
-    fetchServiceTypes
+    fetchServiceTypes,
+    fetchResources,
+    fetchUtilities,
+    fetchServices
 })(FacilitiesHome);
