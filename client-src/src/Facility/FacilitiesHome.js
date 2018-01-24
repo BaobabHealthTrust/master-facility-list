@@ -43,8 +43,8 @@ class FacilitiesHome extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
-        if (props.searchResults.length > 0) {
+    determineShowResults() {
+        if (this.props.searchResults.length > 0) {
             this.setState(prevState => {
                 prevState.isShowSearchResults = true;
             });
@@ -87,6 +87,9 @@ class FacilitiesHome extends Component {
                         {this.state.isAdvancedSearch ? (
                             <SearchModal
                                 handleClose={() => this.handleClose()}
+                                determineShowResults={() =>
+                                    this.determineShowResults()
+                                }
                             />
                         ) : this.state.isShowSearchResults ? (
                             <div>

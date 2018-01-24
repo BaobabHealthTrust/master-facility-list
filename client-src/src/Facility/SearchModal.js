@@ -19,14 +19,13 @@ import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
 import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
 import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
 import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
+import removeResultsValues from "../actions/remove-results-values";
 
 class SearchModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: "Location",
-            id: this.props.searchValues.typeResourceInstanceValues,
-            entity: this.props.typeResourceInstances
+            activeTab: "Location"
         };
     }
 
@@ -50,16 +49,8 @@ class SearchModal extends Component {
 
     async handleRemoveResults() {
         await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
-        await this.props.fetchBasicDetailsResults(this.props.searchValues);
-        await this.props.fetchBasicResourceDetailsResults(
-            this.props.searchValues
-        );
-        await this.props.fetchBasicUtilityDetailsResults(
-            this.props.searchValues
-        );
-        await this.props.fetchBasicServiceDetailsResults(
-            this.props.searchValues
-        );
+        await this.props.removeResultsValues();
+        await this.props.determineShowResults();
     }
 
     async handleSearchTypeResourceInstances(value) {
@@ -75,10 +66,8 @@ class SearchModal extends Component {
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
+        await this.props.determineShowResults();
     }
-    // removeSearchResults() {
-    //     //alert("removed");
-    // }
 
     render() {
         return (
@@ -511,5 +500,6 @@ export default connect(mapStateToProps, {
     fetchServiceTypeInstances,
     fetchBasicResourceDetailsResults,
     fetchBasicUtilityDetailsResults,
-    fetchBasicServiceDetailsResults
+    fetchBasicServiceDetailsResults,
+    removeResultsValues
 })(SearchModal);
