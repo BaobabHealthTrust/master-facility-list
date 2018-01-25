@@ -20,6 +20,14 @@ import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances
 import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
 import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
 import removeResultsValues from "../actions/remove-results-values";
+import FacilityTypeTag from "./AdvancedSearch/FacilityTypeTag";
+import FacilityOwnerTag from "./AdvancedSearch/FacilityOwnerTag";
+import OperationalStatusTag from "./AdvancedSearch/OperationalStatusTag";
+import RegulatoryStatusTag from "./AdvancedSearch/RegulatoryStatusTag";
+import DistrictTag from "./AdvancedSearch/DistrictTag";
+import ResourceTag from "./AdvancedSearch/ResourceTag";
+import UtilityTag from "./AdvancedSearch/UtilityTag";
+import ServiceTag from "./AdvancedSearch/ServiceTag";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -47,10 +55,10 @@ class SearchModal extends Component {
         await this.props.fetchBasicDetailsResults(this.props.searchValues);
     }
 
-    async handleRemoveResults() {
+    async handleRemoveResults(e) {
         await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
         await this.props.removeResultsValues();
-        await this.props.determineShowResults();
+        await this.props.handleClose(e);
     }
 
     async handleSearchTypeResourceInstances(value) {
@@ -66,7 +74,6 @@ class SearchModal extends Component {
     async getSearchResults(e) {
         await this.props.fetchAdvancedSearchResults(this.props.results);
         await this.props.handleClose(e);
-        await this.props.determineShowResults();
     }
 
     render() {
@@ -78,16 +85,8 @@ class SearchModal extends Component {
                             Advanced Search
                         </span>
                         <span className="mfl-modal-close right">
-                            <a
-                                href="#!"
-                                onClick={e => this.getSearchResults(e)}
-                            >
-                                <i
-                                    class="material-icons"
-                                    onClick={() => this.handleRemoveResults()}
-                                >
-                                    close
-                                </i>
+                            <a onClick={e => this.handleRemoveResults(e)}>
+                                <i class="material-icons">close</i>
                             </a>
                         </span>
                     </div>
@@ -242,213 +241,55 @@ class SearchModal extends Component {
                 <div class="modal-footer">
                     <div className="advanced-search-tag-container">
                         {/* DISPLAY TAGS FOR DISTRICT VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.districtValues,
-                            this.props.districts
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.district_name}
-                                    id={entity.id}
-                                    actionType={"REMOVE_DISTRICT_VALUES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <DistrictTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
 
                         {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.operationalStatusValues,
-                            this.props.operationalStatuses
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_operational_status}
-                                    id={entity.id}
-                                    actionType={
-                                        "REMOVE_OPERATIONAL_STATUS_VALUES"
-                                    }
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
-
+                        <OperationalStatusTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.facilityTypeValues,
-                            this.props.facilityTypes
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_type}
-                                    id={entity.id}
-                                    actionType={"REMOVE_FACILITY_TYPE_VALUES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <FacilityTypeTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* DISPLAY TAGS FOR FACILITY OWNER VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.facilityOwnerValues,
-                            this.props.facilityOwners
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_owner}
-                                    id={entity.id}
-                                    actionType={"REMOVE_FACILITY_OWNER_VALUES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <FacilityOwnerTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* {DISPLAY TAGS FOR REGULATORY STATUS VALUES} */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.regulatoryStatusValues,
-                            this.props.regulatoryStatuses
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_regulatory_status}
-                                    id={entity.id}
-                                    actionType={
-                                        "REMOVE_REGULATORY_STATUS_VALUES"
-                                    }
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <RegulatoryStatusTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.typeResourceInstanceValues,
-                            this.props.resources
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.resource_name}
-                                    id={entity.id}
-                                    actionType={
-                                        "REMOVE_RESOURCE_TYPE_INSTANCES"
-                                    }
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicResourceDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <ResourceTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.typeUtilityInstanceValues,
-                            this.props.utilities
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.utility_name}
-                                    id={entity.id}
-                                    actionType={"REMOVE_UTILITY_TYPE_INSTANCES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicUtilityDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <UtilityTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+
                         {/* {DISPLAY TAGS FOR SERVICE TYPE INSTANCES VALUES} */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.typeServiceInstanceValues,
-                            this.props.services
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.service_name}
-                                    id={entity.id}
-                                    actionType={"REMOVE_SERVICE_TYPE_INSTANCES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicServiceDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <ServiceTag
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                     </div>
                 </div>
             </div>
@@ -458,6 +299,7 @@ class SearchModal extends Component {
 
 const mapStateToProps = state => {
     return {
+        searchResults: state.searchResults.advancedSearchResults,
         searchValues: state.advancedSearchValues,
         districts: state.dependancies.districts,
         facilityTypes: state.dependancies.facilityTypes,
