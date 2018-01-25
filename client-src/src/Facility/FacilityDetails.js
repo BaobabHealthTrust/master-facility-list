@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import Summary from './Summary';
-import Location from './FacilityLocation';
-import Resources from './FacilityResources';
-import Utilities from './FacilityUtilities';
-import Services from './FacilityServices';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import Summary from "./Summary";
+import Location from "./FacilityLocation";
+import Resources from "./FacilityResources";
+import Utilities from "./FacilityUtilities";
+import Services from "./FacilityServices";
+import { connect } from "react-redux";
 
 class FacilityDetails extends Component {
-    constructor(){
+    constructor() {
         super();
-        this.state ={
-           activePage: "summary"
-        }
+        this.state = {
+            activePage: "summary"
+        };
     }
     render() {
         const id = this.props.match.params.id;
@@ -22,19 +22,19 @@ class FacilityDetails extends Component {
         const utilitiesLink = `/facilities/${id}/utilities`;
         const servicesLink = `/facilities/${id}/services`;
 
-        let badgeClass = 'new badge';
+        let badgeClass = "new badge";
 
         if (this.props.current.operationalStatus) {
             switch (this.props.current.operationalStatus
                 .facility_operational_status) {
-                case 'Closed':
-                    badgeClass = 'new badge red';
+                case "Closed":
+                    badgeClass = "new badge red";
                     break;
-                case 'Functional':
-                    badgeClass = 'new badge green';
+                case "Functional":
+                    badgeClass = "new badge green";
                     break;
-                case 'Pending Operation (Under construction)':
-                    badgeClass = 'new badge orange';
+                case "Pending Operation (Under construction)":
+                    badgeClass = "new badge orange";
                     break;
                 default:
                     break;
@@ -46,33 +46,95 @@ class FacilityDetails extends Component {
                 <nav>
                     <div class="nav-wrapper blue accent-1">
                         <ul class="left">
-                        {this.state.activePage ==="summary" ? (
-                            <li className="active">
-                                <Link to={summaryLink} onclick={e => this.setState({activePage:"summary"})}>SUMMARY</Link>
-                            </li>):(
-                            <li>
-                                <Link to={summaryLink} onclick={e => this.setState({activePage:"summary"})}>SUMMARY</Link>
+                            <li
+                                className={
+                                    this.state.activePage === "summary"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={summaryLink}
+                                    onclick={e =>
+                                        this.setState({ activePage: "summary" })
+                                    }
+                                >
+                                    SUMMARY
+                                </Link>
                             </li>
-                            )
-                        }
-        
-                            {this.state.activePage ==="contactsandlocation" ? (
-                            <li className="active">
-                                <Link to={locationsLink} onclick={e => this.setState({activePage:"contactsandlocation"})}>CONTACTS AND LOCATION</Link>
-                            </li>):(
-                            <li>
-                                <Link to={locationsLink} onclick={e => this.setState({activePage:"contactsandlocation"})}>CONTACTS AND LOCATION</Link>
+
+                            <li
+                                className={
+                                    this.state.activePage ===
+                                    "contactsandlocation"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={locationsLink}
+                                    onclick={e =>
+                                        this.setState({
+                                            activePage: "contactsandlocation"
+                                        })
+                                    }
+                                >
+                                    CONTACTS AND LOCATION
+                                </Link>
                             </li>
-                            )
-                        }
-                            <li>
-                                <Link to={resourcesLink}>RESOURCES</Link>
+                            <li
+                                className={
+                                    this.state.activePage === "resources"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={resourcesLink}
+                                    onclick={e =>
+                                        this.setState({
+                                            activePage: "resources"
+                                        })
+                                    }
+                                >
+                                    RESOURCES
+                                </Link>
                             </li>
-                            <li>
-                                <Link to={utilitiesLink}>UTILITIES</Link>
+                            <li
+                                className={
+                                    this.state.activePage === "utilities"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={utilitiesLink}
+                                    onclick={e =>
+                                        this.setState({
+                                            activePage: "utilities"
+                                        })
+                                    }
+                                >
+                                    UTILITIES
+                                </Link>
                             </li>
-                            <li>
-                                <Link to={servicesLink}>SERVICES</Link>
+                            <li
+                                className={
+                                    this.state.activePage === "services"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={servicesLink}
+                                    onclick={e =>
+                                        this.setState({
+                                            activePage: "services"
+                                        })
+                                    }
+                                >
+                                    SERVICES
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -90,14 +152,14 @@ class FacilityDetails extends Component {
                                 }
                             />
                         ) : (
-                            ''
+                            ""
                         )}
                     </h5>
                     <h6>
                         {this.props.current.facility_code},&nbsp;
                         {this.props.current.district
                             ? this.props.current.district.district_name
-                            : ''}
+                            : ""}
                     </h6>
                 </div>
                 {this.props.isError ? (
