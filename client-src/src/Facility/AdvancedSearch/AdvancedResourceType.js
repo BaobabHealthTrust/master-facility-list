@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 class AdvancedResourceType extends Component {
-    // componentDidMount() {
-    //     alert('hello')
-    // }
-
     render() {
         const resourceTypeId =
             (this.props.typeResourceInstances.length > 0 &&

@@ -74,7 +74,7 @@ export default (
                 operationalStatusValues: state.operationalStatusValues,
                 facilityOwnerValues: state.facilityOwnerValues,
                 regulatoryStatusValues: uniq([
-                    ...state.facilityOwnerValues,
+                    ...state.regulatoryStatusValues,
                     action.payload
                 ]),
                 typeResourceInstanceValues: state.typeResourceInstanceValues,
