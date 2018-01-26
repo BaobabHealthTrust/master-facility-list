@@ -31,6 +31,22 @@ export default searchValues => {
         });
     }
 
+    if (searchValues.facilityOwnerValues.length > 0) {
+        query.push({
+            facility_owner_id: {
+                inq: searchValues.facilityOwnerValues.map(v => Number(v))
+            }
+        });
+    }
+
+    if (searchValues.regulatoryStatusValues.length > 0) {
+        query.push({
+            facility_regulatory_status_id: {
+                inq: searchValues.regulatoryStatusValues.map(v => Number(v))
+            }
+        });
+    }
+
     if (query.length === 0) {
         query.push({
             id: 0

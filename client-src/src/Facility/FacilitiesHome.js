@@ -5,7 +5,16 @@ import downloadFacilities from "../actions/download-facilities";
 import SearchModal from "./SearchModal";
 import fetchDistricts from "../actions/fetch-districts";
 import fetchFacilityTypes from "../actions/fetch-facility-types";
+import fetchFacilityOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
+import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
+import fetchResourceTypes from "../actions/fetch-resource-types";
+import fetchUtilityTypes from "../actions/fetch-utility-types";
+import fetchServiceTypes from "../actions/fetch-service-types";
+import fetchResources from "../actions/fetch-resources";
+import fetchUtilities from "../actions/fetch-utilities";
+import fetchServices from "../actions/fetch-services";
+
 import FacilityList from "./FacilityList";
 
 class FacilitiesHome extends Component {
@@ -21,6 +30,14 @@ class FacilitiesHome extends Component {
         this.props.fetchDistricts();
         this.props.fetchOperationalStatuses();
         this.props.fetchFacilityTypes();
+        this.props.fetchFacilityOwners();
+        this.props.fetchRegulatoryStatuses();
+        this.props.fetchResourceTypes();
+        this.props.fetchUtilityTypes();
+        this.props.fetchServiceTypes();
+        this.props.fetchResources();
+        this.props.fetchUtilities();
+        this.props.fetchServices();
         if (this.props.facilities.length === 0) {
             this.props.fetchFacilities(1);
         }
@@ -36,6 +53,7 @@ class FacilitiesHome extends Component {
                 prevState.isShowSearchResults = false;
             });
         }
+        const isShowSearchResults = this.state.isShowSearchResults;
     }
 
     handleClose() {
@@ -51,7 +69,6 @@ class FacilitiesHome extends Component {
     }
 
     render() {
-
         return (
             <div className="container mfl-container">
                 <br />
@@ -119,5 +136,13 @@ export default connect(mapStateToProps, {
     downloadFacilities,
     fetchDistricts,
     fetchOperationalStatuses,
-    fetchFacilityTypes
+    fetchFacilityTypes,
+    fetchFacilityOwners,
+    fetchRegulatoryStatuses,
+    fetchResourceTypes,
+    fetchUtilityTypes,
+    fetchServiceTypes,
+    fetchResources,
+    fetchUtilities,
+    fetchServices
 })(FacilitiesHome);

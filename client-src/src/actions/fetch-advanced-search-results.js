@@ -10,7 +10,7 @@ export default facilityIds => {
         limit: 15,
         where: {
             id: {
-                inq: map(facilityIds, "id")
+                inq: map(facilityIds)
             }
         },
         include: [

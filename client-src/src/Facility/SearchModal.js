@@ -5,10 +5,29 @@ import { connect } from "react-redux";
 import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
+import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
+import fetchBasicUtilityDetailsResults from "../actions/fetch-basic-utility-details-results";
+import fetchBasicServiceDetailsResults from "../actions/fetch-basic-service-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
+import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
+import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
+import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
+import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
+import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
+import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
+import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
+import removeResultsValues from "../actions/remove-results-values";
+import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
+import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
+import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
+import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTag";
+import DistrictTags from "./AdvancedSearch/DistrictTags";
+import ResourceTags from "./AdvancedSearch/ResourceTags";
+import UtilityTags from "./AdvancedSearch/UtilityTags";
+import ServiceTags from "./AdvancedSearch/ServiceTags";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -24,6 +43,32 @@ class SearchModal extends Component {
 
     async handleAddSearchValue(e, type) {
         await this.props.addSearchValues(e, type);
+        await this.props.fetchBasicResourceDetailsResults(
+            this.props.searchValues
+        );
+        await this.props.fetchBasicUtilityDetailsResults(
+            this.props.searchValues
+        );
+        await this.props.fetchBasicServiceDetailsResults(
+            this.props.searchValues
+        );
+        await this.props.fetchBasicDetailsResults(this.props.searchValues);
+    }
+
+    async handleRemoveResults(e) {
+        await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
+        await this.props.removeResultsValues();
+        await this.props.handleClose(e);
+    }
+
+    handleSearchTypeResourceInstances(e) {
+        this.props.fetchResourceTypeInstances(e.target.value);
+    }
+    handleSearchTypeUtilityInstances(e) {
+        this.props.fetchUtilityTypeInstances(e.target.value);
+    }
+    handleSearchTypeServiceInstances(e) {
+        this.props.fetchServiceTypeInstances(e.target.value);
     }
 
     async getSearchResults(e) {
@@ -40,20 +85,21 @@ class SearchModal extends Component {
                             Advanced Search
                         </span>
                         <span className="mfl-modal-close right">
-                            <a
-                                href="#!"
-                                onClick={e => this.getSearchResults(e)}
-                            >
+                            <a onClick={e => this.handleRemoveResults(e)}>
                                 <i class="material-icons">close</i>
                             </a>
                         </span>
                     </div>
                     <div className="mfl-search-feedback">
                         <span>
-                            <strong>{this.props.results.length}</strong>{" "}
+                            <strong>
+                                {Array.isArray(this.props.results)
+                                    ? this.props.results.length
+                                    : ""}
+                            </strong>{" "}
                             Facilities Match Your Criteria
                         </span>
-                        {this.props.results.length > 0 ? (
+                        {Array.isArray(this.props.results) ? (
                             <span className="right">
                                 <a
                                     className="btn mfl-get-results-btn"
@@ -81,15 +127,9 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Location" ? (
                                 <AdvancedLocation
                                     districts={this.props.districts}
-                                    handleChange={async (e, type) => {
-                                        await this.props.addSearchValues(
-                                            e,
-                                            type
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
                                 />
                             ) : (
                                 ""
@@ -107,105 +147,149 @@ class SearchModal extends Component {
                                         this.props.operationalStatuses
                                     }
                                     facilityTypes={this.props.facilityTypes}
-                                    handleChange={async (e, type) => {
-                                        await this.props.addSearchValues(
-                                            e,
-                                            type
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
+                                    facilityOwners={this.props.facilityOwners}
+                                    regulatoryStatuses={
+                                        this.props.regulatoryStatuses
+                                    }
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
                                 />
                             ) : (
                                 ""
                             )}
                         </Tab>
-                        <Tab title="Services">Test 3</Tab>
-                        <Tab title="Resources">Test 4</Tab>
+
+                        <Tab
+                            title="Facility Type"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Facility Type" ? (
+                                <AdvancedFacilityType
+                                    facilityTypes={this.props.facilityTypes}
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
+
+                        <Tab
+                            title="Resources"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Resources" ? (
+                                <AdvancedResourceType
+                                    resourceTypes={this.props.resourceTypes}
+                                    handleChange={e =>
+                                        this.handleSearchTypeResourceInstances(
+                                            e
+                                        )
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
+                        <Tab
+                            title="Utilities"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Utilities" ? (
+                                <AdvancedUtilityType
+                                    utilityTypes={this.props.utilityTypes}
+                                    handleChange={e =>
+                                        this.handleSearchTypeUtilityInstances(e)
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
+                        <Tab
+                            title="Services"
+                            className="advanced-search-container"
+                            active
+                        >
+                            {this.state.activeTab === "Services" ? (
+                                <AdvancedServiceType
+                                    serviceTypes={this.props.serviceTypes}
+                                    handleChange={e =>
+                                        this.handleSearchTypeServiceInstances(e)
+                                    }
+                                    handleChangeAddSearchValue={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
                     </Tabs>
                 </div>
                 <div class="modal-footer">
                     <div className="advanced-search-tag-container">
                         {/* DISPLAY TAGS FOR DISTRICT VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.districtValues,
-                            this.props.districts
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.district_name}
-                                    id={entity.id}
-                                    actionType={"REMOVE_DISTRICT_VALUES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <DistrictTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
 
                         {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.operationalStatusValues,
-                            this.props.operationalStatuses
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_operational_status}
-                                    id={entity.id}
-                                    actionType={
-                                        "REMOVE_OPERATIONAL_STATUS_VALUES"
-                                    }
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
-
+                        <OperationalStatusTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                         {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
-                        {this.getObjectFromIds(
-                            this.props.searchValues.facilityTypeValues,
-                            this.props.facilityTypes
-                        ).map(entity => {
-                            return (
-                                <SearchTag
-                                    name={entity.facility_type}
-                                    id={entity.id}
-                                    actionType={"REMOVE_FACILITY_TYPE_VALUES"}
-                                    removeSearchValues={async (
-                                        id,
-                                        actionType
-                                    ) => {
-                                        await this.props.removeSearchValues(
-                                            id,
-                                            actionType
-                                        );
-                                        await this.props.fetchBasicDetailsResults(
-                                            this.props.searchValues
-                                        );
-                                    }}
-                                />
-                            );
-                        })}
+                        <FacilityTypeTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+                        {/* DISPLAY TAGS FOR FACILITY OWNER VALUES */}
+                        <FacilityOwnerTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+                        {/* {DISPLAY TAGS FOR REGULATORY STATUS VALUES} */}
+                        <RegulatoryStatusTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+                        {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
+                        <ResourceTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+                        {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
+                        <UtilityTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
+
+                        {/* {DISPLAY TAGS FOR SERVICE TYPE INSTANCES VALUES} */}
+                        <ServiceTags
+                            getObjectFromIds={(ids, entities) =>
+                                this.getObjectFromIds(ids, entities)
+                            }
+                        />
                     </div>
                 </div>
             </div>
@@ -215,13 +299,36 @@ class SearchModal extends Component {
 
 const mapStateToProps = state => {
     return {
+        searchResults: state.searchResults.advancedSearchResults,
         searchValues: state.advancedSearchValues,
         districts: state.dependancies.districts,
         facilityTypes: state.dependancies.facilityTypes,
+        facilityOwners: state.dependancies.facilityOwners,
         operationalStatuses: state.dependancies.operationalStatuses,
-        results: intersection(
-            map(state.searchResults.advancedSearchFacilities)
-        )[0]
+        regulatoryStatuses: state.dependancies.regulatoryStatuses,
+        resourceTypes: state.dependancies.resourceTypes,
+        utilityTypes: state.dependancies.utilityTypes,
+        serviceTypes: state.dependancies.serviceInstance,
+        typeResourceInstances: state.facilities.typeResourceInstances,
+        typeUtilityInstances: state.facilities.typeUtilityInstances,
+        typeServiceInstances: state.facilities.typeServiceInstances,
+        resources: state.facilities.resources,
+        utilities: state.facilities.utilities,
+        services: state.facilities.services,
+        results: map(state.searchResults.advancedSearchFacilities)
+            .filter(filteredArray => {
+                return filteredArray.length > 0;
+            })
+            .reduce(
+                (resultsArray, currentArray) => {
+                    return intersection(resultsArray, currentArray);
+                },
+                map(state.searchResults.advancedSearchFacilities).filter(
+                    filteredArray => {
+                        return filteredArray.length > 0;
+                    }
+                )[0]
+            )
     };
 };
 
@@ -229,5 +336,12 @@ export default connect(mapStateToProps, {
     addSearchValues,
     removeSearchValues,
     fetchBasicDetailsResults,
-    fetchAdvancedSearchResults
+    fetchAdvancedSearchResults,
+    fetchResourceTypeInstances,
+    fetchUtilityTypeInstances,
+    fetchServiceTypeInstances,
+    fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults,
+    fetchBasicServiceDetailsResults,
+    removeResultsValues
 })(SearchModal);

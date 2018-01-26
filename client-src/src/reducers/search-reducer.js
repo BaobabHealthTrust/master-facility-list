@@ -1,8 +1,12 @@
+import { map } from "lodash";
 export default (
     state = {
         quickSearchFacilities: [],
         advancedSearchFacilities: {
-            basicDetailsFacilities: []
+            basicDetailsFacilities: [],
+            basicDetailsFacilityResources: [],
+            basicDetailsFacilityUtilities: [],
+            basicDetailsFacilityServices: []
         },
         advancedSearchResults: []
     },
@@ -19,7 +23,74 @@ export default (
             return {
                 quickSearchFacilities: state.quickSearchFacilities,
                 advancedSearchFacilities: {
-                    basicDetailsFacilities: action.payload.data
+                    basicDetailsFacilities: map(action.payload.data, "id"),
+                    basicDetailsFacilityResources:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityResources,
+                    basicDetailsFacilityUtilities:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityUtilities,
+                    basicDetailsFacilityServices:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityServices
+                },
+                advancedSearchResults: state.advancedSearchResults
+            };
+
+        case "FETCH_BASIC_RESOURCE_RESULTS":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: {
+                    basicDetailsFacilities:
+                        state.advancedSearchFacilities.basicDetailsFacilities,
+                    basicDetailsFacilityResources: map(
+                        action.payload.data,
+                        "facility_id"
+                    ),
+                    basicDetailsFacilityUtilities:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityUtilities,
+                    basicDetailsFacilityServices:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityServices
+                },
+                advancedSearchResults: state.advancedSearchResults
+            };
+        case "FETCH_BASIC_UTILITY_RESULTS":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: {
+                    basicDetailsFacilities:
+                        state.advancedSearchFacilities.basicDetailsFacilities,
+                    basicDetailsFacilityResources:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityResources,
+                    basicDetailsFacilityUtilities: map(
+                        action.payload.data,
+                        "facility_id"
+                    ),
+                    basicDetailsFacilityServices:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityServices
+                },
+                advancedSearchResults: state.advancedSearchResults
+            };
+        case "FETCH_BASIC_SERVICE_RESULTS":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: {
+                    basicDetailsFacilities:
+                        state.advancedSearchFacilities.basicDetailsFacilities,
+                    basicDetailsFacilityResources:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityResources,
+                    basicDetailsFacilityUtilities:
+                        state.advancedSearchFacilities
+                            .basicDetailsFacilityUtilities,
+                    basicDetailsFacilityServices: map(
+                        action.payload.data,
+                        "facility_id"
+                    )
                 },
                 advancedSearchResults: state.advancedSearchResults
             };
@@ -28,6 +99,17 @@ export default (
                 quickSearchFacilities: state.quickSearchFacilities,
                 advancedSearchFacilities: state.advancedSearchFacilities,
                 advancedSearchResults: action.payload.data
+            };
+        case "REMOVE_RESULTS_VALUES":
+            return {
+                quickSearchFacilities: state.quickSearchFacilities,
+                advancedSearchFacilities: {
+                    basicDetailsFacilities: [],
+                    basicDetailsFacilityResources: [],
+                    basicDetailsFacilityUtilities: [],
+                    basicDetailsFacilityServices: []
+                },
+                advancedSearchResults: []
             };
         default:
             return state;

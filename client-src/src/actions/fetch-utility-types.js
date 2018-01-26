@@ -1,7 +1,7 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export default function fetchResourceTypes() {
+export default function fetchUtilityTypes() {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `UtilityTypes`;
     const URL = `${END_POINT}${RESOURCE}`;
