@@ -66,35 +66,26 @@ class FacilityDetails extends Component {
                                 </Link>
                             </li>
 
-                            {this.state.activePage === "contactsandlocation" ? (
-                                <li className="active">
-                                    <Link
-                                        to={locationsLink}
-                                        onClick={e =>
-                                            this.setState({
-                                                activePage:
-                                                    "contactsandlocation"
-                                            })
-                                        }
-                                    >
-                                        CONTACTS AND LOCATION
-                                    </Link>
-                                </li>
-                            ) : (
-                                <li>
-                                    <Link
-                                        onClick={e =>
-                                            this.setState({
-                                                activePage:
-                                                    "contactsandlocation"
-                                            })
-                                        }
-                                        to={locationsLink}
-                                    >
-                                        CONTACTS AND LOCATION
-                                    </Link>
-                                </li>
-                            )}
+                            <li
+                                className={
+                                    this.state.activePage ===
+                                    "contactsandlocation"
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                <Link
+                                    to={locationsLink}
+                                    onClick={e =>
+                                        this.setState({
+                                            activePage: "contactsandlocation"
+                                        })
+                                    }
+                                >
+                                    CONTACTS AND LOCATION
+                                </Link>
+                            </li>
+
                             <li
                                 className={
                                     this.state.activePage === "resources"
