@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Menu extends Component {
     constructor() {
         super();
         this.state = {
-            activePage: null
-        }
+            activePage: "home"
+        };
     }
 
     render() {
@@ -16,50 +16,155 @@ class Menu extends Component {
                     id="nav-mobile"
                     className="right mfl-pr-10 hide-on-med-and-down"
                 >
-                    {
-                        this.state.activePage === "home" ? (
-                            <li className="active">
-                                <Link to="/" onClick={(e) => this.setState({ activePage: "home" })}>HOME</Link>
-                            </li>) : (
-                                <li>
-                                    <Link to="/" onClick={(e) => this.setState({ activePage: "home" })}>HOME</Link>
-                                </li>)
-                    }
+                    <li
+                        className={
+                            this.state.activePage === "home" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to="/"
+                            onClick={e => this.setState({ activePage: "home" })}
+                        >
+                            HOME
+                        </Link>
+                    </li>
 
-                    <li>
-                        <a href="">ABOUT</a>
+                    <li
+                        className={
+                            this.state.activePage === "about" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "about" })
+                            }
+                        >
+                            ABOUT
+                        </Link>
                     </li>
-                    {
-                        this.state.activePage === "facilities" ? (
-                            <li className="active">
-                                <Link to="/facilities" onClick={(e) => this.setState({ activePage: "facilities" })}>FACILITIES</Link>
-                            </li>) : (
-                                <li>
-                                    <Link to="/facilities" onClick={(e) => this.setState({ activePage: "facilities" })}>FACILITIES</Link>
-                                </li>)
-                    }
-                    <li>
-                        <a href="">FEEDBACK</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "facilities"
+                                ? "active"
+                                : ""
+                        }
+                    >
+                        <Link
+                            to="/facilities"
+                            onClick={e =>
+                                this.setState({ activePage: "facilities" })
+                            }
+                        >
+                            FACILITIES
+                        </Link>
                     </li>
-                    <li>
-                        <a href="">CONTACTS</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "feedback" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "feedback" })
+                            }
+                        >
+                            FEEDBACK
+                        </Link>
+                    </li>
+
+                    <li
+                        className={
+                            this.state.activePage === "contacts" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "contacts" })
+                            }
+                        >
+                            CONTACTS
+                        </Link>
                     </li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
-                    <li>
-                        <a href="">HOME</a>
+                    <li
+                        className={
+                            this.state.activePage === "home" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to="/"
+                            onClick={e => this.setState({ activePage: "home" })}
+                        >
+                            HOME
+                        </Link>
                     </li>
-                    <li>
-                        <a href="">ABOUT</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "about" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "about" })
+                            }
+                        >
+                            ABOUT
+                        </Link>
                     </li>
-                    <li>
-                        <a href="">FACILITIES</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "facilities"
+                                ? "active"
+                                : ""
+                        }
+                    >
+                        <Link
+                            to="/facilities"
+                            onClick={e =>
+                                this.setState({ activePage: "facilities" })
+                            }
+                        >
+                            FACILITIES
+                        </Link>
                     </li>
-                    <li>
-                        <a href="">FEEDBACK</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "feedback" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "feedback" })
+                            }
+                        >
+                            FEEDBACK
+                        </Link>
                     </li>
-                    <li>
-                        <a href="">CONTACTS</a>
+
+                    <li
+                        className={
+                            this.state.activePage === "contacts" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to=""
+                            onClick={e =>
+                                this.setState({ activePage: "contacts" })
+                            }
+                        >
+                            CONTACTS
+                        </Link>
                     </li>
                 </ul>
             </div>

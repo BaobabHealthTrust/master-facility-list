@@ -5,7 +5,12 @@ export default (
         serviceTypes: [],
         districts: [],
         operationalStatuses: [],
-        facilityTypes: []
+        facilityTypes: [],
+        facilityOwners: [],
+        regulatoryStatuses: [],
+        searchResourceTypes: [],
+        serviceInstance: []
+
     },
     action
 ) => {
@@ -17,7 +22,10 @@ export default (
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
                 operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
             };
         case "FETCH_UTILITY_TYPES":
             return {
@@ -26,7 +34,10 @@ export default (
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
                 operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
             };
         case "FETCH_DISTRICTS":
             return {
@@ -35,7 +46,10 @@ export default (
                 serviceTypes: state.serviceTypes,
                 districts: action.payload.data,
                 operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
             };
         case "FETCH_OPERATIONAL_STATUSES":
             return {
@@ -44,7 +58,10 @@ export default (
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
                 operationalStatuses: action.payload.data,
-                facilityTypes: state.facilityTypes
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
             };
         case "FETCH_FACILITY_TYPES":
             return {
@@ -53,8 +70,48 @@ export default (
                 serviceTypes: state.serviceTypes,
                 districts: state.districts,
                 operationalStatuses: state.operationalStatuses,
-                facilityTypes: action.payload.data
+                facilityTypes: action.payload.data,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
             };
+        case "FETCH_FACILITY_OWNERS":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: state.utilityTypes,
+                serviceTypes: state.serviceTypes,
+                districts: state.districts,
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes,
+                facilityOwners: action.payload.data,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: state.serviceInstance
+            };
+        case "FETCH_REGULATORY_STATUSES":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: state.utilityTypes,
+                serviceTypes: state.serviceTypes,
+                districts: state.districts,
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: action.payload.data,
+                serviceInstance: state.serviceInstance
+            };
+        case "FETCH_SERVICE_TYPES":
+            return {
+                resourceTypes: state.resourceTypes,
+                utilityTypes: state.utilityTypes,
+                serviceTypes: state.serviceTypes,
+                districts: state.districts,
+                operationalStatuses: state.operationalStatuses,
+                facilityTypes: state.facilityTypes,
+                facilityOwners: state.facilityOwners,
+                regulatoryStatuses: state.regulatoryStatuses,
+                serviceInstance: action.payload.data
+            };
+
         default:
             return state;
     }
