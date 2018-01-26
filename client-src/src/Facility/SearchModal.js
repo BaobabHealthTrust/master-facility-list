@@ -61,14 +61,14 @@ class SearchModal extends Component {
         await this.props.handleClose(e);
     }
 
-    async handleSearchTypeResourceInstances(value) {
-        await this.props.fetchResourceTypeInstances(value.target.value);
+    async handleSearchTypeResourceInstances(e) {
+        await this.props.fetchResourceTypeInstances(e.target.value);
     }
     async handleSearchTypeUtilityInstances(e) {
-        await this.props.fetchUtilityTypeInstances(e);
+        await this.props.fetchUtilityTypeInstances(e.target.value);
     }
     async handleSearchTypeServiceInstances(e) {
-        await this.props.fetchServiceTypeInstances(e);
+        await this.props.fetchServiceTypeInstances(e.target.value);
     }
 
     async getSearchResults(e) {
@@ -185,9 +185,9 @@ class SearchModal extends Component {
                             {this.state.activeTab === "Resources" ? (
                                 <AdvancedResourceType
                                     resourceTypes={this.props.resourceTypes}
-                                    handleChange={value =>
+                                    handleChange={e =>
                                         this.handleSearchTypeResourceInstances(
-                                            value
+                                            e
                                         )
                                     }
                                     handleChangeAddSearchValue={(e, type) =>
