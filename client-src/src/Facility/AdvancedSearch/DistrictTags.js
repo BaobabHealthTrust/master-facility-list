@@ -4,19 +4,19 @@ import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
 import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
 
-class FacilityTypeTag extends Component {
+class DistrictTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.facilityTypeValues,
-                this.props.facilityTypes
+                this.props.searchValues.districtValues,
+                this.props.districts
             )
             .map(entity => {
                 return (
                     <SearchTag
-                        name={entity.facility_type}
+                        name={entity.district_name}
                         id={entity.id}
-                        actionType={"REMOVE_FACILITY_TYPE_VALUES"}
+                        actionType={"REMOVE_DISTRICT_VALUES"}
                         removeSearchValues={async (id, actionType) => {
                             await this.props.removeSearchValues(id, actionType);
                             await this.props.fetchBasicDetailsResults(
@@ -31,11 +31,11 @@ class FacilityTypeTag extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        facilityTypes: state.dependancies.facilityTypes
+        districts: state.dependancies.districts
     };
 };
 
 export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults
-})(FacilityTypeTag);
+})(DistrictTags);

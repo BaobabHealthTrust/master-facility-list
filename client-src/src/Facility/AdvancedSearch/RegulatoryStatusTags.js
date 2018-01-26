@@ -4,7 +4,7 @@ import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
 import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
 
-class RegulatoryStatusTag extends Component {
+class RegulatoryStatusTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
@@ -38,4 +38,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults
-})(RegulatoryStatusTag);
+})(RegulatoryStatusTags);

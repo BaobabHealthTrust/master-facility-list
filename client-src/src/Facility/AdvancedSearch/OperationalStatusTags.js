@@ -2,24 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicServiceDetailsResults from "../../actions/fetch-basic-service-details-results";
+import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
 
-class ServiceTag extends Component {
+class OperationalStatusTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.typeServiceInstanceValues,
-                this.props.services
+                this.props.searchValues.operationalStatusValues,
+                this.props.operationalStatuses
             )
             .map(entity => {
                 return (
                     <SearchTag
-                        name={entity.service_name}
+                        name={entity.facility_operational_status}
                         id={entity.id}
-                        actionType={"REMOVE_SERVICE_TYPE_INSTANCES"}
+                        actionType={"REMOVE_OPERATIONAL_STATUS_VALUES"}
                         removeSearchValues={async (id, actionType) => {
                             await this.props.removeSearchValues(id, actionType);
-                            await this.props.fetchBasicServiceDetailsResults(
+                            await this.props.fetchBasicDetailsResults(
                                 this.props.searchValues
                             );
                         }}
@@ -31,11 +31,11 @@ class ServiceTag extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        services: state.facilities.services
+        operationalStatuses: state.dependancies.operationalStatuses
     };
 };
 
 export default connect(mapStateToProps, {
     removeSearchValues,
-    fetchBasicServiceDetailsResults
-})(ServiceTag);
+    fetchBasicDetailsResults
+})(OperationalStatusTags);
