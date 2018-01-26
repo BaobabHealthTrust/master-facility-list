@@ -20,14 +20,14 @@ import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances
 import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
 import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
 import removeResultsValues from "../actions/remove-results-values";
-import FacilityTypeTag from "./AdvancedSearch/FacilityTypeTag";
-import FacilityOwnerTag from "./AdvancedSearch/FacilityOwnerTag";
-import OperationalStatusTag from "./AdvancedSearch/OperationalStatusTag";
-import RegulatoryStatusTag from "./AdvancedSearch/RegulatoryStatusTag";
-import DistrictTag from "./AdvancedSearch/DistrictTag";
-import ResourceTag from "./AdvancedSearch/ResourceTag";
-import UtilityTag from "./AdvancedSearch/UtilityTag";
-import ServiceTag from "./AdvancedSearch/ServiceTag";
+import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
+import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
+import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
+import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTag";
+import DistrictTags from "./AdvancedSearch/DistrictTags";
+import ResourceTags from "./AdvancedSearch/ResourceTags";
+import UtilityTags from "./AdvancedSearch/UtilityTags";
+import ServiceTags from "./AdvancedSearch/ServiceTags";
 
 class SearchModal extends Component {
     constructor(props) {
@@ -61,14 +61,14 @@ class SearchModal extends Component {
         await this.props.handleClose(e);
     }
 
-    async handleSearchTypeResourceInstances(e) {
-        await this.props.fetchResourceTypeInstances(e.target.value);
+    handleSearchTypeResourceInstances(e) {
+        this.props.fetchResourceTypeInstances(e.target.value);
     }
-    async handleSearchTypeUtilityInstances(e) {
-        await this.props.fetchUtilityTypeInstances(e.target.value);
+    handleSearchTypeUtilityInstances(e) {
+        this.props.fetchUtilityTypeInstances(e.target.value);
     }
-    async handleSearchTypeServiceInstances(e) {
-        await this.props.fetchServiceTypeInstances(e.target.value);
+    handleSearchTypeServiceInstances(e) {
+        this.props.fetchServiceTypeInstances(e.target.value);
     }
 
     async getSearchResults(e) {
@@ -241,51 +241,51 @@ class SearchModal extends Component {
                 <div class="modal-footer">
                     <div className="advanced-search-tag-container">
                         {/* DISPLAY TAGS FOR DISTRICT VALUES */}
-                        <DistrictTag
+                        <DistrictTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
 
                         {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
-                        <OperationalStatusTag
+                        <OperationalStatusTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
                         {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
-                        <FacilityTypeTag
+                        <FacilityTypeTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
                         {/* DISPLAY TAGS FOR FACILITY OWNER VALUES */}
-                        <FacilityOwnerTag
+                        <FacilityOwnerTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
                         {/* {DISPLAY TAGS FOR REGULATORY STATUS VALUES} */}
-                        <RegulatoryStatusTag
+                        <RegulatoryStatusTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
                         {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
-                        <ResourceTag
+                        <ResourceTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
                         {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
-                        <UtilityTag
+                        <UtilityTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }
                         />
 
                         {/* {DISPLAY TAGS FOR SERVICE TYPE INSTANCES VALUES} */}
-                        <ServiceTag
+                        <ServiceTags
                             getObjectFromIds={(ids, entities) =>
                                 this.getObjectFromIds(ids, entities)
                             }

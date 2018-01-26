@@ -2,24 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
+import fetchBasicUtilityDetailsResults from "../../actions/fetch-basic-utility-details-results";
 
-class FacilityOwnerTag extends Component {
+class UtilityTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.facilityOwnerValues,
-                this.props.facilityOwners
+                this.props.searchValues.typeUtilityInstanceValues,
+                this.props.utilities
             )
             .map(entity => {
                 return (
                     <SearchTag
-                        name={entity.facility_owner}
+                        name={entity.utility_name}
                         id={entity.id}
-                        actionType={"REMOVE_FACILITY_OWNER_VALUES"}
+                        actionType={"REMOVE_UTILITY_TYPE_INSTANCES"}
                         removeSearchValues={async (id, actionType) => {
                             await this.props.removeSearchValues(id, actionType);
-                            await this.props.fetchBasicDetailsResults(
+                            await this.props.fetchBasicUtilityDetailsResults(
                                 this.props.searchValues
                             );
                         }}
@@ -31,11 +31,11 @@ class FacilityOwnerTag extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        facilityOwners: state.dependancies.facilityOwners
+        utilities: state.facilities.utilities
     };
 };
 
 export default connect(mapStateToProps, {
     removeSearchValues,
-    fetchBasicDetailsResults
-})(FacilityOwnerTag);
+    fetchBasicUtilityDetailsResults
+})(UtilityTags);

@@ -4,7 +4,7 @@ import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
 import fetchBasicResourceDetailsResults from "../../actions/fetch-basic-resource-details-results";
 
-class ResourceTag extends Component {
+class ResourceTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
@@ -38,4 +38,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicResourceDetailsResults
-})(ResourceTag);
+})(ResourceTags);

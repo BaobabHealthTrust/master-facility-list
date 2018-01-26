@@ -4,19 +4,19 @@ import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
 import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
 
-class OperationalStatusTag extends Component {
+class FacilityOwnerTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.operationalStatusValues,
-                this.props.operationalStatuses
+                this.props.searchValues.facilityOwnerValues,
+                this.props.facilityOwners
             )
             .map(entity => {
                 return (
                     <SearchTag
-                        name={entity.facility_operational_status}
+                        name={entity.facility_owner}
                         id={entity.id}
-                        actionType={"REMOVE_OPERATIONAL_STATUS_VALUES"}
+                        actionType={"REMOVE_FACILITY_OWNER_VALUES"}
                         removeSearchValues={async (id, actionType) => {
                             await this.props.removeSearchValues(id, actionType);
                             await this.props.fetchBasicDetailsResults(
@@ -31,11 +31,11 @@ class OperationalStatusTag extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        operationalStatuses: state.dependancies.operationalStatuses
+        facilityOwners: state.dependancies.facilityOwners
     };
 };
 
 export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults
-})(OperationalStatusTag);
+})(FacilityOwnerTags);
