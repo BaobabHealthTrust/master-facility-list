@@ -14,6 +14,7 @@ class FacilityDetails extends Component {
             activePage: "summary"
         };
     }
+
     render() {
         const id = this.props.match.params.id;
         const summaryLink = `/facilities/${id}`;
@@ -55,33 +56,45 @@ class FacilityDetails extends Component {
                             >
                                 <Link
                                     to={summaryLink}
-                                    onclick={e =>
-                                        this.setState({ activePage: "summary" })
+                                    onClick={e =>
+                                        this.setState({
+                                            activePage: "summary"
+                                        })
                                     }
                                 >
                                     SUMMARY
                                 </Link>
                             </li>
 
-                            <li
-                                className={
-                                    this.state.activePage ===
-                                    "contactsandlocation"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={locationsLink}
-                                    onclick={e =>
-                                        this.setState({
-                                            activePage: "contactsandlocation"
-                                        })
-                                    }
-                                >
-                                    CONTACTS AND LOCATION
-                                </Link>
-                            </li>
+                            {this.state.activePage === "contactsandlocation" ? (
+                                <li className="active">
+                                    <Link
+                                        to={locationsLink}
+                                        onClick={e =>
+                                            this.setState({
+                                                activePage:
+                                                    "contactsandlocation"
+                                            })
+                                        }
+                                    >
+                                        CONTACTS AND LOCATION
+                                    </Link>
+                                </li>
+                            ) : (
+                                <li>
+                                    <Link
+                                        onClick={e =>
+                                            this.setState({
+                                                activePage:
+                                                    "contactsandlocation"
+                                            })
+                                        }
+                                        to={locationsLink}
+                                    >
+                                        CONTACTS AND LOCATION
+                                    </Link>
+                                </li>
+                            )}
                             <li
                                 className={
                                     this.state.activePage === "resources"
@@ -91,7 +104,7 @@ class FacilityDetails extends Component {
                             >
                                 <Link
                                     to={resourcesLink}
-                                    onclick={e =>
+                                    onClick={e =>
                                         this.setState({
                                             activePage: "resources"
                                         })
@@ -109,7 +122,7 @@ class FacilityDetails extends Component {
                             >
                                 <Link
                                     to={utilitiesLink}
-                                    onclick={e =>
+                                    onClick={e =>
                                         this.setState({
                                             activePage: "utilities"
                                         })
@@ -127,7 +140,7 @@ class FacilityDetails extends Component {
                             >
                                 <Link
                                     to={servicesLink}
-                                    onclick={e =>
+                                    onClick={e =>
                                         this.setState({
                                             activePage: "services"
                                         })
