@@ -223,3 +223,51 @@ select.mfl-select {
     margin-top: -7px;
     margin-right: -6px;
 }
+
+.mfl-stats-container {
+    display: flex;
+    flex-direction: column;
+    width: 18%;
+    box-shadow: 1px 1px 10px #000;
+    padding: 20px;
+    font-size: 22px;
+}
+
+.mfl-stats-container div:first-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mfl-stats-icon {
+    font-size: 32px;
+    color: #666;
+}
+.mfl-stats-title {
+    padding: 4px 0px;
+    border-top: 1px solid #666;
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+
+.mfl-stats-number {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.mfl-dash-container {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+
+.mfl-map-container {
+    padding: 5px;
+}
+.mfl-graphs-container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-left: 20px;
+    flex-direction: row;
+}

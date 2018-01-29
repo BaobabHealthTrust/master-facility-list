@@ -23,7 +23,7 @@ import removeResultsValues from "../actions/remove-results-values";
 import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
 import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
-import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTag";
+import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTags";
 import DistrictTags from "./AdvancedSearch/DistrictTags";
 import ResourceTags from "./AdvancedSearch/ResourceTags";
 import UtilityTags from "./AdvancedSearch/UtilityTags";
@@ -109,8 +109,8 @@ class SearchModal extends Component {
                                 </a>
                             </span>
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                     </div>
 
                     <Tabs
@@ -132,8 +132,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Ownership and Regulation"
@@ -141,23 +141,23 @@ class SearchModal extends Component {
                             active
                         >
                             {this.state.activeTab ===
-                            "Ownership and Regulation" ? (
-                                <AdvancedOwnershipRegulation
-                                    operationalStatuses={
-                                        this.props.operationalStatuses
-                                    }
-                                    facilityTypes={this.props.facilityTypes}
-                                    facilityOwners={this.props.facilityOwners}
-                                    regulatoryStatuses={
-                                        this.props.regulatoryStatuses
-                                    }
-                                    handleChange={(e, type) =>
-                                        this.handleAddSearchValue(e, type)
-                                    }
-                                />
-                            ) : (
-                                ""
-                            )}
+                                "Ownership and Regulation" ? (
+                                    <AdvancedOwnershipRegulation
+                                        operationalStatuses={
+                                            this.props.operationalStatuses
+                                        }
+                                        facilityTypes={this.props.facilityTypes}
+                                        facilityOwners={this.props.facilityOwners}
+                                        regulatoryStatuses={
+                                            this.props.regulatoryStatuses
+                                        }
+                                        handleChange={(e, type) =>
+                                            this.handleAddSearchValue(e, type)
+                                        }
+                                    />
+                                ) : (
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -173,8 +173,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -195,8 +195,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Utilities"
@@ -214,8 +214,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Services"
@@ -233,8 +233,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                     </Tabs>
                 </div>
@@ -320,14 +320,14 @@ const mapStateToProps = state => {
                 return filteredArray.length > 0;
             })
             .reduce(
-                (resultsArray, currentArray) => {
-                    return intersection(resultsArray, currentArray);
-                },
-                map(state.searchResults.advancedSearchFacilities).filter(
-                    filteredArray => {
-                        return filteredArray.length > 0;
-                    }
-                )[0]
+            (resultsArray, currentArray) => {
+                return intersection(resultsArray, currentArray);
+            },
+            map(state.searchResults.advancedSearchFacilities).filter(
+                filteredArray => {
+                    return filteredArray.length > 0;
+                }
+            )[0]
             )
     };
 };

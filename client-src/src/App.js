@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import FacilitiesHome from "./Facility/FacilitiesHome";
 import { Route, Switch } from "react-router-dom";
 import FacilityDetails from "./Facility/FacilityDetails";
+import Dashboard from "./Dashboard/DashboardHome";
 
 class App extends Component {
     render() {
@@ -20,7 +21,7 @@ class App extends Component {
                     <Route
                         exact
                         path="/"
-                        render={() => <h1>This is homepage</h1>}
+                        component={Dashboard}
                     />
                 </Switch>
             </div>

@@ -20,21 +20,21 @@ export default class FacilityList extends React.Component {
 
         const tableRecords = this.props.dataSource
             ? this.props.dataSource.map(facility => {
-                  return [
-                      facility.id,
-                      facility.facility_code,
-                      facility.facility_name.toUpperCase(),
-                      "Common Name".toUpperCase(),
-                      facility.owner.facility_owner.toUpperCase(),
-                      facility.facilityType.facility_type.toUpperCase(),
-                      truncate(
-                          facility.operationalStatus.facility_operational_status.toUpperCase(),
-                          { length: 12 }
-                      ),
-                      facility.district.district_name.toUpperCase(),
-                      moment(facility.facility_date_opened).format("MMM Do YY")
-                  ];
-              })
+                return [
+                    facility.id,
+                    facility.facility_code,
+                    facility.facility_name.toUpperCase(),
+                    "Common Name".toUpperCase(),
+                    facility.owner.facility_owner.toUpperCase(),
+                    facility.facilityType.facility_type.toUpperCase(),
+                    truncate(
+                        facility.operationalStatus.facility_operational_status.toUpperCase(),
+                        { length: 12 }
+                    ),
+                    facility.district.district_name.toUpperCase(),
+                    moment(facility.facility_date_opened).format("MMM Do YY")
+                ];
+            })
             : [];
 
         return (
