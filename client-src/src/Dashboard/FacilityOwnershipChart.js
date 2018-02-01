@@ -2,34 +2,31 @@
 import React, { Component } from 'react';
 import ChartContainer from "../common/MflChartContainer";
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
+import { map } from "lodash";
 
-type Props = {};
+type Props = {
+    data: Array<{ ownership: string, total: number }>
+};
 
 export default class FacilityOwnershipChart extends Component<Props> {
     render() {
-        const data = [
-            { ownership: "Private", total: 28 },
-            { ownership: "Cham", total: 12 },
-            { ownership: "Public", total: 14 },
-            { ownership: "Military", total: 51 },
-            { ownership: "Parastatal", total: 7 },
-        ];
+        const ticks = map(this.props.data, "ownership");
 
         const chartDefinition =
             <VictoryChart
                 height={200}
-                padding={30}
+                padding={35}
                 theme={VictoryTheme.material}
                 domainPadding={20}
                 style={{ parent: { maxWidth: "600px" } }}
             >
                 <VictoryAxis
-                    tickFormat={["Private", "Cham", "Public", "Military", "Parastatal"]}
+                    tickFormat={ticks}
                 />
                 <VictoryAxis
                     dependentAxis
                 />
-                <VictoryBar data={data} x="ownership" y="total" />
+                <VictoryBar data={this.props.data} x="ownership" y="total" />
             </VictoryChart>;
 
         return (

@@ -2,14 +2,14 @@
 import axios from "axios";
 import settings from "../settings";
 
-export default () => {
+export default (ids: number[]) => {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `FacilityServices/`;
 
     const FILTER = {
         where: {
             service_id: {
-                inq: [4, 16, 15, 23]
+                inq: ids
             }
         }
     };
