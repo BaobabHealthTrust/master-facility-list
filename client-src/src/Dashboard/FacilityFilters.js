@@ -2,17 +2,26 @@
 import React from "react";
 import SecondaryMenu from "../common/SecondaryMenu";
 import { connect } from "react-redux";
-import type { District } from "../types/model-types";
+import type { District, OperationalStatus } from "../types/model-types";
 import fetchDistricts from "../actions/fetch-districts";
+import addSearchValues from "../actions/add-search-values";
+import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import FacilityFilterSelector from "../common/FacilityFilterSelector";
 
 // TODO: These need to be flow compatible
-type Props = any;
+type Props = {
+    fetchDistricts: Function,
+    addSearchValues: Function,
+    districts: Array<District>,
+    operationalStatuses: Array<OperationalStatus>,
+    fetchBasicDetailsResults: Function
+};
 
 type State = {
     dataSource: Array<District>,
     displayKey: string,
-    entity: string
+    entity: string,
+    actionType: string
 };
 
 class FacilityFilters extends React.Component<Props, State> {
@@ -20,7 +29,8 @@ class FacilityFilters extends React.Component<Props, State> {
     state = {
         dataSource: [],
         displayKey: "",
-        entity: ""
+        entity: "",
+        actionType: "",
     }
 
     componentDidMount() {
@@ -31,7 +41,8 @@ class FacilityFilters extends React.Component<Props, State> {
         this.setState({
             dataSource: [],
             displayKey: "",
-            entity: ""
+            entity: "",
+            actionType: ""
         })
     }
 
@@ -46,7 +57,8 @@ class FacilityFilters extends React.Component<Props, State> {
                         this.setState({
                             dataSource: this.props.districts,
                             displayKey: "district_name",
-                            entity: "districts"
+                            entity: "districts",
+                            actionType: "ADD_DISTRICT_VALUES",
                         })
                     ) : this.resetState()
                 }
@@ -78,6 +90,9 @@ class FacilityFilters extends React.Component<Props, State> {
                         data={this.state.dataSource}
                         displayKey={this.state.displayKey}
                         entity={this.state.entity}
+                        actionType={this.state.actionType}
+                        fetchResults={this.props.fetchBasicDetailsResults}
+                        addSearchValues={this.props.addSearchValues}
                     />
 
                 }
@@ -94,5 +109,7 @@ const mapStateToProps = store => {
 }
 
 export default connect(mapStateToProps, {
-    fetchDistricts
+    fetchDistricts,
+    addSearchValues,
+    fetchBasicDetailsResults
 })(FacilityFilters);
