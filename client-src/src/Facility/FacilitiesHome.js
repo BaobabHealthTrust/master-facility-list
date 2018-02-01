@@ -38,9 +38,7 @@ class FacilitiesHome extends Component {
         this.props.fetchResources();
         this.props.fetchUtilities();
         this.props.fetchServices();
-        if (this.props.facilities.length === 0) {
-            this.props.fetchFacilities(1);
-        }
+        this.props.fetchFacilities(1);
     }
 
     componentWillReceiveProps(props) {
@@ -84,38 +82,38 @@ class FacilitiesHome extends Component {
                         </h4>
                     </blockquote>
                 ) : (
-                    <div>
-                        {this.state.isAdvancedSearch ? (
-                            <SearchModal
-                                handleClose={() => this.handleClose()}
-                            />
-                        ) : this.state.isShowSearchResults ? (
                             <div>
-                                <FacilityList
-                                    downloadAction={
-                                        this.props.downloadFacilities
-                                    }
-                                    dataSource={this.props.searchResults}
-                                    toggleAdvancedSearch={e =>
-                                        this.toggleAdvancedSearch(e)
-                                    }
-                                />
-                            </div>
-                        ) : (
-                            <div>
-                                <FacilityList
-                                    downloadAction={
-                                        this.props.downloadFacilities
-                                    }
-                                    dataSource={this.props.facilities}
-                                    toggleAdvancedSearch={e =>
-                                        this.toggleAdvancedSearch(e)
-                                    }
-                                />
+                                {this.state.isAdvancedSearch ? (
+                                    <SearchModal
+                                        handleClose={() => this.handleClose()}
+                                    />
+                                ) : this.state.isShowSearchResults ? (
+                                    <div>
+                                        <FacilityList
+                                            downloadAction={
+                                                this.props.downloadFacilities
+                                            }
+                                            dataSource={this.props.searchResults}
+                                            toggleAdvancedSearch={e =>
+                                                this.toggleAdvancedSearch(e)
+                                            }
+                                        />
+                                    </div>
+                                ) : (
+                                            <div>
+                                                <FacilityList
+                                                    downloadAction={
+                                                        this.props.downloadFacilities
+                                                    }
+                                                    dataSource={this.props.facilities}
+                                                    toggleAdvancedSearch={e =>
+                                                        this.toggleAdvancedSearch(e)
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                             </div>
                         )}
-                    </div>
-                )}
             </div>
         );
     }

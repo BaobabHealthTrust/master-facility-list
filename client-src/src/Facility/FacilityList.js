@@ -19,7 +19,7 @@ export default class FacilityList extends React.Component {
         ];
 
         const tableRecords = this.props.dataSource
-            ? this.props.dataSource.map(facility => {
+            && this.props.dataSource.map(facility => {
                 return [
                     facility.id,
                     facility.facility_code,
@@ -35,7 +35,6 @@ export default class FacilityList extends React.Component {
                     moment(facility.facility_date_opened).format("MMM Do YY")
                 ];
             })
-            : [];
 
         return (
             <div>
