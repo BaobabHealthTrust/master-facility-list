@@ -5,6 +5,7 @@ import DownloadsReducer from './downloads-reducer';
 import SearchResults from './search-reducer';
 import GlobalContainers from './global-containers';
 import AdvancedSearchReducer from './advanced-search-reducer';
+import DashboardStatistics from "./dashboard-reducer";
 
 const rootReducer = combineReducers({
     facilities: FacilitiesReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     downloads: DownloadsReducer,
     searchResults: SearchResults,
     globalContainers: GlobalContainers,
-    advancedSearchValues: AdvancedSearchReducer
+    advancedSearchValues: AdvancedSearchReducer,
+    dashboardStatistics: DashboardStatistics
 });
 
 export default rootReducer;

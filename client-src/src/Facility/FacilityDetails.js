@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+//@flow
+import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Summary from "./Summary";
 import Location from "./FacilityLocation";
@@ -6,22 +7,56 @@ import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
 import { connect } from "react-redux";
+import SecondaryMenu from "../common/SecondaryMenu";
 
-class FacilityDetails extends Component {
-    constructor() {
-        super();
-        this.state = {
-            activePage: "summary"
-        };
-    }
+type Props = {
+    match: any,
+    current: any
+}
 
+class FacilityDetails extends React.Component<Props>{
     render() {
+
         const id = this.props.match.params.id;
         const summaryLink = `/facilities/${id}`;
         const locationsLink = `/facilities/${id}/locations`;
         const resourcesLink = `/facilities/${id}/resources`;
         const utilitiesLink = `/facilities/${id}/utilities`;
         const servicesLink = `/facilities/${id}/services`;
+
+        const links = [
+            {
+                name: "summary",
+                displayName: "Summary".toUpperCase(),
+                redirect: summaryLink,
+                clickHandler: null
+            },
+            {
+                name: "contactsandlocations",
+                displayName: "Contacts and Locations".toUpperCase(),
+                redirect: locationsLink,
+                clickHandler: null
+            },
+            {
+                name: "resources",
+                displayName: "resources".toUpperCase(),
+                redirect: resourcesLink,
+                clickHandler: null
+            },
+            {
+                name: "utilities",
+                displayName: "utilities".toUpperCase(),
+                redirect: utilitiesLink,
+                clickHandler: null
+            },
+            {
+                name: "services",
+                displayName: "services".toUpperCase(),
+                redirect: servicesLink,
+                clickHandler: null
+            }
+        ]
+
 
         let badgeClass = "new badge";
 
@@ -43,106 +78,8 @@ class FacilityDetails extends Component {
         }
 
         return (
-            <div className="">
-                <nav>
-                    <div class="nav-wrapper blue accent-1">
-                        <ul class="left">
-                            <li
-                                className={
-                                    this.state.activePage === "summary"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={summaryLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "summary"
-                                        })
-                                    }
-                                >
-                                    SUMMARY
-                                </Link>
-                            </li>
-
-                            <li
-                                className={
-                                    this.state.activePage ===
-                                    "contactsandlocation"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={locationsLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "contactsandlocation"
-                                        })
-                                    }
-                                >
-                                    CONTACTS AND LOCATION
-                                </Link>
-                            </li>
-
-                            <li
-                                className={
-                                    this.state.activePage === "resources"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={resourcesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "resources"
-                                        })
-                                    }
-                                >
-                                    RESOURCES
-                                </Link>
-                            </li>
-                            <li
-                                className={
-                                    this.state.activePage === "utilities"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={utilitiesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "utilities"
-                                        })
-                                    }
-                                >
-                                    UTILITIES
-                                </Link>
-                            </li>
-                            <li
-                                className={
-                                    this.state.activePage === "services"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={servicesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "services"
-                                        })
-                                    }
-                                >
-                                    SERVICES
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+            <div>
+                <SecondaryMenu links={links} defaultActivePage={"summary"} />
                 <div className="container mfl-titles">
                     <h5>
                         {this.props.current.facility_name}
@@ -156,8 +93,8 @@ class FacilityDetails extends Component {
                                 }
                             />
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                     </h5>
                     <h6>
                         {this.props.current.facility_code},&nbsp;
@@ -174,35 +111,35 @@ class FacilityDetails extends Component {
                         </h4>
                     </blockquote>
                 ) : (
-                    <Switch>
-                        <Route
-                            exact
-                            path="/facilities/:id"
-                            component={Summary}
-                        />
+                        <Switch>
+                            <Route
+                                exact
+                                path="/facilities/:id"
+                                component={Summary}
+                            />
 
-                        <Route
-                            exact
-                            path="/facilities/:id/locations"
-                            component={Location}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/resources"
-                            component={Resources}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/utilities"
-                            component={Utilities}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/services"
-                            component={Services}
-                        />
-                    </Switch>
-                )}
+                            <Route
+                                exact
+                                path="/facilities/:id/locations"
+                                component={Location}
+                            />
+                            <Route
+                                exact
+                                path="/facilities/:id/resources"
+                                component={Resources}
+                            />
+                            <Route
+                                exact
+                                path="/facilities/:id/utilities"
+                                component={Utilities}
+                            />
+                            <Route
+                                exact
+                                path="/facilities/:id/services"
+                                component={Services}
+                            />
+                        </Switch>
+                    )}
             </div>
         );
     }
