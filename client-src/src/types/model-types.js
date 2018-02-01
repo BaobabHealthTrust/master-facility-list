@@ -29,3 +29,15 @@ export type Owner = {
     description: string,
     id: number
 }
+
+export type OperationalStatus = {
+    facility_operational_status: string,
+    description: string,
+    id: number
+}
+
+export type RegulatoryStatus = {
+    facility_regulatory_status: string,
+    description: string,
+    id: number
+}
