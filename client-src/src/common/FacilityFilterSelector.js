@@ -12,12 +12,16 @@ type Props = {
     fetchResults: Function,
     addSearchValues: Function,
     actionType: string,
-    searchValues: number[]
+    searchValues: {
+        districtValues: number[]
+    },
+    searchValueKey: string
 }
 
 class FacilityFilterSelector extends Component<Props> {
 
     handleClick = async (e: SyntheticEvent<HTMLButtonElement>) => {
+        // await console.log(this.props.searchValues[this.props.searchValueKey]);
         await this.props.addSearchValues(e, this.props.actionType);
         await this.props.fetchResults(this.props.searchValues);
     }
@@ -50,7 +54,6 @@ class FacilityFilterSelector extends Component<Props> {
 const mapStateToprops = state => {
     return {
         searchValues: state.advancedSearchValues,
-
     }
 }
 

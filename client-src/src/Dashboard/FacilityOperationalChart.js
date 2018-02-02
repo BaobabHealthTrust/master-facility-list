@@ -5,21 +5,23 @@ import { VictoryPie, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
 
 type Props = {
     data: Array<{ x: string, y: number }>,
-
 };
 
-export default class FacilityOwnershipChart extends Component<Props> {
+export default class FacilityOperationalStatusChart extends Component<Props> {
     render() {
         const data = this.props.data;
 
         const chartDefinition = <VictoryPie
             data={data}
-            padding={20}
-            style={{ parent: { maxWidth: "600px" } }}
+            colorScale={["#3b5586", "#5170aa", "#6289d1", "#5f7399", "#747b88"]}
+            padding={0}
+            style={pieStyle}
             theme={VictoryTheme.material}
             height={200}
-            innerRadius={50}
-            labels={(d) => `${d.x}: ${d.y}`}
+            labelRadius={50}
+            labels={(d) => {
+                return `${d.x.split("(")[0]}\n${d.x.split("(")[1] ? d.x.split("(")[1].replace(")", "") : ""}\n${d.y}`
+            }}
             animate={{ duration: 300 }}
         />
 
@@ -28,3 +30,9 @@ export default class FacilityOwnershipChart extends Component<Props> {
         );
     }
 }
+
+const pieStyle = {
+    parent: { maxWidth: "600px" },
+    labels: { fill: "#041128", fontSize: 10, fontWeight: "bold", textAlign: "center" }
+}
+

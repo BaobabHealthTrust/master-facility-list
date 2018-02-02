@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from 'react';
 import ChartContainer from "../common/MflChartContainer";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend } from "victory";
 import { map } from "lodash";
 
 type Props = {
@@ -11,6 +11,15 @@ type Props = {
 export default class FacilityRegulatoryStatusChart extends Component<Props> {
     render() {
         const ticks = map(this.props.data, "regulatoryStatus");
+        const legendData = ticks.length > 0 ? ticks.map(tick => {
+            return { name: `${tick.split("(")[0]}\n${tick.split("(")[1] ? tick.split("(")[1].replace(")", "") : ""}` }
+        }) : [{ name: "one" }];
+
+        const colorScale = ["#3b5586", "#5170aa", "#6289d1", "#5f7399", "#747b88"];
+
+        const barData = colorScale.map((cs, i) => {
+            return Object.assign({}, { fill: cs }, this.props.data[i]);
+        })
 
         const chartDefinition =
             <VictoryChart
@@ -20,13 +29,23 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
                 domainPadding={20}
                 style={{ parent: { maxWidth: "600px" } }}
             >
-                <VictoryAxis
-                    tickFormat={ticks}
+                <VictoryAxis />
+                <VictoryLegend
+                    orientation="vertical"
+                    style={{ labels: { fontSize: 8 } }}
+                    data={legendData}
+                    gutter={0}
+                    colorScale={colorScale}
+                    animate={{ duration: 2000, onLoad: { duration: 1000 } }}
                 />
-                <VictoryAxis
-                    dependentAxis
+                <VictoryBar
+                    horizontal={true}
+                    data={barData}
+                    x="regulatoryStatus"
+                    y="total"
+                    labels={(d) => d.total}
+                    colorScale={colorScale}
                 />
-                <VictoryBar horizontal={true} data={this.props.data} x="regulatoryStatus" y="total" />
             </VictoryChart>;
 
         return (
