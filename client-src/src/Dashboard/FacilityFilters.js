@@ -21,7 +21,8 @@ type State = {
     dataSource: Array<District>,
     displayKey: string,
     entity: string,
-    actionType: string
+    actionType: string,
+    searchValueKey: string
 };
 
 class FacilityFilters extends React.Component<Props, State> {
@@ -31,6 +32,7 @@ class FacilityFilters extends React.Component<Props, State> {
         displayKey: "",
         entity: "",
         actionType: "",
+        searchValueKey: ""
     }
 
     componentDidMount() {
@@ -42,7 +44,8 @@ class FacilityFilters extends React.Component<Props, State> {
             dataSource: [],
             displayKey: "",
             entity: "",
-            actionType: ""
+            actionType: "",
+            searchValueKey: ""
         })
     }
 
@@ -59,6 +62,7 @@ class FacilityFilters extends React.Component<Props, State> {
                             displayKey: "district_name",
                             entity: "districts",
                             actionType: "ADD_DISTRICT_VALUES",
+                            searchValueKey: "districtValues"
                         })
                     ) : this.resetState()
                 }
@@ -93,6 +97,7 @@ class FacilityFilters extends React.Component<Props, State> {
                         actionType={this.state.actionType}
                         fetchResults={this.props.fetchBasicDetailsResults}
                         addSearchValues={this.props.addSearchValues}
+                        searchValueKey={this.state.searchValueKey}
                     />
 
                 }
