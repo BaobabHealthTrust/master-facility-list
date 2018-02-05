@@ -182,20 +182,21 @@ class DashboardHome extends React.Component<Props, State> {
                                         {/* TODO: Add Components for the other Statistics */}
                                     </div>
                                     <div className="row mfl-tm-2">
-                                        <div className="col s12 m6">
+                                        <div className="col s12 m6 l3">
                                             <FacilityOwnershipChart data={ownershipData} />
                                         </div>
-                                        <div className="col s12 m6">
+                                        <div className="col s12 m6 l3">
                                             <FacilityTypeChart />
+                                        </div>
+                                        <div className="col s12 m6 l3">
+                                            <FacilityOperationalChart data={operationalStatusData} />
+                                        </div>
+                                        <div className="col s12 m6 l3">
+                                            <FacilityRegulatoryStatusChart data={regulatoryStatusData} />
                                         </div>
                                     </div>
                                     <div className="row mfl-tm-2">
-                                        <div className="col s12 m6">
-                                            <FacilityOperationalChart data={operationalStatusData} />
-                                        </div>
-                                        <div className="col s12 m6">
-                                            <FacilityRegulatoryStatusChart data={regulatoryStatusData} />
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>

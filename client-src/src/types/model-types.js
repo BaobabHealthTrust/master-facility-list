@@ -41,3 +41,15 @@ export type RegulatoryStatus = {
     description: string,
     id: number
 }
+
+export type FacilityType = {
+    facility_type: string,
+    description: string,
+    id: number
+}
+
+export type FacilityOwner = {
+    facility_owner: string,
+    description: string,
+    id: number
+}
