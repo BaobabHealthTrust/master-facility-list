@@ -1,28 +1,46 @@
 //@flow
 import React, { Component } from 'react';
-import type { District } from  "../types/model-types";
+import type { District, FacilityType } from  "../types/model-types";
 import { connect } from "react-redux";
 import fetchResults from "../actions/fetch-basic-details-results";
 
 
 type Props = {
-    data: Array<District>,
+    data: any,
     displayKey: string,
     entity: string,
     fetchResults: Function,
     addSearchValues: Function,
+    removeSearchValues: Function,
     actionType: string,
+    removeAction: string,
     searchValues: {
-        districtValues: number[]
+        districtValues: number[],
+        facilityTypeValues: number[]
     },
     searchValueKey: string
 }
+type State = {
+    isRemoveValue: boolean
+}
 
-class FacilityFilterSelector extends Component<Props> {
+class FacilityFilterSelector extends Component<Props, State> {
+
+    state = {
+        isRemoveValue: false
+    }
 
     handleClick = async (e: SyntheticEvent<HTMLButtonElement>) => {
-        // await console.log(this.props.searchValues[this.props.searchValueKey]);
-        await this.props.addSearchValues(e, this.props.actionType);
+
+        this.props.searchValues[this.props.searchValueKey].includes(e.currentTarget.value.toString()) ?
+            (this.setState({ isRemoveValue: true }),
+                this.state.isRemoveValue ?
+                    (
+                        await this.props.removeSearchValues(e, this.props.removeAction)) : ""
+            ) : (
+                this.setState({ isRemoveValue: false }),
+                await this.props.addSearchValues(e, this.props.actionType)
+            )
         await this.props.fetchResults(this.props.searchValues);
     }
 

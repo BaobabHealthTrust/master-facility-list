@@ -2,26 +2,34 @@
 import React from "react";
 import SecondaryMenu from "../common/SecondaryMenu";
 import { connect } from "react-redux";
-import type { District, OperationalStatus } from "../types/model-types";
+import type { District, FacilityType, OperationalStatus, FacilityOwner } from "../types/model-types";
 import fetchDistricts from "../actions/fetch-districts";
+import fetchFacilityTypes from "../actions/fetch-facility-types";
 import addSearchValues from "../actions/add-search-values";
+import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import FacilityFilterSelector from "../common/FacilityFilterSelector";
+import fetchFacilityOwners from "../actions/fetch-facility-owners";
 
 // TODO: These need to be flow compatible
 type Props = {
     fetchDistricts: Function,
     addSearchValues: Function,
+    removeSearchValues: Function,
     districts: Array<District>,
+    facilityTypes: Array<FacilityType>,
     operationalStatuses: Array<OperationalStatus>,
+    fetchFacilityTypes: Function,
+    fetchFacilityOwners: Function,
     fetchBasicDetailsResults: Function
 };
 
 type State = {
-    dataSource: Array<District>,
+    dataSource: any,
     displayKey: string,
     entity: string,
     actionType: string,
+    removeAction: string,
     searchValueKey: string
 };
 
@@ -32,11 +40,14 @@ class FacilityFilters extends React.Component<Props, State> {
         displayKey: "",
         entity: "",
         actionType: "",
+        removeAction: "",
         searchValueKey: ""
     }
 
     componentDidMount() {
-        this.props.fetchDistricts()
+        this.props.fetchDistricts(),
+            this.props.fetchFacilityTypes();
+        this.props.fetchFacilityOwners();
     }
 
     resetState = () => {
@@ -45,6 +56,7 @@ class FacilityFilters extends React.Component<Props, State> {
             displayKey: "",
             entity: "",
             actionType: "",
+            removeAction: "",
             searchValueKey: ""
         })
     }
@@ -62,6 +74,7 @@ class FacilityFilters extends React.Component<Props, State> {
                             displayKey: "district_name",
                             entity: "districts",
                             actionType: "ADD_DISTRICT_VALUES",
+                            removeAction: "REMOVE_DISTRICT_VALUES",
                             searchValueKey: "districtValues"
                         })
                     ) : this.resetState()
@@ -71,13 +84,35 @@ class FacilityFilters extends React.Component<Props, State> {
                 name: 'facilityType',
                 displayName: 'Facility Type',
                 redirect: null,
-                clickHandler: () => { alert("you clicked Facility Type! Congrats...") }
+                clickHandler: () => {
+                    this.state.entity != "facilityTypes" ? (
+                        this.setState({
+                            dataSource: this.props.facilityTypes,
+                            displayKey: "facility_type",
+                            entity: "facilityTypes",
+                            actionType: "ADD_FACILITY_TYPE_VALUES",
+                            removeAction: "REMOVE_FACILITY_TYPE_VALUES",
+                            searchValueKey: "facilityTypeValues"
+                        })
+                    ) : this.resetState()
+                }
             },
             {
                 name: 'facilityOwnership',
                 displayName: 'Facility Ownership',
                 redirect: null,
-                clickHandler: () => { alert("you clicked Facility Ownership! Congrats...") }
+                clickHandler: () => {
+                    this.state.entity != "facilityOwners" ? (
+                        this.setState({
+                            dataSource: this.props.facilityOwners,
+                            displayKey: "facility_owner",
+                            entity: "facilityOwners",
+                            actionType: "ADD_FACILITY_OWNER_VALUES",
+                            removeAction: "REMOVE_FACILITY_OWNER_VALUES",
+                            searchValueKey: "facilityOwnerValues"
+                        })
+                    ) : this.resetState()
+                }
             },
             {
                 name: 'operationalStatus',
@@ -95,9 +130,11 @@ class FacilityFilters extends React.Component<Props, State> {
                         displayKey={this.state.displayKey}
                         entity={this.state.entity}
                         actionType={this.state.actionType}
+                        removeAction={this.state.removeAction}
                         fetchResults={this.props.fetchBasicDetailsResults}
                         addSearchValues={this.props.addSearchValues}
                         searchValueKey={this.state.searchValueKey}
+                        removeSearchValues={this.props.removeSearchValues}
                     />
 
                 }
@@ -109,12 +146,17 @@ class FacilityFilters extends React.Component<Props, State> {
 
 const mapStateToProps = store => {
     return {
-        districts: store.dependancies.districts
+        districts: store.dependancies.districts,
+        facilityTypes: store.dependancies.facilityTypes,
+        facilityOwners: store.dependancies.facilityOwners
     }
 }
 
 export default connect(mapStateToProps, {
     fetchDistricts,
+    fetchFacilityTypes,
+    fetchFacilityOwners,
     addSearchValues,
-    fetchBasicDetailsResults
+    fetchBasicDetailsResults,
+    removeSearchValues
 })(FacilityFilters);
