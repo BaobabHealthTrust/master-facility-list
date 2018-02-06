@@ -20,27 +20,15 @@ type Props = {
     },
     searchValueKey: string
 }
-type State = {
-    isRemoveValue: boolean
-}
 
-class FacilityFilterSelector extends Component<Props, State> {
-
-    state = {
-        isRemoveValue: false
-    }
+class FacilityFilterSelector extends Component<Props> {
 
     handleClick = async (e: SyntheticEvent<HTMLButtonElement>) => {
-
-        this.props.searchValues[this.props.searchValueKey].includes(e.currentTarget.value.toString()) ?
-            (this.setState({ isRemoveValue: true }),
-                this.state.isRemoveValue ?
-                    (
-                        await this.props.removeSearchValues(e, this.props.removeAction)) : ""
-            ) : (
-                this.setState({ isRemoveValue: false }),
-                await this.props.addSearchValues(e, this.props.actionType)
-            )
+        if (this.props.searchValues[this.props.searchValueKey].includes(e.currentTarget.value)) {
+            await this.props.removeSearchValues(e.currentTarget.value, this.props.removeAction);
+        } else {
+            await this.props.addSearchValues(e, this.props.actionType);
+        }
         await this.props.fetchResults(this.props.searchValues);
     }
 

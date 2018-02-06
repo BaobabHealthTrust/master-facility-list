@@ -38,7 +38,7 @@ export default (
         case "FETCH_FACILITIES":
             return {
                 all: state.all,
-                list: state.list.concat(action.payload.data),
+                list: action.payload.data,
                 currentDetails: state.currentDetails,
                 currentResources: state.currentResources,
                 currentUtilities: state.currentUtilities,

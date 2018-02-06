@@ -44,7 +44,7 @@ class DashboardHome extends React.Component<Props, State> {
             {
                 id: 4,
                 displayName: "OPD",
-                icon: "directions_walk"
+                icon: "people"
             },
             {
                 id: 16,
