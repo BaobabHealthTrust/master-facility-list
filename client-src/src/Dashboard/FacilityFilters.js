@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import type { District, FacilityType, OperationalStatus, FacilityOwner } from "../types/model-types";
 import fetchDistricts from "../actions/fetch-districts";
 import fetchFacilityTypes from "../actions/fetch-facility-types";
+import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import addSearchValues from "../actions/add-search-values";
 import removeSearchValues from "../actions/remove-search-values";
 import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
@@ -18,9 +19,11 @@ type Props = {
     removeSearchValues: Function,
     districts: Array<District>,
     facilityTypes: Array<FacilityType>,
+    facilityOwners: Array<FacilityOwner>,
     operationalStatuses: Array<OperationalStatus>,
     fetchFacilityTypes: Function,
     fetchFacilityOwners: Function,
+    fetchOperationalStatuses: Function,
     fetchBasicDetailsResults: Function
 };
 
@@ -48,6 +51,7 @@ class FacilityFilters extends React.Component<Props, State> {
         this.props.fetchDistricts(),
             this.props.fetchFacilityTypes();
         this.props.fetchFacilityOwners();
+        this.props.fetchOperationalStatuses();
     }
 
     resetState = () => {
@@ -118,7 +122,18 @@ class FacilityFilters extends React.Component<Props, State> {
                 name: 'operationalStatus',
                 displayName: 'Operational Status',
                 redirect: null,
-                clickHandler: () => { alert("you clicked Operational Status! Congrats...") }
+                clickHandler: () => {
+                    this.state.entity != "operationalStatuses" ? (
+                        this.setState({
+                            dataSource: this.props.operationalStatuses,
+                            displayKey: "facility_operational_status",
+                            entity: "operationalStatuses",
+                            actionType: "ADD_OPERATIONAL_STATUS_VALUES",
+                            removeAction: "REMOVE_OPERATIONAL_STATUS_VALUES",
+                            searchValueKey: "operationalStatusValues"
+                        })
+                    ) : this.resetState()
+                }
             }
         ]
         return (
@@ -148,7 +163,8 @@ const mapStateToProps = store => {
     return {
         districts: store.dependancies.districts,
         facilityTypes: store.dependancies.facilityTypes,
-        facilityOwners: store.dependancies.facilityOwners
+        facilityOwners: store.dependancies.facilityOwners,
+        operationalStatuses: store.dependancies.operationalStatuses,
     }
 }
 
@@ -156,6 +172,7 @@ export default connect(mapStateToProps, {
     fetchDistricts,
     fetchFacilityTypes,
     fetchFacilityOwners,
+    fetchOperationalStatuses,
     addSearchValues,
     fetchBasicDetailsResults,
     removeSearchValues

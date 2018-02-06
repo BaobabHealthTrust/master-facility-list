@@ -33,35 +33,40 @@ export default class FacilityTypeChart extends Component<Props> {
 
         const chartDefinition =
             <VictoryChart
-                padding={20}
+                padding={30}
                 style={{ parent: { maxWidth: "600px" } }}
                 theme={VictoryTheme.material}
                 height={200}
-                innerRadius={50}
+                innerRadius={80}
             >
                 <VictoryAxis
-                    tickValues={["Quarter 1"]}
-                    tickFormat={[1]}
+
                 />
                 <VictoryAxis
                     dependentAxis
                     tickFormat={(x) => (`$${x / 1000}k`)}
                 />
                 <VictoryStack
-                    horizontal={true}
+                    height={400}
+                    width={800}
+                    horizontal="true"
+
                 >
                     <VictoryBar
+                        horizontal={true}
                         data={data2012}
                         x="quarter"
                         y="earnings"
                     />
                     <VictoryBar
+                        height={400}
                         data={data2013}
                         x="quarter"
                         y="earnings"
                     />
                     <VictoryBar
                         data={data2014}
+                        height={400}
                         x="quarter"
                         y="earnings"
                     />
@@ -71,6 +76,7 @@ export default class FacilityTypeChart extends Component<Props> {
                         y="earnings"
                     />
                 </VictoryStack>
+
             </VictoryChart >
 
         return (

@@ -14,7 +14,7 @@ import fetchServiceTypes from "../actions/fetch-service-types";
 import fetchResources from "../actions/fetch-resources";
 import fetchUtilities from "../actions/fetch-utilities";
 import fetchServices from "../actions/fetch-services";
-
+import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityList from "./FacilityList";
 
 class FacilitiesHome extends Component {
@@ -67,53 +67,129 @@ class FacilitiesHome extends Component {
     }
 
     render() {
+
+        const links = [
+            {
+                name: 'district',
+                displayName: 'District',
+                redirect: null,
+                clickHandler: () => {
+                    this.state.entity != "districts" ? (
+                        this.setState({
+                            dataSource: this.props.districts,
+                            displayKey: "district_name",
+                            entity: "districts",
+                            actionType: "ADD_DISTRICT_VALUES",
+                            removeAction: "REMOVE_DISTRICT_VALUES",
+                            searchValueKey: "districtValues"
+                        })
+                    ) : this.resetState()
+                }
+            },
+            {
+                name: 'facilityType',
+                displayName: 'Facility Type',
+                redirect: '/facilities',
+                clickHandler: () => {
+                    this.state.entity != "facilityTypes" ? (
+                        this.setState({
+                            dataSource: this.props.facilityTypes,
+                            displayKey: "facility_type",
+                            entity: "facilityTypes",
+                            actionType: "ADD_FACILITY_TYPE_VALUES",
+                            removeAction: "REMOVE_FACILITY_TYPE_VALUES",
+                            searchValueKey: "facilityTypeValues"
+                        })
+                    ) : this.resetState()
+                }
+            },
+            {
+                name: 'facilityOwnership',
+                displayName: 'Facility Ownership',
+                redirect: null,
+                clickHandler: () => {
+                    this.state.entity != "facilityOwners" ? (
+                        this.setState({
+                            dataSource: this.props.facilityOwners,
+                            displayKey: "facility_owner",
+                            entity: "facilityOwners",
+                            actionType: "ADD_FACILITY_OWNER_VALUES",
+                            removeAction: "REMOVE_FACILITY_OWNER_VALUES",
+                            searchValueKey: "facilityOwnerValues"
+                        })
+                    ) : this.resetState()
+                }
+            },
+            {
+                name: 'operationalStatus',
+                displayName: 'Operational Status',
+                redirect: null,
+                clickHandler: () => {
+                    this.state.entity != "operationalStatuses" ? (
+                        this.setState({
+                            dataSource: this.props.operationalStatuses,
+                            displayKey: "facility_operational_status",
+                            entity: "operationalStatuses",
+                            actionType: "ADD_OPERATIONAL_STATUS_VALUES",
+                            removeAction: "REMOVE_OPERATIONAL_STATUS_VALUES",
+                            searchValueKey: "operationalStatusValues"
+                        })
+                    ) : this.resetState()
+                }
+            }
+        ]
+
         return (
-            <div className="container mfl-container">
-                <br />
-                {this.props.isLoading ? (
-                    <div class="progress">
-                        <div class="indeterminate" />
-                    </div>
-                ) : this.props.isError ? (
-                    <blockquote>
-                        <h4>
-                            "Sorry, we cannot connect to the Server. Please
+            <div>
+                <SecondaryMenu links={links} defaultActivePage={"zone"} />
+
+                <div className="container mfl-container">
+                    <br />
+                    {this.props.isLoading ? (
+                        <div class="progress">
+                            <div class="indeterminate" />
+                        </div>
+                    ) : this.props.isError ? (
+                        <blockquote>
+                            <h4>
+                                "Sorry, we cannot connect to the Server. Please
                             check your Network"
                         </h4>
-                    </blockquote>
-                ) : (
-                            <div>
-                                {this.state.isAdvancedSearch ? (
-                                    <SearchModal
-                                        handleClose={() => this.handleClose()}
-                                    />
-                                ) : this.state.isShowSearchResults ? (
-                                    <div>
-                                        <FacilityList
-                                            downloadAction={
-                                                this.props.downloadFacilities
-                                            }
-                                            dataSource={this.props.searchResults}
-                                            toggleAdvancedSearch={e =>
-                                                this.toggleAdvancedSearch(e)
-                                            }
+                        </blockquote>
+                    ) : (
+                                <div>
+                                    {this.state.isAdvancedSearch ? (
+                                        <SearchModal
+                                            handleClose={() => this.handleClose()}
                                         />
-                                    </div>
-                                ) : (
-                                            <div>
-                                                <FacilityList
-                                                    downloadAction={
-                                                        this.props.downloadFacilities
-                                                    }
-                                                    dataSource={this.props.facilities}
-                                                    toggleAdvancedSearch={e =>
-                                                        this.toggleAdvancedSearch(e)
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                            </div>
-                        )}
+                                    ) : this.state.isShowSearchResults ? (
+                                        <div>
+                                            <FacilityList
+                                                downloadAction={
+                                                    this.props.downloadFacilities
+                                                }
+                                                dataSource={this.props.searchResults}
+                                                toggleAdvancedSearch={e =>
+                                                    this.toggleAdvancedSearch(e)
+                                                }
+                                            />
+                                        </div>
+                                    ) : (
+                                                <div>
+                                                    <FacilityList
+                                                        downloadAction={
+                                                            this.props.downloadFacilities
+                                                        }
+                                                        dataSource={this.props.facilities}
+                                                        toggleAdvancedSearch={e =>
+                                                            this.toggleAdvancedSearch(e)
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                </div>
+                            )}
+                </div>
             </div>
         );
     }
