@@ -15,6 +15,7 @@ import fetchFacilityOwners from "../actions/fetch-facility-owners";
 // TODO: These need to be flow compatible
 type Props = {
     fetchDistricts: Function,
+    isFilteredResults: boolean,
     addSearchValues: Function,
     removeSearchValues: Function,
     districts: Array<District>,
@@ -24,7 +25,8 @@ type Props = {
     fetchFacilityTypes: Function,
     fetchFacilityOwners: Function,
     fetchOperationalStatuses: Function,
-    fetchBasicDetailsResults: Function
+    fetchBasicDetailsResults: Function,
+    url: string
 };
 
 type State = {
@@ -70,7 +72,7 @@ class FacilityFilters extends React.Component<Props, State> {
             {
                 name: 'district',
                 displayName: 'District',
-                redirect: null,
+                redirect: this.props.url,
                 clickHandler: () => {
                     this.state.entity != "districts" ? (
                         this.setState({
@@ -87,7 +89,7 @@ class FacilityFilters extends React.Component<Props, State> {
             {
                 name: 'facilityType',
                 displayName: 'Facility Type',
-                redirect: null,
+                redirect: this.props.url,
                 clickHandler: () => {
                     this.state.entity != "facilityTypes" ? (
                         this.setState({
@@ -104,7 +106,7 @@ class FacilityFilters extends React.Component<Props, State> {
             {
                 name: 'facilityOwnership',
                 displayName: 'Facility Ownership',
-                redirect: null,
+                redirect: this.props.url,
                 clickHandler: () => {
                     this.state.entity != "facilityOwners" ? (
                         this.setState({
@@ -121,7 +123,7 @@ class FacilityFilters extends React.Component<Props, State> {
             {
                 name: 'operationalStatus',
                 displayName: 'Operational Status',
-                redirect: null,
+                redirect: this.props.url,
                 clickHandler: () => {
                     this.state.entity != "operationalStatuses" ? (
                         this.setState({
@@ -150,6 +152,7 @@ class FacilityFilters extends React.Component<Props, State> {
                         addSearchValues={this.props.addSearchValues}
                         searchValueKey={this.state.searchValueKey}
                         removeSearchValues={this.props.removeSearchValues}
+                        isFilteredResults={this.props.isFilteredResults}
                     />
 
                 }

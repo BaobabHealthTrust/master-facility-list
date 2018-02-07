@@ -161,7 +161,7 @@ class DashboardHome extends React.Component<Props, State> {
 
         return (
             <div>
-                <FacilityFilters />
+                <FacilityFilters url="" isFilteredResults={false} />
                 <div className="container mfl-dash-container mfl-tm-2">
                     <div className="row">
                         {/* <div className="col m12 l4 xl2">

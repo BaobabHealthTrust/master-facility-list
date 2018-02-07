@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import type { District, FacilityType } from  "../types/model-types";
 import { connect } from "react-redux";
 import fetchResults from "../actions/fetch-basic-details-results";
-
+import fetchFilteredResults from "../actions/fetch-advanced-search-results";
 
 type Props = {
     data: any,
     displayKey: string,
     entity: string,
     fetchResults: Function,
+    fetchFilteredResults: Function,
     addSearchValues: Function,
     removeSearchValues: Function,
     actionType: string,
@@ -18,7 +19,9 @@ type Props = {
         districtValues: number[],
         facilityTypeValues: number[]
     },
-    searchValueKey: string
+    searchValueKey: string,
+    isFilteredResults: boolean,
+    filteredResults: number[],
 }
 
 class FacilityFilterSelector extends Component<Props> {
@@ -29,7 +32,8 @@ class FacilityFilterSelector extends Component<Props> {
         } else {
             await this.props.addSearchValues(e, this.props.actionType);
         }
-        await this.props.fetchResults(this.props.searchValues);
+        await this.props.fetchResults(this.props.searchValues)
+        this.props.isFilteredResults && await this.props.fetchFilteredResults(this.props.filteredResults)
     }
 
     render() {
@@ -60,7 +64,13 @@ class FacilityFilterSelector extends Component<Props> {
 const mapStateToprops = state => {
     return {
         searchValues: state.advancedSearchValues,
+        filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities,
+        //results: state.searchResults.advancedSearchFacilities.basicDetailsFacilities
+
     }
 }
 
-export default connect(mapStateToprops, { fetchResults })(FacilityFilterSelector);
+export default connect(mapStateToprops, {
+    fetchResults,
+    fetchFilteredResults,
+})(FacilityFilterSelector);
