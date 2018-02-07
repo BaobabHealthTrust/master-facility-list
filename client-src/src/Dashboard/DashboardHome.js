@@ -59,7 +59,7 @@ class DashboardHome extends React.Component<Props, State> {
             {
                 id: 23,
                 displayName: "ARI",
-                icon: "airline_seat_recline_normal"
+                icon: "local_hospital"
             }
         ]
     }
@@ -162,7 +162,7 @@ class DashboardHome extends React.Component<Props, State> {
         return (
             <div>
                 <FacilityFilters url="" isFilteredResults={false} />
-                <div className="container mfl-dash-container mfl-tm-2">
+                <div className="container mfl-container mfl-dash-container mfl-tm-2">
                     <div className="row">
                         {/* <div className="col m12 l4 xl2">
                             <div className>
@@ -173,10 +173,10 @@ class DashboardHome extends React.Component<Props, State> {
                             <div className="mfl-graphs-container">
                                 <div className="mfl-dash-container">
                                     <div className="row">
-                                        <div className="col s12 m6 l2">
+                                        <div className="col s12 m6 l4 xl2">
                                             <Card icon="local_hospital" stat={this.calculateTotal()} title="Total Facilities" />
                                         </div>
-                                        {this.state.dashboardServices.map(services => <div className="col s12 m6 l2">
+                                        {this.state.dashboardServices.map(services => <div className="col s12 m6 l4 xl2">
                                             <Card icon={services.icon} stat={this.calculateTotalFacilitiesWith(services.id)} title={`Facilities with ${services.displayName}`} />
                                         </div>)}
                                         {/* TODO: Add Components for the other Statistics */}

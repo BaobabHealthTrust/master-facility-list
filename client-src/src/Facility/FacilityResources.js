@@ -10,11 +10,6 @@ import { uniq, chunk } from "lodash";
 class FacilityResources extends Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
-
-        if (this.props.facilities.length > 0) {
-            await this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchResourceTypes();
         await this.props.fetchCurrentResources(id);
@@ -47,7 +42,7 @@ class FacilityResources extends Component {
         const cards = chunk(presentTypes, 3);
 
         return (
-            <div className="container">
+            <div className="container mfl-container">
                 <br />
                 {cards.map(card => {
                     return (
@@ -55,9 +50,9 @@ class FacilityResources extends Component {
                             {card.map(type => {
                                 const data = this.props.resources
                                     .filter(
-                                        res =>
-                                            res.resource.resource_type_id ===
-                                            type.id
+                                    res =>
+                                        res.resource.resource_type_id ===
+                                        type.id
                                     )
                                     .map(res => [
                                         res.resource.resource_name,

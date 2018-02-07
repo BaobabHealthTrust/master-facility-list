@@ -11,10 +11,6 @@ class FacilityUtilities extends Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
 
-        if (this.props.facilities.length > 0) {
-            await this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchUtilityTypes();
         await this.props.fetchCurrentUtilities(id);
@@ -45,7 +41,7 @@ class FacilityUtilities extends Component {
         const cards = chunk(presentTypes, 3);
 
         return (
-            <div className="container">
+            <div className="container mfl-container">
                 <br />
                 {cards.map(card => {
                     return (
@@ -53,9 +49,9 @@ class FacilityUtilities extends Component {
                             {card.map(type => {
                                 const data = this.props.utilities
                                     .filter(
-                                        util =>
-                                            util.utility.utility_type_id ===
-                                            type.id
+                                    util =>
+                                        util.utility.utility_type_id ===
+                                        type.id
                                     )
                                     .map(util => [util.utility.utility_name]);
                                 return (

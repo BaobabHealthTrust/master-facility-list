@@ -8,27 +8,22 @@ import MFLGoogleMap from "../common/MFLGoogleMap";
 class FacilityLocation extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
-
-        if (this.props.facilities.length > 0) {
-            this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         this.props.fetchCurrentDetails(id);
     }
 
     render() {
         const locationData = this.props.current.locations
             ? [
-                  [
-                      "catchment area",
-                      this.props.current.locations.catchment_area
-                  ],
-                  [
-                      "population",
-                      this.props.current.locations.catchment_population
-                  ],
-                  ["district", this.props.current.district.district_name]
-              ]
+                [
+                    "catchment area",
+                    this.props.current.locations.catchment_area
+                ],
+                [
+                    "population",
+                    this.props.current.locations.catchment_population
+                ],
+                ["district", this.props.current.district.district_name]
+            ]
             : [];
 
         const weatherData = [
@@ -39,14 +34,14 @@ class FacilityLocation extends Component {
 
         const addressData = this.props.current.addresses
             ? [
-                  ["physical", this.props.current.addresses.physical_address],
-                  ["postal", this.props.current.addresses.postal_address],
-                  ["zone", this.props.current.district.zone.zone_name]
-              ]
+                ["physical", this.props.current.addresses.physical_address],
+                ["postal", this.props.current.addresses.postal_address],
+                ["zone", this.props.current.district.zone.zone_name]
+            ]
             : [];
 
         return (
-            <div className="container">
+            <div className="container mfl-container">
                 <div className="row">
                     <div className="col m6 s12">
                         <div className="z-depth-2">

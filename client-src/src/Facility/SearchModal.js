@@ -78,7 +78,7 @@ class SearchModal extends Component {
 
     render() {
         return (
-            <div id="advanced-search" ref="advancedSearch" class="modal-lg">
+            <div id="advanced-search" ref="advancedSearch" className="modal-lg mfl-modal-container">
                 <div class="modal-content">
                     <div className="mfl-bm-2">
                         <span className="mfl-modal-header">

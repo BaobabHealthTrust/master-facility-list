@@ -20,42 +20,42 @@ class Summary extends Component {
     render() {
         const contactPersonData = this.props.current.contactPeople
             ? [
-                  [
-                      "Fullname",
-                      this.props.current.contactPeople.contact_person_fullname
-                  ],
-                  [
-                      "email",
-                      this.props.current.contactPeople.contact_person_email
-                  ],
-                  [
-                      "phone",
-                      this.props.current.contactPeople.contact_person_phone
-                  ]
-              ]
+                [
+                    "Fullname",
+                    this.props.current.contactPeople.contact_person_fullname
+                ],
+                [
+                    "email",
+                    this.props.current.contactPeople.contact_person_email
+                ],
+                [
+                    "phone",
+                    this.props.current.contactPeople.contact_person_phone
+                ]
+            ]
             : [];
 
         const ownershipData =
             this.props.current.owner &&
-            this.props.current.operationalStatus &&
-            this.props.current.regulatoryStatus
+                this.props.current.operationalStatus &&
+                this.props.current.regulatoryStatus
                 ? [
-                      ["owner", this.props.current.owner.facility_owner],
-                      [
-                          "operational Status",
-                          this.props.current.operationalStatus
-                              .facility_operational_status
-                      ],
-                      [
-                          "regulatory Status",
-                          this.props.current.regulatoryStatus
-                              .facility_regulatory_status
-                      ]
-                  ]
+                    ["owner", this.props.current.owner.facility_owner],
+                    [
+                        "operational Status",
+                        this.props.current.operationalStatus
+                            .facility_operational_status
+                    ],
+                    [
+                        "regulatory Status",
+                        this.props.current.regulatoryStatus
+                            .facility_regulatory_status
+                    ]
+                ]
                 : [];
 
         return (
-            <div className="container">
+            <div className="container mfl-container">
                 <div className="row z-depth-2">
                     <div className="col m6 s12">
                         <p className="mfl-summary-header">Common Name</p>
