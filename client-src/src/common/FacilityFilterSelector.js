@@ -65,8 +65,6 @@ const mapStateToprops = state => {
     return {
         searchValues: state.advancedSearchValues,
         filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities,
-        //results: state.searchResults.advancedSearchFacilities.basicDetailsFacilities
-
     }
 }
 

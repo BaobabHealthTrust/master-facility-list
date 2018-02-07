@@ -8,7 +8,7 @@ export default function fetchFacilities(page: ?number) {
     let URL = `${END_POINT}${RESOURCE}`;
 
     if (page) {
-        const limit = 15;
+        const limit = 10;
         const skip = (page - 1) * limit;
         const FILTER = {
             limit,

@@ -1,5 +1,6 @@
 .mfl-container {
     max-width: 1400px;
+    min-height: 589px;
 }
 
 .mfl-table thead tr th {
@@ -105,7 +106,7 @@ body {
 
 .mfl-summary-subheader {
     border-bottom: none;
-    font-size: 10px;
+    font-size: 18px;
 }
 
 .mfl-summary-text,
@@ -120,7 +121,7 @@ body {
 }
 
 .mfl-summary-subtext {
-    font-size: 12px;
+    font-size: 18px;
 }
 .mfl-title {
     margin-left: 150px;
@@ -179,7 +180,7 @@ h6 {
 }
 
 .modal-content {
-    height: 90%;
+    height: 100%;
 }
 
 .mfl-modal-header {
@@ -306,4 +307,22 @@ select.mfl-select {
     height: 64px;
     position: relative;
     white-space: nowrap;
+}
+
+.mfl-icon-color {
+    color: #fff
+}
+
+.mfl-footer-text-align {
+    text-align: center
+}
+
+@media only screen and (min-width: 1920px) {
+    .row .col.xl2 {
+        width: 16.6666667% !important;
+    }
+}
+
+.mfl-modal-container {
+    min-height: 696px;
 }

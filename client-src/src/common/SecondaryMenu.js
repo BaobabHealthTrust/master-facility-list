@@ -29,7 +29,7 @@ export default class SecondaryMenu extends React.Component<Props, State> {
     render() {
         return (
             <nav>
-                <div class="nav-wrapper blue accent-1">
+                <div class="nav-wrapper blue darken-2">
                     <ul class="left">
                         {
                             this.props.links.map(link => {

@@ -35,7 +35,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/about"
                             onClick={e =>
                                 this.setState({ activePage: "about" })
                             }
@@ -73,21 +73,6 @@ class Menu extends Component {
                             }
                         >
                             FEEDBACK
-                        </Link>
-                    </li>
-
-                    <li
-                        className={
-                            this.state.activePage === "contacts" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to=""
-                            onClick={e =>
-                                this.setState({ activePage: "contacts" })
-                            }
-                        >
-                            CONTACTS
                         </Link>
                     </li>
                 </ul>
@@ -149,21 +134,6 @@ class Menu extends Component {
                             }
                         >
                             FEEDBACK
-                        </Link>
-                    </li>
-
-                    <li
-                        className={
-                            this.state.activePage === "contacts" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to=""
-                            onClick={e =>
-                                this.setState({ activePage: "contacts" })
-                            }
-                        >
-                            CONTACTS
                         </Link>
                     </li>
                 </ul>
