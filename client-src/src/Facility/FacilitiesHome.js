@@ -15,6 +15,7 @@ import fetchResources from "../actions/fetch-resources";
 import fetchUtilities from "../actions/fetch-utilities";
 import fetchServices from "../actions/fetch-services";
 import SecondaryMenu from "../common/SecondaryMenu";
+import FacilityFilters from "../Dashboard/FacilityFilters";
 import FacilityList from "./FacilityList";
 
 class FacilitiesHome extends Component {
@@ -22,7 +23,7 @@ class FacilitiesHome extends Component {
         super();
         this.state = {
             isAdvancedSearch: false,
-            isShowSearchResults: false
+            isShowSearchResults: false,
         };
     }
 
@@ -51,6 +52,7 @@ class FacilitiesHome extends Component {
                 prevState.isShowSearchResults = false;
             });
         }
+
         const isShowSearchResults = this.state.isShowSearchResults;
     }
 
@@ -66,82 +68,13 @@ class FacilitiesHome extends Component {
         });
     }
 
+
     render() {
-
-        const links = [
-            {
-                name: 'district',
-                displayName: 'District',
-                redirect: null,
-                clickHandler: () => {
-                    this.state.entity != "districts" ? (
-                        this.setState({
-                            dataSource: this.props.districts,
-                            displayKey: "district_name",
-                            entity: "districts",
-                            actionType: "ADD_DISTRICT_VALUES",
-                            removeAction: "REMOVE_DISTRICT_VALUES",
-                            searchValueKey: "districtValues"
-                        })
-                    ) : this.resetState()
-                }
-            },
-            {
-                name: 'facilityType',
-                displayName: 'Facility Type',
-                redirect: '/facilities',
-                clickHandler: () => {
-                    this.state.entity != "facilityTypes" ? (
-                        this.setState({
-                            dataSource: this.props.facilityTypes,
-                            displayKey: "facility_type",
-                            entity: "facilityTypes",
-                            actionType: "ADD_FACILITY_TYPE_VALUES",
-                            removeAction: "REMOVE_FACILITY_TYPE_VALUES",
-                            searchValueKey: "facilityTypeValues"
-                        })
-                    ) : this.resetState()
-                }
-            },
-            {
-                name: 'facilityOwnership',
-                displayName: 'Facility Ownership',
-                redirect: null,
-                clickHandler: () => {
-                    this.state.entity != "facilityOwners" ? (
-                        this.setState({
-                            dataSource: this.props.facilityOwners,
-                            displayKey: "facility_owner",
-                            entity: "facilityOwners",
-                            actionType: "ADD_FACILITY_OWNER_VALUES",
-                            removeAction: "REMOVE_FACILITY_OWNER_VALUES",
-                            searchValueKey: "facilityOwnerValues"
-                        })
-                    ) : this.resetState()
-                }
-            },
-            {
-                name: 'operationalStatus',
-                displayName: 'Operational Status',
-                redirect: null,
-                clickHandler: () => {
-                    this.state.entity != "operationalStatuses" ? (
-                        this.setState({
-                            dataSource: this.props.operationalStatuses,
-                            displayKey: "facility_operational_status",
-                            entity: "operationalStatuses",
-                            actionType: "ADD_OPERATIONAL_STATUS_VALUES",
-                            removeAction: "REMOVE_OPERATIONAL_STATUS_VALUES",
-                            searchValueKey: "operationalStatusValues"
-                        })
-                    ) : this.resetState()
-                }
-            }
-        ]
-
         return (
             <div>
-                <SecondaryMenu links={links} defaultActivePage={"zone"} />
+                {this.state.isAdvancedSearch ? "" : (
+                    <FacilityFilters url="/facilities" isFilteredResults={true} />)
+                }
 
                 <div className="container mfl-container">
                     <br />
@@ -158,35 +91,36 @@ class FacilitiesHome extends Component {
                         </blockquote>
                     ) : (
                                 <div>
-                                    {this.state.isAdvancedSearch ? (
-                                        <SearchModal
-                                            handleClose={() => this.handleClose()}
-                                        />
-                                    ) : this.state.isShowSearchResults ? (
-                                        <div>
-                                            <FacilityList
-                                                downloadAction={
-                                                    this.props.downloadFacilities
-                                                }
-                                                dataSource={this.props.searchResults}
-                                                toggleAdvancedSearch={e =>
-                                                    this.toggleAdvancedSearch(e)
-                                                }
+                                    {
+                                        this.state.isAdvancedSearch ? (
+                                            <SearchModal
+                                                handleClose={() => this.handleClose()}
                                             />
-                                        </div>
-                                    ) : (
-                                                <div>
-                                                    <FacilityList
-                                                        downloadAction={
-                                                            this.props.downloadFacilities
-                                                        }
-                                                        dataSource={this.props.facilities}
-                                                        toggleAdvancedSearch={e =>
-                                                            this.toggleAdvancedSearch(e)
-                                                        }
-                                                    />
-                                                </div>
-                                            )}
+                                        ) : this.state.isShowSearchResults ? (
+                                            <div>
+                                                <FacilityList
+                                                    downloadAction={
+                                                        this.props.downloadFacilities
+                                                    }
+                                                    dataSource={this.props.searchResults}
+                                                    toggleAdvancedSearch={e =>
+                                                        this.toggleAdvancedSearch(e)
+                                                    }
+                                                />
+                                            </div>
+                                        ) : (
+                                                    <div>
+                                                        <FacilityList
+                                                            downloadAction={
+                                                                this.props.downloadFacilities
+                                                            }
+                                                            dataSource={this.props.facilities}
+                                                            toggleAdvancedSearch={e =>
+                                                                this.toggleAdvancedSearch(e)
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
                                 </div>
                             )}
                 </div>
@@ -201,7 +135,8 @@ const mapStateToProps = state => {
         isError: state.facilities.isNetworkError,
         isLoading: state.facilities.isLoading,
         download: state.downloads.data,
-        searchResults: state.searchResults.advancedSearchResults
+        searchResults: state.searchResults.advancedSearchResults,
+        filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities
     };
 };
 

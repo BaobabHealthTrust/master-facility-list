@@ -54,7 +54,7 @@ class MflTable extends Component {
             <div>
                 <Table
                     hoverable
-                    className="mfl-table z-depth-2 centered responsive-table"
+                    className="mfl-table z-depth-2 centered responsive-table striped"
                 >
                     <thead className="grey">
                         <tr>{headerRows}</tr>
