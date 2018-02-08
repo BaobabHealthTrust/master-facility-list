@@ -1,6 +1,6 @@
 .mfl-container {
     max-width: 1400px;
-    min-height: 589px;
+    min-height: 710px;
 }
 
 .mfl-table thead tr th {
@@ -314,7 +314,7 @@ select.mfl-select {
 }
 
 .mfl-footer-text-align {
-    text-align: center
+    text-align: left;
 }
 
 @media only screen and (min-width: 1920px) {
@@ -324,5 +324,7 @@ select.mfl-select {
 }
 
 .mfl-modal-container {
-    min-height: 696px;
+    min-height: 794px;
 }
+
+

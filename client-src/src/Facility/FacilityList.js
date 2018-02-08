@@ -37,7 +37,7 @@ export default class FacilityList extends React.Component {
             })
 
         return (
-            <div>
+            <div className="mfl-container">
                 <MflDownload
                     action={this.props.downloadAction}
                     fileName="facilities"
