@@ -15,12 +15,14 @@ import fetchAllFacilities from "../actions/get-facilities";
 import fetchOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
+import removeFilteredResults from "../actions/remove-search-values";
 
 type Props = {
     fetchDashboardFacilityServices: Function,
     fetchServices: Function,
     fetchAllFacilities: Function,
     fetchOwners: Function,
+    removeFilteredResults: Function,
     fetchOperationalStatuses: Function,
     fetchRegulatoryStatuses: Function,
     facilityServices: Array<FacilityService>,
@@ -134,6 +136,7 @@ class DashboardHome extends React.Component<Props, State> {
         await this.props.fetchDashboardFacilityServices(
             map(this.state.dashboardServices, "id")
         );
+        await this.props.removeFilteredResults("", "REMOVE_ALL_SEARCH_VALUES");
     }
 
     render() {
@@ -234,4 +237,5 @@ export default connect(mapStateToProps, {
     fetchOwners,
     fetchOperationalStatuses,
     fetchRegulatoryStatuses,
+    removeFilteredResults,
 })(DashboardHome);
