@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from 'react';
 import ChartContainer from "../common/MflChartContainer";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend } from "victory";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend, VictoryLabel } from "victory";
 import { map } from "lodash";
 
 type Props = {
@@ -24,32 +24,38 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
         const chartDefinition =
             <VictoryChart
                 height={200}
-                padding={35}
+                padding={40}
                 theme={VictoryTheme.material}
-                domainPadding={20}
+                domainPadding={10}
                 style={{ parent: { maxWidth: "600px" } }}
             >
-                <VictoryAxis />
-                <VictoryLegend
-                    orientation="vertical"
-                    style={{ labels: { fontSize: 8 } }}
-                    data={legendData}
-                    gutter={0}
-                    colorScale={colorScale}
-                    animate={{ duration: 2000, onLoad: { duration: 1000 } }}
+                <VictoryAxis
+                    label="Number of Facilities"
+                    axisLabelComponent={<VictoryLabel dy={20} />}
+                />
+                <VictoryAxis
+                    dependentAxis
+                    label="Registration Status"
+                    style={{ tickLabels: { fill: "none" } }}
+                    axisLabelComponent={<VictoryLabel dy={-10} />}
                 />
                 <VictoryBar
                     horizontal={true}
                     data={barData}
                     x="regulatoryStatus"
                     y="total"
-                    labels={(d) => d.total}
+                    style={{
+                        data: { width: 20 },
+                        labels: { fill: "#fff" }
+                    }}
+                    labels={(d) => `${d.x}: ${d.y}`}
                     colorScale={colorScale}
+                    labelComponent={<VictoryLabel dx={-240} />}
                 />
             </VictoryChart>;
 
         return (
-            <ChartContainer title="Facility License Status Comparison" chart={chartDefinition} />
+            <ChartContainer title="License Comparison" chart={chartDefinition} />
         );
     }
 }

@@ -4,6 +4,7 @@ import type { District, FacilityType } from  "../types/model-types";
 import { connect } from "react-redux";
 import fetchResults from "../actions/fetch-basic-details-results";
 import fetchFilteredResults from "../actions/fetch-advanced-search-results";
+import FilterTags from './FilterTags';
 
 type Props = {
     data: any,
@@ -38,25 +39,30 @@ class FacilityFilterSelector extends Component<Props> {
 
     render() {
         return (
-            <nav className="grey lighten-3 mfl-filter-container">
-                <div class="mfl-filter-wrapper">
-                    {
-                        this.props.data.map(entity => {
-                            return (
-                                <span className="mfl-p-2">
-                                    <input
-                                        type="checkbox"
-                                        id={entity.id}
-                                        onClick={this.handleClick}
-                                        value={entity.id}
-                                    />
-                                    <label for={entity.id}>{entity[this.props.displayKey]}</label>
-                                </span>
-                            )
-                        })
-                    }
+            <div>
+                <nav className="grey lighten-3 mfl-filter-container">
+                    <div class="mfl-filter-wrapper">
+                        {
+                            this.props.data.map(entity => {
+                                return (
+                                    <span className="mfl-p-2">
+                                        <input
+                                            type="checkbox"
+                                            id={entity.id}
+                                            onClick={this.handleClick}
+                                            value={entity.id}
+                                        />
+                                        <label for={entity.id}>{entity[this.props.displayKey]}</label>
+                                    </span>
+                                )
+                            })
+                        }
+                    </div>
+                </nav>
+                <div className="container">
+                    <FilterTags />
                 </div>
-            </nav>
+            </div>
         );
     }
 }

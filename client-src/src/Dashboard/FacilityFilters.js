@@ -12,7 +12,6 @@ import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import FacilityFilterSelector from "../common/FacilityFilterSelector";
 import fetchFacilityOwners from "../actions/fetch-facility-owners";
 
-// TODO: These need to be flow compatible
 type Props = {
     fetchDistricts: Function,
     isFilteredResults: boolean,
