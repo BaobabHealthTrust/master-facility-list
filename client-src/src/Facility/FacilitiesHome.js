@@ -17,7 +17,6 @@ import fetchServices from "../actions/fetch-services";
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityFilters from "../Dashboard/FacilityFilters";
 import FacilityList from "./FacilityList";
-import FilterTags from "../common/FilterTags";
 
 class FacilitiesHome extends Component {
     constructor() {
@@ -77,9 +76,6 @@ class FacilitiesHome extends Component {
                     <FacilityFilters url="/facilities" isFilteredResults={true} />
                 )
                 }
-                {this.state.isAdvancedSearch ? "" : (
-                    <FilterTags />
-                )}
                 <div className="container mfl-container">
                     <br />
                     {this.props.isLoading ? (

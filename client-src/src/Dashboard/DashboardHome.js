@@ -15,7 +15,6 @@ import fetchAllFacilities from "../actions/get-facilities";
 import fetchOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
-import FilterTags from "../common/FilterTags";
 
 type Props = {
     fetchDashboardFacilityServices: Function,
@@ -60,7 +59,7 @@ class DashboardHome extends React.Component<Props, State> {
             {
                 id: 23,
                 displayName: "ARI",
-                icon: "local_hospital"
+                icon: "smoking_rooms"
             }
         ]
     }
@@ -163,7 +162,6 @@ class DashboardHome extends React.Component<Props, State> {
         return (
             <div>
                 <FacilityFilters url="" isFilteredResults={false} />
-                <FilterTags />
                 <div className="container mfl-container mfl-dash-container mfl-tm-2">
                     <div className="row">
                         {/* <div className="col m12 l4 xl2">
@@ -176,24 +174,30 @@ class DashboardHome extends React.Component<Props, State> {
                                 <div className="mfl-dash-container">
                                     <div className="row">
                                         <div className="col s12 m6 l4 xl2">
+                                            <div className="mfl-tm-5"></div>
                                             <Card icon="local_hospital" stat={this.calculateTotal()} title="Total Facilities" />
                                         </div>
                                         {this.state.dashboardServices.map(services => <div className="col s12 m6 l4 xl2">
+                                            <div className="mfl-tm-5"></div>
                                             <Card icon={services.icon} stat={this.calculateTotalFacilitiesWith(services.id)} title={`Facilities with ${services.displayName}`} />
                                         </div>)}
                                         {/* TODO: Add Components for the other Statistics */}
                                     </div>
                                     <div className="row mfl-tm-2">
-                                        <div className="col s12 m6 l3">
+                                        <div className="col s12 m6 l4 xl3">
+                                            <div className="mfl-tm-5"></div>
                                             <FacilityOwnershipChart data={ownershipData} />
                                         </div>
-                                        <div className="col s12 m6 l3">
+                                        <div className="col s12 m6 l4 xl3">
+                                            <div className="mfl-tm-5"></div>
                                             <FacilityTypeChart />
                                         </div>
-                                        <div className="col s12 m6 l3">
+                                        <div className="col s12 m6 l4 xl3">
+                                            <div className="mfl-tm-5"></div>
                                             <FacilityOperationalChart data={operationalStatusData} />
                                         </div>
-                                        <div className="col s12 m6 l3">
+                                        <div className="col s12 m6 l4 xl3">
+                                            <div className="mfl-tm-5"></div>
                                             <FacilityRegulatoryStatusChart data={regulatoryStatusData} />
                                         </div>
                                     </div>

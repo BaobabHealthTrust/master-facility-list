@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from 'react';
 import ChartContainer from "../common/MflChartContainer";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryStack } from "victory";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryStack, VictoryGroup } from "victory";
 import { map } from "lodash";
 
 type Props = {
@@ -11,34 +11,24 @@ type Props = {
 export default class FacilityTypeChart extends Component<Props> {
     render() {
         const chartDefinition =
-            <VictoryChart
-                padding={30}
-                style={{ parent: { maxWidth: "600px" } }}
-                theme={VictoryTheme.material}
-                height={200}
-                innerRadius={30}
-            >
-
-                <VictoryStack
-                    colorScale={["tomato", "orange", "gold"]}
-
+            <VictoryChart>
+                <VictoryGroup offset={20}
+                    colorScale={"qualitative"}
                 >
                     <VictoryBar
-
-                        data={[{ x: "a", y: 2 }, { x: "b", y: 3 }, { x: "c", y: 5 }]}
+                        data={[{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 5 }]}
                     />
                     <VictoryBar
-                        data={[{ x: "a", y: 1 }, { x: "b", y: 4 }, { x: "c", y: 5 }]}
+                        data={[{ x: 1, y: 2 }, { x: 2, y: 1 }, { x: 3, y: 7 }]}
                     />
                     <VictoryBar
-                        data={[{ x: "a", y: 3 }, { x: "b", y: 2 }, { x: "c", y: 6 }]}
+                        data={[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]}
                     />
-                </VictoryStack>
-
-            </VictoryChart >
+                </VictoryGroup>
+            </VictoryChart>
 
         return (
-            <ChartContainer title="Facility Type Comparison" chart={chartDefinition} />
+            <ChartContainer title="Type Comparison" chart={chartDefinition} />
         );
     }
 }

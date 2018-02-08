@@ -321,6 +321,9 @@ select.mfl-select {
     .row .col.xl2 {
         width: 16.6666667% !important;
     }
+    .row .col.xl3 {
+        width: 25% !important;
+    }
 }
 
 .mfl-modal-container {

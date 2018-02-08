@@ -10,7 +10,8 @@ type Props = {
 
 export default class FacilityOwnershipChart extends Component<Props> {
     render() {
-        const ticks = map(this.props.data, "ownership");
+        const owners = map(this.props.data, "ownership");
+        const shortOwners = owners.map(own => own.slice(0, 3).toUpperCase());
 
         const chartDefinition =
             <VictoryChart
@@ -21,16 +22,45 @@ export default class FacilityOwnershipChart extends Component<Props> {
                 style={{ parent: { maxWidth: "600px" } }}
             >
                 <VictoryAxis
-                    tickFormat={ticks}
+                    tickFormat={shortOwners}
                 />
                 <VictoryAxis
                     dependentAxis
                 />
-                <VictoryBar data={this.props.data} x="ownership" y="total" />
+                <VictoryBar
+                    data={this.props.data}
+                    x="ownership"
+                    y="total"
+                    events={[{
+                        target: "data",
+                        eventHandlers: {
+                            onMouseEnter: () => {
+                                return [
+                                    {
+                                        target: "labels",
+                                        mutation: (props) => {
+                                            return { text: props.data[props.index].x };
+                                        }
+                                    }
+                                ]
+                            },
+                            onMouseLeave: () => {
+                                return [
+                                    {
+                                        target: "labels",
+                                        mutation: (props) => {
+                                            return { text: "" };
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }]}
+                />
             </VictoryChart>;
 
         return (
-            <ChartContainer title="Facility Ownership Comparison" chart={chartDefinition} />
+            <ChartContainer title="Ownership Comparison" chart={chartDefinition} />
         );
     }
 }
