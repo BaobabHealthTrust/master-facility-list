@@ -66,11 +66,17 @@ class FacilityDetails extends React.Component<Props>{
                 case "Closed":
                     badgeClass = "new badge red";
                     break;
+                case "Closed (Temporary)":
+                    badgeClass = "new badge deep-orange";
+                    break;
                 case "Functional":
                     badgeClass = "new badge green";
                     break;
                 case "Pending Operation (Under construction)":
                     badgeClass = "new badge orange";
+                    break;
+                case "Pending Operation (Construction Complete)":
+                    badgeClass = "new badge brown";
                     break;
                 default:
                     break;

@@ -30,27 +30,47 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
                 style={{ parent: { maxWidth: "600px" } }}
             >
                 <VictoryAxis
-                    label="Number of Facilities"
-                    axisLabelComponent={<VictoryLabel dy={20} />}
+                    dependentAxis
                 />
                 <VictoryAxis
-                    dependentAxis
                     label="Registration Status"
                     style={{ tickLabels: { fill: "none" } }}
-                    axisLabelComponent={<VictoryLabel dy={-10} />}
                 />
                 <VictoryBar
-                    horizontal={true}
+                    horizontal={false}
                     data={barData}
                     x="regulatoryStatus"
                     y="total"
                     style={{
                         data: { width: 20 },
-                        labels: { fill: "#fff" }
+                        labels: { fill: "#000" }
                     }}
-                    labels={(d) => `${d.x}: ${d.y}`}
                     colorScale={colorScale}
-                    labelComponent={<VictoryLabel dx={-240} />}
+                    events={[{
+                        target: "data",
+                        eventHandlers: {
+                            onMouseEnter: () => {
+                                return [
+                                    {
+                                        target: "labels",
+                                        mutation: (props) => {
+                                            return { text: props.data[props.index].x };
+                                        }
+                                    }
+                                ]
+                            },
+                            onMouseLeave: () => {
+                                return [
+                                    {
+                                        target: "labels",
+                                        mutation: (props) => {
+                                            return { text: "" };
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }]}
                 />
             </VictoryChart>;
 

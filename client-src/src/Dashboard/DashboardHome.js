@@ -31,6 +31,8 @@ type Props = {
     results: number[],
     isSearchValuesEmpty: boolean,
     total: number[],
+    dependancyIsLoading: boolean,
+    dependancyIsNetworkError: boolean
 };
 
 type State = {
@@ -163,51 +165,65 @@ class DashboardHome extends React.Component<Props, State> {
             <div>
                 <FacilityFilters url="" isFilteredResults={false} />
                 <div className="container mfl-container mfl-dash-container mfl-tm-2">
-                    <div className="row">
-                        {/* <div className="col m12 l4 xl2">
+                    <br />
+                    {this.props.dependancyIsLoading ? (
+                        <div class="progress">
+                            <div class="indeterminate" />
+                        </div>
+                    ) : this.props.dependancyIsNetworkError ? (
+                        <blockquote>
+                            <h4>
+                                "Sorry, we cannot connect to the Server. Please
+                            check your Network"
+                        </h4>
+                        </blockquote>
+                    ) : (
+                                <div className="row">
+                                    {/* <div className="col m12 l4 xl2">
                             <div className>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/SVG-Koort_Malawi.svg/425px-SVG-Koort_Malawi.svg.png" alt="Malawi Map" />
                             </div>
                         </div> */}
-                        <div className="col s12">
-                            <div className="mfl-graphs-container">
-                                <div className="mfl-dash-container">
-                                    <div className="row">
-                                        <div className="col s12 m6 l4 xl2">
-                                            <div className="mfl-tm-5"></div>
-                                            <Card icon="local_hospital" stat={this.calculateTotal()} title="Total Facilities" />
-                                        </div>
-                                        {this.state.dashboardServices.map(services => <div className="col s12 m6 l4 xl2">
-                                            <div className="mfl-tm-5"></div>
-                                            <Card icon={services.icon} stat={this.calculateTotalFacilitiesWith(services.id)} title={`Facilities with ${services.displayName}`} />
-                                        </div>)}
-                                        {/* TODO: Add Components for the other Statistics */}
-                                    </div>
-                                    <div className="row mfl-tm-2">
-                                        <div className="col s12 m6 l4 xl3">
-                                            <div className="mfl-tm-5"></div>
-                                            <FacilityOwnershipChart data={ownershipData} />
-                                        </div>
-                                        <div className="col s12 m6 l4 xl3">
-                                            <div className="mfl-tm-5"></div>
-                                            <FacilityTypeChart />
-                                        </div>
-                                        <div className="col s12 m6 l4 xl3">
-                                            <div className="mfl-tm-5"></div>
-                                            <FacilityOperationalChart data={operationalStatusData} />
-                                        </div>
-                                        <div className="col s12 m6 l4 xl3">
-                                            <div className="mfl-tm-5"></div>
-                                            <FacilityRegulatoryStatusChart data={regulatoryStatusData} />
-                                        </div>
-                                    </div>
-                                    <div className="row mfl-tm-2">
+                                    <div className="col s12">
+                                        <div className="mfl-graphs-container">
+                                            <div className="mfl-dash-container">
+                                                <div className="row">
+                                                    <div className="col s12 m6 l4 xl2">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <Card icon="local_hospital" stat={this.calculateTotal()} title="Total Facilities" />
+                                                    </div>
+                                                    {this.state.dashboardServices.map(services => <div className="col s12 m6 l4 xl2">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <Card icon={services.icon} stat={this.calculateTotalFacilitiesWith(services.id)} title={`Facilities with ${services.displayName}`} />
+                                                    </div>)}
+                                                    {/* TODO: Add Components for the other Statistics */}
+                                                </div>
+                                                <div className="row mfl-tm-2">
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <FacilityOwnershipChart data={ownershipData} />
+                                                    </div>
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <FacilityTypeChart />
+                                                    </div>
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <FacilityOperationalChart data={operationalStatusData} />
+                                                    </div>
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5"></div>
+                                                        <FacilityRegulatoryStatusChart data={regulatoryStatusData} />
+                                                    </div>
+                                                </div>
+                                                <div className="row mfl-tm-2">
 
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            )}
                 </div>
             </div>
         )
@@ -229,7 +245,9 @@ const mapStateToProps = store => {
             facilityOwnerValues: store.advancedSearchValues.facilityOwnerValues,
             regulatoryStatusValues: store.advancedSearchValues.regulatoryStatusValues,
         }).filter(arr => arr.length > 0)),
-        results: store.searchResults.advancedSearchFacilities.basicDetailsFacilities
+        results: store.searchResults.advancedSearchFacilities.basicDetailsFacilities,
+        dependancyIsLoading: store.dependancies.isLoading,
+        dependancyIsNetworkError: store.dependancies.isNetworkError
     }
 }
 

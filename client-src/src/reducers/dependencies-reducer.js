@@ -9,11 +9,27 @@ export default (
         facilityOwners: [],
         regulatoryStatuses: [],
         searchResourceTypes: [],
-        serviceInstance: []
-
+        serviceInstance: [],
+        isLoading: true,
+        isNetworkError: false
     },
     action
 ) => {
+    if (action.error) {
+        return {
+            resourceTypes: state.resourceTypes,
+            utilityTypes: state.utilityTypes,
+            serviceTypes: state.serviceTypes,
+            districts: state.districts,
+            operationalStatuses: state.operationalStatuses,
+            facilityTypes: state.facilityTypes,
+            facilityOwners: state.facilityOwners,
+            regulatoryStatuses: state.regulatoryStatuses,
+            serviceInstance: state.serviceInstance,
+            isLoading: false,
+            isNetworkError: true
+        };
+    }
     switch (action.type) {
         case "FETCH_RESOURCE_TYPES":
             return {
@@ -25,7 +41,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_UTILITY_TYPES":
             return {
@@ -37,7 +55,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_DISTRICTS":
             return {
@@ -49,7 +69,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_OPERATIONAL_STATUSES":
             return {
@@ -61,7 +83,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_FACILITY_TYPES":
             return {
@@ -73,7 +97,9 @@ export default (
                 facilityTypes: action.payload.data,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_FACILITY_OWNERS":
             return {
@@ -85,7 +111,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: action.payload.data,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_REGULATORY_STATUSES":
             return {
@@ -97,7 +125,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: action.payload.data,
-                serviceInstance: state.serviceInstance
+                serviceInstance: state.serviceInstance,
+                isLoading: false,
+                isNetworkError: false
             };
         case "FETCH_SERVICE_TYPES":
             return {
@@ -109,7 +139,9 @@ export default (
                 facilityTypes: state.facilityTypes,
                 facilityOwners: state.facilityOwners,
                 regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: action.payload.data
+                serviceInstance: action.payload.data,
+                isLoading: false,
+                isNetworkError: false
             };
 
         default:

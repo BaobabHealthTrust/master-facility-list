@@ -14,7 +14,7 @@ export default class FacilityOperationalStatusChart extends Component<Props> {
 
         const chartDefinition = <VictoryPie
             data={data}
-            colorScale={["#3b5586", "#5170aa", "#6289d1", "#5f7399", "#747b88"]}
+            colorScale={["#4caf50", "#ff9800", "#795548 ", "#ff5722 ", "#f44336"]}
             padding={0}
             style={pieStyle}
             theme={VictoryTheme.material}
@@ -32,7 +32,8 @@ export default class FacilityOperationalStatusChart extends Component<Props> {
                             {
                                 target: "labels",
                                 mutation: (props) => {
-                                    return { text: `${props.data[props.index].x.split("(")[0]}\n${props.data[props.index].x.split("(")[1] ? props.data[props.index].x.split("(")[1].replace(")", "") : ""}\n${props.data[props.index].y}` };
+                                    const label = `${props.data[props.index].x.split("(")[0]}\n${props.data[props.index].x.split("(")[1] ? props.data[props.index].x.split("(")[1].replace(")", "") : ""}\n${props.data[props.index].y}`
+                                    return { text: label.replace("Pending Operation", "") };
                                 }
                             }
                         ]
