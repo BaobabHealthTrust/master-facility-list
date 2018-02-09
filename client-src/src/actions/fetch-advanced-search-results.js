@@ -7,7 +7,7 @@ export default facilityIds => {
     const RESOURCE = `Facilities/`;
 
     const FILTER = {
-        limit: 15,
+        limit: 10,
         where: {
             id: {
                 inq: map(facilityIds)

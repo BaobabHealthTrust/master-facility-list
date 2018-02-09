@@ -37,7 +37,27 @@
                 // $('.select').material_select();
                 $('.button-collapse').sideNav();
                 $('.tooltipped').tooltip({ delay: 10 });
+                const documentHeight = $(document).innerHeight();
+                const contentHeight = $('.mfl-page-wrap').innerHeight();
+                const marginDiff = documentHeight - contentHeight;
             });
+
+            $(document).click((e) => {
+                function scrollBars() {
+                    var body = $('body')[0]
+                    return {
+                        vertical: body.scrollHeight > body.clientHeight,
+                        horizontal: body.scrollWidth > body.clientWidth
+                    }
+                }
+                setTimeout(() => {
+                    if (scrollBars().vertical) {
+                        document.querySelector('.page-footer').style.position = "relative";
+                    } else {
+                        document.querySelector('.page-footer').style.position = "absolute";
+                    }
+                }, 0);
+            })
         </script>
     </body>
 

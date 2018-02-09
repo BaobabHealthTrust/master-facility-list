@@ -7,20 +7,9 @@ class MflAbout extends Component {
             <div className="container mfl-modal-container">
                 <div className="row">
                     <div className="col m6 s12">
-                        {/* <Card
-                                heading="Location"
-                                icon="location_on"
-                                data={locationData}
-                            /> */}
-                        <h1>MHFL</h1>
+                        <h2>About Us To be Done</h2>
                     </div>
                     <div className="col m6 s12">
-                        {/* <Card
-                                heading="Address"
-                                icon="location_city"
-                                data={addressData}
-                            /> */}
-                        <h1>MHFL</h1>
                     </div>
                 </div>
             </div>
