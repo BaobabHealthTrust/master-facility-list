@@ -51,7 +51,7 @@ class MflTable extends Component {
         });
 
         return (
-            <div>
+            <div className="mfl-bm-2">
                 <Table
                     hoverable
                     className="mfl-table z-depth-2 centered responsive-table striped"

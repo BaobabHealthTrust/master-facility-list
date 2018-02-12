@@ -42,7 +42,7 @@
                 const marginDiff = documentHeight - contentHeight;
             });
 
-            $(document).click((e) => {
+            $(window).resize((e) => {
                 function scrollBars() {
                     var body = $('body')[0]
                     return {
@@ -56,7 +56,7 @@
                     } else {
                         document.querySelector('.page-footer').style.position = "absolute";
                     }
-                }, 0);
+                }, 100);
             })
         </script>
     </body>
