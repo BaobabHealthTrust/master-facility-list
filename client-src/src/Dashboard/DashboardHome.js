@@ -15,6 +15,7 @@ import fetchAllFacilities from "../actions/get-facilities";
 import fetchOwners from "../actions/fetch-facility-owners";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
+import footerResizer from "../helpers/footerResize";
 
 type Props = {
     fetchDashboardFacilityServices: Function,
@@ -136,6 +137,10 @@ class DashboardHome extends React.Component<Props, State> {
         await this.props.fetchDashboardFacilityServices(
             map(this.state.dashboardServices, "id")
         );
+    }
+
+    componentWillReceiveProps() {
+        footerResizer();
     }
 
     render() {

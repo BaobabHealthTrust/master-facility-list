@@ -367,3 +367,32 @@ select.mfl-select {
     width: 100%;
     z-index: 999;
 }
+
+.mfl-facility-code {
+    border-radius: 200px !important;
+    margin-right: 50px;
+    width: 100px !important;
+    padding: 10px;
+    text-align: center;
+    background: grey;
+    color: white;
+}
+
+.mfl-facility-list-details {
+    padding-left: 150px !important;
+}
+
+.mfl-facility-list-title {
+    font-size: 22px !important;
+    font-weight: bold;
+}
+
+.mfl-facility-list-subtitle {
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.mfl-facility-list-date {
+    font-size: 16px !important;
+    font-style: italic;
+}

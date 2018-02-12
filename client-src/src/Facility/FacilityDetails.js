@@ -8,6 +8,7 @@ import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
 import { connect } from "react-redux";
 import SecondaryMenu from "../common/SecondaryMenu";
+import footerResizer from "../helpers/footerResize";
 
 type Props = {
     match: any,
@@ -15,6 +16,11 @@ type Props = {
 }
 
 class FacilityDetails extends React.Component<Props>{
+
+    componentWillReceiveProps() {
+        footerResizer();
+    }
+
     render() {
 
         const id = this.props.match.params.id;

@@ -17,6 +17,7 @@ import fetchServices from "../actions/fetch-services";
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityFilters from "../Dashboard/FacilityFilters";
 import FacilityList from "./FacilityList";
+import footerResizer from "../helpers/footerResize";
 
 class FacilitiesHome extends Component {
     constructor() {
@@ -54,6 +55,8 @@ class FacilitiesHome extends Component {
         }
 
         const isShowSearchResults = this.state.isShowSearchResults;
+
+        footerResizer();
     }
 
     handleClose() {
@@ -66,6 +69,7 @@ class FacilitiesHome extends Component {
         this.setState({
             isAdvancedSearch: true
         });
+        footerResizer();
     }
 
 
