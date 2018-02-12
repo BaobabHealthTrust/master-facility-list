@@ -21,6 +21,7 @@ class FilterTags extends Component {
                         getObjectFromIds={(ids, entities) =>
                             this.getObjectFromIds(ids, entities)
                         }
+                        manageCheckbox={(id) => this.props.manageCheckbox(id)}
                     />
                     {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
                     <OperationalStatusTags
