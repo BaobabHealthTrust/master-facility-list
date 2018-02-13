@@ -54,7 +54,7 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
                                     {
                                         target: "labels",
                                         mutation: (props) => {
-                                            return { text: props.data[props.index].x };
+                                            return { text: `${props.data[props.index].x} : ${props.data[props.index].y}` };
                                         }
                                     }
                                 ]

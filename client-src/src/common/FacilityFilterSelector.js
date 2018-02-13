@@ -25,13 +25,13 @@ type Props = {
     filteredResults: number[],
 }
 
-type State ={
+type State = {
     checkboxValue: number,
 }
 
 class FacilityFilterSelector extends Component<Props, State> {
 
-    state ={
+    state = {
         checkboxValue: 0,
     }
 
@@ -45,50 +45,38 @@ class FacilityFilterSelector extends Component<Props, State> {
         this.props.isFilteredResults && await this.props.fetchFilteredResults(this.props.filteredResults)
     }
 
-    manageCheckbox=(id) =>
-    {
-       this.setState({checkboxValue: id});
+    manageCheckbox = (id) => {
+        this.setState({ checkboxValue: id });
     }
 
 
     render() {
-
         return (
             <div>
                 <nav className="grey lighten-3 mfl-filter-container">
                     <div class="mfl-filter-wrapper">
                         {
-                            this.props.data.map(entity => { 
-                                console.log(entity.id, this.state.checkboxValue);
-                               return entity.id == this.state.checkboxValue ? (
-                                   
+                            this.props.data.map(entity => {
+
+                                return (
+
                                     <span className="mfl-p-2">
                                         <input
                                             type="checkbox"
-                                            checkbox={true}
                                             id={entity.id}
                                             onClick={this.handleClick}
                                             value={entity.id}
                                         />
                                         <label for={entity.id}>{entity[this.props.displayKey]}</label>
                                     </span>
-                                ):(<span className="mfl-p-2">
-                                <input
-                                    type="checkbox"
-                                    checkbox={true}
-                                    id={entity.id}
-                                    onClick={this.handleClick}
-                                    value={entity.id}
-                                />
-                                <label for={entity.id}>{entity[this.props.displayKey]}</label>
-                            </span>)
+                                )
                             })
                         }
                     </div>
                 </nav>
                 <div className="container">
                     <FilterTags
-                    manageCheckbox = {(id) => this.manageCheckbox(id)}
+                        manageCheckbox={(id) => this.manageCheckbox(id)}
                     />
                 </div>
             </div>

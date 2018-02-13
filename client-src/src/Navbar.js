@@ -4,6 +4,7 @@ import Menu from './Header/Menu';
 import quickSearch from './actions/quick-search-facilities';
 import { connect } from 'react-redux';
 import Table from './common/Table';
+import { debounce } from "lodash";
 import hideSearchContainer from './actions/hide-search-container';
 
 class Navbar extends Component {
@@ -20,7 +21,7 @@ class Navbar extends Component {
     }
 
     restoreSearch(e) {
-         this.props.hideSearchContainer(true);
+        this.props.hideSearchContainer(true);
 
         document.getElementById('searchbar').className =
             'left mfl-normal-search hide-on-small-only';
@@ -72,7 +73,8 @@ class Navbar extends Component {
                                     type="search"
                                     required
                                     onClick={e => this.maximizeSearch(e)}
-                                    onBlur={e => this.restoreSearch(e)}
+
+                                    // onBlur={e => this.restoreSearch(e)}
                                     onKeyPress={e => this.handleQuickSearch(e)}
                                 />
                                 <label className="label-icon" for="search">

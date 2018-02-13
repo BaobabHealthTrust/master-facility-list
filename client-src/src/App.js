@@ -7,6 +7,7 @@ import FacilityDetails from "./Facility/FacilityDetails";
 import Dashboard from "./Dashboard/DashboardHome";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
+import MflLogin from "./common/MflLogin";
 
 class App extends Component {
     render() {
@@ -29,6 +30,11 @@ class App extends Component {
                         exact
                         path="/about"
                         component={MflAbout}
+                    />
+                    <Route
+                        exact
+                        path="/login"
+                        component={MflLogin}
                     />
                 </Switch>
 
