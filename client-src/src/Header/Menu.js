@@ -75,6 +75,22 @@ class Menu extends Component {
                             FEEDBACK
                         </Link>
                     </li>
+
+                    <li
+                        className={
+                            this.state.activePage === "login" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to="/login"
+                            onClick={e =>
+                                this.setState({ activePage: "login" })
+                            }
+                        >
+                            LOGIN
+                        </Link>
+
+                    </li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     <li
@@ -96,7 +112,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/about"
                             onClick={e =>
                                 this.setState({ activePage: "about" })
                             }
@@ -135,6 +151,23 @@ class Menu extends Component {
                         >
                             FEEDBACK
                         </Link>
+
+                    </li>
+
+                    <li
+                        className={
+                            this.state.activePage === "login" ? "active" : ""
+                        }
+                    >
+                        <Link
+                            to="/login"
+                            onClick={e =>
+                                this.setState({ activePage: "login" })
+                            }
+                        >
+                            LOGIN
+                        </Link>
+
                     </li>
                 </ul>
             </div>
