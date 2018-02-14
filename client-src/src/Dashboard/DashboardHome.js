@@ -155,7 +155,7 @@ class DashboardHome extends React.Component<Props, State> {
         const regulatoryStatusData = this.props.regulatoryStatuses.map(regulatoryStatus => {
             return {
                 regulatoryStatus: regulatoryStatus.facility_regulatory_status,
-                total: this.calculateOwnership(regulatoryStatus.id)
+                total: this.calculateRegulatoryStatus(regulatoryStatus.id)
             }
         })
 
@@ -184,11 +184,6 @@ class DashboardHome extends React.Component<Props, State> {
                         </blockquote>
                     ) : (
                                 <div className="row">
-                                    {/* <div className="col m12 l4 xl2">
-                            <div className>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/SVG-Koort_Malawi.svg/425px-SVG-Koort_Malawi.svg.png" alt="Malawi Map" />
-                            </div>
-                        </div> */}
                                     <div className="col s12">
                                         <div className="mfl-graphs-container">
                                             <div className="mfl-dash-container">
