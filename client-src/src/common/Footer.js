@@ -5,10 +5,10 @@ export default (props) => {
         <footer className="page-footer light-blue darken-4">
             <div className="container">
                 <div className="row mfl-no-margin">
-                    <div className="col s12 m2 white-text">
+                    <div className="col s12 m4 white-text">
                         <h5 className="mfl-contact">Contact Us</h5>
                     </div>
-                    <div className="col s12 m10 white-text">
+                    <div className="col s12 m8 white-text">
                         <div className="row">
                             <div className="col m6">
                                 <ul>

@@ -8,6 +8,7 @@ import Dashboard from "./Dashboard/DashboardHome";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
 import MflLogin from "./common/MflLogin";
+import MfLFeedback from "./common/MfLFeedback";
 
 class App extends Component {
     render() {
@@ -30,6 +31,11 @@ class App extends Component {
                         exact
                         path="/about"
                         component={MflAbout}
+                    />
+                    <Route
+                        exact
+                        path="/feedback"
+                        component={MfLFeedback}
                     />
                     <Route
                         exact

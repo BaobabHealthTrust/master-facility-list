@@ -67,7 +67,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/feedback"
                             onClick={e =>
                                 this.setState({ activePage: "feedback" })
                             }
@@ -144,7 +144,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/feedback"
                             onClick={e =>
                                 this.setState({ activePage: "feedback" })
                             }
