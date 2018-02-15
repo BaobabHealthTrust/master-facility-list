@@ -28,20 +28,10 @@ class Navbar extends Component {
             'left mfl-normal-search hide-on-small-only';
     }
 
-    handleQuickSearch = () => debounce(
-        alert("hey there"),
-        1000
-    );
-    // {
-    //     // if (e.key === 'Enter') {
-    //     //     this.setState({
-    //     //         isSearchBarBlurred: false
-    //     //     })
-    //     //     e.preventDefault();
-    //     //     this.props.quickSearch(e.target.value);
-    //     //     this.props.hideSearchContainer(false);
-    //     // }
-    // }
+    handleQuickSearch = () => {
+        this.props.quickSearch(this.refs.searchInput.value);
+        this.props.hideSearchContainer(false);
+    }
 
     render() {
         return (
@@ -80,8 +70,8 @@ class Navbar extends Component {
                                     onClick={e => this.maximizeSearch(e)}
 
                                     // onBlur={e => this.restoreSearch(e)}
-                                    onKeyUp={e => this.setState({ searchInput: e.currentTarget.value })}
-                                    onKeyPress={debounce(() => console.log(this.state.searchInput), 2000)}
+                                    ref="searchInput"
+                                    onKeyUp={debounce(this.handleQuickSearch, 1000)}
                                 />
                                 <label className="label-icon" for="search">
                                     <i className="material-icons">search</i>
