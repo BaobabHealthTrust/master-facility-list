@@ -1,18 +1,16 @@
 //@flow
 import React from "react";
 import Card from "../common/MflStatsCard";
-import FacilityOwnershipChart from "./FacilityOwnershipChart";
-import FacilityOperationalChart from "./FacilityOperationalChart";
-import FacilityRegulatoryStatusChart from "./FacilityRegulatoryStatusChart";
-import FacilityTypeChart from "./FacilityTypeChart";
+import { FacilityOwnershipChart, FacilityOperationalChart, FacilityRegulatoryStatusChart, FacilityTypeChart } from "./charts";
 import FacilityFilters from "./FacilityFilters";
 import { connect } from "react-redux";
 import fetchDashboardFacilityServices from "../actions/fetch-dashboard-statistics"
 import fetchServices from "../actions/fetch-services";
-import type { FacilityService, Facility, Owner, OperationalStatus, RegulatoryStatus } from "../types/model-types";
+import type { FacilityService, Facility, Owner, OperationalStatus, RegulatoryStatus, FacilityType } from "../types/model-types";
 import { map, uniq, isEmpty, intersection } from "lodash";
 import fetchAllFacilities from "../actions/get-facilities";
 import fetchOwners from "../actions/fetch-facility-owners";
+import fetchFacilityTypes from "../actions/fetch-facility-types";
 import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
 import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
 import footerResizer from "../helpers/footerResize";
@@ -22,11 +20,13 @@ type Props = {
     fetchServices: Function,
     fetchAllFacilities: Function,
     fetchOwners: Function,
+    fetchFacilityTypes: Function,
     fetchOperationalStatuses: Function,
     fetchRegulatoryStatuses: Function,
     facilityServices: Array<FacilityService>,
     allFacilities: Array<Facility>,
     owners: Array<Owner>,
+    facilityTypes: Array<FacilityType>,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
     results: number[],
@@ -94,6 +94,19 @@ class DashboardHome extends React.Component<Props, State> {
         return totalOwnership;
     }
 
+    calculateFacilityType = (id: number,
+        results: number[] = this.props.results,
+        isValuesEmpty: boolean = this.props.isSearchValuesEmpty
+    ) => {
+        const total = this.props.allFacilities ? this.props.allFacilities.filter(facility => {
+            return facility.facility_type_id === id;
+        }) : [];
+
+        const totalFacilityType = isValuesEmpty ? total.length : intersection(results, map(total, "id")).length
+
+        return totalFacilityType;
+    }
+
     calculateOperationalStatus = (id: number,
         results: number[] = this.props.results,
         isValuesEmpty: boolean = this.props.isSearchValuesEmpty
@@ -145,6 +158,13 @@ class DashboardHome extends React.Component<Props, State> {
 
     render() {
 
+        const facilityTypeData = this.props.facilityTypes.map(type => {
+            return {
+                facilityType: type.facility_type,
+                total: this.calculateFacilityType(type.id)
+            }
+        })
+
         const ownershipData = this.props.owners.map(owner => {
             return {
                 ownership: owner.facility_owner,
@@ -169,7 +189,7 @@ class DashboardHome extends React.Component<Props, State> {
         return (
             <div>
                 <FacilityFilters url="" isFilteredResults={false} />
-                <div className="container mfl-container mfl-dash-container mfl-tm-2">
+                <div className="container mfl-container mfl-dash-container">
                     <br />
                     {this.props.dependancyIsLoading ? (
                         <div class="progress">
@@ -198,15 +218,17 @@ class DashboardHome extends React.Component<Props, State> {
                                                     </div>)}
                                                     {/* TODO: Add Components for the other Statistics */}
                                                 </div>
+                                                {/* <div className="row mfl-tm-2">
+                                                    <div className="col l12 xl10">
+                                                        <FacilityTypeChart data={facilityTypeData} />
+                                                    </div>
+                                                </div> */}
                                                 <div className="row mfl-tm-2">
                                                     <div className="col s12 m6 l4 xl3">
                                                         <div className="mfl-tm-5"></div>
                                                         <FacilityOwnershipChart data={ownershipData} />
                                                     </div>
-                                                    <div className="col s12 m6 l4 xl3">
-                                                        <div className="mfl-tm-5"></div>
-                                                        <FacilityTypeChart />
-                                                    </div>
+
                                                     <div className="col s12 m6 l4 xl3">
                                                         <div className="mfl-tm-5"></div>
                                                         <FacilityOperationalChart data={operationalStatusData} />
@@ -236,6 +258,7 @@ const mapStateToProps = store => {
         services: store.dependancies.services,
         allFacilities: store.facilities.all,
         owners: store.dependancies.facilityOwners,
+        facilityTypes: store.dependancies.facilityTypes,
         operationalStatuses: store.dependancies.operationalStatuses,
         regulatoryStatuses: store.dependancies.regulatoryStatuses,
         isSearchValuesEmpty: isEmpty(map({
@@ -255,6 +278,7 @@ export default connect(mapStateToProps, {
     fetchDashboardFacilityServices,
     fetchServices,
     fetchAllFacilities,
+    fetchFacilityTypes,
     fetchOwners,
     fetchOperationalStatuses,
     fetchRegulatoryStatuses,

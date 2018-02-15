@@ -64,7 +64,7 @@ class Summary extends Component {
                             <i class="material-icons mfl-icon left">
                                 text_fields
                             </i>
-                            {this.props.current.facility_name}
+                            {this.props.current.common_name}
                         </p>
                         <br />
                         <p className="mfl-summary-header">Facility Code</p>

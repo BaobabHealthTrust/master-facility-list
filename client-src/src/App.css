@@ -328,6 +328,9 @@ select.mfl-select {
     .row .col.xl3 {
         width: 25% !important;
     }
+    .row .col.xl10 {
+        width: 83.33333333% !important;
+    }
 }
 
 .mfl-modal-container {
@@ -397,37 +400,39 @@ select.mfl-select {
     font-style: italic;
 }
 
-.password-wrapper{
-        width: 80%;
-		max-width: 320px;
-		border-radius: 5px;
-		background-color: rgb(37, 20, 20);
-        overflow: hidden;
-        border: 1px black;
-        
+.password-wrapper {
+    width: 80%;
+    max-width: 320px;
+    border-radius: 5px;
+    background-color: rgb(37, 20, 20);
+    overflow: hidden;
+    border: 1px black;    
 }
-.input {
-			border: none;
-			padding: 10px 15px;
-			font: small-caption;	
-			font-size: 1.8;
-			width: calc(100% - 50px);
-			color: dark-blue-light;
-			outline: none;
 
-         }
+.input {
+    border: none;
+    padding: 10px 15px;
+    font: small-caption;	
+    font-size: 1.8;
+    width: calc(100% - 50px);
+    color: dark-blue-light;
+    outline: none;
+}
+
 .icon-wrapper {
-			position: relative;
-			display: inline;
-			float: right;
-			size : (50px, 50px);
-			background-color: dark-blue-light;
-			transition: background-color .25s ease-out;
-			cursor: pointer;
-               }
+    position: relative;
+    display: inline;
+    float: right;
+    size : (50px, 50px);
+    background-color: dark-blue-light;
+    transition: background-color .25s ease-out;
+    cursor: pointer;
+}
+
 .mfl-tm-20 {
     margin-top: 20%;
 }
+
 .mfl-tm-10 {
     margin-top: 10%;
 }
@@ -441,25 +446,19 @@ select.mfl-select {
 }
 
 .mfl-about-text {
-    font-size: 18px;
-    
+    font-size: 18px;  
 }
+
 .mfl-paragraph {
     font-size: 16px;
-    line-height: 10px;
-    
+    line-height: 10px; 
 }
 
 .partner-logos {
-
- margin-left: 16%;
+    margin-left: 16%;
 }
 .mfl-banner{
     background: #666;
-}
-
-.parallax {
-    height: 300px;
 }
 
 .mfl-about-container{

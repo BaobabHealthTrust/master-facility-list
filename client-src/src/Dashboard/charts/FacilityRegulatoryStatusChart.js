@@ -1,36 +1,51 @@
 //@flow
 import React, { Component } from 'react';
-import ChartContainer from "../common/MflChartContainer";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
+import ChartContainer from "../../common/MflChartContainer";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend, VictoryLabel } from "victory";
 import { map } from "lodash";
 
 type Props = {
-    data: Array<{ ownership: string, total: number }>
+    data: Array<{ regulatoryStatus: string, total: number }>
 };
 
-export default class FacilityOwnershipChart extends Component<Props> {
+export default class FacilityRegulatoryStatusChart extends Component<Props> {
     render() {
-        const owners = map(this.props.data, "ownership");
-        const shortOwners = owners.map(own => own.slice(0, 3).toUpperCase());
+        const ticks = map(this.props.data, "regulatoryStatus");
+        const legendData = ticks.length > 0 ? ticks.map(tick => {
+            return { name: `${tick.split("(")[0]}\n${tick.split("(")[1] ? tick.split("(")[1].replace(")", "") : ""}` }
+        }) : [{ name: "one" }];
+
+        const colorScale = ["#3b5586", "#5170aa", "#6289d1", "#5f7399", "#747b88"];
+
+        const barData = colorScale.map((cs, i) => {
+            return Object.assign({}, { fill: cs }, this.props.data[i]);
+        })
 
         const chartDefinition =
             <VictoryChart
                 height={200}
-                padding={35}
+                padding={40}
                 theme={VictoryTheme.material}
-                domainPadding={20}
+                domainPadding={10}
                 style={{ parent: { maxWidth: "600px" } }}
             >
                 <VictoryAxis
-                    tickFormat={shortOwners}
-                />
-                <VictoryAxis
                     dependentAxis
                 />
+                <VictoryAxis
+                    label="Registration Status"
+                    style={{ tickLabels: { fill: "none" } }}
+                />
                 <VictoryBar
-                    data={this.props.data}
-                    x="ownership"
+                    horizontal={false}
+                    data={barData}
+                    x="regulatoryStatus"
                     y="total"
+                    style={{
+                        data: { width: 20 },
+                        labels: { fill: "#000" }
+                    }}
+                    colorScale={colorScale}
                     events={[{
                         target: "data",
                         eventHandlers: {
@@ -39,7 +54,7 @@ export default class FacilityOwnershipChart extends Component<Props> {
                                     {
                                         target: "labels",
                                         mutation: (props) => {
-                                            return { text: props.data[props.index].x };
+                                            return { text: `${props.data[props.index].x} : ${props.data[props.index].y}` };
                                         }
                                     }
                                 ]
@@ -60,7 +75,7 @@ export default class FacilityOwnershipChart extends Component<Props> {
             </VictoryChart>;
 
         return (
-            <ChartContainer title="Ownership Comparison" chart={chartDefinition} />
+            <ChartContainer title="License Comparison" chart={chartDefinition} />
         );
     }
 }

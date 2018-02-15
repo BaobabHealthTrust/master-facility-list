@@ -12,7 +12,7 @@ class Navbar extends Component {
         super();
         this.state = {
             isSearchBarBlurred: false,
-            searchInput: ""
+            isContainerClicked: false
         };
     }
 
@@ -22,10 +22,14 @@ class Navbar extends Component {
     }
 
     restoreSearch(e) {
-        this.props.hideSearchContainer(true);
+        setTimeout(() => {
+            if (!this.state.isContainerClicked) {
+                this.props.hideSearchContainer(true);
 
-        document.getElementById('searchbar').className =
-            'left mfl-normal-search hide-on-small-only';
+                document.getElementById('searchbar').className =
+                    'left mfl-normal-search hide-on-small-only';
+            }
+        }, 100);
     }
 
     handleQuickSearch = () => {
@@ -69,7 +73,7 @@ class Navbar extends Component {
                                     required
                                     onClick={e => this.maximizeSearch(e)}
 
-                                    // onBlur={e => this.restoreSearch(e)}
+                                    onBlur={e => this.restoreSearch(e)}
                                     ref="searchInput"
                                     onKeyUp={debounce(this.handleQuickSearch, 1000)}
                                 />
@@ -92,6 +96,7 @@ class Navbar extends Component {
                         <div className="container">
                             <h5>Search Results</h5>
                             <Table
+                                onClick={(e) => this.setState({ isContainerClicked: true })}
                                 data={{
                                     headers: [],
                                     records: this.props.searchResults.map(
