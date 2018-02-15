@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from 'react';
-import ChartContainer from "../common/MflChartContainer";
+import ChartContainer from "../../common/MflChartContainer";
 import { VictoryPie, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
 import { map } from "lodash";
 
