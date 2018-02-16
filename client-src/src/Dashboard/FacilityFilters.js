@@ -3,14 +3,10 @@ import React from "react";
 import SecondaryMenu from "../common/SecondaryMenu";
 import { connect } from "react-redux";
 import type { District, FacilityType, OperationalStatus, FacilityOwner } from "../types/model-types";
-import fetchDistricts from "../actions/fetch-districts";
-import fetchFacilityTypes from "../actions/fetch-facility-types";
-import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
-import addSearchValues from "../actions/add-search-values";
+import { fetchDistricts, fetchFacilityTypes, fetchOperationalStatuses } from "../actions/actionsIndex";
+import { addSearchValues, fetchBasicDetailsResults, fetchFacilityOwners } from "../actions/actionsIndex";
 import removeSearchValues from "../actions/remove-search-values";
-import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
 import FacilityFilterSelector from "../common/FacilityFilterSelector";
-import fetchFacilityOwners from "../actions/fetch-facility-owners";
 
 type Props = {
     fetchDistricts: Function,

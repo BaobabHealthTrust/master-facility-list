@@ -408,26 +408,18 @@ select.mfl-select {
     overflow: hidden;
     border: 1px black;    
 }
-
+/*
 .input {
-    border: none;
+    border: 5px;
     padding: 10px 15px;
     font: small-caption;	
     font-size: 1.8;
     width: calc(100% - 50px);
     color: dark-blue-light;
-    outline: none;
+    outline: 5px;
 }
+*/
 
-.icon-wrapper {
-    position: relative;
-    display: inline;
-    float: right;
-    size : (50px, 50px);
-    background-color: dark-blue-light;
-    transition: background-color .25s ease-out;
-    cursor: pointer;
-}
 
 .mfl-tm-20 {
     margin-top: 20%;
@@ -487,4 +479,61 @@ select.mfl-select {
 
 .mfl-banner-img {
     object-fit: cover;
+}
+
+.mfl-login-container{
+
+        display: flex; 
+        flex-direction: row ;
+        justify-content:  center;
+       
+      
+
+
+
+}
+.mfl-login-header{
+    text-align: center !important;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 40px 0px;
+    color: #0d47a1;
+    font-weight: bold;
+    
+}
+.mfl-login-form{
+
+    align-content: center !important;
+    margin-left: -111px !important;
+    margin-top: 0px !important;
+    margin-right: 1% !important;
+    padding:1%;
+    border:1px solid black !important;
+    height: 50px;
+    background: #a6a6a6;
+
+
+}
+.mfl-login-body{
+   background: #000; 
+
+}
+
+.mfl-login{
+
+    align-content: center !important;
+    padding:5px;
+    background: #a6a6a6;
+
+
+}
+
+.mfl-login-icon{
+align-content: center !important;
+margin-left: 30% !important;
+margin-bottom: -10px !important;
+margin-top: -6px !important;
+color: #0d47a1;
+padding: -5px;
+
 }

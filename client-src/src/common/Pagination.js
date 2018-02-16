@@ -4,7 +4,7 @@ import { chunk } from "lodash";
 import { connect } from "react-redux";
 import type { Facility } from "../types/model-types";
 import fetchFacilities from "../actions/get-facilities";
-import fetchFilteredResults from "../actions/fetch-advanced-search-results";
+import { fetchAdvancedSearchResults } from "../actions/actionsIndex/";
 
 
 type Props = {
@@ -54,5 +54,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     fetchFacilities,
-    fetchFilteredResults,
+    fetchAdvancedSearchResults,
 })(Pagination);

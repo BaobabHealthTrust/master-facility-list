@@ -2,23 +2,19 @@ import React, { Component } from "react";
 import { Tabs, Tab } from "react-materialize";
 import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
 import { connect } from "react-redux";
-import addSearchValues from "../actions/add-search-values";
+import {
+    addSearchValues, fetchAdvancedSearchResults, fetchBasicDetailsResults, fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults, fetchBasicServiceDetailsResults, fetchCurrentDetails,
+    fetchResourceTypeInstances, fetchUtilityTypeInstances, fetchServiceTypeInstances,
+} from "../actions/actionsIndex/";
 import removeSearchValues from "../actions/remove-search-values";
-import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
-import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
-import fetchBasicUtilityDetailsResults from "../actions/fetch-basic-utility-details-results";
-import fetchBasicServiceDetailsResults from "../actions/fetch-basic-service-details-results";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
-import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
-import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
-import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
 import removeResultsValues from "../actions/remove-results-values";
 import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";

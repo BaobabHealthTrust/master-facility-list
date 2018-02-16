@@ -1,14 +1,14 @@
 import axios from "axios";
-import settings from "../settings";
+import settings from '../../settings';
 
 export default () => {
     const END_POINT = `${settings.hostname}/api/`;
-    const RESOURCE = `FacilityTypes/`;
+    const RESOURCE = `OperationalStatuses/`;
 
     const URL = `${END_POINT}${RESOURCE}`;
     const request = axios.get(URL);
     return {
-        type: "FETCH_FACILITY_TYPES",
+        type: "FETCH_OPERATIONAL_STATUSES",
         payload: request
     };
 };

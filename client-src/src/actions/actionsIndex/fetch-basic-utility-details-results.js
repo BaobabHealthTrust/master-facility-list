@@ -1,16 +1,16 @@
 import axios from "axios";
-import settings from "../settings";
+import settings from '../../settings';
 
 export default searchValues => {
     const END_POINT = `${settings.hostname}/api/`;
-    const RESOURCE = `FacilityResources/`;
+    const RESOURCE = `FacilityUtilities/`;
 
     const query = [];
 
-    if (searchValues.typeResourceInstanceValues.length > 0) {
+    if (searchValues.typeUtilityInstanceValues.length > 0) {
         query.push({
-            resource_id: {
-                inq: searchValues.typeResourceInstanceValues.map(v => Number(v))
+            utility_id: {
+                inq: searchValues.typeUtilityInstanceValues.map(v => Number(v))
             }
         });
     }
@@ -34,9 +34,9 @@ export default searchValues => {
 
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);
-    
+
     return {
-        type: "FETCH_BASIC_RESOURCE_RESULTS",
+        type: "FETCH_BASIC_UTILITY_RESULTS",
         payload: request
     };
 };

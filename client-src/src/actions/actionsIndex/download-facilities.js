@@ -1,7 +1,7 @@
 import axios from 'axios';
-import settings from '../settings';
+import settings from '../../settings';
 
-export default function(format) {
+export default function (format) {
     const request = axios({
         method: 'POST',
         url: `${settings.hostname}/api/Facilities/download`,
