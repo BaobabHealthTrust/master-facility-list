@@ -9,17 +9,14 @@ import fetchServices from "../actions/fetch-services";
 import type { FacilityService, Facility, Owner, OperationalStatus, RegulatoryStatus, FacilityType } from "../types/model-types";
 import { map, uniq, isEmpty, intersection } from "lodash";
 import fetchAllFacilities from "../actions/get-facilities";
-import fetchOwners from "../actions/fetch-facility-owners";
-import fetchFacilityTypes from "../actions/fetch-facility-types";
-import fetchOperationalStatuses from "../actions/fetch-operational-statuses";
-import fetchRegulatoryStatuses from "../actions/fetch-regulatory-statuses";
+import { fetchFacilityOwners, fetchFacilityTypes, fetchOperationalStatuses, fetchRegulatoryStatuses } from "../actions/actionsIndex";
 import footerResizer from "../helpers/footerResize";
 
 type Props = {
     fetchDashboardFacilityServices: Function,
     fetchServices: Function,
     fetchAllFacilities: Function,
-    fetchOwners: Function,
+    fetchFacilityOwners: Function,
     fetchFacilityTypes: Function,
     fetchOperationalStatuses: Function,
     fetchRegulatoryStatuses: Function,
@@ -144,7 +141,7 @@ class DashboardHome extends React.Component<Props, State> {
 
     async componentDidMount() {
         await this.props.fetchAllFacilities()
-        await this.props.fetchOwners();
+        await this.props.fetchFacilityOwners();
         await this.props.fetchOperationalStatuses();
         await this.props.fetchRegulatoryStatuses();
         await this.props.fetchDashboardFacilityServices(
@@ -279,7 +276,7 @@ export default connect(mapStateToProps, {
     fetchServices,
     fetchAllFacilities,
     fetchFacilityTypes,
-    fetchOwners,
+    fetchFacilityOwners,
     fetchOperationalStatuses,
     fetchRegulatoryStatuses,
 })(DashboardHome);

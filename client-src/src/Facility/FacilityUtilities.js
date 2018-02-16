@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import fetchCurrentUtilities from "../actions/fetch-current-utilities";
 import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
-import fetchUtilityTypes from "../actions/fetch-utility-types";
+import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes } from "../actions/actionsIndex";
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 

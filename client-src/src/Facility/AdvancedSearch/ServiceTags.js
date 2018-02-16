@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicServiceDetailsResults from "../../actions/fetch-basic-service-details-results";
+import { fetchBasicServiceDetailsResults } from "../../actions/actionsIndex";
 
 class ServiceTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.typeServiceInstanceValues,
-                this.props.services
+            this.props.searchValues.typeServiceInstanceValues,
+            this.props.services
             )
             .map(entity => {
                 return (

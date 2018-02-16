@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
 import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
-import fetchFilteredResults from "../../actions/fetch-advanced-search-results";
+import { fetchAdvancedSearchResults, fetchBasicDetailsResults } from "../../actions/actionsIndex";
 
 class DistrictTags extends Component {
     render() {
@@ -44,5 +43,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     removeSearchValues,
     fetchBasicDetailsResults,
-    fetchFilteredResults
+    fetchAdvancedSearchResults
 })(DistrictTags);

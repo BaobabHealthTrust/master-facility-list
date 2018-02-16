@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import type { District, FacilityType } from  "../types/model-types";
 import { connect } from "react-redux";
-import fetchResults from "../actions/fetch-basic-details-results";
-import fetchFilteredResults from "../actions/fetch-advanced-search-results";
+import { fetchAdvancedSearchResults, fetchBasicDetailsResults, } from "../actions/actionsIndex/";
 import FilterTags from './FilterTags';
 
 type Props = {
@@ -92,6 +91,6 @@ const mapStateToprops = state => {
 }
 
 export default connect(mapStateToprops, {
-    fetchResults,
-    fetchFilteredResults,
+    fetchBasicDetailsResults,
+    fetchAdvancedSearchResults,
 })(FacilityFilterSelector);
