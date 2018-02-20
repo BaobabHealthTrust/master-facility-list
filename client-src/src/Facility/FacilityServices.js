@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import setCurrentDetails from "../actions/set-current-details";
-import { fetchCurrentDetails, fetchCurrentServices } from "../actions/actionsIndex";
+import { fetchCurrentDetails, fetchCurrentServices, setCurrentDetails } from "../actions";
 import Container from "./ServicesContainer";
 import { connect } from "react-redux";
 

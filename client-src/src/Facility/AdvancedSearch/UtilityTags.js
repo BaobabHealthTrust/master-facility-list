@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import { fetchBasicUtilityDetailsResults } from "../../actions/actionsIndex";
+import { fetchBasicUtilityDetailsResults, removeSearchValues } from "../../actions";
 
 class UtilityTags extends Component {
     render() {

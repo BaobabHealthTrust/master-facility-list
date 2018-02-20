@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import { fetchBasicDetailsResults } from "../../actions/actionsIndex/";
+import { fetchBasicDetailsResults, removeSearchValues } from "../../actions";
 
 
 class FacilityTypeTags extends Component {

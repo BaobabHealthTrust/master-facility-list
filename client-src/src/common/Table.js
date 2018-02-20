@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-materialize";
 import { Redirect } from "react-router-dom";
-import hideSearchContainer from "../actions/hide-search-container";
+import { hideSearchContainer } from "../actions";
 import { connect } from "react-redux";
 
 class MflTable extends Component {

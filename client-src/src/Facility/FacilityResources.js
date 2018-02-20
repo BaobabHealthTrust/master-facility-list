@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import setCurrentDetails from "../actions/set-current-details";
-import { fetchCurrentDetails, fetchCurrentResources, fetchResourceTypes, } from "../actions/actionsIndex";
+import { fetchCurrentDetails, fetchCurrentResources, fetchResourceTypes, setCurrentDetails } from "../actions";
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 

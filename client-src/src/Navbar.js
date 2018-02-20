@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
 import Menu from './Header/Menu';
-import quickSearch from './actions/quick-search-facilities';
 import { connect } from 'react-redux';
 import Table from './common/Table';
 import { debounce } from "lodash";
-import hideSearchContainer from './actions/hide-search-container';
+import { hideSearchContainer, quickSearch } from './actions';
 
 class Navbar extends Component {
     constructor() {

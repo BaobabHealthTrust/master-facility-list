@@ -3,8 +3,7 @@ import React, { Component } from "react";
 import { chunk } from "lodash";
 import { connect } from "react-redux";
 import type { Facility } from "../types/model-types";
-import fetchFacilities from "../actions/get-facilities";
-import { fetchAdvancedSearchResults } from "../actions/actionsIndex/";
+import { fetchAdvancedSearchResults, fetchFacilities } from "../actions";
 
 
 type Props = {
