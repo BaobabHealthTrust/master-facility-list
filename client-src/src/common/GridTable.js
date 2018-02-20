@@ -56,31 +56,34 @@ export default class GridTable extends React.Component {
         ];
         let data = [];
         this.state = {
-            data,
+            data, filters: {}, sortColumn: null, sortDirection: null
         };
     }
 
+    // handleGridSort = (sortColumn, sortDirection) => {
+    //     const comparer = (a, b) => {
+    //         if (sortDirection === 'ASC') {
+    //             return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
+    //         } else if (sortDirection === 'DESC') {
+    //             return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
+    //         }
+    //     };
+
     handleGridSort = (sortColumn, sortDirection) => {
-        const comparer = (a, b) => {
-            if (sortDirection === 'ASC') {
-                return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
-            } else if (sortDirection === 'DESC') {
-                return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
-            }
-        };
-
-        const data = sortDirection === 'NONE' ? this.props.data.slice(0) : this.props.data.sort(comparer);
-
-        this.setState({ data });
+        this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
     };
+
+
+    //     const data = sortDirection === 'NONE' ? this.props.data.slice(0) : this.props.data.sort(comparer);
+
+    //     this.setState({ data });
+    // };
 
     rowGetter = (i) => {
         return this.props.data[i];
     };
 
-    async componentDidMount() {
 
-    }
 
     render() {
         return (
@@ -89,7 +92,10 @@ export default class GridTable extends React.Component {
                 columns={this._columns}
                 rowGetter={this.rowGetter}
                 rowsCount={this.props.data.length}
-                minHeight={700} />);
+                minHeight={700}
+                onAddFilter={this.handleFilterChange}
+                onClearFilters={this.onClearFilters}
+            />);
     }
 }
 

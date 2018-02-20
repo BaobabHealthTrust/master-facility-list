@@ -108,6 +108,19 @@
       "foreignKey": "district_id"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": " $everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": " $everyone",
+      "permission": "DENY"
+    }
+  ],
   "methods": {}
 }
