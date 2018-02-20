@@ -5,9 +5,8 @@ import { connect } from "react-redux";
 import {
     addSearchValues, fetchAdvancedSearchResults, fetchBasicDetailsResults, fetchBasicResourceDetailsResults,
     fetchBasicUtilityDetailsResults, fetchBasicServiceDetailsResults, fetchCurrentDetails,
-    fetchResourceTypeInstances, fetchUtilityTypeInstances, fetchServiceTypeInstances,
-} from "../actions/actionsIndex/";
-import removeSearchValues from "../actions/remove-search-values";
+    fetchResourceTypeInstances, fetchUtilityTypeInstances, fetchServiceTypeInstances, removeResultsValues, removeSearchValues
+} from "../actions";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
@@ -15,7 +14,6 @@ import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import removeResultsValues from "../actions/remove-results-values";
 import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
 import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";

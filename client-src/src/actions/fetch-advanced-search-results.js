@@ -1,5 +1,5 @@
 import axios from "axios";
-import settings from '../../settings';
+import settings from '../settings';
 import { map } from "lodash";
 
 export default facilityIds => {

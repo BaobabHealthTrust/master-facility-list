@@ -3,9 +3,7 @@ import React from "react";
 import SecondaryMenu from "../common/SecondaryMenu";
 import { connect } from "react-redux";
 import type { District, FacilityType, OperationalStatus, FacilityOwner } from "../types/model-types";
-import { fetchDistricts, fetchFacilityTypes, fetchOperationalStatuses } from "../actions/actionsIndex";
-import { addSearchValues, fetchBasicDetailsResults, fetchFacilityOwners } from "../actions/actionsIndex";
-import removeSearchValues from "../actions/remove-search-values";
+import { addSearchValues, fetchBasicDetailsResults, fetchFacilityOwners, removeSearchValues, fetchDistricts, fetchFacilityTypes, fetchOperationalStatuses } from "../actions";
 import FacilityFilterSelector from "../common/FacilityFilterSelector";
 
 type Props = {

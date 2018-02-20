@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import fetchFacilities from "../actions/get-facilities";
-import { downloadFacilities } from "../actions/actionsIndex/";
 import SearchModal from "./SearchModal";
 import {
     fetchDistricts, fetchFacilityTypes, fetchFacilityOwners, fetchUtilityTypes, fetchResourceTypes,
-    fetchServiceTypes, fetchRegulatoryStatuses, fetchOperationalStatuses
-} from "../actions/actionsIndex";
-import fetchResources from "../actions/fetch-resources";
-import fetchUtilities from "../actions/fetch-utilities";
-import fetchServices from "../actions/fetch-services";
+    fetchServiceTypes, fetchRegulatoryStatuses, fetchOperationalStatuses, fetchFacilities, downloadFacilities, fetchResources, fetchUtilities, fetchServices
+} from "../actions";
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityFilters from "../Dashboard/FacilityFilters";
 import FacilityList from "./FacilityList";

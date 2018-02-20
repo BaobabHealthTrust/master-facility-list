@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import { fetchAdvancedSearchResults, fetchBasicDetailsResults } from "../../actions/actionsIndex";
+import { fetchAdvancedSearchResults, fetchBasicDetailsResults, removeSearchValues } from "../../actions";
 
 class DistrictTags extends Component {
     render() {

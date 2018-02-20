@@ -4,18 +4,15 @@ import Card from "../common/MflStatsCard";
 import { FacilityOwnershipChart, FacilityOperationalChart, FacilityRegulatoryStatusChart, FacilityTypeChart } from "./charts";
 import FacilityFilters from "./FacilityFilters";
 import { connect } from "react-redux";
-import fetchDashboardFacilityServices from "../actions/fetch-dashboard-statistics"
-import fetchServices from "../actions/fetch-services";
 import type { FacilityService, Facility, Owner, OperationalStatus, RegulatoryStatus, FacilityType } from "../types/model-types";
 import { map, uniq, isEmpty, intersection } from "lodash";
-import fetchAllFacilities from "../actions/get-facilities";
-import { fetchFacilityOwners, fetchFacilityTypes, fetchOperationalStatuses, fetchRegulatoryStatuses } from "../actions/actionsIndex";
+import { fetchFacilityOwners, fetchFacilityTypes, fetchOperationalStatuses, fetchRegulatoryStatuses, fetchServices, fetchFacilities, fetchDashboardFacilityServices } from "../actions";
 import footerResizer from "../helpers/footerResize";
 
 type Props = {
     fetchDashboardFacilityServices: Function,
     fetchServices: Function,
-    fetchAllFacilities: Function,
+    fetchFacilities: Function,
     fetchFacilityOwners: Function,
     fetchFacilityTypes: Function,
     fetchOperationalStatuses: Function,
@@ -140,7 +137,7 @@ class DashboardHome extends React.Component<Props, State> {
     }
 
     async componentDidMount() {
-        await this.props.fetchAllFacilities()
+        await this.props.fetchFacilities()
         await this.props.fetchFacilityOwners();
         await this.props.fetchOperationalStatuses();
         await this.props.fetchRegulatoryStatuses();
@@ -274,7 +271,7 @@ const mapStateToProps = store => {
 export default connect(mapStateToProps, {
     fetchDashboardFacilityServices,
     fetchServices,
-    fetchAllFacilities,
+    fetchFacilities,
     fetchFacilityTypes,
     fetchFacilityOwners,
     fetchOperationalStatuses,

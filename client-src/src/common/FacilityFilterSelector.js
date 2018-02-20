@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import type { District, FacilityType } from  "../types/model-types";
 import { connect } from "react-redux";
-import { fetchAdvancedSearchResults, fetchBasicDetailsResults, } from "../actions/actionsIndex/";
+import { fetchAdvancedSearchResults, fetchBasicDetailsResults, } from "../actions";
 import FilterTags from './FilterTags';
 
 type Props = {

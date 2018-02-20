@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import setCurrentDetails from "../actions/set-current-details";
-import { fetchCurrentDetails } from "../actions/actionsIndex";
+import { fetchCurrentDetails, setCurrentDetails } from "../actions";
 import { connect } from "react-redux";
 import MFLGoogleMap from "../common/MFLGoogleMap";
 
