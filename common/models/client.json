@@ -20,7 +20,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "Facilities": {
+      "type": "hasMany",
+      "model": "Facility",
+      "foreignkey": "Client_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }
