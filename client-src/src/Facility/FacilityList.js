@@ -6,7 +6,12 @@ import Pagination from "../common/Pagination";
 import GridTable from "../common/GridTable";
 import { truncate } from "lodash";
 import moment from "moment";
-import type { Owner, FacilityType, OperationalStatus, District } from "../types/model-types";
+import type {
+    Owner,
+    FacilityType,
+    OperationalStatus,
+    District
+} from "./types/model-types";
 
 type Props = {
     dataSource: Array<{
@@ -18,15 +23,16 @@ type Props = {
         facilityType: FacilityType,
         operationalStatus: OperationalStatus,
         district: District,
-        facility_date_opened: string,
+        facility_date_opened: string
     }>,
     downloadAction: Function,
     toggleAdvancedSearch: Function
-}
+};
 export default class FacilityList extends React.Component<Props> {
     render() {
-        const tableRecords = this.props.dataSource
-            && this.props.dataSource.map(facility => {
+        const tableRecords =
+            this.props.dataSource &&
+            this.props.dataSource.map(facility => {
                 return {
                     id: facility.id,
                     code: facility.facility_code,
@@ -39,9 +45,11 @@ export default class FacilityList extends React.Component<Props> {
                         { length: 12 }
                     ),
                     district: facility.district.district_name.toUpperCase(),
-                    dateopened: moment(facility.facility_date_opened).format("MMM Do YY")
+                    dateopened: moment(facility.facility_date_opened).format(
+                        "MMM Do YY"
+                    )
                 };
-            })
+            });
 
         return (
             <div className="mfl-container">
@@ -61,9 +69,7 @@ export default class FacilityList extends React.Component<Props> {
                         records: tableRecords
                     }}
                 /> */}
-                <GridTable
-                    data={tableRecords}
-                />
+                <GridTable data={tableRecords} />
 
                 <Pagination />
             </div>
