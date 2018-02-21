@@ -21,8 +21,7 @@ export default (
         return {
             ...state,
             isNetworkError: true,
-            isLoading: false,
-
+            isLoading: false
         };
     }
     switch (action.type) {
@@ -30,80 +29,80 @@ export default (
             return {
                 ...state,
                 list: action.payload.data,
-
+                isLoading: false
             };
         case "SET_CURRENT_DETAILS":
             return {
                 ...state,
                 currentDetails: action.payload[0],
-
+                isLoading: false
             };
         case "FETCH_FACILITY_DETAILS":
             return {
                 ...state,
                 currentDetails: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_CURRENT_RESOURCES":
             return {
                 ...state,
                 currentResources: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_CURRENT_UTILITIES":
             return {
                 ...state,
                 currentUtilities: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_CURRENT_SERVICES":
             return {
                 ...state,
                 currentServices: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_RESOURCE_TYPE_INSTANCES":
             return {
                 ...state,
                 typeResourceInstances: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_UTILITY_TYPE_INSTANCES":
             return {
                 ...state,
                 typeUtilityInstances: action.payload.data,
-
+                isLoading: false
             };
 
         case "FETCH_SERVICE_TYPE_INSTANCES":
             return {
                 ...state,
                 typeServiceInstances: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_RESOURCES":
             return {
-
                 ...state,
                 resources: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_UTILITIES":
             return {
                 ...state,
                 utilities: action.payload.data,
-
+                isLoading: false
             };
         case "FETCH_SERVICES":
             return {
                 ...state,
-                services: action.payload.data
+                services: action.payload.data,
+                isLoading: false
             };
         case "FETCH_ALL_FACILITIES":
             return {
                 ...state,
                 all: action.payload.data,
-
+                isLoading: false
             };
         default:
             return state;
