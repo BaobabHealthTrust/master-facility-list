@@ -22,14 +22,15 @@ class MflLogin extends Component<State, Props> {
             this.state.username,
             this.state.password
         );
-        await console.log(this.props.loginResponse);
     };
     render() {
         return (
             <div className="container mfl-container">
                 <div className="mfl-login-container blue darken-4">
                     <h4 className="white-text">
-                        Login Here{this.props.tokenValue}
+                        Login Here{this.props.loginResponse.isLoginFailed
+                            ? "Wrong login credentials"
+                            : ""}
                     </h4>
                     <div className="mfl-tm-5" />
                     <div className="mfl-login-input-container">
