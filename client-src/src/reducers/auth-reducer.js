@@ -7,7 +7,7 @@ export default (
 ) => {
     if (action.error) {
         return {
-            loginResponse: state.loginResponse,
+            loginResponse: {},
             isLoginFailed: true
         };
     }
