@@ -1,32 +1,32 @@
 {
-  "name": "Client",
-  "base": "User",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "username": {
-      "type": "string",
-      "required": true
+    "name": "Client",
+    "base": "User",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "password": {
-      "type": "string",
-      "required": true
+    "properties": {
+        "username": {
+            "type": "string",
+            "required": true
+        },
+        "password": {
+            "type": "string",
+            "required": true
+        },
+        "email": {
+            "type": "string",
+            "required": true
+        }
     },
-    "email": {
-      "type": "string",
-      "required": true
-    }
-  },
-  "validations": [],
-  "relations": {
-    "Facilities": {
-      "type": "hasMany",
-      "model": "Facility",
-      "foreignkey": "Client_id"
-    }
-  },
-  "acls": [],
-  "methods": {}
+    "validations": [],
+    "relations": {
+        "facilities": {
+            "type": "hasMany",
+            "model": "Facility",
+            "foreignkey": "client_id"
+        }
+    },
+    "acls": [],
+    "methods": {}
 }

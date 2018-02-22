@@ -21,6 +21,7 @@ const FacilityUtility = server.models.FacilityUtility;
 const Geolocation = server.models.Geolocation;
 const District = server.models.District;
 const Location = server.models.Location;
+const User = server.models.Client;
 
 const operationalData = OperationalStatus.find();
 const regulatoryData = RegulatoryStatus.find();
@@ -30,6 +31,7 @@ const ResourceData = Resource.find();
 const serviceData = Service.find();
 const utilityData = Utility.find();
 const districtData = District.find();
+const userData = User.find();
 
 Promise.all([
     operationalData,
@@ -39,7 +41,8 @@ Promise.all([
     ResourceData,
     serviceData,
     utilityData,
-    districtData
+    districtData,
+    userData
 ]).then(val => {
     const maxValueOperational = val[0].length - 1;
     const maxValueRegulatory = val[1].length - 1;
@@ -118,6 +121,8 @@ Promise.all([
         const districtId = val[7][randDistrictIndex].id;
 
         // end location
+        //client id
+
         const facilityCode = faker.random.number({
             min: 1000,
             max: 9000
@@ -132,7 +137,8 @@ Promise.all([
             facility_owner_id: ownerId,
             facility_operational_status_id: operationalStatusId,
             facility_regulatory_status_id: regulatoryStatusId,
-            district_id: districtId
+            district_id: districtId,
+            client_id: val[8][0].id
         };
 
         const facilityFake = Facility.create(facilityData);
