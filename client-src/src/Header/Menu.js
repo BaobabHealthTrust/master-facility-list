@@ -8,6 +8,11 @@ class Menu extends Component {
             activePage: "home"
         };
     }
+    // componentDidMount() {
+    //     document.getElementById(
+    //         "dropdown-btn"
+    //     ).className = "dropdown-button".dropdown("open");
+    // }
 
     render() {
         return (
@@ -76,21 +81,50 @@ class Menu extends Component {
                         </Link>
                     </li>
 
-                    <li
-                        className={
-                            this.state.activePage === "login" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to="/login"
-                            onClick={e =>
-                                this.setState({ activePage: "login" })
+                    {sessionStorage.getItem("token") ? (
+                        <li>
+                            <a
+                                id="dropdown-btn"
+                                className="dropdown-button "
+                                href="#"
+                                data-activates="dropdown1"
+                            >
+                                <i className="material-icons">person</i>
+                            </a>
+                            <ul id="dropdown1" className="dropdown-content">
+                                <li>
+                                    <a href="#!">
+                                        <i className="material-icons">edit</i>Edit
+                                        profile
+                                    </a>
+                                </li>
+                                <li className="divider" />
+                                <li>
+                                    <a href="#!">
+                                        <i className="material-icons">lock</i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    ) : (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
                             }
                         >
-                            LOGIN
-                        </Link>
-
-                    </li>
+                            {" "}
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                LOGIN
+                            </Link>
+                        </li>
+                    )}
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     <li
@@ -151,24 +185,42 @@ class Menu extends Component {
                         >
                             FEEDBACK
                         </Link>
-
                     </li>
-
-                    <li
-                        className={
-                            this.state.activePage === "login" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to="/login"
-                            onClick={e =>
-                                this.setState({ activePage: "login" })
+                    {sessionStorage.getItem("token") == "" ? (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
                             }
                         >
-                            LOGIN
-                        </Link>
-
-                    </li>
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                LOGIN
+                            </Link>
+                        </li>
+                    ) : (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
+                            }
+                        >
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                <i className="material_icons">person</i>
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </div>
         );
