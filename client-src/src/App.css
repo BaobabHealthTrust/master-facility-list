@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -314,7 +315,7 @@ select.mfl-select {
 }
 
 .mfl-icon-color {
-    color: #fff
+    color: #fff;
 }
 
 .mfl-footer-text-align {
@@ -406,7 +407,7 @@ select.mfl-select {
     border-radius: 5px;
     background-color: rgb(37, 20, 20);
     overflow: hidden;
-    border: 1px black;    
+    border: 1px black;
 }
 /*
 .input {
@@ -419,7 +420,6 @@ select.mfl-select {
     outline: 5px;
 }
 */
-
 
 .mfl-tm-20 {
     margin-top: 20%;
@@ -438,22 +438,22 @@ select.mfl-select {
 }
 
 .mfl-about-text {
-    font-size: 18px;  
+    font-size: 18px;
 }
 
 .mfl-paragraph {
     font-size: 16px;
-    line-height: 10px; 
+    line-height: 10px;
 }
 
 .partner-logos {
     margin-left: 16%;
 }
-.mfl-banner{
+.mfl-banner {
     background: #666;
 }
 
-.mfl-about-container{
+.mfl-about-container {
     background: #fff;
 }
 
@@ -465,13 +465,14 @@ select.mfl-select {
     position: absolute;
 }
 
-.mfl-banner-img, .mfl-parallax {
+.mfl-banner-img,
+.mfl-parallax {
     width: 100%;
     height: 240px;
 }
 
 .mfl-parallax {
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     text-align: center;
     padding-top: 90px;
@@ -482,7 +483,7 @@ select.mfl-select {
 }
 
 .mfl-login-container {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
@@ -521,175 +522,24 @@ select.mfl-select {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
-/*
-.mfl-login-header{
+
+.mfl-logout {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    padding-top: 100px;
+}
+
+.mfl-nav-icon {
+    margin-top: -2px;
+}
+
+.mfl-nav-item {
+    font-size: 14px !important;
     text-align: center !important;
-    font-size: 20px;
-    text-transform: uppercase;
-    padding: 40px 0px;
-    color: #0d47a1;
-    font-weight: bold;
-    
-}
-.mfl-login-form{
-
-    align-content: center !important;
-    margin-left: -300px !important;
-    margin-top: 0px !important;
-    margin-right: 1% !important;
-    padding:-5px;
-    border:1px solid black !important;
-    height: 50px;
-    background: #a6a6a6;
-
-
-}
-.mfl-login-body{
-   background: #000; 
-
 }
 
-.mfl-login{
-
-    align-content: center !important;
-    padding:5px;
-    background: #a6a6a6;
-
-
+mfl-add-facility {
+    position: relative !important;
+    margin-top: 20px;
 }
-
-.mfl-login-icon{
-align-content: center !important;
-margin-left: 30% !important;
-margin-bottom: -10px !important;
-margin-top: -6px !important;
-color: #0d47a1;
-padding: -6px;
-
-}
- 
-
-.wrapper-container-Login {
-display: flex;
-justify-content: center;
-align-items: center;
-max-height: 900px;
-width: 100%; 
-flex-direction: column;
-font-family: 'lato', sans-serif;
-color: #fff;
-background: #222222;
-background: #16222A; 
-background: -webkit-linear-gradient(to top, #16222A , #3A6073);
-background: linear-gradient(to top, #16222A , #3A6073);
-}
-
-.containerLogin {
-  background:rgba(58,63,68,0.5);
-  border-radius: 5px;
-  box-shadow: 0 1.5px 0 0 rgba(0,0,0,0.1);
-  width:650px;
-  height: 800px;
-  display: flex;  
-  flex-direction: column;
-}
-
-.logo{
-  font-family: "museo-slab";  
-  font-size:24px;
-  text-align: center;
-  padding: 20px 20px 0;
-  margin:0;
-}
-
-.login-item {
-	color: #ffff;
-	padding:25px 25px 0;
-	margin: 20px 20px 0;	
-	border-radius: 3px;
-}
-
-input {
-  border: 0;
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  outline: 0;
-  padding: 0;
-  -webkit-transition: background-color .3s;
-  transition: background-color .3s;
-}
-
-.user:before {
-  content: '\f007';
-  font: 16px fontawesome;
-	color: #5b5b5b;
-}
-
-.lock:before {
-  content: '\f023';
-  font: 14px fontawesome;
-	color: #5b5b5b;
-}
-
-.form input[type="password"], .form input[type="text"], .form input[type="submit"] {
-  width: 100%;
-}
-
-.form-login label,
-.form-login input[type="text"],
-.form-login input[type="password"],
-.form-login input[type="submit"] {
-  border-radius: 0.25rem;
-  padding: 1rem;
-  color: #3A3F44;  
-}
-
-.form-login label {
-  background-color: #222222;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-}
-
-.form-login input[type="text"], .form-login input[type="password"] {
-  background-color: #ffffff;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-}
-.form-login input[type="text"]:focus, .form-login input[type="text"]:hover, .form-login input[type="password"]:focus, .form-login input[type="password"]:hover {
-  background-color: #eeeeee;
-}
-.form-login input[type="submit"] {
-  background-color: #00B9BC;
-  color: #eee;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.form-login input[type="submit"]:focus, .form-login input[type="submit"]:hover {
-  background-color: #197071;
-}
-.form-field {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 2rem;
-}
-
-
-.hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-.text--center {
-  text-align: center;
-} */

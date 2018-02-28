@@ -57,12 +57,25 @@ export default class FacilityList extends React.Component<Props> {
                     action={this.props.downloadAction}
                     fileName="facilities"
                 />
-                <a
-                    class="btn-flat mfl-advanced-search left"
-                    onClick={e => this.props.toggleAdvancedSearch(e)}
-                >
-                    Advanced Search
-                </a>
+                <div className="row">
+                    <div className="col s4 m4 l4">
+                        <a
+                            class="btn-flat mfl-advanced-search left"
+                            onClick={e => this.props.toggleAdvancedSearch(e)}
+                        >
+                            Advanced Search
+                        </a>
+                    </div>
+                    <div className="col s4 m4 l4">
+                        <a
+                            class="btn-flat mfl-add-facility "
+                            // onClick={e => this.props.toggleAdvancedSearch(e)}
+                        >
+                            Add New Facility
+                        </a>
+                    </div>
+                </div>
+
                 {/* <Table
                     data={{
                         headers: tableHeaders,

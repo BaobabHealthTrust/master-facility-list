@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { Dropdown, NavItem, Button } from "react-materialize";
 
 class Menu extends Component {
     constructor() {
@@ -8,11 +10,6 @@ class Menu extends Component {
             activePage: "home"
         };
     }
-    // componentDidMount() {
-    //     document.getElementById(
-    //         "dropdown-btn"
-    //     ).className = "dropdown-button".dropdown("open");
-    // }
 
     render() {
         return (
@@ -82,31 +79,48 @@ class Menu extends Component {
                     </li>
 
                     {sessionStorage.getItem("token") ? (
-                        <li>
-                            <a
-                                id="dropdown-btn"
-                                className="dropdown-button "
-                                href="#"
-                                data-activates="dropdown1"
-                            >
-                                <i className="material-icons">person</i>
-                            </a>
-                            <ul id="dropdown1" className="dropdown-content">
-                                <li>
-                                    <a href="#!">
-                                        <i className="material-icons">edit</i>Edit
-                                        profile
-                                    </a>
+                        <Dropdown
+                            trigger={
+                                <li className="mfl-nav-icon">
+                                    <i className="material-icons">person</i>
                                 </li>
-                                <li className="divider" />
-                                <li>
-                                    <a href="#!">
-                                        <i className="material-icons">lock</i>Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            }
+                        >
+                            <NavItem className="mfl-nav-item">
+                                <i className="material-icons mfl-nav-item">
+                                    people
+                                </i>Edit Profile
+                            </NavItem>
+                            <NavItem divider />
+                            <NavItem>
+                                <i className="material-icons">lock</i>Logout
+                            </NavItem>
+                        </Dropdown>
                     ) : (
+                        // <li>
+                        //     <a
+                        //         id="dropdown-btn"
+                        //         className="dropdown-button "
+                        //         href="#"
+                        //         data-activates="dropdown1"
+                        //     >
+                        //         <i className="material-icons">person</i>
+                        //     </a>
+                        //     <ul id="dropdown1" className="dropdown-content">
+                        //         <li>
+                        //             <a href="#!">
+                        //                 <i className="material-icons">edit</i>Edit
+                        //                 profile
+                        //             </a>
+                        //         </li>
+                        //         <li className="divider" />
+                        //         <li>
+                        //             <a href="#!">
+                        //                 <i className="material-icons">lock</i>Logout
+                        //             </a>
+                        //         </li>
+                        // </ul>
+                        // </li>
                         <li
                             className={
                                 this.state.activePage === "login"
@@ -227,4 +241,10 @@ class Menu extends Component {
     }
 }
 
-export default Menu;
+const mapStateToProps = state => {
+    return {
+        userDetails: state.authReducer
+    };
+};
+
+export default connect(mapStateToProps, {})(Menu);

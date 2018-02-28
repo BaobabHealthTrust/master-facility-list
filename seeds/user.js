@@ -10,6 +10,8 @@ const user = User.create(
     {
         username: "dho",
         password: "dho123",
+        firstname: "John",
+        lastname: "Chiwaya",
         email: "dho@mw.com"
     },
     (err, user) => {
@@ -29,6 +31,7 @@ const user = User.create(
                     console.log(
                         "User, Role and RoleMapping successfully created"
                     );
+                    dataSource.disconnect();
                 }
             );
         });
