@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import logo from './logo.png';
-import Menu from './Header/Menu';
-import { connect } from 'react-redux';
-import Table from './common/Table';
+import React, { Component } from "react";
+import logo from "./logo.png";
+import Menu from "./Header/Menu";
+import { connect } from "react-redux";
+import Table from "./common/Table";
 import { debounce } from "lodash";
-import { hideSearchContainer, quickSearch } from './actions';
+import { hideSearchContainer, quickSearch } from "./actions";
 
 class Navbar extends Component {
     constructor() {
@@ -16,8 +16,8 @@ class Navbar extends Component {
     }
 
     maximizeSearch(e) {
-        document.getElementById('searchbar').className =
-            'mfl-full-screen-search';
+        document.getElementById("searchbar").className =
+            "mfl-full-screen-search";
     }
 
     restoreSearch(e) {
@@ -25,8 +25,8 @@ class Navbar extends Component {
             if (!this.state.isContainerClicked) {
                 this.props.hideSearchContainer(true);
 
-                document.getElementById('searchbar').className =
-                    'left mfl-normal-search hide-on-small-only';
+                document.getElementById("searchbar").className =
+                    "left mfl-normal-search hide-on-small-only";
             }
         }, 100);
     }
@@ -34,7 +34,7 @@ class Navbar extends Component {
     handleQuickSearch = () => {
         this.props.quickSearch(this.refs.searchInput.value);
         this.props.hideSearchContainer(false);
-    }
+    };
 
     render() {
         return (
@@ -71,10 +71,12 @@ class Navbar extends Component {
                                     type="search"
                                     required
                                     onClick={e => this.maximizeSearch(e)}
-
                                     onBlur={e => this.restoreSearch(e)}
                                     ref="searchInput"
-                                    onKeyUp={debounce(this.handleQuickSearch, 1000)}
+                                    onKeyUp={debounce(
+                                        this.handleQuickSearch,
+                                        1000
+                                    )}
                                 />
                                 <label className="label-icon" for="search">
                                     <i className="material-icons">search</i>
@@ -95,7 +97,9 @@ class Navbar extends Component {
                         <div className="container">
                             <h5>Search Results</h5>
                             <Table
-                                onClick={(e) => this.setState({ isContainerClicked: true })}
+                                onClick={e =>
+                                    this.setState({ isContainerClicked: true })
+                                }
                                 data={{
                                     headers: [],
                                     records: this.props.searchResults.map(
@@ -112,8 +116,8 @@ class Navbar extends Component {
                         </div>
                     </div>
                 ) : (
-                        <div />
-                    )}
+                    <div />
+                )}
             </div>
         );
     }
@@ -125,4 +129,6 @@ const mapStateToProps = state => {
         isSearchContainerHidden: state.globalContainers.isSearchContainerHidden
     };
 };
-export default connect(mapStateToProps, { quickSearch, hideSearchContainer })(Navbar);
+export default connect(mapStateToProps, { quickSearch, hideSearchContainer })(
+    Navbar
+);

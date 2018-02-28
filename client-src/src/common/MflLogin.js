@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Card from "../common/MflCard";
 import footerResizer from "../helpers/footerResize";
 import { Redirect } from "react-router-dom";
-import { checkCredentials } from "../actions";
+import { checkCredentials, getUserDetails } from "../actions";
 import { connect } from "react-redux";
 
 type State = {
@@ -11,7 +11,8 @@ type State = {
     password: string
 };
 type Props = {
-    checkCredentials: Function
+    checkCredentials: Function,
+    getUserDetails: Function
 };
 class MflLogin extends Component<State, Props> {
     state = {
@@ -24,9 +25,14 @@ class MflLogin extends Component<State, Props> {
             this.state.username,
             this.state.password
         );
+        console.log(this.props.loginResponse);
         if (!this.props.loginResponse.isLoginFailed) {
             await sessionStorage.setItem(
                 "token",
+                this.props.loginResponse.loginResponse.id
+            );
+            await this.props.getUserDetails(
+                this.props.loginResponse.loginResponse.userId,
                 this.props.loginResponse.loginResponse.id
             );
         }
@@ -94,4 +100,6 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { checkCredentials })(MflLogin);
+export default connect(mapStateToProps, { checkCredentials, getUserDetails })(
+    MflLogin
+);

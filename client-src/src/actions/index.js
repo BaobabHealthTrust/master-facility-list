@@ -52,3 +52,4 @@ export {
     default as fetchDashboardFacilityServices
 } from "./fetch-dashboard-statistics";
 export { default as checkCredentials } from "./check-credentials";
+export { default as getUserDetails } from "./get-user-details";
