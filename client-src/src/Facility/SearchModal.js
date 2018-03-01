@@ -3,9 +3,18 @@ import { Tabs, Tab } from "react-materialize";
 import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
 import { connect } from "react-redux";
 import {
-    addSearchValues, fetchAdvancedSearchResults, fetchBasicDetailsResults, fetchBasicResourceDetailsResults,
-    fetchBasicUtilityDetailsResults, fetchBasicServiceDetailsResults, fetchCurrentDetails,
-    fetchResourceTypeInstances, fetchUtilityTypeInstances, fetchServiceTypeInstances, removeResultsValues, removeSearchValues
+    addSearchValues,
+    fetchAdvancedSearchResults,
+    fetchBasicDetailsResults,
+    fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults,
+    fetchBasicServiceDetailsResults,
+    fetchCurrentDetails,
+    fetchResourceTypeInstances,
+    fetchUtilityTypeInstances,
+    fetchServiceTypeInstances,
+    removeResultsValues,
+    removeSearchValues
 } from "../actions";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
@@ -72,7 +81,11 @@ class SearchModal extends Component {
 
     render() {
         return (
-            <div id="advanced-search" ref="advancedSearch" className="modal-lg mfl-modal-container">
+            <div
+                id="advanced-search"
+                ref="advancedSearch"
+                className="modal-lg mfl-modal-container"
+            >
                 <div class="modal-content">
                     <div className="mfl-bm-2">
                         <span className="mfl-modal-header">
@@ -103,8 +116,8 @@ class SearchModal extends Component {
                                 </a>
                             </span>
                         ) : (
-                                ""
-                            )}
+                            ""
+                        )}
                     </div>
 
                     <Tabs
@@ -126,8 +139,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Ownership and Regulation"
@@ -135,23 +148,23 @@ class SearchModal extends Component {
                             active
                         >
                             {this.state.activeTab ===
-                                "Ownership and Regulation" ? (
-                                    <AdvancedOwnershipRegulation
-                                        operationalStatuses={
-                                            this.props.operationalStatuses
-                                        }
-                                        facilityTypes={this.props.facilityTypes}
-                                        facilityOwners={this.props.facilityOwners}
-                                        regulatoryStatuses={
-                                            this.props.regulatoryStatuses
-                                        }
-                                        handleChange={(e, type) =>
-                                            this.handleAddSearchValue(e, type)
-                                        }
-                                    />
-                                ) : (
-                                    ""
-                                )}
+                            "Ownership and Regulation" ? (
+                                <AdvancedOwnershipRegulation
+                                    operationalStatuses={
+                                        this.props.operationalStatuses
+                                    }
+                                    facilityTypes={this.props.facilityTypes}
+                                    facilityOwners={this.props.facilityOwners}
+                                    regulatoryStatuses={
+                                        this.props.regulatoryStatuses
+                                    }
+                                    handleChange={(e, type) =>
+                                        this.handleAddSearchValue(e, type)
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Tab>
 
                         <Tab
@@ -167,8 +180,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
 
                         <Tab
@@ -189,8 +202,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Utilities"
@@ -208,8 +221,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Services"
@@ -227,8 +240,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                    ""
-                                )}
+                                ""
+                            )}
                         </Tab>
                     </Tabs>
                 </div>
@@ -314,14 +327,14 @@ const mapStateToProps = state => {
                 return filteredArray.length > 0;
             })
             .reduce(
-            (resultsArray, currentArray) => {
-                return intersection(resultsArray, currentArray);
-            },
-            map(state.searchResults.advancedSearchFacilities).filter(
-                filteredArray => {
-                    return filteredArray.length > 0;
-                }
-            )[0]
+                (resultsArray, currentArray) => {
+                    return intersection(resultsArray, currentArray);
+                },
+                map(state.searchResults.advancedSearchFacilities).filter(
+                    filteredArray => {
+                        return filteredArray.length > 0;
+                    }
+                )[0]
             )
     };
 };
