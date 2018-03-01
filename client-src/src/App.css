@@ -535,11 +535,59 @@ select.mfl-select {
 }
 
 .mfl-nav-item {
-    font-size: 14px !important;
-    text-align: center !important;
+    font-size: 12px !important;
+    text-align: right;
 }
 
-mfl-add-facility {
-    position: relative !important;
-    margin-top: 20px;
+.mfl-add-facility {
+    margin-right: -140px !important;
+}
+
+.mfl-facility-name {
+    margin-right: -30px !important;
+}
+
+.mfl-vertical-ruler {
+    float: left;
+    height: 40px;
+    width: 1px;
+    background-color: #0f1316;
+}
+.mfl-add-tab1 {
+    line-height: 43px;
+    text-align: center;
+    height: 60px;
+    background-color: blue !important;
+    width: 210px;
+    -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+}
+.mfl-add-tabs {
+    line-height: 43px;
+    text-align: center;
+    margin-left: -30px !important;
+    height: 60px;
+    width: 210px;
+    background-color: #aabbcc !important;
+
+    -webkit-clip-path: polygon(
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        0% 100%,
+        25% 50%,
+        0% 0%
+    );
+    clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);
+}
+
+.mfl-add-facility-nav {
+    padding-left: -300px;
+}
+.mfl-tabs-text {
+    text-align: center;
+    color: white;
+}
+.indicator {
+    background-color: #fff !important;
 }

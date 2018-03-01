@@ -13,16 +13,14 @@ import footerResizer from "../helpers/footerResize";
 type Props = {
     match: any,
     current: any
-}
+};
 
-class FacilityDetails extends React.Component<Props>{
-
+class FacilityDetails extends React.Component<Props> {
     componentWillReceiveProps() {
         footerResizer();
     }
 
     render() {
-
         const id = this.props.match.params.id;
         const summaryLink = `/facilities/${id}`;
         const locationsLink = `/facilities/${id}/locations`;
@@ -61,8 +59,7 @@ class FacilityDetails extends React.Component<Props>{
                 redirect: servicesLink,
                 clickHandler: null
             }
-        ]
-
+        ];
 
         let badgeClass = "new badge";
 
@@ -105,8 +102,8 @@ class FacilityDetails extends React.Component<Props>{
                                 }
                             />
                         ) : (
-                                ""
-                            )}
+                            ""
+                        )}
                     </h5>
                     <h6>
                         {this.props.current.facility_code},&nbsp;
@@ -123,35 +120,35 @@ class FacilityDetails extends React.Component<Props>{
                         </h4>
                     </blockquote>
                 ) : (
-                        <Switch>
-                            <Route
-                                exact
-                                path="/facilities/:id"
-                                component={Summary}
-                            />
+                    <Switch>
+                        <Route
+                            exact
+                            path="/facilities/:id"
+                            component={Summary}
+                        />
 
-                            <Route
-                                exact
-                                path="/facilities/:id/locations"
-                                component={Location}
-                            />
-                            <Route
-                                exact
-                                path="/facilities/:id/resources"
-                                component={Resources}
-                            />
-                            <Route
-                                exact
-                                path="/facilities/:id/utilities"
-                                component={Utilities}
-                            />
-                            <Route
-                                exact
-                                path="/facilities/:id/services"
-                                component={Services}
-                            />
-                        </Switch>
-                    )}
+                        <Route
+                            exact
+                            path="/facilities/:id/locations"
+                            component={Location}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/resources"
+                            component={Resources}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/utilities"
+                            component={Utilities}
+                        />
+                        <Route
+                            exact
+                            path="/facilities/:id/services"
+                            component={Services}
+                        />
+                    </Switch>
+                )}
             </div>
         );
     }

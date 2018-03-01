@@ -66,13 +66,16 @@ export default class FacilityList extends React.Component<Props> {
                             Advanced Search
                         </a>
                     </div>
-                    <div className="col s4 m4 l4">
-                        <a
-                            class="btn-flat mfl-add-facility "
-                            // onClick={e => this.props.toggleAdvancedSearch(e)}
-                        >
-                            Add New Facility
-                        </a>
+                    <div className="col s4 m4 l4 mfl-tm-2">
+                        {sessionStorage.getItem("token") && (
+                            <a
+                                class="waves-effect waves-light btn"
+                                onClick={e => this.props.toggleAddFacility(e)}
+                            >
+                                <i class="material-icons left">add</i>Add New
+                                Facility
+                            </a>
+                        )}
                     </div>
                 </div>
 

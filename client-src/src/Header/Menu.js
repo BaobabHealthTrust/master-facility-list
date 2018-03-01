@@ -10,6 +10,12 @@ class Menu extends Component {
             activePage: "home"
         };
     }
+    componentDidMount() {
+        sessionStorage.setItem(
+            "firstname",
+            this.props.userDetails.userDetails.firstname
+        );
+    }
 
     render() {
         return (
@@ -81,15 +87,17 @@ class Menu extends Component {
                     {sessionStorage.getItem("token") ? (
                         <Dropdown
                             trigger={
-                                <li className="mfl-nav-icon">
+                                <li className="mfl-nav-item">
                                     <i className="material-icons">person</i>
+                                    {sessionStorage
+                                        .getItem("firstname")
+                                        .toUpperCase()}
                                 </li>
                             }
                         >
                             <NavItem className="mfl-nav-item">
-                                <i className="material-icons mfl-nav-item">
-                                    people
-                                </i>Edit Profile
+                                <i className="material-icons">people</i>Edit
+                                Profile
                             </NavItem>
                             <NavItem divider />
                             <NavItem>
@@ -97,30 +105,6 @@ class Menu extends Component {
                             </NavItem>
                         </Dropdown>
                     ) : (
-                        // <li>
-                        //     <a
-                        //         id="dropdown-btn"
-                        //         className="dropdown-button "
-                        //         href="#"
-                        //         data-activates="dropdown1"
-                        //     >
-                        //         <i className="material-icons">person</i>
-                        //     </a>
-                        //     <ul id="dropdown1" className="dropdown-content">
-                        //         <li>
-                        //             <a href="#!">
-                        //                 <i className="material-icons">edit</i>Edit
-                        //                 profile
-                        //             </a>
-                        //         </li>
-                        //         <li className="divider" />
-                        //         <li>
-                        //             <a href="#!">
-                        //                 <i className="material-icons">lock</i>Logout
-                        //             </a>
-                        //         </li>
-                        // </ul>
-                        // </li>
                         <li
                             className={
                                 this.state.activePage === "login"
