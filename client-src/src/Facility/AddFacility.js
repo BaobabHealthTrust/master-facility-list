@@ -2,6 +2,7 @@
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import FacilityBasicDetails from "./FacilityBasicDetails";
+import FacilityContacts from "./FacilityContacts";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
@@ -47,7 +48,9 @@ class AddFacility extends React.Component<Props> {
                         </h5>
                     </div>
                 </div>
-                <FacilityTabs links={links} defaultActivePage={"basic"} />
+
+                <FacilityTabs />
+
                 {this.props.isError ? (
                     <blockquote>
                         <h4>
@@ -65,8 +68,8 @@ class AddFacility extends React.Component<Props> {
 
                         <Route
                             exact
-                            path="/facilities/:id/locations"
-                            component={Location}
+                            path="/facilitycontacts"
+                            component={FacilityContacts}
                         />
                         <Route
                             exact
@@ -85,18 +88,6 @@ class AddFacility extends React.Component<Props> {
                         />
                     </Switch>
                 )}
-
-                <div className="row">
-                    <div>
-                        <a
-                            class="waves-effect waves-light blue btn"
-                            //  onClick={e => this.props.toggleAddFacility(e)}
-                        >
-                            Next
-                        </a>
-                    </div>
-                    <div>Or</div>
-                </div>
             </div>
         );
     }
