@@ -3,28 +3,18 @@ import * as React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { Tabs, Tab } from "react-materialize";
 import FacilityBasicDetails from "./FacilityBasicDetails";
-
-type Props = {
-    links: Array<SecondaryLink>,
-    defaultActivePage: string
-};
+import FacilityContacts from "./FacilityContacts";
+import FacilityAddResources from "./FacilityAddResources";
+import FacilityAddUtilities from "./FacilityAddUtilities";
 
 type State = {
-    activePage: string
+    activeTab: string
 };
 
-export default class SecondaryMenu extends React.Component<Props, State> {
+export default class SecondaryMenu extends React.Component<State> {
     state = {
-        activePage: this.props.defaultActivePage
+        activeTab: "Basic"
     };
-
-    handleClick(page: string, handler: ?Function): void {
-        this.setState({
-            activePage: page
-        });
-
-        handler && handler();
-    }
 
     render() {
         return (
@@ -38,38 +28,78 @@ export default class SecondaryMenu extends React.Component<Props, State> {
                     >
                         <Tab
                             title="Basic"
-                            className="advanced-search-container mfl-add-tab1"
+                            tabWidth="2"
+                            className={
+                                this.state.activeTab === "Basic"
+                                    ? `${"advanced-search-container mfl-add-tab1 mfl-active-tab"}`
+                                    : `${"advanced-search-container mfl-add-tab1 mfl-inactive-tabs"}`
+                            }
                             active
                         >
-                            {
-                                //this.state.activeTab === "Location" ? (
+                            {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails />
-                                // ) : (
-                                //     ""
-                                // )
-                            }
+                            ) : (
+                                ""
+                            )}
                         </Tab>
                         <Tab
                             title="Contacts and Locations"
                             tabWidth="4"
-                            className="advanced-search-container mfl-add-tabs"
+                            className={
+                                this.state.activeTab ===
+                                "Contacts and Locations"
+                                    ? `${"advanced-search-container mfl-add-tabcontacts mfl-active-tab"}`
+                                    : `${"advanced-search-container mfl-add-tabcontacts mfl-inactive-tabs"}`
+                            }
                             active
-                        />
+                        >
+                            {this.state.activeTab ===
+                            "Contacts and Locations" ? (
+                                <FacilityContacts />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
 
                         <Tab
                             title="Resources"
-                            className="advanced-search-container mfl-add-tabs"
+                            className={
+                                this.state.activeTab === "Resources"
+                                    ? `${"advanced-search-container mfl-add-tabresources mfl-active-tab"}`
+                                    : `${"advanced-search-container mfl-add-tabresources mfl-inactive-tabs"}`
+                            }
                             active
-                        />
+                        >
+                            {this.state.activeTab === "Resources" ? (
+                                <FacilityAddResources />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
 
                         <Tab
                             title="Utilities"
-                            className="advanced-search-container mfl-add-tabs"
+                            className={
+                                this.state.activeTab === "Utilities"
+                                    ? `${"advanced-search-container mfl-add-tabs mfl-active-tab"}`
+                                    : `${"advanced-search-container mfl-add-tabs mfl-inactive-tabs"}`
+                            }
                             active
-                        />
+                        >
+                            {this.state.activeTab === "Utilities" ? (
+                                <FacilityAddUtilities />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
+
                         <Tab
                             title="Services"
-                            className="advanced-search-container mfl-add-tabs"
+                            className={
+                                this.state.activeTab === "Services"
+                                    ? `${"advanced-search-container mfl-add-tabs mfl-active-tab"}`
+                                    : `${"advanced-search-container mfl-add-tabs mfl-inactive-tabs"}`
+                            }
                             active
                         />
                     </Tabs>

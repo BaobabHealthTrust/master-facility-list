@@ -553,19 +553,27 @@ select.mfl-select {
     width: 1px;
     background-color: #0f1316;
 }
-.mfl-add-tab1 {
+.mfl-add-taboriginal {
     line-height: 43px;
     text-align: center;
     height: 60px;
-    background-color: blue !important;
     width: 210px;
     -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
     clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
 }
+.mfl-add-tab1 {
+    line-height: 43px;
+    text-align: center;
+    height: 60px;
+    width: 210px;
+    background-color: #aabbcc !important;
+    -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 80% 0%, 100% 50%, 80% 100%, 0% 100%);
+}
 .mfl-add-tabs {
     line-height: 43px;
     text-align: center;
-    margin-left: -30px !important;
+    margin-left: -60px !important;
     height: 60px;
     width: 210px;
     background-color: #aabbcc !important;
@@ -578,7 +586,45 @@ select.mfl-select {
         25% 50%,
         0% 0%
     );
-    clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);
+    clip-path: polygon(75% 0%, 90% 50%, 75% 100%, 10% 100%, 25% 50%, 10% 0%);
+}
+
+.mfl-add-tabresources {
+    line-height: 43px;
+    text-align: center;
+    margin-left: -88px !important;
+    height: 60px;
+    width: 210px;
+    background-color: #aabbcc !important;
+
+    -webkit-clip-path: polygon(
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        0% 100%,
+        25% 50%,
+        0% 0%
+    );
+    clip-path: polygon(75% 0%, 90% 50%, 75% 100%, 10% 100%, 25% 50%, 10% 0%);
+}
+
+.mfl-add-tabcontacts {
+    line-height: 43px;
+    text-align: center;
+    margin-left: -70px !important;
+    height: 60px;
+    width: 210px;
+    background-color: #aabbcc !important;
+
+    -webkit-clip-path: polygon(
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        0% 100%,
+        25% 50%,
+        0% 0%
+    );
+    clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 15% 100%, 25% 50%, 15% 0%);
 }
 
 .mfl-add-facility-nav {
@@ -590,4 +636,35 @@ select.mfl-select {
 }
 .indicator {
     background-color: #fff !important;
+}
+.mfl-select-tab {
+    margin-top: 0.8px;
+}
+
+.mfl-active-tab {
+    background-color: #77a5e2 !important;
+}
+
+.mfl-inactive-tabs {
+    background-color: #a5aab1 !important;
+}
+
+.mfl-add-footer {
+    height: 60px;
+    align-items: center;
+    padding: 6px;
+}
+
+.mfl-tab-btn-space {
+    margin-left: 860px !important;
+    margin-top: 5px !important;
+}
+
+.mfl-tab-btn-space-previous {
+    margin-left: 700px !important;
+    margin-top: -58px !important;
+}
+
+.mfl-add-cancel-btn {
+    margin-top: 10px !important;
 }
