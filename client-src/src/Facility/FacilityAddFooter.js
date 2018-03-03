@@ -3,23 +3,21 @@ import React, { Component } from "react";
 import { Navbar } from "react-materialize";
 
 type Props = {
-    tabName: string
+    tabName: string,
+    handleNextForTabs: Function
 };
 
 class FacilityAddFooter extends Component<Props> {
-    componentDidMount() {
-        console.log(this.props.tabName);
-    }
     render() {
         return (
-            <div className="row grey lighten-3 mfl-add-footer">
+            <div className="row grey lighten-2 mfl-add-footer">
                 <a className=" waves-effect waves-light black-text right">
                     Or Cancel
                 </a>
 
                 <a
                     class="waves-effect waves-light blue btn mfl-tab-btn-space"
-                    //  onClick={e => this.props.toggleAddFacility(e)}
+                    onClick={() => this.props.handleNextForTabs()}
                 >
                     Next
                 </a>
