@@ -6,14 +6,21 @@ import FacilityBasicDetails from "./FacilityBasicDetails";
 import FacilityContacts from "./FacilityContacts";
 import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
+import FacilityAddServices from "./FacilityAddServices";
 
 type State = {
-    activeTab: string
+    activeTab: string,
+    tabNumber: number
 };
 
 export default class SecondaryMenu extends React.Component<State> {
     state = {
-        activeTab: "Basic"
+        activeTab: "Basic",
+        tabNumber: 1
+    };
+
+    handleNextForTabs = () => {
+        this.setState({ tabNumber: this.state.tabNumber + 1 });
     };
 
     render() {
@@ -37,7 +44,9 @@ export default class SecondaryMenu extends React.Component<State> {
                             active
                         >
                             {this.state.activeTab === "Basic" ? (
-                                <FacilityBasicDetails />
+                                <FacilityBasicDetails
+                                    handleNextForTabs={this.handleNextForTabs}
+                                />
                             ) : (
                                 ""
                             )}
@@ -55,7 +64,9 @@ export default class SecondaryMenu extends React.Component<State> {
                         >
                             {this.state.activeTab ===
                             "Contacts and Locations" ? (
-                                <FacilityContacts />
+                                <FacilityContacts
+                                    handleNextForTabs={this.handleNextForTabs}
+                                />
                             ) : (
                                 ""
                             )}
@@ -71,7 +82,9 @@ export default class SecondaryMenu extends React.Component<State> {
                             active
                         >
                             {this.state.activeTab === "Resources" ? (
-                                <FacilityAddResources />
+                                <FacilityAddResources
+                                    handleNextForTabs={this.handleNextForTabs}
+                                />
                             ) : (
                                 ""
                             )}
@@ -87,7 +100,9 @@ export default class SecondaryMenu extends React.Component<State> {
                             active
                         >
                             {this.state.activeTab === "Utilities" ? (
-                                <FacilityAddUtilities />
+                                <FacilityAddUtilities
+                                    handleNextForTabs={this.handleNextForTabs}
+                                />
                             ) : (
                                 ""
                             )}
@@ -101,7 +116,15 @@ export default class SecondaryMenu extends React.Component<State> {
                                     : `${"advanced-search-container mfl-add-tabs mfl-inactive-tabs"}`
                             }
                             active
-                        />
+                        >
+                            {this.state.activeTab === "Services" ? (
+                                <FacilityAddServices
+                                    handleNextForTabs={this.handleNextForTabs}
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </Tab>
                     </Tabs>
                 </div>
             </div>

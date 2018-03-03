@@ -1,8 +1,13 @@
+//@flow
 import React, { Component } from "react";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
 
-class FacilityContacts extends Component {
+type Props = {
+    handleNextForTabs: Function
+};
+
+class FacilityContacts extends Component<Props> {
     render() {
         return (
             <div>
@@ -118,7 +123,9 @@ class FacilityContacts extends Component {
                                 </a>
                             </div>
                         </div>
-                        <FacilityAddFooter />
+                        <FacilityAddFooter
+                            handleNextForTabs={this.props.handleNextForTabs}
+                        />
                     </form>
                 </div>
             </div>

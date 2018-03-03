@@ -1,9 +1,14 @@
+//@flow
 import React, { Component } from "react";
 import footerResizer from "../helpers/footerResize";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
 
-class FacilityAddServices extends Component {
+type Props = {
+    handleNextForTabs: Function
+};
+
+class FacilityAddServices extends Component<Props> {
     componentDidMount() {
         footerResizer();
     }
@@ -94,7 +99,9 @@ class FacilityAddServices extends Component {
                                 </label>
                             </div>
                         </div>
-                        <FacilityAddFooter />
+                        <FacilityAddFooter
+                            handleNextForTabs={this.props.handleNextForTabs}
+                        />
                     </form>
                 </div>
             </div>
