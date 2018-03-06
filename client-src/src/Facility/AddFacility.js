@@ -7,8 +7,6 @@ import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
-import { connect } from "react-redux";
-import SecondaryMenu from "../common/SecondaryMenu";
 import footerResizer from "../helpers/footerResize";
 import FacilityTabs from "./FacilityTabs";
 
@@ -93,10 +91,4 @@ class AddFacility extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        isError: state.facilities.isNetworkError
-    };
-};
-
-export default connect(mapStateToProps, null)(AddFacility);
+export default AddFacility;

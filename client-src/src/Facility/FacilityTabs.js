@@ -7,13 +7,14 @@ import FacilityContacts from "./FacilityContacts";
 import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
 import FacilityAddServices from "./FacilityAddServices";
+import { connect } from "react-redux";
 
 type State = {
     activeTab: string,
     tabNumber: number
 };
 
-export default class SecondaryMenu extends React.Component<State> {
+class FacilityTabs extends React.Component<State> {
     state = {
         activeTab: "Basic",
         tabNumber: 1
@@ -46,6 +47,14 @@ export default class SecondaryMenu extends React.Component<State> {
                             {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails
                                     handleNextForTabs={this.handleNextForTabs}
+                                    facilityOwners={this.props.facilityOwners}
+                                    facilityTypes={this.props.facilityTypes}
+                                    regulatoryStatuses={
+                                        this.props.regulatoryStatuses
+                                    }
+                                    operationalStatuses={
+                                        this.props.operationalStatuses
+                                    }
                                 />
                             ) : (
                                 ""
@@ -131,3 +140,15 @@ export default class SecondaryMenu extends React.Component<State> {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        isError: state.facilities.isNetworkError,
+        operationalStatuses: state.dependancies.operationalStatuses,
+        regulatoryStatuses: state.dependancies.regulatoryStatuses,
+        facilityOwners: state.dependancies.facilityOwners,
+        facilityTypes: state.dependancies.facilityTypes
+    };
+};
+
+export default connect(mapStateToProps, {})(FacilityTabs);
