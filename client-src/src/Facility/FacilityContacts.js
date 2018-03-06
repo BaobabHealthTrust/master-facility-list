@@ -2,13 +2,22 @@
 import React, { Component } from "react";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
+import { District } from "../types/model-types";
 
 type Props = {
-    handleNextForTabs: Function
+    handleNextForTabs: Function,
+    districts: Array<District>
 };
 
 class FacilityContacts extends Component<Props> {
     render() {
+        let districtOptions;
+
+        if (this.props.districts.length > 0) {
+            districtOptions = this.props.districts.map(d => (
+                <option value={d.id}>{d.district_name}</option>
+            ));
+        }
         return (
             <div>
                 <div class="row">
@@ -39,9 +48,7 @@ class FacilityContacts extends Component<Props> {
                             <div className="input-field col s6 mfl-select-tab">
                                 <Input s={12} type="select" defaultValue="0">
                                     <option value="0">Select District</option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    {districtOptions}
                                 </Input>
                             </div>
                             <div class="input-field col s6">
