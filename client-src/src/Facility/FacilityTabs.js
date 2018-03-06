@@ -8,13 +8,28 @@ import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
 import FacilityAddServices from "./FacilityAddServices";
 import { connect } from "react-redux";
+import {
+    RegulatoryStatus,
+    OperationalStatus,
+    FacilityOwner,
+    FacilityType
+} from "../types/model-types";
 
 type State = {
     activeTab: string,
     tabNumber: number
 };
 
-class FacilityTabs extends React.Component<State> {
+type Props = {
+    changeFacilityName: Function,
+    handleNextForTabs: Function,
+    regulatoryStatuses: Array<RegulatoryStatus>,
+    operationalStatuses: Array<OperationalStatus>,
+    facilityOwners: Array<FacilityOwner>,
+    facilityTypes: Array<FacilityType>
+};
+
+class FacilityTabs extends React.Component<Props, State> {
     state = {
         activeTab: "Basic",
         tabNumber: 1
@@ -47,6 +62,9 @@ class FacilityTabs extends React.Component<State> {
                             {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails
                                     handleNextForTabs={this.handleNextForTabs}
+                                    changeFacilityName={e =>
+                                        this.props.changeFacilityName(e)
+                                    }
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
                                     regulatoryStatuses={
@@ -75,6 +93,7 @@ class FacilityTabs extends React.Component<State> {
                             "Contacts and Locations" ? (
                                 <FacilityContacts
                                     handleNextForTabs={this.handleNextForTabs}
+                                    districts={this.props.districts}
                                 />
                             ) : (
                                 ""
@@ -147,7 +166,8 @@ const mapStateToProps = state => {
         operationalStatuses: state.dependancies.operationalStatuses,
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         facilityOwners: state.dependancies.facilityOwners,
-        facilityTypes: state.dependancies.facilityTypes
+        facilityTypes: state.dependancies.facilityTypes,
+        districts: state.dependancies.districts
     };
 };
 

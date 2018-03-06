@@ -2,14 +2,37 @@
 import React, { Component } from "react";
 import { Input, Navbar, NavItem } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
+import { debounce } from "lodash";
+import {
+    RegulatoryStatus,
+    OperationalStatus,
+    FacilityOwner,
+    FacilityType
+} from "../types/model-types";
 
 type Props = {
     handleNextForTabs: Function,
+    changeFacilityName: Function,
     regulatoryStatuses: Array<RegulatoryStatus>,
-    operationalStatuses: Array<OperationalStatus>
+    operationalStatuses: Array<OperationalStatus>,
+    facilityOwners: Array<FacilityOwner>,
+    facilityTypes: Array<FacilityType>
 };
 
-class FacilityBasicDetails extends Component<Props> {
+type State = {
+    facilityNameValue: string,
+    commonNameValue: string
+};
+
+class FacilityBasicDetails extends Component<Props, State> {
+    state = {
+        facilityNameValue: "",
+        commonNameValue: ""
+    };
+    formSubmitted(e) {
+        alert(this.state.commonNameValue);
+        e.preventDefault();
+    }
     render() {
         let facilityOwnerOptions;
 
@@ -20,44 +43,72 @@ class FacilityBasicDetails extends Component<Props> {
         }
 
         let operationalStatusOptions;
-        
-                if (this.props.facilityOwners.length > 0) {
-                    facilityOwnerOptions = this.props.facilityOwners.map(fo => (
-                        <option value={fo.id}>{fo.facility_owner}</option>
-                    ));
-                }
-        
+
+        if (this.props.operationalStatuses.length > 0) {
+            operationalStatusOptions = this.props.operationalStatuses.map(o => (
+                <option value={o.id}>{o.facility_operational_status}</option>
+            ));
+        }
+
+        let regulatoryStatusOptions;
+
+        if (this.props.regulatoryStatuses.length > 0) {
+            regulatoryStatusOptions = this.props.regulatoryStatuses.map(reg => (
+                <option value={reg.id}>{reg.facility_regulatory_status}</option>
+            ));
+        }
+
+        let facilityTypeOptions;
+
+        if (this.props.facilityTypes.length > 0) {
+            facilityTypeOptions = this.props.facilityTypes.map(ft => (
+                <option value={ft.id}>{ft.facility_type}</option>
+            ));
+        }
 
         return (
             <div>
                 <div class="row">
-                    <form class="col s12">
+                    <form onSubmit={e => this.formSubmitted(e)} class="col s12">
                         <div class="row">
                             <div class="input-field col s6 ">
                                 <input
                                     id="facility_name"
                                     type="text"
                                     class="validate"
+                                    value={this.state.facilityNameValue}
+                                    onChange={e =>
+                                        this.setState({
+                                            facilityNameValue: e.target.value
+                                        })
+                                    }
+                                    // onChange={e =>
+                                    //     this.props.changeFacilityName(e)
+                                    // }
                                 />
                                 <label for="facility_name">Facility Name</label>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
                                 <Input s={12} type="select" defaultValue="0">
                                     <option value="0">
-                                        Select Regulatory Status
+                                        Select Operational Status
                                     </option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    {operationalStatusOptions}
                                 </Input>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input
-                                    id="facility_name"
+                                    id="common_name"
                                     type="text"
                                     class="validate"
+                                    value={this.state.commonNameValue}
+                                    onChange={e =>
+                                        this.setState({
+                                            commonNameValue: e.target.value
+                                        })
+                                    }
                                 />
                                 <label for="facility_name">Common Name</label>
                             </div>
@@ -66,9 +117,7 @@ class FacilityBasicDetails extends Component<Props> {
                                     <option value="0">
                                         Select Facility Type
                                     </option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    {facilityTypeOptions}
                                 </Input>
                             </div>
                         </div>
@@ -88,9 +137,7 @@ class FacilityBasicDetails extends Component<Props> {
                                     <option value="0">
                                         Select Regulatory Status
                                     </option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    {regulatoryStatusOptions}
                                 </Input>
                             </div>
                         </div>
