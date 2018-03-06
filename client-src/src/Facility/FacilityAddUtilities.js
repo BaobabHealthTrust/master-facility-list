@@ -19,86 +19,273 @@ class FacilityAddUtilities extends Component<Props> {
                     <form class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
+                                <h6>Transport Resources</h6>
+                                <hr />
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Ambulances</p>
+                                        </form>
+                                    </div>
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                    <div className="row" />
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div />
+                                <div className="row">
+                                    <h5>Generator Resources</h5>
+                                    <hr />
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field col s6">
-                                <Input
-                                    s={12}
-                                    type="select"
-                                    label="Materialize Select"
-                                    defaultValue="2"
-                                >
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
-                                </Input>
+                                <h6>Energy Resources</h6>
+                                <hr />
+                                <div className="row" />
+                                <div className="col s6 mfl-tm-resource">
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input
+                                                type="range"
+                                                id="test5"
+                                                min="0"
+                                                max="100"
+                                            />
+                                        </p>
+                                        <p>Vehicles</p>
+                                    </form>
+                                </div>
+                                <div className="col s6 mfl-tm-resource">
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input
+                                                type="range"
+                                                id="test5"
+                                                min="0"
+                                                max="100"
+                                            />
+                                        </p>
+                                        <p>Vehicles</p>
+                                    </form>
+                                </div>
+
+                                <div className="row" />
+                                <div className="col s6">
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input
+                                                type="range"
+                                                id="test5"
+                                                min="0"
+                                                max="100"
+                                            />
+                                        </p>
+                                        <p>Vehicles</p>
+                                    </form>
+                                </div>
+
+                                <div className="col s6">
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input
+                                                type="range"
+                                                id="test5"
+                                                min="0"
+                                                max="100"
+                                            />
+                                        </p>
+                                        <p>Vehicles</p>
+                                    </form>
+                                </div>
+                                <div className="row">
+                                    <h6 className="">hello</h6>
+                                    <hr />
+                                    <br />
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p class="range-field">
+                                                <input
+                                                    type="range"
+                                                    id="test5"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                            </p>
+                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s6" />
+                            <div class="input-field col s6" />
                         </div>
                         <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
-                            </div>
+                            <div class="input-field col s6" />
+                            <div class="input-field col s6" />
                         </div>
                         <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
+                            <div class="input-field col s6" />
+                            <div class="input-field col s6" />
+                            <div className="row" />
+
+                            <div className="col s6">
+                                <form action="#">
+                                    <p class="range-field">
+                                        <input
+                                            type="range"
+                                            id="test5"
+                                            min="0"
+                                            max="100"
+                                        />
+                                    </p>
+                                    <p>Vehicles</p>
+                                </form>
                             </div>
                         </div>
+
                         <FacilityAddFooter
                             handleNextForTabs={this.props.handleNextForTabs}
                         />

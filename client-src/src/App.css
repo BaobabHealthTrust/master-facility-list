@@ -671,3 +671,6 @@ select.mfl-select {
 .mfl-tm-1 {
     margin-top: 1%;
 }
+.mfl-tm-resource {
+    margin-top: -20px !important;
+}
