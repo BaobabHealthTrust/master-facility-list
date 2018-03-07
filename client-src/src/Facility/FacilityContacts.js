@@ -3,10 +3,15 @@ import React, { Component } from "react";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
 import { District } from "../types/model-types";
+import { addFormValues } from "../actions";
+import { connect } from "react-redux";
 
 type Props = {
     handleNextForTabs: Function,
-    districts: Array<District>
+    districts: Array<District>,
+    postalAddress: string,
+    contactName: string,
+    contactEmail: string
 };
 
 class FacilityContacts extends Component<Props> {
@@ -28,6 +33,13 @@ class FacilityContacts extends Component<Props> {
                                     id="postal_address"
                                     type="text"
                                     class="validate"
+                                    value={this.props.postalAddress}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e,
+                                            "POSTAL_ADDRESS"
+                                        )
+                                    }
                                 />
                                 <label for="postal_address">
                                     Enter Postal Address
@@ -38,6 +50,13 @@ class FacilityContacts extends Component<Props> {
                                     id="contact_name"
                                     type="text"
                                     class="validate"
+                                    value={this.props.contactName}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e,
+                                            "CONTACT_NAME"
+                                        )
+                                    }
                                 />
                                 <label for="contact_name">
                                     Enter contact Name
@@ -56,6 +75,13 @@ class FacilityContacts extends Component<Props> {
                                     id="contact_email"
                                     type="text"
                                     class="validate"
+                                    value={this.props.contactEmail}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e,
+                                            "CONTACT_EMAIL"
+                                        )
+                                    }
                                 />
                                 <label for="contact_email">
                                     Enter Contact Email
@@ -140,4 +166,12 @@ class FacilityContacts extends Component<Props> {
     }
 }
 
-export default FacilityContacts;
+const mapStateToProps = state => {
+    return {
+        postalAddress: state.formValues.postalAddress,
+        contactName: state.formValues.contactName,
+        contactEmail: state.formValues.contactEmail
+    };
+};
+
+export default connect(mapStateToProps, { addFormValues })(FacilityContacts);

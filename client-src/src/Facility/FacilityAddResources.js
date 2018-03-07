@@ -266,26 +266,6 @@ class FacilityAddResources extends Component<Props> {
                             <div class="input-field col s6" />
                             <div class="input-field col s6" />
                         </div>
-                        <div class="row">
-                            <div class="input-field col s6" />
-                            <div class="input-field col s6" />
-                            <div className="row" />
-
-                            <div className="col s6">
-                                <form action="#">
-                                    <p class="range-field">
-                                        <input
-                                            type="range"
-                                            id="test5"
-                                            min="0"
-                                            max="100"
-                                        />
-                                    </p>
-                                    <p>Vehicles</p>
-                                </form>
-                            </div>
-                        </div>
-
                         <FacilityAddFooter
                             handleNextForTabs={this.props.handleNextForTabs}
                         />

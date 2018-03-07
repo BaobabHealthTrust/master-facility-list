@@ -1,8 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import { Input, Navbar, NavItem } from "react-materialize";
+import { connect } from "react-redux";
 import FacilityAddFooter from "./FacilityAddFooter";
-import { debounce } from "lodash";
+import { addFormValues } from "../actions";
 import {
     RegulatoryStatus,
     OperationalStatus,
@@ -12,26 +13,34 @@ import {
 
 type Props = {
     handleNextForTabs: Function,
-    changeFacilityName: Function,
+    facilityName: string,
+    facilityNameError: string,
+    commonName: string,
+    OperationalStatus: string,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
     facilityOwners: Array<FacilityOwner>,
     facilityTypes: Array<FacilityType>
 };
 
-type State = {
-    facilityNameValue: string,
-    commonNameValue: string
-};
-
-class FacilityBasicDetails extends Component<Props, State> {
-    state = {
-        facilityNameValue: "",
-        commonNameValue: ""
-    };
-    formSubmitted(e) {
-        alert(this.state.commonNameValue);
+class FacilityBasicDetails extends Component<Props> {
+    componentWillReceiveProps(props) {
+        alert(props.facilityNameError);
+    }
+    async formSubmitted(e) {
+        await alert(this.props.commonName);
         e.preventDefault();
+    }
+
+    validation(e) {
+        if (e.target.value.split("").length <= 3) {
+            const error = "Name must be more than 3 characters";
+            console.log(e.target.value.split("").length);
+            this.props.addFormValues(error, "FACILITY_NAME_ERROR");
+        } else {
+            ("");
+        }
+        this.props.addFormValues(e.target.value, "FACILITY_NAME");
     }
     render() {
         let facilityOwnerOptions;
@@ -74,23 +83,37 @@ class FacilityBasicDetails extends Component<Props, State> {
                             <div class="input-field col s6 ">
                                 <input
                                     id="facility_name"
+                                    name="facility_name"
                                     type="text"
                                     class="validate"
-                                    value={this.state.facilityNameValue}
-                                    onChange={e =>
-                                        this.setState({
-                                            facilityNameValue: e.target.value
-                                        })
-                                    }
-                                    // onChange={e =>
-                                    //     this.props.changeFacilityName(e)
-                                    // }
+                                    value={this.props.facilityName}
+                                    onChange={e => this.validation(e)}
+                                    placeholder="Facility Name"
                                 />
-                                <label for="facility_name">Facility Name</label>
+
+                                <span className="red-text">
+                                    {this.props.facilityNameError}
+                                </span>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
-                                <Input s={12} type="select" defaultValue="0">
-                                    <option value="0">
+                                <Input
+                                    s={12}
+                                    type="select"
+                                    defaultValue={`"${
+                                        this.props.operationalStatus
+                                    }"`}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e,
+                                            "OPERATIONAL_STATUS"
+                                        )
+                                    }
+                                >
+                                    <option
+                                        value={`"${
+                                            this.props.operationalStatus
+                                        }"`}
+                                    >
                                         Select Operational Status
                                     </option>
                                     {operationalStatusOptions}
@@ -103,13 +126,17 @@ class FacilityBasicDetails extends Component<Props, State> {
                                     id="common_name"
                                     type="text"
                                     class="validate"
-                                    value={this.state.commonNameValue}
+                                    value={this.props.commonName}
                                     onChange={e =>
-                                        this.setState({
-                                            commonNameValue: e.target.value
-                                        })
+                                        this.props.addFormValues(
+                                            e,
+                                            "COMMON_NAME"
+                                        )
                                     }
                                 />
+                                <span className="red-text">
+                                    Name is too short
+                                </span>
                                 <label for="facility_name">Common Name</label>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
@@ -172,4 +199,15 @@ class FacilityBasicDetails extends Component<Props, State> {
     }
 }
 
-export default FacilityBasicDetails;
+const mapStateToProps = state => {
+    return {
+        facilityName: state.formValues.facilityName,
+        facilityNameError: state.formValues.facilityNameError,
+        commonName: state.formValues.commonName,
+        operationalStatus: state.formValues.operationalStatus
+    };
+};
+
+export default connect(mapStateToProps, { addFormValues })(
+    FacilityBasicDetails
+);
