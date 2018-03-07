@@ -65,6 +65,9 @@ class FacilityTabs extends React.Component<Props, State> {
                                     changeFacilityName={e =>
                                         this.props.changeFacilityName(e)
                                     }
+                                    formBasicSubmitted={e =>
+                                        this.formBasicSubmitted(e)
+                                    }
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
                                     regulatoryStatuses={
