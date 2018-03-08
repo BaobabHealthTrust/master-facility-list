@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.0",
+    "email-validator": "^1.1.1",
     "loopback-connector-mysql": "^5.2.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

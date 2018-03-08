@@ -5,16 +5,34 @@ import FacilityAddFooter from "./FacilityAddFooter";
 import { District } from "../types/model-types";
 import { addFormValues } from "../actions";
 import { connect } from "react-redux";
+import validateFunction from "./validation";
 
 type Props = {
     handleNextForTabs: Function,
     districts: Array<District>,
     postalAddress: string,
     contactName: string,
-    contactEmail: string
+    contactEmail: string,
+    emailError: string,
+    contactNameError: string,
+    phoneNumber: string,
+    phoneNumberError: string,
+    latitude: string,
+    latitudeError: string
 };
 
 class FacilityContacts extends Component<Props> {
+    async formSubmitted(e) {
+        await alert(this.props.commonName);
+        e.preventDefault();
+    }
+    validation(e) {
+        const values = validateFunction(e);
+        console.log(values);
+        this.props.addFormValues(values.error, values.actionTypeError);
+        this.props.addFormValues(e.target.value, values.actionType);
+    }
+
     render() {
         let districtOptions;
 
@@ -26,7 +44,7 @@ class FacilityContacts extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form class="col s12">
+                    <form onSubmit={e => this.formSubmitted(e)} class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
                                 <input
@@ -48,19 +66,18 @@ class FacilityContacts extends Component<Props> {
                             <div class="input-field col s6">
                                 <input
                                     id="contact_name"
+                                    name="contact_name"
                                     type="text"
                                     class="validate"
                                     value={this.props.contactName}
-                                    onChange={e =>
-                                        this.props.addFormValues(
-                                            e,
-                                            "CONTACT_NAME"
-                                        )
-                                    }
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="contact_name">
                                     Enter contact Name
                                 </label>
+                                <span className="red-text">
+                                    {this.props.contactNameError}
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -73,19 +90,18 @@ class FacilityContacts extends Component<Props> {
                             <div class="input-field col s6">
                                 <input
                                     id="contact_email"
+                                    name="contact_email"
                                     type="text"
                                     class="validate"
                                     value={this.props.contactEmail}
-                                    onChange={e =>
-                                        this.props.addFormValues(
-                                            e,
-                                            "CONTACT_EMAIL"
-                                        )
-                                    }
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="contact_email">
                                     Enter Contact Email
                                 </label>
+                                <span className="red-text">
+                                    {this.props.emailError}
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -102,12 +118,18 @@ class FacilityContacts extends Component<Props> {
                             <div class="input-field col s6">
                                 <input
                                     id="phone_number"
+                                    name="phone_number"
                                     type="text"
                                     class="validate"
+                                    value={this.props.phoneNumber}
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="phone_number">
                                     Enter Phone Number
                                 </label>
+                                <span className="red-text">
+                                    {this.props.phoneNumberError}
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -130,10 +152,16 @@ class FacilityContacts extends Component<Props> {
                             <div class="input-field col s3">
                                 <input
                                     id="latitude"
+                                    name="latitude"
                                     type="text"
                                     class="validate"
+                                    value={this.props.latitude}
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="latitude">Enter Latitude</label>
+                                <span className="red-text">
+                                    {this.props.latitudeError}
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -170,7 +198,13 @@ const mapStateToProps = state => {
     return {
         postalAddress: state.formValues.postalAddress,
         contactName: state.formValues.contactName,
-        contactEmail: state.formValues.contactEmail
+        contactEmail: state.formValues.contactEmail,
+        emailError: state.formValues.emailError,
+        contactNameError: state.formValues.contactNameError,
+        phoneNumber: state.formValues.phoneNumber,
+        phoneNumberError: state.formValues.phoneNumberError,
+        latitude: state.formValues.latitude,
+        latitudeError: state.formValues.latitudeError
     };
 };
 

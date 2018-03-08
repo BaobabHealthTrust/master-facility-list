@@ -15,6 +15,7 @@ type Props = {
     handleNextForTabs: Function,
     facilityName: string,
     facilityNameError: string,
+    commonNameError: string,
     commonName: string,
     OperationalStatus: string,
     regulatoryStatuses: Array<RegulatoryStatus>,
@@ -24,24 +25,34 @@ type Props = {
 };
 
 class FacilityBasicDetails extends Component<Props> {
-    componentWillReceiveProps(props) {
-        alert(props.facilityNameError);
-    }
     async formSubmitted(e) {
         await alert(this.props.commonName);
         e.preventDefault();
     }
 
     validation(e) {
-        if (e.target.value.split("").length <= 3) {
+        let actionTypeError = "";
+        let actionType = "";
+        e.target.name === "facility_name"
+            ? ((actionTypeError = "FACILITY_NAME_ERROR"),
+              (actionType = "FACILITY_NAME"))
+            : e.target.name === "common_name"
+              ? ((actionTypeError = "COMMON_NAME_ERROR"),
+                (actionType = "COMMON_NAME"))
+              : "";
+        if (e.target.value.match(/^[a-zA-Z ]+$/) === null) {
+            const error = "Name must be letters only";
+            this.props.addFormValues(error, actionTypeError);
+        } else if (e.target.value.split("").length <= 3) {
             const error = "Name must be more than 3 characters";
-            console.log(e.target.value.split("").length);
-            this.props.addFormValues(error, "FACILITY_NAME_ERROR");
+            this.props.addFormValues(error, actionTypeError);
         } else {
-            ("");
+            const error = "";
+            this.props.addFormValues(error, actionTypeError);
         }
-        this.props.addFormValues(e.target.value, "FACILITY_NAME");
+        this.props.addFormValues(e.target.value, actionType);
     }
+
     render() {
         let facilityOwnerOptions;
 
@@ -90,7 +101,6 @@ class FacilityBasicDetails extends Component<Props> {
                                     onChange={e => this.validation(e)}
                                     placeholder="Facility Name"
                                 />
-
                                 <span className="red-text">
                                     {this.props.facilityNameError}
                                 </span>
@@ -124,18 +134,14 @@ class FacilityBasicDetails extends Component<Props> {
                             <div class="input-field col s6">
                                 <input
                                     id="common_name"
+                                    name="common_name"
                                     type="text"
                                     class="validate"
                                     value={this.props.commonName}
-                                    onChange={e =>
-                                        this.props.addFormValues(
-                                            e,
-                                            "COMMON_NAME"
-                                        )
-                                    }
+                                    onChange={e => this.validation(e)}
                                 />
                                 <span className="red-text">
-                                    Name is too short
+                                    {this.props.commonNameError}
                                 </span>
                                 <label for="facility_name">Common Name</label>
                             </div>
@@ -203,6 +209,7 @@ const mapStateToProps = state => {
     return {
         facilityName: state.formValues.facilityName,
         facilityNameError: state.formValues.facilityNameError,
+        commonNameError: state.formValues.commonNameError,
         commonName: state.formValues.commonName,
         operationalStatus: state.formValues.operationalStatus
     };
