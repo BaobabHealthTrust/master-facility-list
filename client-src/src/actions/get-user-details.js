@@ -3,7 +3,6 @@ import settings from "../settings";
 export default function getUserDetails(id, token) {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `Clients/${id}`;
-    console.log(id);
     const FILTER = {
         fields: {
             firstname: true,

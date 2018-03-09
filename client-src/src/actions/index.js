@@ -54,3 +54,4 @@ export {
 export { default as checkCredentials } from "./check-credentials";
 export { default as getUserDetails } from "./get-user-details";
 export { default as addFormValues } from "./add-form-values.js";
+export { default as postFormData } from "./post-form-data.js";

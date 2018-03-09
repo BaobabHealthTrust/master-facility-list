@@ -2,7 +2,8 @@ export default (
     state = {
         facilityName: "",
         commonName: "",
-        operationalStatus: "0",
+        operationalStatus: "",
+        regulatoryStatus: "",
         postalAddress: "",
         contactName: "",
         contactEmail: "",
@@ -13,7 +14,14 @@ export default (
         contactNameError: "",
         phoneNumberError: "",
         latitude: "",
-        latitudeError: ""
+        latitudeError: "",
+        longitude: "",
+        longitudeError: "",
+        facilityType: "",
+        facilityOwner: "",
+        dateOpened: "",
+        registrationNumber: "",
+        registrationNumberError: ""
     },
     action
 ) => {
@@ -47,6 +55,11 @@ export default (
             return {
                 ...state,
                 operationalStatus: action.payload
+            };
+        case "REGULATORY_STATUS":
+            return {
+                ...state,
+                regulatoryStatus: action.payload
             };
         case "POSTAL_ADDRESS":
             return {
@@ -88,15 +101,65 @@ export default (
                 ...state,
                 latitudeError: action.payload
             };
-
+        case "LONGITUDE":
+            return {
+                ...state,
+                longitude: action.payload
+            };
+        case "LONGITUDE_ERROR":
+            return {
+                ...state,
+                longitudeError: action.payload
+            };
+        case "FACILITY_TYPE":
+            return {
+                ...state,
+                facilityType: action.payload
+            };
+        case "FACILITY_OWNER":
+            return {
+                ...state,
+                facilityOwner: action.payload
+            };
+        case "DATE_OPENED":
+            return {
+                ...state,
+                dateOpened: action.payload
+            };
+        case "REGISTRATION_NUMBER":
+            return {
+                ...state,
+                registrationNumber: action.payload
+            };
+        case "REGISTRATION_NUMBER_ERROR":
+            return {
+                ...state,
+                registrationNumberError: action.payload
+            };
         case "REMOVE_ALL_FORM_VALUES":
             return {
                 facilityName: "",
                 commonName: "",
                 operationalStatus: "",
+                regulatoryStatus: "",
                 postalAddress: "",
                 contactName: "",
-                contactEmail: ""
+                contactEmail: "",
+                phoneNumber: "",
+                facilityNameError: "",
+                emailError: "",
+                commonNameError: "",
+                contactNameError: "",
+                phoneNumberError: "",
+                latitude: "",
+                latitudeError: "",
+                longitude: "",
+                longitudeError: "",
+                facilityType: "",
+                facilityOwner: "",
+                dateOpened: "",
+                registrationNumber: "",
+                registrationNumberError: ""
             };
         default:
             return state;

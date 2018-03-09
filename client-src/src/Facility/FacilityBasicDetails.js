@@ -3,54 +3,62 @@ import React, { Component } from "react";
 import { Input, Navbar, NavItem } from "react-materialize";
 import { connect } from "react-redux";
 import FacilityAddFooter from "./FacilityAddFooter";
-import { addFormValues } from "../actions";
+import { addFormValues, postFormData } from "../actions";
 import {
     RegulatoryStatus,
     OperationalStatus,
     FacilityOwner,
     FacilityType
 } from "../types/model-types";
+import validateFunction from "./validation";
 
 type Props = {
     handleNextForTabs: Function,
+    addFormValues: Function,
+    postFormData: Function,
     facilityName: string,
     facilityNameError: string,
     commonNameError: string,
     commonName: string,
-    OperationalStatus: string,
+    operationalStatus: string,
+    dateOpened: Date,
+    regulatoryStatus: string,
+    facilityType: string,
+    facilityOwner: string,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
     facilityOwners: Array<FacilityOwner>,
-    facilityTypes: Array<FacilityType>
+    facilityTypes: Array<FacilityType>,
+    registrationNumber: string,
+    registrationNumberError: string,
+    postResponse: {}
 };
 
 class FacilityBasicDetails extends Component<Props> {
     async formSubmitted(e) {
-        await alert(this.props.commonName);
+        const data = {
+            facility_code: this.props.registrationNumber,
+            facility_name: this.props.facilityName,
+            common_name: this.props.commonName,
+            facility_date_opened: this.props.dateOpened,
+            facility_type_id: this.props.facilityType,
+            facility_owner_id: this.props.facilityOwner,
+            facility_operational_status_id: this.props.operationalStatus,
+            facility_regulatory_status_id: this.props.regulatoryStatus,
+            district_id: 3,
+            client_id: 1,
+            clientId: null
+        };
+        const token = sessionStorage.getItem("token");
+        await this.props.postFormData(data, token);
+        console.log(this.props.postResponse);
         e.preventDefault();
     }
 
     validation(e) {
-        let actionTypeError = "";
-        let actionType = "";
-        e.target.name === "facility_name"
-            ? ((actionTypeError = "FACILITY_NAME_ERROR"),
-              (actionType = "FACILITY_NAME"))
-            : e.target.name === "common_name"
-              ? ((actionTypeError = "COMMON_NAME_ERROR"),
-                (actionType = "COMMON_NAME"))
-              : "";
-        if (e.target.value.match(/^[a-zA-Z ]+$/) === null) {
-            const error = "Name must be letters only";
-            this.props.addFormValues(error, actionTypeError);
-        } else if (e.target.value.split("").length <= 3) {
-            const error = "Name must be more than 3 characters";
-            this.props.addFormValues(error, actionTypeError);
-        } else {
-            const error = "";
-            this.props.addFormValues(error, actionTypeError);
-        }
-        this.props.addFormValues(e.target.value, actionType);
+        const values = validateFunction(e);
+        this.props.addFormValues(values.error, values.actionTypeError);
+        this.props.addFormValues(e.target.value, values.actionType);
     }
 
     render() {
@@ -114,7 +122,7 @@ class FacilityBasicDetails extends Component<Props> {
                                     }"`}
                                     onChange={e =>
                                         this.props.addFormValues(
-                                            e,
+                                            e.target.value,
                                             "OPERATIONAL_STATUS"
                                         )
                                     }
@@ -146,8 +154,22 @@ class FacilityBasicDetails extends Component<Props> {
                                 <label for="facility_name">Common Name</label>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
-                                <Input s={12} type="select" defaultValue="0">
-                                    <option value="0">
+                                <Input
+                                    s={12}
+                                    type="select"
+                                    defaultValue={`"${
+                                        this.props.facilityType
+                                    }"`}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e.target.value,
+                                            "FACILITY_TYPE"
+                                        )
+                                    }
+                                >
+                                    <option
+                                        value={`"${this.props.facilityType}"`}
+                                    >
                                         Select Facility Type
                                     </option>
                                     {facilityTypeOptions}
@@ -156,18 +178,40 @@ class FacilityBasicDetails extends Component<Props> {
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
+                                <Input
+                                    name="date_opened"
+                                    type="date"
+                                    value={this.props.dateOpened}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e.target.value,
+                                            "DATE_OPENED"
+                                        )
+                                    }
                                 />
                                 <label for="facility_name">
                                     Select Date Opened
                                 </label>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
-                                <Input s={12} type="select" defaultValue="0">
-                                    <option value="0">
+                                <Input
+                                    s={12}
+                                    type="select"
+                                    defaultValue={`"${
+                                        this.props.regulatoryStatus
+                                    }"`}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e.target.value,
+                                            "REGULATORY_STATUS"
+                                        )
+                                    }
+                                >
+                                    <option
+                                        value={`"${
+                                            this.props.regulatoryStatus
+                                        }"`}
+                                    >
                                         Select Regulatory Status
                                     </option>
                                     {regulatoryStatusOptions}
@@ -176,8 +220,22 @@ class FacilityBasicDetails extends Component<Props> {
                         </div>
                         <div class="row">
                             <div className="input-field col s6 mfl-select-tab">
-                                <Input s={12} type="select" defaultValue="0">
-                                    <option value="0">
+                                <Input
+                                    s={12}
+                                    type="select"
+                                    defaultValue={`"${
+                                        this.props.facilityOwner
+                                    }"`}
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e.target.value,
+                                            "FACILITY_OWNER"
+                                        )
+                                    }
+                                >
+                                    <option
+                                        value={`"${this.props.facilityOwner}"`}
+                                    >
                                         Select Facility Owner
                                     </option>
                                     {facilityOwnerOptions}
@@ -186,12 +244,16 @@ class FacilityBasicDetails extends Component<Props> {
                             <div class="input-field col s6">
                                 <input
                                     id="registration_number"
+                                    name="registration_number"
                                     type="text"
                                     class="validate"
+                                    value={this.props.registrationNumber}
+                                    onChange={e => this.validation(e)}
+                                    placeholder="Registration Number"
                                 />
-                                <label for="registration_number">
-                                    Enter Registration Number
-                                </label>
+                                <span className="red-text">
+                                    {this.props.registrationNumberError}
+                                </span>
                             </div>
                         </div>
                         <FacilityAddFooter
@@ -211,10 +273,17 @@ const mapStateToProps = state => {
         facilityNameError: state.formValues.facilityNameError,
         commonNameError: state.formValues.commonNameError,
         commonName: state.formValues.commonName,
-        operationalStatus: state.formValues.operationalStatus
+        operationalStatus: state.formValues.operationalStatus,
+        regulatoryStatus: state.formValues.regulatoryStatus,
+        facilityType: state.formValues.facilityType,
+        facilityOwner: state.formValues.facilityOwner,
+        dateOpened: state.formValues.dateOpened,
+        registrationNumber: state.formValues.registrationNumber,
+        registrationNumberError: state.formValues.registrationNumberError,
+        postResponse: state.postResponse
     };
 };
 
-export default connect(mapStateToProps, { addFormValues })(
+export default connect(mapStateToProps, { addFormValues, postFormData })(
     FacilityBasicDetails
 );

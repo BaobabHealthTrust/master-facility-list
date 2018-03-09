@@ -13,10 +13,22 @@ export default e => {
           : e.target.name === "phone_number"
             ? ((actionTypeError = "PHONE_NUMBER_ERROR"),
               (actionType = "PHONE_NUMBER"))
-            : e.target.name === "latititude"
+            : e.target.name === "latitude"
               ? ((actionTypeError = "LATITUDE_ERROR"),
                 (actionType = "LATITUDE"))
-              : "";
+              : e.target.name === "longitude"
+                ? ((actionTypeError = "LONGITUDE_ERROR"),
+                  (actionType = "LONGITUDE"))
+                : e.target.name === "facility_name"
+                  ? ((actionTypeError = "FACILITY_NAME_ERROR"),
+                    (actionType = "FACILITY_NAME"))
+                  : e.target.name === "common_name"
+                    ? ((actionTypeError = "COMMON_NAME_ERROR"),
+                      (actionType = "COMMON_NAME"))
+                    : e.target.name === "registration_number"
+                      ? ((actionTypeError = "REGISTRATION_NUMBER_ERROR"),
+                        (actionType = "REGISTRATION_NUMBER"))
+                      : "";
     if (
         !EmailValidator.validate(e.target.value) &&
         e.target.name === "contact_email"
@@ -61,8 +73,67 @@ export default e => {
         e.target.value.match(/^[1-9]\d*(\.\d+)?$/) === null &&
         e.target.name === "latitude"
     ) {
-        console.log("in");
         error = "latitude must be decimal or whole numbers only";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.match(/^[1-9]\d*(\.\d+)?$/) === null &&
+        e.target.name === "longitude"
+    ) {
+        error = "longitude must be decimal or whole numbers only";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.match(/^[a-zA-Z ]+$/) === null &&
+        e.target.name === "facility_name"
+    ) {
+        const error = "facility name must be letters only";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.split("").length <= 3 &&
+        e.target.name === "facility_name"
+    ) {
+        const error = "facility name must be more than 3 characters";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.match(/^[a-zA-Z ]+$/) === null &&
+        e.target.name === "common_name"
+    ) {
+        const error = "common name must be letters only";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.split("").length <= 3 &&
+        e.target.name === "common_name"
+    ) {
+        const error = "common name must be more than 3 characters";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } else if (
+        e.target.value.split("").length <= 5 &&
+        e.target.name === "registration_number"
+    ) {
+        const error = "registration number must be more than 5 in length";
         return {
             error: error,
             actionTypeError: actionTypeError,
