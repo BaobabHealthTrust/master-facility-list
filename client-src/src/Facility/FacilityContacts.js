@@ -18,7 +18,9 @@ type Props = {
     phoneNumber: string,
     phoneNumberError: string,
     latitude: string,
-    latitudeError: string
+    latitudeError: string,
+    longitude: string,
+    longitudeError: string
 };
 
 class FacilityContacts extends Component<Props> {
@@ -28,7 +30,6 @@ class FacilityContacts extends Component<Props> {
     }
     validation(e) {
         const values = validateFunction(e);
-        console.log(values);
         this.props.addFormValues(values.error, values.actionTypeError);
         this.props.addFormValues(e.target.value, values.actionType);
     }
@@ -144,10 +145,16 @@ class FacilityContacts extends Component<Props> {
                             <div class="input-field col s3">
                                 <input
                                     id="longitude"
+                                    name="longitude"
                                     type="text"
                                     class="validate"
+                                    value={this.props.longitude}
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="longitude">Enter Longitude</label>
+                                <span className="red-text">
+                                    {this.props.longitudeError}
+                                </span>
                             </div>
                             <div class="input-field col s3">
                                 <input
@@ -204,7 +211,9 @@ const mapStateToProps = state => {
         phoneNumber: state.formValues.phoneNumber,
         phoneNumberError: state.formValues.phoneNumberError,
         latitude: state.formValues.latitude,
-        latitudeError: state.formValues.latitudeError
+        latitudeError: state.formValues.latitudeError,
+        longitude: state.formValues.longitude,
+        longitudeError: state.formValues.longitudeError
     };
 };
 

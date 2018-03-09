@@ -8,6 +8,7 @@ import AdvancedSearchReducer from "./advanced-search-reducer";
 import DashboardStatistics from "./dashboard-reducer";
 import AuthReducer from "./auth-reducer";
 import FormValues from "./form-values-reducer";
+import PostResponse from "./form-post-reducer";
 
 const rootReducer = combineReducers({
     facilities: FacilitiesReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     advancedSearchValues: AdvancedSearchReducer,
     dashboardStatistics: DashboardStatistics,
     authReducer: AuthReducer,
-    formValues: FormValues
+    formValues: FormValues,
+    postResponse: PostResponse
 });
 
 export default rootReducer;
