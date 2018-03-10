@@ -553,6 +553,13 @@ select.mfl-select {
     width: 1px;
     background-color: #0f1316;
 }
+.mfl-vertical-ruler-services {
+    float: left;
+    height: 350px;
+    width: 1px;
+    margin-top: -30%;
+    background-color: #0f1316;
+}
 .mfl-add-taboriginal {
     line-height: 43px;
     text-align: center;
@@ -673,4 +680,28 @@ select.mfl-select {
 }
 .mfl-tm-resource {
     margin-top: -20px !important;
+}
+
+.mfl-tm-title {
+    margin-top: 70px !important;
+    margin-left: 10px !important;
+}
+
+.mfl-tm-title2 {
+    margin-top: 152px !important;
+    margin-left: 20px !important;
+}
+.mfl-rule-resource {
+    margin-left: 20px !important;
+}
+.mfl-rule-utility-2 {
+    margin-left: 20px !important;
+}
+
+.mfl-rule-utility {
+    margin-left: 20px !important;
+    margin-top: 130px !important;
+}
+.mfl-services-rule {
+    margin-top: -60px;
 }

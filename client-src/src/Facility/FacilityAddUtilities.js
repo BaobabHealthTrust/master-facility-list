@@ -9,6 +9,11 @@ type Props = {
 };
 
 class FacilityAddUtilities extends Component<Props> {
+    async formSubmitted(e) {
+        await alert(this.props.commonName);
+        e.preventDefault();
+    }
+
     componentDidMount() {
         footerResizer();
     }
@@ -16,273 +21,256 @@ class FacilityAddUtilities extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form class="col s12">
+                    <form onSubmit={e => this.formSubmitted(e)} class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
-                                <h6>Transport Resources</h6>
+                                <h6>Energy Services</h6>
                                 <hr />
                                 <div className="row">
                                     <div className="col s6">
-                                        <form action="#">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="test5"
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p>Ambulances</p>
-                                        </form>
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">
+                                                National Grid
+                                            </label>
+                                        </p>
                                     </div>
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Wind</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                     <div className="row" />
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">
+                                                    Generator
+                                                </label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
 
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Solar</label>
                                             </p>
-                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p>
+                                                <input
+                                                    type="checkbox"
+                                                    id="test5"
+                                                />
+                                                <label for="test5">none</label>
+                                            </p>
                                         </form>
                                     </div>
                                 </div>
                                 <div />
                                 <div className="row">
-                                    <h5>Generator Resources</h5>
+                                    <h6 className="mfl-tm-title">
+                                        Mobile Networks
+                                    </h6>
                                     <hr />
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">TNM</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">MTL</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">
+                                                    AIRTEL
+                                                </label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">NONE</label>
                                             </p>
-                                            <p>Vehicles</p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p>
+                                                <input
+                                                    type="checkbox"
+                                                    id="test5"
+                                                />
+                                                <label for="test5">
+                                                    ACCESS
+                                                </label>
+                                            </p>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                             <div class="input-field col s6">
-                                <h6>Energy Resources</h6>
+                                <h6>Energy Services</h6>
                                 <hr />
                                 <div className="row" />
                                 <div className="col s6 mfl-tm-resource">
                                     <form action="#">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="test5"
-                                                min="0"
-                                                max="100"
-                                            />
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">Red</label>
                                         </p>
-                                        <p>Vehicles</p>
                                     </form>
                                 </div>
                                 <div className="col s6 mfl-tm-resource">
                                     <form action="#">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="test5"
-                                                min="0"
-                                                max="100"
-                                            />
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">Red</label>
                                         </p>
-                                        <p>Vehicles</p>
                                     </form>
                                 </div>
 
                                 <div className="row" />
                                 <div className="col s6">
                                     <form action="#">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="test5"
-                                                min="0"
-                                                max="100"
-                                            />
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">Red</label>
                                         </p>
-                                        <p>Vehicles</p>
                                     </form>
                                 </div>
 
                                 <div className="col s6">
                                     <form action="#">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="test5"
-                                                min="0"
-                                                max="100"
-                                            />
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">Red</label>
                                         </p>
-                                        <p>Vehicles</p>
                                     </form>
                                 </div>
+                                <div className="row" />
+                                <div className="col s6">
+                                    <form action="#">
+                                        <p>
+                                            <input type="checkbox" id="test5" />
+                                            <label for="test5">Red</label>
+                                        </p>
+                                    </form>
+                                </div>
+
                                 <div className="row">
-                                    <h6 className="">hello</h6>
-                                    <hr />
-                                    <br />
+                                    <h6 className="mfl-rule-utility">
+                                        Mobile Networks
+                                    </h6>
+                                    <hr className="mfl-rule-utility-2" />
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Red</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Red</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Red</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                     <div className="col s6">
                                         <form action="#">
-                                            <p class="range-field">
+                                            <p>
                                                 <input
-                                                    type="range"
+                                                    type="checkbox"
                                                     id="test5"
-                                                    min="0"
-                                                    max="100"
                                                 />
+                                                <label for="test5">Red</label>
                                             </p>
-                                            <p>Vehicles</p>
                                         </form>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s6" />
-                            <div class="input-field col s6" />
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6" />
-                            <div class="input-field col s6" />
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6" />
-                            <div class="input-field col s6" />
-                            <div className="row" />
-
-                            <div className="col s6">
-                                <form action="#">
-                                    <p class="range-field">
-                                        <input
-                                            type="range"
-                                            id="test5"
-                                            min="0"
-                                            max="100"
-                                        />
-                                    </p>
-                                    <p>Vehicles</p>
-                                </form>
+                                <div className="row">
+                                    <div className="col s6">
+                                        <form action="#">
+                                            <p>
+                                                <input
+                                                    type="checkbox"
+                                                    id="test5"
+                                                />
+                                                <label for="test5">Red</label>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

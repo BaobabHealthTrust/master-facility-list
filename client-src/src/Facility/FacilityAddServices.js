@@ -19,13 +19,39 @@ class FacilityAddServices extends Component<Props> {
                     <form class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
+                                <Input s={12} type="select" defaultValue="2">
+                                    <option value="1">Option 1</option>
+                                    <option value="2">Option 2</option>
+                                    <option value="3">Option 3</option>
+                                </Input>
                             </div>
+                            <div class="input-field col s6" />
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <Input s={12} type="select" defaultValue="2">
+                                    <option value="1">Option 1</option>
+                                    <option value="2">Option 2</option>
+                                    <option value="3">Option 3</option>
+                                </Input>
+                            </div>
+                            <div class="input-field col s6">
+                                <p>Summary services</p>
+                                <hr className="mfl-services-rule" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <Input s={12} type="select" defaultValue="2">
+                                    <option value="1">Option 1</option>
+                                    <option value="2">Option 2</option>
+                                    <option value="3">Option 3</option>
+                                </Input>
+                            </div>
+
+                            <div class="input-field col s6 " />
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <Input
                                     s={12}
@@ -38,66 +64,8 @@ class FacilityAddServices extends Component<Props> {
                                     <option value="3">Option 3</option>
                                 </Input>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input
-                                    id="facility_name"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="facility_name">Facility Name</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input
-                                    id="operational_status"
-                                    type="text"
-                                    class="validate"
-                                />
-                                <label for="operational_status">
-                                    Operational Status
-                                </label>
-                            </div>
+                            <div class="input-field col s6" />
+                            <div className="mfl-vertical-ruler-services" />
                         </div>
                         <FacilityAddFooter
                             handleNextForTabs={this.props.handleNextForTabs}
