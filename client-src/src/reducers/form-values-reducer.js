@@ -21,7 +21,9 @@ export default (
         facilityOwner: "",
         dateOpened: "",
         registrationNumber: "",
-        registrationNumberError: ""
+        registrationNumberError: "",
+        resourceName: [],
+        utilityType: []
     },
     action
 ) => {

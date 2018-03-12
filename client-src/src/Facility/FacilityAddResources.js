@@ -38,6 +38,12 @@ class FacilityAddResources extends Component<Props> {
                                                     id="ambulances"
                                                     min="0"
                                                     max="100"
+                                                    onChange={e =>
+                                                        this.props.addFormValues(
+                                                            e,
+                                                            ""
+                                                        )
+                                                    }
                                                 />
                                             </p>
                                             <p className="mfl-tm-resource">

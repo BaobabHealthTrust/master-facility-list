@@ -40,7 +40,7 @@ class FacilityAddUtilities extends Component<Props> {
                                             <p>
                                                 <input
                                                     type="checkbox"
-                                                    id="test5"
+                                                    id="utility_type_id"
                                                 />
                                                 <label for="test5">Wind</label>
                                             </p>
@@ -66,7 +66,7 @@ class FacilityAddUtilities extends Component<Props> {
                                             <p>
                                                 <input
                                                     type="checkbox"
-                                                    id="test5"
+                                                    id="utility_type_id"
                                                 />
                                                 <label for="test5">Solar</label>
                                             </p>
@@ -97,7 +97,7 @@ class FacilityAddUtilities extends Component<Props> {
                                             <p>
                                                 <input
                                                     type="checkbox"
-                                                    id="test5"
+                                                    id="utility_type_id"
                                                 />
                                                 <label for="test5">TNM</label>
                                             </p>
@@ -108,7 +108,7 @@ class FacilityAddUtilities extends Component<Props> {
                                             <p>
                                                 <input
                                                     type="checkbox"
-                                                    id="test5"
+                                                    id="utility_type_id"
                                                 />
                                                 <label for="test5">MTL</label>
                                             </p>
@@ -121,7 +121,7 @@ class FacilityAddUtilities extends Component<Props> {
                                             <p>
                                                 <input
                                                     type="checkbox"
-                                                    id="test5"
+                                                    id="utility_type_id"
                                                 />
                                                 <label for="test5">
                                                     AIRTEL
@@ -165,7 +165,9 @@ class FacilityAddUtilities extends Component<Props> {
                                     <form action="#">
                                         <p>
                                             <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
+                                            <label for="test5">
+                                                National Grid
+                                            </label>
                                         </p>
                                     </form>
                                 </div>
@@ -173,7 +175,7 @@ class FacilityAddUtilities extends Component<Props> {
                                     <form action="#">
                                         <p>
                                             <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
+                                            <label for="test5">Wind</label>
                                         </p>
                                     </form>
                                 </div>
@@ -183,7 +185,7 @@ class FacilityAddUtilities extends Component<Props> {
                                     <form action="#">
                                         <p>
                                             <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
+                                            <label for="test5">Generator</label>
                                         </p>
                                     </form>
                                 </div>
@@ -192,7 +194,7 @@ class FacilityAddUtilities extends Component<Props> {
                                     <form action="#">
                                         <p>
                                             <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
+                                            <label for="test5">Solar </label>
                                         </p>
                                     </form>
                                 </div>
@@ -201,7 +203,7 @@ class FacilityAddUtilities extends Component<Props> {
                                     <form action="#">
                                         <p>
                                             <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
+                                            <label for="test5">NONE</label>
                                         </p>
                                     </form>
                                 </div>
