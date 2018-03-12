@@ -26,7 +26,9 @@ type Props = {
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
     facilityOwners: Array<FacilityOwner>,
-    facilityTypes: Array<FacilityType>
+    facilityTypes: Array<FacilityType>,
+    serviceTypes: Array<serviceTypes>,
+    services: Array<services>
 };
 
 class FacilityTabs extends React.Component<Props, State> {
@@ -151,6 +153,8 @@ class FacilityTabs extends React.Component<Props, State> {
                             {this.state.activeTab === "Services" ? (
                                 <FacilityAddServices
                                     handleNextForTabs={this.handleNextForTabs}
+                                    services={this.props.services}
+                                    serviceTypes={this.props.serviceTypes}
                                 />
                             ) : (
                                 ""
@@ -170,7 +174,9 @@ const mapStateToProps = state => {
         regulatoryStatuses: state.dependancies.regulatoryStatuses,
         facilityOwners: state.dependancies.facilityOwners,
         facilityTypes: state.dependancies.facilityTypes,
-        districts: state.dependancies.districts
+        districts: state.dependancies.districts,
+        serviceTypes: state.dependancies.serviceInstance,
+        services: state.facilities.services
     };
 };
 
