@@ -10,6 +10,8 @@ const user = User.create(
     {
         username: "dho",
         password: "dho123",
+        firstname: "John",
+        lastname: "Chiwaya",
         email: "dho@mw.com"
     },
     (err, user) => {
