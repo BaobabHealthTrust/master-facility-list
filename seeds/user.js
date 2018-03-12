@@ -31,6 +31,7 @@ const user = User.create(
                     console.log(
                         "User, Role and RoleMapping successfully created"
                     );
+                    dataSource.disconnect();
                 }
             );
         });

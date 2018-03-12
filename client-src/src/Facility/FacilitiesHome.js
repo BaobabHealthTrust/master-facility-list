@@ -1,9 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchModal from "./SearchModal";
+import AddFacility from "./AddFacility";
 import {
-    fetchDistricts, fetchFacilityTypes, fetchFacilityOwners, fetchUtilityTypes, fetchResourceTypes,
-    fetchServiceTypes, fetchRegulatoryStatuses, fetchOperationalStatuses, fetchFacilities, downloadFacilities, fetchResources, fetchUtilities, fetchServices
+    fetchDistricts,
+    fetchFacilityTypes,
+    fetchFacilityOwners,
+    fetchUtilityTypes,
+    fetchResourceTypes,
+    fetchServiceTypes,
+    fetchRegulatoryStatuses,
+    fetchOperationalStatuses,
+    fetchFacilities,
+    downloadFacilities,
+    fetchResources,
+    fetchUtilities,
+    fetchServices
 } from "../actions";
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityFilters from "../Dashboard/FacilityFilters";
@@ -16,6 +28,7 @@ class FacilitiesHome extends Component {
         this.state = {
             isAdvancedSearch: false,
             isShowSearchResults: false,
+            isAddFacility: false
         };
     }
 
@@ -63,14 +76,26 @@ class FacilitiesHome extends Component {
         footerResizer();
     }
 
+    toggleAddFacility(e) {
+        this.setState({
+            isAddFacility: true
+        });
+        footerResizer();
+    }
 
     render() {
         return (
             <div>
-                {this.state.isAdvancedSearch ? "" : (
-                    <FacilityFilters url="/facilities" isFilteredResults={true} />
-                )
-                }
+                {this.state.isAdvancedSearch ? (
+                    ""
+                ) : this.state.isAddFacility ? (
+                    ""
+                ) : (
+                    <FacilityFilters
+                        url="/facilities"
+                        isFilteredResults={true}
+                    />
+                )}
                 <div className="container mfl-container">
                     <br />
                     {this.props.isLoading ? (
@@ -81,43 +106,47 @@ class FacilitiesHome extends Component {
                         <blockquote>
                             <h4>
                                 "Sorry, we cannot connect to the Server. Please
-                            check your Network"
-                        </h4>
+                                check your Network"
+                            </h4>
                         </blockquote>
                     ) : (
+                        <div>
+                            {this.state.isAdvancedSearch ? (
+                                <SearchModal
+                                    handleClose={() => this.handleClose()}
+                                />
+                            ) : this.state.isAddFacility ? (
+                                <AddFacility />
+                            ) : this.state.isShowSearchResults ? (
                                 <div>
-                                    {
-                                        this.state.isAdvancedSearch ? (
-                                            <SearchModal
-                                                handleClose={() => this.handleClose()}
-                                            />
-                                        ) : this.state.isShowSearchResults ? (
-                                            <div>
-                                                <FacilityList
-                                                    downloadAction={
-                                                        this.props.downloadFacilities
-                                                    }
-                                                    dataSource={this.props.searchResults}
-                                                    toggleAdvancedSearch={e =>
-                                                        this.toggleAdvancedSearch(e)
-                                                    }
-                                                />
-                                            </div>
-                                        ) : (
-                                                    <div>
-                                                        <FacilityList
-                                                            downloadAction={
-                                                                this.props.downloadFacilities
-                                                            }
-                                                            dataSource={this.props.facilities}
-                                                            toggleAdvancedSearch={e =>
-                                                                this.toggleAdvancedSearch(e)
-                                                            }
-                                                        />
-                                                    </div>
-                                                )}
+                                    <FacilityList
+                                        downloadAction={
+                                            this.props.downloadFacilities
+                                        }
+                                        dataSource={this.props.searchResults}
+                                        toggleAdvancedSearch={e =>
+                                            this.toggleAdvancedSearch(e)
+                                        }
+                                    />
+                                </div>
+                            ) : (
+                                <div>
+                                    <FacilityList
+                                        downloadAction={
+                                            this.props.downloadFacilities
+                                        }
+                                        dataSource={this.props.facilities}
+                                        toggleAdvancedSearch={e =>
+                                            this.toggleAdvancedSearch(e)
+                                        }
+                                        toggleAddFacility={e =>
+                                            this.toggleAddFacility(e)
+                                        }
+                                    />
                                 </div>
                             )}
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -131,7 +160,8 @@ const mapStateToProps = state => {
         isLoading: state.facilities.isLoading,
         download: state.downloads.data,
         searchResults: state.searchResults.advancedSearchResults,
-        filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities
+        filteredResults:
+            state.searchResults.advancedSearchFacilities.basicDetailsFacilities
     };
 };
 
