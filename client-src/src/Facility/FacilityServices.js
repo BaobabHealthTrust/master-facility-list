@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { fetchCurrentDetails, fetchCurrentServices, setCurrentDetails } from "../actions";
+import {
+    fetchCurrentDetails,
+    fetchCurrentServices,
+    setCurrentDetails
+} from "../actions";
 import Container from "./ServicesContainer";
 import { connect } from "react-redux";
 
@@ -17,8 +21,6 @@ class FacilityServices extends Component {
                 "CLINICAL SERVICES"
             );
         });
-
-        console.log(clinicalServices);
 
         return (
             <div className="container mfl-container">
