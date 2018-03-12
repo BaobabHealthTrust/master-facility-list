@@ -22,7 +22,9 @@ class MflLogin extends Component<State, Props> {
             this.state.username,
             this.state.password
         );
+        await console.log(this.props.loginResponse);
     };
+
     render() {
         return (
             <div className="container mfl-container">
