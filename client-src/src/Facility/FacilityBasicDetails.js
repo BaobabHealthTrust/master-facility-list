@@ -35,7 +35,7 @@ type Props = {
 };
 
 class FacilityBasicDetails extends Component<Props> {
-    async formSubmitted(e) {
+    async submitFormData(e) {
         const data = {
             facility_code: this.props.registrationNumber,
             facility_name: this.props.facilityName,
@@ -47,12 +47,15 @@ class FacilityBasicDetails extends Component<Props> {
             facility_regulatory_status_id: this.props.regulatoryStatus,
             district_id: 3,
             client_id: 1,
-            clientId: null
+            clientId: 1
         };
+        
         const token = sessionStorage.getItem("token");
+        await e.preventDefault();
         await this.props.postFormData(data, token);
-        console.log(this.props.postResponse);
-        e.preventDefault();
+        if(this.props.postResponse.messageResponse.status === 200){
+            this.props.handleNextForTabs("Contacts and Locations");
+        };
     }
 
     validation(e) {
@@ -97,7 +100,7 @@ class FacilityBasicDetails extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form onSubmit={e => this.formSubmitted(e)} class="col s12">
+                    <form onSubmit={e => this.submitFormData(e)} class="col s12">
                         <div class="row">
                             <div class="input-field col s6 ">
                                 <input

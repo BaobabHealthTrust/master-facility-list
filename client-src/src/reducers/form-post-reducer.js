@@ -7,7 +7,7 @@ export default (
     switch (action.type) {
         case "POST_FORM_DATA":
             return {
-                messageResponse: action.payload.data
+                messageResponse: action.payload
             };
         default:
             return state;

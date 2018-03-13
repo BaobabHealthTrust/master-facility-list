@@ -4,7 +4,7 @@ import { Navbar, Input, Button } from "react-materialize";
 
 type Props = {
     tabName: string,
-    handleNextForTabs: Function
+    handleNextForTabs: Function,
 };
 
 class FacilityAddFooter extends Component<Props> {
@@ -15,10 +15,10 @@ class FacilityAddFooter extends Component<Props> {
 
                 {/* <a
                     class="waves-effect waves-light blue btn mfl-tab-btn-space"
-                    onClick={() => this.props.handleNextForTabs()}
+                    }
                 >
                     Next
-                </a> */}
+                </a> */} 
                 <Button
                     className="blue white-text mfl-tab-btn-space"
                     id="submit"

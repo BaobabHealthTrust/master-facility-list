@@ -19,41 +19,41 @@ const getFacilityService = require("../../download_modules/get-facility-services
 const fs = require("fs");
 
 module.exports = function(Facility) {
-    Facility.validatesLengthOf("facility_name", {
-        min: 8,
-        message: { min: "facility name is too short" }
-    });
-    Facility.validatesLengthOf("common_name", {
-        min: 5,
-        message: { min: "common name is too short" }
-    });
-    Facility.validatesLengthOf("registration number", {
-        min: 5,
-        message: { min: "registration number is too short" }
-    });
+    // Facility.validatesLengthOf("facility_name", {
+    //     min: 8,
+    //     message: { min: "facility name is too short" }
+    // });
+    // Facility.validatesLengthOf("common_name", {
+    //     min: 5,
+    //     message: { min: "common name is too short" }
+    // });
+    // Facility.validatesLengthOf("registration number", {
+    //     min: 5,
+    //     message: { min: "registration number is too short" }
+    // });
 
-    Facility.validatesNumericalityOf("latitude", {
-        int: true,
-        message: { int: "latitude should be in numerical format" }
-    });
+    // Facility.validatesNumericalityOf("latitude", {
+    //     int: true,
+    //     message: { int: "latitude should be in numerical format" }
+    // });
 
-    Facility.validatesNumericalityOf("longitude", {
-        int: true,
-        message: { int: "longitude should be in numerical form" }
-    });
+    // Facility.validatesNumericalityOf("longitude", {
+    //     int: true,
+    //     message: { int: "longitude should be in numerical form" }
+    // });
 
-    Facility.validatesNumericalityOf("phonenumber", {
-        int: true,
-        message: { int: "phonenumber should be in a numerical format" }
-    });
+    // Facility.validatesNumericalityOf("phonenumber", {
+    //     int: true,
+    //     message: { int: "phonenumber should be in a numerical format" }
+    // });
 
-    Facility.validatesUniquenessOf("contact_email", {
-        message: "email is not unique"
-    });
+    // Facility.validatesUniquenessOf("contact_email", {
+    //     message: "email is not unique"
+    // });
 
-    Facility.validatesUniquenessOf("contact_name", {
-        message: "contact name is not unique"
-    });
+    // Facility.validatesUniquenessOf("contact_name", {
+    //     message: "contact name is not unique"
+    // });
 
     Facility.download = function(inputData, res, cb) {
         Facility.find(
