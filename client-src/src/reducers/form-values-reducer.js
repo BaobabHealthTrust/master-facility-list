@@ -2,7 +2,23 @@ export default (
     state = {
         facilityName: "",
         commonName: "",
+        name: "",
+        quantity: "",
         ambulance: "",
+        vehicle: "",
+        motorCycle: "",
+        bikeAmbulance: "",
+        maternityBed: "",
+        deliveryBed: "",
+        otherInPatientsBed: "",
+        kw20Generator: "",
+        kw40Generator: "",
+        kw60Generator: "",
+        kw80Generator: "",
+        desktop: "",
+        laptop: "",
+        tablet: "",
+        mobilePhone: "",
         operationalStatus: "",
         regulatoryStatus: "",
         postalAddress: "",
@@ -24,7 +40,7 @@ export default (
         dateOpened: "",
         registrationNumber: "",
         registrationNumberError: "",
-        resourceName: [],
+        resources: [],
         utilityType: []
     },
     action
@@ -150,11 +166,104 @@ export default (
                 ...state,
                 ambulance: action.payload
             };
+        case "VEHICLE":
+            return {
+                ...state,
+                vehicle: action.payload
+            };
+        case "MOTOR_CYCLE":
+            return {
+                ...state,
+                motorCycle: action.payload
+            };
+        case "BIKE_AMBULANCE":
+            return {
+                ...state,
+                bikeAmbulance: action.payload
+            };
+
+        case "MATERNITY_BED":
+            return {
+                ...state,
+                maternityBed: action.payload
+            };
+        case "DELIVERY_BED":
+            return {
+                ...state,
+                deliveryBed: action.payload
+            };
+        case "OTHER_IN_PATIENT_BED":
+            return {
+                ...state,
+                otherInPatientsBed: action.payload
+            };
+        case "KW_20_GENERATOR":
+            return {
+                ...state,
+                kw20Generator: action.payload
+            };
+        case "KW_40_GENERATOR":
+            return {
+                ...state,
+                kw40Generator: action.payload
+            };
+        case "KW_60_GENERATOR":
+            return {
+                ...state,
+                kw60Generator: action.payload
+            };
+        case "KW_80_GENERATOR":
+            return {
+                ...state,
+                kw80Generator: action.payload
+            };
+        case "DESKTOP":
+            return {
+                ...state,
+                desktop: action.payload
+            };
+        case "LAPTOP":
+            return {
+                ...state,
+                laptop: action.payload
+            };
+        case "TABLET":
+            return {
+                ...state,
+                tablet: action.payload
+            };
+        case "MOBILE_PHONE":
+            return {
+                ...state,
+                mobilePhone: action.payload
+            };
+        case "ADD_RESOURCE":
+            return {
+                ...state,
+                quantity: action.payload,
+                name: action.name
+            };
         case "REMOVE_ALL_FORM_VALUES":
             return {
                 facilityName: "",
                 commonName: "",
+                name: "",
+                quantity: "",
                 ambulance: "",
+                vehicle: "",
+                motorCycle: "",
+                bikeAmbulance: "",
+                maternityBed: "",
+                deliveryBed: "",
+                otherInPatientsBed: "",
+                kw20Generator: "",
+                kw40Generator: "",
+                kw60Generator: "",
+                kw80Generator: "",
+                desktop: "",
+                laptop: "",
+                tablet: "",
+                mobilePhone: "",
                 operationalStatus: "",
                 regulatoryStatus: "",
                 postalAddress: "",
@@ -175,7 +284,8 @@ export default (
                 facilityOwner: "",
                 dateOpened: "",
                 registrationNumber: "",
-                registrationNumberError: ""
+                registrationNumberError: "",
+                resources: []
             };
         default:
             return state;

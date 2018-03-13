@@ -9,10 +9,9 @@ import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
 import footerResizer from "../helpers/footerResize";
 import FacilityTabs from "./FacilityTabs";
-
+import { fetchResources } from "../actions";
 
 class AddFacility extends React.Component<Props, State> {
-
     componentDidMount() {
         footerResizer();
     }
@@ -49,7 +48,7 @@ class AddFacility extends React.Component<Props, State> {
                     </div>
                 </div>
 
-                <FacilityTabs/>
+                <FacilityTabs />
                 {this.props.isError ? (
                     <blockquote>
                         <h4>

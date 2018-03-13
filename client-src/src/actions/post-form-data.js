@@ -1,22 +1,26 @@
 import axios from "axios";
 import settings from "../settings";
-export default function postFormData(postData,token) {
-
+export default function postFormData(
+    postData,
+    resource,
+    method,
+    actionName,
+    token
+) {
     const END_POINT = `${settings.hostname}/api/`;
-    const RESOURCE = `/Facilities`;
 
     const header = {
-            Authorization: `${token}`
+        Authorization: `${token}`
     };
-    const URL = `${END_POINT}${RESOURCE}`;
+    const URL = `${END_POINT}${resource}`;
     const request = axios({
-           method: 'post',
-           url: URL,
-           data: postData,
-           headers: header
-           });
+        method: method,
+        url: URL,
+        data: postData,
+        headers: header
+    });
     return {
-        type: "POST_FORM_DATA",
+        type: actionName,
         payload: request
     };
 }

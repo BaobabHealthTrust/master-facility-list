@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
 import { addFormValues, postFormData } from "../actions";
+import {} from "lodash";
 
 type Props = {
     handleNextForTabs: Function
@@ -12,12 +13,44 @@ type Props = {
 
 class FacilityAddResources extends Component<Props> {
     async submitFormData(e) {
-        //await alert(this.props.commonName);
-        e.preventDefault();
-    }
+        await e.preventDefault();
 
-    rangeValues(e){
-        console.log(e.target.value);
+        // const data = {
+        //     contact_person_fullname: this.props.contactName,
+        //     contact_person_phone: this.props.phoneNumber,
+        //     contact_person_email: this.props.contactEmail,
+        //     postal_address: this.props.postalAddress,
+        //     facility_id: this.props.postResponse.basicResponse.data.id
+        // };
+
+        // const token = sessionStorage.getItem("token");
+        // await e.preventDefault();
+        // const resource = "/ContactPeople";
+        // const method = "post";
+        // const actionName = "POST_FORM_CONTACT_DATA";
+        // await this.props.postFormData(
+        //     data,
+        //     resource,
+        //     method,
+        //     actionName,
+        //     token
+        // );
+        // if (this.props.postResponse.contactResponse.status === 200) {
+        //     this.props.handleNextForTabs("Resources");
+        // }
+    }
+    async addResources(e) {
+        let resources = [];
+        await this.props.addFormValues(
+            e.target.value,
+            "ADD_RESOURCE",
+            e.target.name
+        );
+        resources.push({
+            resource_name: this.props.formValues.name,
+            quantity: this.props.formValues.quantity
+        });
+        console.log(resources);
     }
 
     componentDidMount() {
@@ -32,282 +65,62 @@ class FacilityAddResources extends Component<Props> {
                         className="col s12"
                     >
                         <div class="row">
-                            <div class="input-field col s6">
-                                <h6>Transport Resources</h6>
-                                <hr />
-                                <div className="row">
-                                    <div className="col s6">
-                                            <p className="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="ambulances"
-                                                    name="ambulances"
-                                                    value={this.props.ambulance}
-                                                    min="0"
-                                                    max="100"
-                                                    onChange={e =>
-                                                        this.props.addFormValues(
-                                                            e.target.value, "AMBULANCE"
-                                                        )
-                                                    }
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Ambulances
-                                            </p>
-                                    </div>
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="vehicles"
-                                                    name="vehicles"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Vehicles
-                                            </p>
-                                    </div>
-                                    <div className="row" />
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="motor_cycles"
-                                                    name="motor_cycles"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Motor Cycles
-                                            </p>
-                                    </div>
+                            {this.props.resourceTypes.map(resourceType => {
+                                return (
+                                    <div class="input-field col s6">
+                                        <h6>{`${
+                                            resourceType.resource_type
+                                        }   Resources`}</h6>
+                                        <hr />
+                                        <div className="row">
+                                            {this.props.resources
+                                                .filter(
+                                                    res =>
+                                                        res.resource_type_id ===
+                                                        resourceType.id
+                                                )
+                                                .map(resource => {
+                                                    return (
+                                                        <div className="col s6">
+                                                            <p className="range-field">
+                                                                <input
+                                                                    type="range"
+                                                                    id={
+                                                                        resource.resource_name
+                                                                    }
+                                                                    name={
+                                                                        resource.resource_name
+                                                                    }
+                                                                    value={
+                                                                        this
+                                                                            .props
+                                                                            .formValues
+                                                                            .ambulance
+                                                                    }
+                                                                    min="0"
+                                                                    max="100"
+                                                                    onChange={e =>
+                                                                        this.addResources(
+                                                                            e
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </p>
+                                                            <p className="mfl-tm-resource">
+                                                                {
+                                                                    resource.resource_name
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    );
+                                                })}
 
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="bike_ambulances"
-                                                    name="bike_ambulances"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Bike Ambulances
-                                            </p>
+                                            <div className="row" />
+                                        </div>
+                                        <div />
                                     </div>
-                                </div>
-                                <div />
-                                <div className="row">
-                                    <h6 className="mfl-tm-title">
-                                        Generator Resources
-                                    </h6>
-                                    <hr />
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="20kw_generators"
-                                                    name="20kw_generators"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                20KW Generators
-                                            </p>
-                                    </div>
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="40kw_generators"
-                                                    name="40kw_generators"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                40KW Generators
-                                            </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="30kw_generators"
-                                                    name="30kw_generators"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                30KW Generators
-                                            </p>
-                                    </div>
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="60kw_generators"
-                                                    name="60kw_generators"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                60KW Generators
-                                            </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-field col s6">
-                                <h6>Bed Resources</h6>
-                                <hr />
-                                <div className="row" />
-                                <div className="col s6 mfl-tm-resource">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="maternity_beds"
-                                                name="maternity_beds"
-                                                value=""
-                                                min="0"
-                                                max="100"
-                                            />
-                                        </p>
-                                        <p className="mfl-tm-resource">
-                                            Maternity Beds
-                                        </p>
-                                </div>
-                                <div className="col s6 mfl-tm-resource">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="delivery_beds"
-                                                name="delivery_beds"
-                                                value=""
-                                                min="0"
-                                                max="100"
-                                            />
-                                        </p>
-                                        <p className="mfl-tm-resource">
-                                            Delivery Beds
-                                        </p>
-                                </div>
-
-                                <div className="row" />
-                                <div className="col s6">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="Delivery Beds"
-                                                min="0"
-                                                max="100"
-                                            />
-                                        </p>
-                                        <p className="mfl-tm-resource">
-                                            Delivery Beds
-                                        </p>
-                                </div>
-
-                                <div className="col s6">
-                                        <p class="range-field">
-                                            <input
-                                                type="range"
-                                                id="Delivery Beds"
-                                                min="0"
-                                                max="100"
-                                            />
-                                        </p>
-                                        <p className="mfl-tm-resource">
-                                            Delivery Beds
-                                        </p>
-                                </div>
-                                <div className="row">
-                                    <h6 className="mfl-tm-title2">
-                                        Computer Resources
-                                    </h6>
-                                    <hr className="mfl-rule-resource" />
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="desktop_computers"
-                                                    name="desktop_computers"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Desktop Computers
-                                            </p>
-                                    </div>
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="laptop_computers"
-                                                    name="laptop_computers"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Laptop Computers
-                                            </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                            <p class="range-field">
-                                                <input
-                                                    type="range"
-                                                    id="tablets"
-                                                    name="tablets"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Tablets
-                                            </p>
-                                    </div>
-                                    <div className="col s6">
-                                            <p class="range-field ">
-                                                <input
-                                                    className="mfl-color-slider"
-                                                    type="range"
-                                                    id="mobile_phones"
-                                                    name="mobile_phones"
-                                                    value=""
-                                                    min="0"
-                                                    max="100"
-                                                    blue
-                                                />
-                                            </p>
-                                            <p className="mfl-tm-resource">
-                                                Mobile Phones
-                                            </p>
-                                    </div>
-                                </div>
-                            </div>
+                                );
+                            })};
                         </div>
 
                         <FacilityAddFooter
@@ -321,8 +134,12 @@ class FacilityAddResources extends Component<Props> {
 }
 const mapStateToProps = state => {
     return {
-        ambulance: state.formValues.ambulance
+        formValues: state.formValues,
+        resourceTypes: state.dependancies.resourceTypes,
+        resources: state.facilities.resources
     };
 };
 
-export default connect(mapStateToProps, {addFormValues, postFormData}) (FacilityAddResources);
+export default connect(mapStateToProps, { addFormValues, postFormData })(
+    FacilityAddResources
+);
