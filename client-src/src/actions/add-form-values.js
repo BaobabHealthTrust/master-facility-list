@@ -1,6 +1,7 @@
-export default (e, type) => {
+export default (e, type, resource) => {
     return {
         type: type,
-        payload: e
+        payload: e,
+        name: resource
     };
 };

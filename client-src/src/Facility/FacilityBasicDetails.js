@@ -45,17 +45,26 @@ class FacilityBasicDetails extends Component<Props> {
             facility_owner_id: this.props.facilityOwner,
             facility_operational_status_id: this.props.operationalStatus,
             facility_regulatory_status_id: this.props.regulatoryStatus,
-            district_id: 3,
+            district_id: 1,
             client_id: 1,
             clientId: 1
         };
-        
+
         const token = sessionStorage.getItem("token");
         await e.preventDefault();
-        await this.props.postFormData(data, token);
-        if(this.props.postResponse.messageResponse.status === 200){
+        const resource = "/Facilities";
+        const method = "post";
+        const actionName = "POST_FORM_BASIC_DATA";
+        await this.props.postFormData(
+            data,
+            resource,
+            method,
+            actionName,
+            token
+        );
+        if (this.props.postResponse.basicResponse.status === 200) {
             this.props.handleNextForTabs("Contacts and Locations");
-        };
+        }
     }
 
     validation(e) {
@@ -100,7 +109,10 @@ class FacilityBasicDetails extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form onSubmit={e => this.submitFormData(e)} class="col s12">
+                    <form
+                        onSubmit={e => this.submitFormData(e)}
+                        class="col s12"
+                    >
                         <div class="row">
                             <div class="input-field col s6 ">
                                 <input
