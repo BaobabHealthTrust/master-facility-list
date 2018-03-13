@@ -28,6 +28,9 @@ export default e => {
                     : e.target.name === "registration_number"
                       ? ((actionTypeError = "REGISTRATION_NUMBER_ERROR"),
                         (actionType = "REGISTRATION_NUMBER"))
+                      :e.target.name === "postal_address"
+                      ? ((actionTypeError = "POSTAL_ADDRESS_ERROR"),
+                        (actionType = "POSTAL_ADDRESS"))
                       : "";
     if (
         !EmailValidator.validate(e.target.value) &&
@@ -139,7 +142,18 @@ export default e => {
             actionTypeError: actionTypeError,
             actionType: actionType
         };
-    } else {
+    } else if (
+        e.target.value.split("").length <= 10 &&
+        e.target.name === "postal_address"
+    ) {
+        const error = "postal address must be more than or equal to 10 in length";
+        return {
+            error: error,
+            actionTypeError: actionTypeError,
+            actionType: actionType
+        };
+    } 
+    else {
         const error = "";
         return {
             error: error,

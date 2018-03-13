@@ -8,7 +8,7 @@ const RoleMapping = server.models.RoleMapping;
 
 const user = User.create(
     {
-        username: "dho",
+        username: "chitipadho",
         password: "dho123",
         firstname: "John",
         lastname: "Chiwaya",

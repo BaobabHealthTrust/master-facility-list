@@ -17,11 +17,9 @@ import {
 
 type State = {
     activeTab: string,
-    tabNumber: number
 };
 
 type Props = {
-    changeFacilityName: Function,
     handleNextForTabs: Function,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
@@ -34,11 +32,10 @@ type Props = {
 class FacilityTabs extends React.Component<Props, State> {
     state = {
         activeTab: "Basic",
-        tabNumber: 1
     };
 
-    handleNextForTabs = () => {
-        this.setState({ tabNumber: this.state.tabNumber + 1 });
+    handleNextForTabs = (tabName) => {
+        this.setState({ activeTab: tabName });
     };
 
     render() {
@@ -64,12 +61,6 @@ class FacilityTabs extends React.Component<Props, State> {
                             {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails
                                     handleNextForTabs={this.handleNextForTabs}
-                                    changeFacilityName={e =>
-                                        this.props.changeFacilityName(e)
-                                    }
-                                    formBasicSubmitted={e =>
-                                        this.formBasicSubmitted(e)
-                                    }
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
                                     regulatoryStatuses={

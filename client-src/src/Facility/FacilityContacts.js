@@ -3,12 +3,13 @@ import React, { Component } from "react";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
 import { District } from "../types/model-types";
-import { addFormValues } from "../actions";
+import { addFormValues, postFormData } from "../actions";
 import { connect } from "react-redux";
 import validateFunction from "./validation";
 
 type Props = {
     handleNextForTabs: Function,
+    postFormData: Function,
     districts: Array<District>,
     postalAddress: string,
     contactName: string,
@@ -24,9 +25,17 @@ type Props = {
 };
 
 class FacilityContacts extends Component<Props> {
-    async formSubmitted(e) {
-        await alert(this.props.commonName);
-        e.preventDefault();
+    async submitFormData(e) {
+        const data = {
+            
+        };
+        
+        const token = sessionStorage.getItem("token");
+        await e.preventDefault();
+        await this.props.postFormData(data, token);
+        if(this.props.postResponse.messageResponse.status === 200){
+            this.props.handleNextForTabs("Resources");
+        };
     }
     validation(e) {
         const values = validateFunction(e);
@@ -45,24 +54,23 @@ class FacilityContacts extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form onSubmit={e => this.formSubmitted(e)} class="col s12">
+                    <form onSubmit={e => this.submitFormData(e)} class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
                                 <input
                                     id="postal_address"
+                                    name="postal_address"
                                     type="text"
                                     class="validate"
                                     value={this.props.postalAddress}
-                                    onChange={e =>
-                                        this.props.addFormValues(
-                                            e,
-                                            "POSTAL_ADDRESS"
-                                        )
-                                    }
+                                    onChange={e => this.validation(e)}
                                 />
                                 <label for="postal_address">
                                     Enter Postal Address
                                 </label>
+                                <span className="red-text">
+                                    {this.props.postalAddressError}
+                                </span>
                             </div>
                             <div class="input-field col s6">
                                 <input
@@ -204,6 +212,7 @@ class FacilityContacts extends Component<Props> {
 const mapStateToProps = state => {
     return {
         postalAddress: state.formValues.postalAddress,
+        postalAddressError: state.formValues.postalAddressError,
         contactName: state.formValues.contactName,
         contactEmail: state.formValues.contactEmail,
         emailError: state.formValues.emailError,
@@ -213,8 +222,9 @@ const mapStateToProps = state => {
         latitude: state.formValues.latitude,
         latitudeError: state.formValues.latitudeError,
         longitude: state.formValues.longitude,
-        longitudeError: state.formValues.longitudeError
+        longitudeError: state.formValues.longitudeError,
+        postResponse: state.postResponse
     };
 };
 
-export default connect(mapStateToProps, { addFormValues })(FacilityContacts);
+export default connect(mapStateToProps, { addFormValues, postFormData })(FacilityContacts);

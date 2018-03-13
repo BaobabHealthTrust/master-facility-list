@@ -10,21 +10,12 @@ import Services from "./FacilityServices";
 import footerResizer from "../helpers/footerResize";
 import FacilityTabs from "./FacilityTabs";
 
-type State = {
-    facilityName: string
-};
 
 class AddFacility extends React.Component<Props, State> {
-    state = {
-        facilityName: ""
-    };
+
     componentDidMount() {
         footerResizer();
     }
-
-    changeFacilityName = e => {
-        this.setState({ facilityName: e.currentTarget.value });
-    };
 
     render() {
         const basicLink = `/facilitybasicdetails`;
@@ -58,10 +49,7 @@ class AddFacility extends React.Component<Props, State> {
                     </div>
                 </div>
 
-                <FacilityTabs
-                    changeFacilityName={e => this.changeFacilityName(e)}
-                />
-
+                <FacilityTabs/>
                 {this.props.isError ? (
                     <blockquote>
                         <h4>

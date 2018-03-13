@@ -1,17 +1,23 @@
 //@flow
 import React, { Component } from "react";
 import footerResizer from "../helpers/footerResize";
+import { connect } from "react-redux";
 import { Input } from "react-materialize";
 import FacilityAddFooter from "./FacilityAddFooter";
+import { addFormValues, postFormData } from "../actions";
 
 type Props = {
     handleNextForTabs: Function
 };
 
 class FacilityAddResources extends Component<Props> {
-    async formSubmitted(e) {
-        await alert(this.props.commonName);
+    async submitFormData(e) {
+        //await alert(this.props.commonName);
         e.preventDefault();
+    }
+
+    rangeValues(e){
+        console.log(e.target.value);
     }
 
     componentDidMount() {
@@ -22,7 +28,7 @@ class FacilityAddResources extends Component<Props> {
             <div>
                 <div class="row">
                     <form
-                        onSubmit={e => this.formSubmitted(e)}
+                        onSubmit={e => this.submitFormData(e)}
                         className="col s12"
                     >
                         <div class="row">
@@ -31,17 +37,17 @@ class FacilityAddResources extends Component<Props> {
                                 <hr />
                                 <div className="row">
                                     <div className="col s6">
-                                        <form action="#">
                                             <p className="range-field">
                                                 <input
                                                     type="range"
                                                     id="ambulances"
+                                                    name="ambulances"
+                                                    value={this.props.ambulance}
                                                     min="0"
                                                     max="100"
                                                     onChange={e =>
                                                         this.props.addFormValues(
-                                                            e,
-                                                            ""
+                                                            e.target.value, "AMBULANCE"
                                                         )
                                                     }
                                                 />
@@ -49,14 +55,14 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Ambulances
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
                                                     id="vehicles"
+                                                    name="vehicles"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -64,15 +70,15 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Vehicles
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="row" />
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="Motor Cycles"
+                                                    id="motor_cycles"
+                                                    name="motor_cycles"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -80,15 +86,15 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Motor Cycles
                                             </p>
-                                        </form>
                                     </div>
 
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="Bike_Ambulances"
+                                                    id="bike_ambulances"
+                                                    name="bike_ambulances"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -96,7 +102,6 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Bike Ambulances
                                             </p>
-                                        </form>
                                     </div>
                                 </div>
                                 <div />
@@ -106,11 +111,12 @@ class FacilityAddResources extends Component<Props> {
                                     </h6>
                                     <hr />
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="20KW Generators"
+                                                    id="20kw_generators"
+                                                    name="20kw_generators"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -118,14 +124,14 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 20KW Generators
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="40KW Generators"
+                                                    id="40kw_generators"
+                                                    name="40kw_generators"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -133,31 +139,31 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 40KW Generators
                                             </p>
-                                        </form>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="60KW Generators"
+                                                    id="30kw_generators"
+                                                    name="30kw_generators"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
                                             </p>
                                             <p className="mfl-tm-resource">
-                                                60KW Generators
+                                                30KW Generators
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="60KW Generators"
+                                                    id="60kw_generators"
+                                                    name="60kw_generators"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -165,7 +171,6 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 60KW Generators
                                             </p>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -174,11 +179,12 @@ class FacilityAddResources extends Component<Props> {
                                 <hr />
                                 <div className="row" />
                                 <div className="col s6 mfl-tm-resource">
-                                    <form action="#">
                                         <p class="range-field">
                                             <input
                                                 type="range"
-                                                id="Maternity Beds"
+                                                id="maternity_beds"
+                                                name="maternity_beds"
+                                                value=""
                                                 min="0"
                                                 max="100"
                                             />
@@ -186,14 +192,14 @@ class FacilityAddResources extends Component<Props> {
                                         <p className="mfl-tm-resource">
                                             Maternity Beds
                                         </p>
-                                    </form>
                                 </div>
                                 <div className="col s6 mfl-tm-resource">
-                                    <form action="#">
                                         <p class="range-field">
                                             <input
                                                 type="range"
-                                                id="Delivery Beds"
+                                                id="delivery_beds"
+                                                name="delivery_beds"
+                                                value=""
                                                 min="0"
                                                 max="100"
                                             />
@@ -201,12 +207,10 @@ class FacilityAddResources extends Component<Props> {
                                         <p className="mfl-tm-resource">
                                             Delivery Beds
                                         </p>
-                                    </form>
                                 </div>
 
                                 <div className="row" />
                                 <div className="col s6">
-                                    <form action="#">
                                         <p class="range-field">
                                             <input
                                                 type="range"
@@ -218,11 +222,9 @@ class FacilityAddResources extends Component<Props> {
                                         <p className="mfl-tm-resource">
                                             Delivery Beds
                                         </p>
-                                    </form>
                                 </div>
 
                                 <div className="col s6">
-                                    <form action="#">
                                         <p class="range-field">
                                             <input
                                                 type="range"
@@ -234,7 +236,6 @@ class FacilityAddResources extends Component<Props> {
                                         <p className="mfl-tm-resource">
                                             Delivery Beds
                                         </p>
-                                    </form>
                                 </div>
                                 <div className="row">
                                     <h6 className="mfl-tm-title2">
@@ -242,11 +243,12 @@ class FacilityAddResources extends Component<Props> {
                                     </h6>
                                     <hr className="mfl-rule-resource" />
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="Desktop Computers"
+                                                    id="desktop_computers"
+                                                    name="desktop_computers"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -254,14 +256,14 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Desktop Computers
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="Laptop Computers"
+                                                    id="laptop_computers"
+                                                    name="laptop_computers"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -269,16 +271,16 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Laptop Computers
                                             </p>
-                                        </form>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field">
                                                 <input
                                                     type="range"
-                                                    id="Tablets"
+                                                    id="tablets"
+                                                    name="tablets"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                 />
@@ -286,15 +288,15 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Tablets
                                             </p>
-                                        </form>
                                     </div>
                                     <div className="col s6">
-                                        <form action="#">
                                             <p class="range-field ">
                                                 <input
                                                     className="mfl-color-slider"
                                                     type="range"
-                                                    id="Mobile phones"
+                                                    id="mobile_phones"
+                                                    name="mobile_phones"
+                                                    value=""
                                                     min="0"
                                                     max="100"
                                                     blue
@@ -303,7 +305,6 @@ class FacilityAddResources extends Component<Props> {
                                             <p className="mfl-tm-resource">
                                                 Mobile Phones
                                             </p>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -318,5 +319,10 @@ class FacilityAddResources extends Component<Props> {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        ambulance: state.formValues.ambulance
+    };
+};
 
-export default FacilityAddResources;
+export default connect(mapStateToProps, {addFormValues, postFormData}) (FacilityAddResources);

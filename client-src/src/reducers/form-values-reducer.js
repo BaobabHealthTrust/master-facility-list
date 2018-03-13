@@ -2,9 +2,11 @@ export default (
     state = {
         facilityName: "",
         commonName: "",
+        ambulance: "",
         operationalStatus: "",
         regulatoryStatus: "",
         postalAddress: "",
+        postalAddressError: "",
         contactName: "",
         contactEmail: "",
         phoneNumber: "",
@@ -67,6 +69,11 @@ export default (
             return {
                 ...state,
                 postalAddress: action.payload
+            };
+        case "POSTAL_ADDRESS_ERROR":
+            return {
+                ...state,
+                postalAddressError: action.payload
             };
         case "CONTACT_NAME":
             return {
@@ -138,13 +145,20 @@ export default (
                 ...state,
                 registrationNumberError: action.payload
             };
+        case "AMBULANCE":
+            return {
+                ...state,
+                ambulance: action.payload
+            };
         case "REMOVE_ALL_FORM_VALUES":
             return {
                 facilityName: "",
                 commonName: "",
+                ambulance: "",
                 operationalStatus: "",
                 regulatoryStatus: "",
                 postalAddress: "",
+                postalAddressError: "",
                 contactName: "",
                 contactEmail: "",
                 phoneNumber: "",
