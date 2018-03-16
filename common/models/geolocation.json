@@ -10,8 +10,11 @@
       "type": "number",
       "required": true
     },
-    "geolocation": {
-      "type": "geopoint"
+    "longitude": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "string"
     },
     "facility_id": {
       "type": "number",
