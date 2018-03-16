@@ -46,7 +46,38 @@ class FacilityContacts extends Component<Props> {
             actionName,
             token
         );
-        if (this.props.postResponse.contactResponse.status === 200) {
+        const Geodata = {
+               datum: 90,
+               longitude: this.props.longitude,
+               latitude: this.props.latitude,
+               facility_id: this.props.postResponse.basicResponse.data.id,
+        };
+        const tokenGeo = sessionStorage.getItem("token");
+        const resourceGeo = "/Geolocations";
+        const methodGeo = "post";
+        const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
+        await this.props.postFormData(
+            Geodata,
+            resourceGeo,
+            methodGeo,
+            actionNameGeo,
+            tokenGeo
+        );
+        const facilityData = {
+            district_id: this.props.district,
+        };
+        const facilityId = this.props.postResponse.basicResponse.data.id;
+        const facilityUrl ="/Facilities/"+facilityId;
+        const facilityMethod = "patch";
+        const facilityActionName = "PATCH_FORM_FACILITY_DATA";
+        await this.props.postFormData(
+            facilityData,
+            facilityUrl,
+            facilityMethod,
+            facilityActionName,
+            token
+        );
+        if (this.props.postResponse.contactResponse.status === 200 && this.props.postResponse.geolocationResponse.status === 200 && this.props.postResponse.districtResponse.status === 200) {
             this.props.handleNextForTabs("Resources");
         }
     }
@@ -108,8 +139,16 @@ class FacilityContacts extends Component<Props> {
                         </div>
                         <div class="row">
                             <div className="input-field col s6 mfl-select-tab">
-                                <Input s={12} type="select" defaultValue="0">
-                                    <option value="0">Select District</option>
+                                <Input s={12} type="select" defaultValue="0"
+                                    onChange={e =>
+                                        this.props.addFormValues(
+                                            e.target.value,
+                                            "DISTRICT"
+                                        )
+                                    }>
+                                    <option value={`"${
+                                            this.props.district
+                                        }"`}>Select District</option>
                                     {districtOptions}
                                 </Input>
                             </div>
@@ -239,8 +278,10 @@ const mapStateToProps = state => {
         latitude: state.formValues.latitude,
         latitudeError: state.formValues.latitudeError,
         longitude: state.formValues.longitude,
+        district: state.formValues.district,
         longitudeError: state.formValues.longitudeError,
-        postResponse: state.postResponse
+        postResponse: state.postResponse,
+        formValues: state.formValues
     };
 };
 

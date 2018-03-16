@@ -1,17 +1,59 @@
 //@flow
 import React, { Component } from "react";
 import footerResizer from "../helpers/footerResize";
-import { Input } from "react-materialize";
+import { Input, Row } from "react-materialize";
+import { addFormValues, postFormData } from "../actions";
 import FacilityAddFooter from "./FacilityAddFooter";
+import { connect } from "react-redux";
 
 type Props = {
-    handleNextForTabs: Function
+    handleNextForTabs: Function,
+    addFormValues: Function,
+    postFormData: Function,
 };
 
 class FacilityAddUtilities extends Component<Props> {
-    async formSubmitted(e) {
-        await alert(this.props.commonName);
-        e.preventDefault();
+    async submitFormData(e) {
+
+        const facilityId = this.props.postResponse.basicResponse.data.id;
+        const data =  this.props.formValues.utilities.map(utility=>{
+               return Object.assign({},
+                {
+                facility_id: facilityId,
+                resource_id: utility,
+                quantity: 0,
+                description: ""
+                 })
+                });
+               const token = sessionStorage.getItem("token");
+               await e.preventDefault();
+               const resource = "/FacilityResources";
+               const method = "post";
+               const actionName = "POST_FORM_FACILITY_RESOURCE_DATA";
+               await this.props.postFormData(
+                   data,
+                   resource,
+                   method,
+                   actionName,
+                   token
+               );
+               if (this.props.postResponse.facilityResourceResponse.status === 200) {
+                   this.props.handleNextForTabs("Services");
+               }
+    }
+
+    async addUtilities(e) {
+       if(!this.props.formValues.utilities.includes(e.target.id)){
+        await this.props.addFormValues(
+            e.target.id,
+            "ADD_UTILITY"
+        );
+    }else{
+        await this.props.addFormValues(
+            e.target.id,
+            "REMOVE_UTILITY"
+        );
+    }
     }
 
     componentDidMount() {
@@ -21,232 +63,60 @@ class FacilityAddUtilities extends Component<Props> {
         return (
             <div>
                 <div class="row">
-                    <form
-                        onSubmit={e => this.formSubmitted(e)}
+                <form
+                        onSubmit={e => this.submitFormData(e)}
                         className="col s12"
                     >
                         <div className="row">
+                        {this.props.utilityTypes.map(utilityType => {return(
                             <div class="input-field col s6">
-                                <h6>Energy Services</h6>
+                                <h6>{utilityType.utility_type}</h6>
                                 <hr />
                                 <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input
+                                {this.props.utilities
+                                    .filter(
+                                        utility=> 
+                                        utility.utility_type_id ===
+                                        utilityType.id
+                                        )
+                                        .map(utility=>{
+                                        return (<div className="col s6">
+                                            
+                                            <Input
                                                 type="checkbox"
-                                                id="national_grid"
-                                                name="national_grid"
-                                                value=""
+                                                id={utility.id}
+                                                name={utility.utility_name}
+                                                label={utility.utility_name}
+                                                onClick={e=> this.addUtilities(e)}
+                                                
                                             />
-                                            <label for="">National Grid</label>
-                                        </p>
+                                           
+                                    </div> 
+                                    )})
+                                }
                                     </div>
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="wind"
-                                                name="wind"
-                                                value=""
-                                            />
-                                            <label for="test5">Wind</label>
-                                        </p>
                                     </div>
-                                    <div className="row" />
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="national_grid"
-                                                name="national_grid"
-                                                value=""
-                                            />
-                                            <label for="test5">Generator</label>
-                                        </p>
-                                    </div>
+                            )})}
 
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="solar"
-                                                name="solar"
-                                                value=""
-                                            />
-                                            <label for="test5">Solar</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="none"
-                                                name="none"
-                                                value=""
-                                            />
-                                            <label for="test5">none</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div />
-                                <div className="row">
-                                    <h6 className="mfl-tm-title">
-                                        Mobile Networks
-                                    </h6>
-                                    <hr />
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="tnm"
-                                                name="tnm"
-                                                value=""
-                                            />
-                                            <label for="test5">TNM</label>
-                                        </p>
-                                    </div>
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="mtl"
-                                                name="mtl"
-                                                value=""
-                                            />
-                                            <label for="test5">MTL</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="airtel"
-                                                name="airtel"
-                                                value=""
-                                            />
-                                            <label for="test5">AIRTEL</label>
-                                        </p>
-                                    </div>
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="none"
-                                                name="none"
-                                                value=""
-                                            />
-                                            <label for="test5">NONE</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input
-                                                type="checkbox"
-                                                id="access"
-                                                name="access"
-                                                value=""
-                                            />
-                                            <label for="test5">ACCESS</label>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-field col s6">
-                                <h6>Energy Services</h6>
-                                <hr />
-                                <div className="row" />
-                                <div className="col s6 mfl-tm-resource">
-                                    <p>
-                                        <input type="checkbox" id="test5" />
-                                        <label for="test5">National Grid</label>
-                                    </p>
-                                </div>
-                                <div className="col s6 mfl-tm-resource">
-                                    <p>
-                                        <input type="checkbox" id="test5" />
-                                        <label for="test5">Wind</label>
-                                    </p>
-                                </div>
-
-                                <div className="row" />
-                                <div className="col s6">
-                                    <p>
-                                        <input type="checkbox" id="test5" />
-                                        <label for="test5">Generator</label>
-                                    </p>
-                                </div>
-
-                                <div className="col s6">
-                                    <p>
-                                        <input type="checkbox" id="test5" />
-                                        <label for="test5">Solar </label>
-                                    </p>
-                                </div>
-                                <div className="row" />
-                                <div className="col s6">
-                                    <p>
-                                        <input type="checkbox" id="test5" />
-                                        <label for="test5">NONE</label>
-                                    </p>
-                                </div>
-
-                                <div className="row">
-                                    <h6 className="mfl-rule-utility">
-                                        Mobile Networks
-                                    </h6>
-                                    <hr className="mfl-rule-utility-2" />
-                                    <div className="col s6">
-                                        <p>
-                                            <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
-                                        </p>
-                                    </div>
-                                    <div className="col s6">
-                                        <p>
-                                            <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
-                                        </p>
-                                    </div>
-                                    <div className="col s6">
-                                        <p>
-                                            <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col s6">
-                                        <p>
-                                            <input type="checkbox" id="test5" />
-                                            <label for="test5">Red</label>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <FacilityAddFooter
                             handleNextForTabs={this.props.handleNextForTabs}
                         />
-                    </form>
+                     </form>
                 </div>
             </div>
         );
     }
 }
+const mapStateToProps = state =>{
+    return {
+        formValues: state.formValues,
+        utilityTypes: state.dependancies.utilityTypes,
+        utilities: state.facilities.utilities,
+        postResponse: state.postResponse,
+    };
+};
 
-export default FacilityAddUtilities;
+export default connect(mapStateToProps,{addFormValues, postFormData})(FacilityAddUtilities);

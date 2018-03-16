@@ -1,8 +1,10 @@
+import { uniq, pull } from "lodash";
 export default (
     state = {
         facilityName: "",
         commonName: "",
         name: "",
+        district: "",
         quantity: "",
         ambulance: "",
         vehicle: "",
@@ -41,6 +43,7 @@ export default (
         registrationNumber: "",
         registrationNumberError: "",
         resources: [],
+        utilities: [],
         utilityType: []
     },
     action
@@ -237,17 +240,33 @@ export default (
                 ...state,
                 mobilePhone: action.payload
             };
+        case "DISTRICT":
+            return {
+                ...state,
+                district: action.payload
+            };
         case "ADD_RESOURCE":
             return {
                 ...state,
                 quantity: action.payload,
                 name: action.name
             };
+        case "ADD_UTILITY":
+            return {
+                ...state,
+                utilities: uniq([...state.utilities, action.payload]),
+            };
+        case "REMOVE_UTILITY":
+            return {
+                ...state,
+                utilities: pull(state.utilities, action.payload),
+            };
         case "REMOVE_ALL_FORM_VALUES":
             return {
                 facilityName: "",
                 commonName: "",
                 name: "",
+                district: "",
                 quantity: "",
                 ambulance: "",
                 vehicle: "",
@@ -285,7 +304,8 @@ export default (
                 dateOpened: "",
                 registrationNumber: "",
                 registrationNumberError: "",
-                resources: []
+                resources: [],
+                utilities: [],
             };
         default:
             return state;
