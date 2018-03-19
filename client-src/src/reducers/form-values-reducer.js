@@ -315,7 +315,9 @@ export default (
                 registrationNumber: "",
                 registrationNumberError: "",
                 resources: [],
+                error: [],
                 utilities: [],
+                utilityType: []
             };
         default:
             return state;

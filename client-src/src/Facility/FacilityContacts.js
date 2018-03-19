@@ -10,6 +10,7 @@ import validateFunction from "./validation";
 type Props = {
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
+    handleCancel: Function,
     postFormData: Function,
     districts: Array<District>,
     postalAddress: string,
@@ -39,7 +40,7 @@ class FacilityContacts extends Component<Props, State> {
 
     async submitFormData(e) {
         await e.preventDefault();
-        if(!this.props.postResponse.basicResponse === ""){
+        if(this.props.postResponse.basicResponse !== ""){
         const data = {
             contact_person_fullname: this.props.contactName,
             contact_person_phone: this.props.phoneNumber,
@@ -287,6 +288,7 @@ class FacilityContacts extends Component<Props, State> {
                             tabPreviousName={this.state.tabPreviousName}
                             handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
+                            handleCancel={this.props.handleCancel}
                         />
                     </form>
                 </div>

@@ -138,7 +138,8 @@ Promise.all([
             facility_operational_status_id: operationalStatusId,
             facility_regulatory_status_id: regulatoryStatusId,
             district_id: districtId,
-            client_id: val[8][0].id
+            client_id: val[8][0].id,
+            archived_date: "",
         };
 
         const facilityFake = Facility.create(facilityData);

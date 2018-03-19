@@ -14,6 +14,7 @@ import validateFunction from "./validation";
 
 type Props = {
     handleNextForTabs: Function,
+    handleCancel: Function,
     addFormValues: Function,
     postFormData: Function,
     facilityName: string,
@@ -279,6 +280,7 @@ class FacilityBasicDetails extends Component<Props> {
                         <FacilityAddFooter
                             tabName={"Basic"}
                             handleNextForTabs={this.props.handleNextForTabs}
+                            handleCancel={this.props.handleCancel}
                         />
                     </form>
                 </div>

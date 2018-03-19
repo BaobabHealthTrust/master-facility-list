@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 type Props = {
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
+    handleCancel: Function,
 };
 type State = {
     tabPreviousName: string,
@@ -80,6 +81,7 @@ class FacilityAddServices extends Component<Props, State> {
                             tabPreviousName={this.state.tabPreviousName}
                             handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
+                            handleCancel={this.props.handleCancel}
                         />
                     </form>
                 </div>
