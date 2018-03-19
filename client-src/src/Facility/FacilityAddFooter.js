@@ -4,7 +4,9 @@ import { Navbar, Input, Button } from "react-materialize";
 
 type Props = {
     tabName: string,
+    tabPreviousName: string,
     handleNextForTabs: Function,
+    handlePreviousForTabs: Function,
 };
 
 class FacilityAddFooter extends Component<Props> {
@@ -29,7 +31,7 @@ class FacilityAddFooter extends Component<Props> {
                 {this.props.tabName !== "Basic" && (
                     <a
                         class="waves-effect waves-light blue btn mfl-tab-btn-space-previous"
-                        //  onClick={e => this.props.toggleAddFacility(e)}
+                        onClick={() => this.props.handlePreviousForTabs(this.props.tabPreviousName)}
                     >
                         Previous
                     </a>

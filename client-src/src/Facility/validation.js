@@ -3,6 +3,7 @@ export default e => {
     let actionTypeError = "";
     let actionType = "";
     let error = "";
+    let errorMessage = [];
     e.target.name === "contact_email"
         ? ((actionTypeError = "EMAIL_ERROR"),
           (error = "Email is not in valid format"),
@@ -73,7 +74,7 @@ export default e => {
             actionType: actionType
         };
     } else if (
-        e.target.value.match(/^[1-9]\d*(\.\d+)?$/) === null &&
+        e.target.value.match(/^[0-9]\d*(\.\d+)?$/) === null &&
         e.target.name === "latitude"
     ) {
         error = "latitude must be decimal or whole numbers only";
@@ -83,7 +84,7 @@ export default e => {
             actionType: actionType
         };
     } else if (
-        e.target.value.match(/^[1-9]\d*(\.\d+)?$/) === null &&
+        e.target.value.match(/^[0-9]\d*(\.\d+)?$/) === null &&
         e.target.name === "longitude"
     ) {
         error = "longitude must be decimal or whole numbers only";

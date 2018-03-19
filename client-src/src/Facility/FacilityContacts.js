@@ -9,6 +9,7 @@ import validateFunction from "./validation";
 
 type Props = {
     handleNextForTabs: Function,
+    handlePreviousForTabs: Function,
     postFormData: Function,
     districts: Array<District>,
     postalAddress: string,
@@ -24,8 +25,21 @@ type Props = {
     longitudeError: string
 };
 
-class FacilityContacts extends Component<Props> {
+type State = {
+    tabPreviousName: string,
+    notice: string,
+ }
+
+
+class FacilityContacts extends Component<Props, State> {
+    state= {
+      tabPreviousName: "Basic",
+      notice: "",
+    };
+
     async submitFormData(e) {
+        await e.preventDefault();
+        if(!this.props.postResponse.basicResponse === ""){
         const data = {
             contact_person_fullname: this.props.contactName,
             contact_person_phone: this.props.phoneNumber,
@@ -56,6 +70,7 @@ class FacilityContacts extends Component<Props> {
         const resourceGeo = "/Geolocations";
         const methodGeo = "post";
         const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
+       if(this.props.formValues.error.length === 0) {
         await this.props.postFormData(
             Geodata,
             resourceGeo,
@@ -79,7 +94,11 @@ class FacilityContacts extends Component<Props> {
         );
         if (this.props.postResponse.contactResponse.status === 200 && this.props.postResponse.geolocationResponse.status === 200 && this.props.postResponse.districtResponse.status === 200) {
             this.props.handleNextForTabs("Resources");
-        }
+        }}
+     }else{
+        const msg="You can not start from contacts and locations tab but start from basic tab";
+        this.setState({notice:msg});
+     }
     }
 
     validation(e) {
@@ -103,6 +122,9 @@ class FacilityContacts extends Component<Props> {
                         onSubmit={e => this.submitFormData(e)}
                         class="col s12"
                     >
+                    <span className="red-text">
+                    {this.state.notice}
+                     </span>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input
@@ -112,6 +134,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.postalAddress}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="postal_address">
                                     Enter Postal Address
@@ -128,6 +151,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.contactName}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="contact_name">
                                     Enter contact Name
@@ -160,6 +184,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.contactEmail}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="contact_email">
                                     Enter Contact Email
@@ -188,6 +213,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.phoneNumber}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="phone_number">
                                     Enter Phone Number
@@ -214,6 +240,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.longitude}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="longitude">Enter Longitude</label>
                                 <span className="red-text">
@@ -228,6 +255,7 @@ class FacilityContacts extends Component<Props> {
                                     class="validate"
                                     value={this.props.latitude}
                                     onChange={e => this.validation(e)}
+                                    required
                                 />
                                 <label for="latitude">Enter Latitude</label>
                                 <span className="red-text">
@@ -256,6 +284,8 @@ class FacilityContacts extends Component<Props> {
                             </div>
                         </div>
                         <FacilityAddFooter
+                            tabPreviousName={this.state.tabPreviousName}
+                            handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
                         />
                     </form>

@@ -43,6 +43,7 @@ export default (
         registrationNumber: "",
         registrationNumberError: "",
         resources: [],
+        error: [],
         utilities: [],
         utilityType: []
     },
@@ -57,12 +58,14 @@ export default (
         case "FACILITY_NAME_ERROR":
             return {
                 ...state,
-                facilityNameError: action.payload
+                facilityNameError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "facilityNameError"]):pull(state.error, "facilityNameError")
             };
         case "EMAIL_ERROR":
             return {
                 ...state,
-                emailError: action.payload
+                emailError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "emailError"]):pull(state.error, "emailError")
             };
         case "COMMON_NAME":
             return {
@@ -72,7 +75,8 @@ export default (
         case "COMMON_NAME_ERROR":
             return {
                 ...state,
-                commonNameError: action.payload
+                commonNameError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "commonNameError"]):pull(state.error, "commonNameError")
             };
         case "OPERATIONAL_STATUS":
             return {
@@ -92,7 +96,8 @@ export default (
         case "POSTAL_ADDRESS_ERROR":
             return {
                 ...state,
-                postalAddressError: action.payload
+                postalAddressError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "postalAddressError"]):pull(state.error, "postalAddressError")
             };
         case "CONTACT_NAME":
             return {
@@ -102,7 +107,8 @@ export default (
         case "CONTACT_NAME_ERROR":
             return {
                 ...state,
-                contactNameError: action.payload
+                contactNameError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "contactNameError"]):pull(state.error, "contactNameError")
             };
         case "CONTACT_EMAIL":
             return {
@@ -117,7 +123,8 @@ export default (
         case "PHONE_NUMBER_ERROR":
             return {
                 ...state,
-                phoneNumberError: action.payload
+                phoneNumberError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "phoneNumberError"]):pull(state.error, "phoneNumberError")
             };
         case "LATITUDE":
             return {
@@ -127,7 +134,8 @@ export default (
         case "LATITUDE_ERROR":
             return {
                 ...state,
-                latitudeError: action.payload
+                latitudeError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "latitudeError"]):pull(state.error, "latitudeError")
             };
         case "LONGITUDE":
             return {
@@ -137,7 +145,8 @@ export default (
         case "LONGITUDE_ERROR":
             return {
                 ...state,
-                longitudeError: action.payload
+                longitudeError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "longitudeError"]):pull(state.error, "longitudeError")
             };
         case "FACILITY_TYPE":
             return {
@@ -162,7 +171,8 @@ export default (
         case "REGISTRATION_NUMBER_ERROR":
             return {
                 ...state,
-                registrationNumberError: action.payload
+                registrationNumberError: action.payload,
+                error: action.payload !==""?uniq([...state.error, "registrationNumberError"]):pull(state.error, "registrationNumberError")
             };
         case "AMBULANCE":
             return {
