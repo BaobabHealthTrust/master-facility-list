@@ -4,7 +4,7 @@ export default (
         contactResponse: "",
         geolocationResponse: "",
         districtResponse: "",
-        facilityResourceResponse: "",
+        facilityUtilityResponse: "",
     },
     action
 ) => {
@@ -29,10 +29,10 @@ export default (
                 ...state,
                 districtResponse: action.payload
             };
-        case "POST_FORM_FACILITY_RESOURCE_DATA":
+        case "POST_FORM_FACILITY_UTILITY_DATA":
             return {
                 ...state,
-                facilityResourceResponse: action.payload
+                facilityUtilityResponse: action.payload
             };
         default:
             return state;

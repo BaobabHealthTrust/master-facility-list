@@ -4,11 +4,13 @@ import footerResizer from "../helpers/footerResize";
 import { Input, Row } from "react-materialize";
 import { addFormValues, postFormData } from "../actions";
 import FacilityAddFooter from "./FacilityAddFooter";
+import { chunk } from "lodash";
 import { connect } from "react-redux";
 
 type Props = {
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
+    handleCancel: Function,
     addFormValues: Function,
     postFormData: Function,
 };
@@ -27,21 +29,19 @@ class FacilityAddUtilities extends Component<Props, State> {
 
     async submitFormData(e) {
         await e.preventDefault();
-        if(!this.props.postResponse.basicResponse === ""){
+        if(this.props.postResponse.basicResponse !== ""){
         const facilityId = this.props.postResponse.basicResponse.data.id;
         const data =  this.props.formValues.utilities.map(utility=>{
                return Object.assign({},
                 {
                 facility_id: facilityId,
-                resource_id: utility,
-                quantity: 0,
-                description: ""
+                utility_id: utility,
                  })
                 });
                const token = sessionStorage.getItem("token");
-               const resource = "/FacilityResources";
+               const resource = "/FacilityUtilities";
                const method = "post";
-               const actionName = "POST_FORM_FACILITY_RESOURCE_DATA";
+               const actionName = "POST_FORM_FACILITY_UTILITY_DATA";
                await this.props.postFormData(
                    data,
                    resource,
@@ -49,7 +49,7 @@ class FacilityAddUtilities extends Component<Props, State> {
                    actionName,
                    token
                );
-               if (this.props.postResponse.facilityResourceResponse.status === 200) {
+               if (this.props.postResponse.facilityUtilityResponse.status === 200) {
                    this.props.handleNextForTabs("Services");
                }
            }else{
@@ -76,6 +76,7 @@ class FacilityAddUtilities extends Component<Props, State> {
         footerResizer();
     }
     render() {
+        const utilityTypes = chunk(this.props.utilityTypes,2);
         return (
             <div>
                 <div class="row">
@@ -86,8 +87,9 @@ class FacilityAddUtilities extends Component<Props, State> {
                     <span className="red-text">
                     {this.state.notice}
                      </span>
-                        <div className="row">
-                        {this.props.utilityTypes.map(utilityType => {return(
+                     {utilityTypes.map(utilityTypes=> {return(
+                         <div className="row">
+                        {utilityTypes.map(utilityType => {return(
                             <div class="input-field col s6">
                                 <h6>{utilityType.utility_type}</h6>
                                 <hr />
@@ -119,11 +121,13 @@ class FacilityAddUtilities extends Component<Props, State> {
 
                             
                         </div>
-
+                        )})}
+                        
                         <FacilityAddFooter
                             tabPreviousName={this.state.tabPreviousName}
                             handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
+                            handleCancel={this.props.handleCancel}
                         />
                      </form>
                 </div>

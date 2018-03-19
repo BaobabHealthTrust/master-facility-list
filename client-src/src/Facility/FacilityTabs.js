@@ -7,6 +7,7 @@ import FacilityContacts from "./FacilityContacts";
 import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
 import FacilityAddServices from "./FacilityAddServices";
+import { addFormValues } from "../actions";
 import { connect } from "react-redux";
 import {
     RegulatoryStatus,
@@ -41,6 +42,11 @@ class FacilityTabs extends React.Component<Props, State> {
         this.setState({ activeTab: tabName });
     };
 
+    handleCancel=()=>{
+        this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+        this.setState({ activeTab: "Basic" });
+    }
+
     render() {
         return (
             <div className="mfl-modal-container">
@@ -65,6 +71,7 @@ class FacilityTabs extends React.Component<Props, State> {
                                 <FacilityBasicDetails
                                     handleNextForTabs={this.handleNextForTabs}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
+                                    handleCancel={this.handleCancel}
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
                                     regulatoryStatuses={
@@ -94,6 +101,7 @@ class FacilityTabs extends React.Component<Props, State> {
                                 <FacilityContacts
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
+                                    handleCancel={this.handleCancel}
                                     districts={this.props.districts}
                                 />
                             ) : (
@@ -114,6 +122,7 @@ class FacilityTabs extends React.Component<Props, State> {
                                 <FacilityAddResources
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
+                                    handleCancel={this.handleCancel}
                                 />
                             ) : (
                                 ""
@@ -133,6 +142,7 @@ class FacilityTabs extends React.Component<Props, State> {
                                 <FacilityAddUtilities
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
+                                    handleCancel={this.handleCancel}
                                 />
                             ) : (
                                 ""
@@ -152,6 +162,7 @@ class FacilityTabs extends React.Component<Props, State> {
                                 <FacilityAddServices
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
+                                    handleCancel={this.handleCancel}
                                     services={this.props.services}
                                     serviceTypes={this.props.serviceTypes}
                                 />
@@ -179,4 +190,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, {})(FacilityTabs);
+export default connect(mapStateToProps, {addFormValues})(FacilityTabs);

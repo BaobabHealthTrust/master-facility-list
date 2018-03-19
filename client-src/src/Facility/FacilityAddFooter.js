@@ -7,13 +7,18 @@ type Props = {
     tabPreviousName: string,
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
+    handleCancel: Function,
 };
 
 class FacilityAddFooter extends Component<Props> {
     render() {
         return (
             <div className="row grey lighten-2 mfl-add-footer">
-                <a className="black-text right mfl-tm-1 ">Or Cancel</a>
+                     <a className="black-text right mfl-tm-1"
+                      onClick={() => this.props.handleCancel()}
+                     >
+                        Or Cancel
+                     </a>
 
                 {/* <a
                     class="waves-effect waves-light blue btn mfl-tab-btn-space"
