@@ -6,37 +6,23 @@ import FacilityAddFooter from "./FacilityAddFooter";
 import { connect } from "react-redux";
 
 type Props = {
-    handleNextForTabs: Function
+    handleNextForTabs: Function,
+    handlePreviousForTabs: Function,
 };
+type State = {
+    tabPreviousName: string,
+ }
 
-class FacilityAddServices extends Component<Props> {
+class FacilityAddServices extends Component<Props, State> {
+   state = {
+     tabPreviousName: "Utilities",
+   }
+
     componentDidMount() {
         footerResizer();
     }
     render() {
-        // let serviceTypeOptions = <option>Select Service Type</option>;
-        // if (this.props.serviceTypes.length > 0) {
-        //     serviceTypeOptions = this.props.serviceTypes.map(st => (
-        //         <option
-        //             selected={st.id === serviceTypeId ? true : false}
-        //             key={st.id}
-        //             value={st.id}
-        //         >
-        //             {st.service_type}
-        //         </option>
-        //     ));
-        // }
-
-        // let serviceTypeInstanceOptions = <option>Select Instance Type</option>;
-        // if (this.props.serviceTypes.length > 0) {
-        //     serviceTypeInstanceOptions = this.props.typeServiceInstances.map(
-        //         tsi => (
-        //             <option key={tsi.id} value={tsi.id}>
-        //                 {tsi.service_name}
-        //             </option>
-        //         )
-        //     );
-        // }
+        
         return (
             <div>
                 <div class="row">
@@ -91,6 +77,8 @@ class FacilityAddServices extends Component<Props> {
                             <div className="mfl-vertical-ruler-services" />
                         </div>
                         <FacilityAddFooter
+                            tabPreviousName={this.state.tabPreviousName}
+                            handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
                         />
                     </form>

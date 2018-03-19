@@ -33,7 +33,7 @@ type Props = {
     registrationNumberError: string,
     postResponse: {}
 };
-
+ 
 class FacilityBasicDetails extends Component<Props> {
     async submitFormData(e) {
         const data = {
@@ -49,12 +49,12 @@ class FacilityBasicDetails extends Component<Props> {
             client_id: 1,
             clientId: 1
         };
-
         const token = sessionStorage.getItem("token");
         await e.preventDefault();
         const resource = "/Facilities";
         const method = "post";
         const actionName = "POST_FORM_BASIC_DATA";
+       if(this.props.error.length === 0) {
         await this.props.postFormData(
             data,
             resource,
@@ -64,7 +64,7 @@ class FacilityBasicDetails extends Component<Props> {
         );
         if (this.props.postResponse.basicResponse.status === 200) {
             this.props.handleNextForTabs("Contacts and Locations");
-        }
+        }}
     }
 
     validation(e) {
@@ -123,6 +123,7 @@ class FacilityBasicDetails extends Component<Props> {
                                     value={this.props.facilityName}
                                     onChange={e => this.validation(e)}
                                     placeholder="Facility Name"
+                                    required
                                 />
                                 <span className="red-text">
                                     {this.props.facilityNameError}
@@ -162,11 +163,12 @@ class FacilityBasicDetails extends Component<Props> {
                                     class="validate"
                                     value={this.props.commonName}
                                     onChange={e => this.validation(e)}
+                                    placeholder="Common Name"
+                                    required
                                 />
                                 <span className="red-text">
                                     {this.props.commonNameError}
                                 </span>
-                                <label for="facility_name">Common Name</label>
                             </div>
                             <div className="input-field col s6 mfl-select-tab">
                                 <Input
@@ -203,6 +205,8 @@ class FacilityBasicDetails extends Component<Props> {
                                             "DATE_OPENED"
                                         )
                                     }
+                                    required
+
                                 />
                                 <label for="facility_name">
                                     Select Date Opened
@@ -265,6 +269,7 @@ class FacilityBasicDetails extends Component<Props> {
                                     value={this.props.registrationNumber}
                                     onChange={e => this.validation(e)}
                                     placeholder="Registration Number"
+                                    required
                                 />
                                 <span className="red-text">
                                     {this.props.registrationNumberError}
@@ -287,6 +292,7 @@ const mapStateToProps = state => {
         facilityName: state.formValues.facilityName,
         facilityNameError: state.formValues.facilityNameError,
         commonNameError: state.formValues.commonNameError,
+        error: state.formValues.error,
         commonName: state.formValues.commonName,
         operationalStatus: state.formValues.operationalStatus,
         regulatoryStatus: state.formValues.regulatoryStatus,
@@ -295,7 +301,7 @@ const mapStateToProps = state => {
         dateOpened: state.formValues.dateOpened,
         registrationNumber: state.formValues.registrationNumber,
         registrationNumberError: state.formValues.registrationNumberError,
-        postResponse: state.postResponse
+        postResponse: state.postResponse,
     };
 };
 

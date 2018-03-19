@@ -8,13 +8,26 @@ import { connect } from "react-redux";
 
 type Props = {
     handleNextForTabs: Function,
+    handlePreviousForTabs: Function,
     addFormValues: Function,
     postFormData: Function,
 };
 
-class FacilityAddUtilities extends Component<Props> {
-    async submitFormData(e) {
+type State = {
+    tabPreviousName: string,
+    notice: string,
+ }
 
+class FacilityAddUtilities extends Component<Props, State> {
+
+    state= {
+      tabPreviousName: "Resources",
+      notice: ""
+    };
+
+    async submitFormData(e) {
+        await e.preventDefault();
+        if(!this.props.postResponse.basicResponse === ""){
         const facilityId = this.props.postResponse.basicResponse.data.id;
         const data =  this.props.formValues.utilities.map(utility=>{
                return Object.assign({},
@@ -26,7 +39,6 @@ class FacilityAddUtilities extends Component<Props> {
                  })
                 });
                const token = sessionStorage.getItem("token");
-               await e.preventDefault();
                const resource = "/FacilityResources";
                const method = "post";
                const actionName = "POST_FORM_FACILITY_RESOURCE_DATA";
@@ -40,6 +52,10 @@ class FacilityAddUtilities extends Component<Props> {
                if (this.props.postResponse.facilityResourceResponse.status === 200) {
                    this.props.handleNextForTabs("Services");
                }
+           }else{
+            const msg = "You can not start from utility tab but start from basic tab";
+               this.setState({notice: msg});
+           }
     }
 
     async addUtilities(e) {
@@ -67,6 +83,9 @@ class FacilityAddUtilities extends Component<Props> {
                         onSubmit={e => this.submitFormData(e)}
                         className="col s12"
                     >
+                    <span className="red-text">
+                    {this.state.notice}
+                     </span>
                         <div className="row">
                         {this.props.utilityTypes.map(utilityType => {return(
                             <div class="input-field col s6">
@@ -102,6 +121,8 @@ class FacilityAddUtilities extends Component<Props> {
                         </div>
 
                         <FacilityAddFooter
+                            tabPreviousName={this.state.tabPreviousName}
+                            handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
                         />
                      </form>

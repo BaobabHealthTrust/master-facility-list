@@ -20,7 +20,6 @@ type State = {
 };
 
 type Props = {
-    handleNextForTabs: Function,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
     facilityOwners: Array<FacilityOwner>,
@@ -35,6 +34,10 @@ class FacilityTabs extends React.Component<Props, State> {
     };
 
     handleNextForTabs = (tabName) => {
+        this.setState({ activeTab: tabName });
+    };
+    
+    handlePreviousForTabs = (tabName) => {
         this.setState({ activeTab: tabName });
     };
 
@@ -61,6 +64,7 @@ class FacilityTabs extends React.Component<Props, State> {
                             {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails
                                     handleNextForTabs={this.handleNextForTabs}
+                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
                                     regulatoryStatuses={
@@ -88,6 +92,7 @@ class FacilityTabs extends React.Component<Props, State> {
                             {this.state.activeTab ===
                             "Contacts and Locations" ? (
                                 <FacilityContacts
+                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     districts={this.props.districts}
                                 />
@@ -107,6 +112,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Resources" ? (
                                 <FacilityAddResources
+                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                 />
                             ) : (
@@ -125,6 +131,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Utilities" ? (
                                 <FacilityAddUtilities
+                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                 />
                             ) : (
@@ -143,6 +150,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Services" ? (
                                 <FacilityAddServices
+                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     services={this.props.services}
                                     serviceTypes={this.props.serviceTypes}
