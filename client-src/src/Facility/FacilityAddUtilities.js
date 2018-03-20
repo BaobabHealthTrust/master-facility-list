@@ -53,7 +53,7 @@ class FacilityAddUtilities extends Component<Props, State> {
                    this.props.handleNextForTabs("Services");
                }
            }else{
-            const msg = "You can not start from utility tab but start from basic tab";
+            const msg = "Please you have not saved data from previous tab";
                this.setState({notice: msg});
            }
     }

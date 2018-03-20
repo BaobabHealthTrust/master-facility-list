@@ -40,66 +40,103 @@ class FacilityContacts extends Component<Props, State> {
 
     async submitFormData(e) {
         await e.preventDefault();
-        if(this.props.postResponse.basicResponse !== ""){
-        const data = {
-            contact_person_fullname: this.props.contactName,
-            contact_person_phone: this.props.phoneNumber,
-            contact_person_email: this.props.contactEmail,
-            postal_address: this.props.postalAddress,
-            facility_id: this.props.postResponse.basicResponse.data.id
-        };
-
         const token = sessionStorage.getItem("token");
-        await e.preventDefault();
-        const resource = "/ContactPeople";
         const method = "post";
-        const actionName = "POST_FORM_CONTACT_DATA";
-        await this.props.postFormData(
-            data,
-            resource,
-            method,
-            actionName,
-            token
-        );
-        const Geodata = {
-               datum: 90,
-               longitude: this.props.longitude,
-               latitude: this.props.latitude,
-               facility_id: this.props.postResponse.basicResponse.data.id,
-        };
-        const tokenGeo = sessionStorage.getItem("token");
-        const resourceGeo = "/Geolocations";
-        const methodGeo = "post";
-        const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
-       if(this.props.formValues.error.length === 0) {
-        await this.props.postFormData(
-            Geodata,
-            resourceGeo,
-            methodGeo,
-            actionNameGeo,
-            tokenGeo
-        );
-        const facilityData = {
-            district_id: this.props.district,
-        };
+
+        if(this.props.postResponse.basicResponse !== ""){
         const facilityId = this.props.postResponse.basicResponse.data.id;
-        const facilityUrl ="/Facilities/"+facilityId;
-        const facilityMethod = "patch";
-        const facilityActionName = "PATCH_FORM_FACILITY_DATA";
-        await this.props.postFormData(
-            facilityData,
-            facilityUrl,
-            facilityMethod,
-            facilityActionName,
-            token
-        );
-        if (this.props.postResponse.contactResponse.status === 200 && this.props.postResponse.geolocationResponse.status === 200 && this.props.postResponse.districtResponse.status === 200) {
-            this.props.handleNextForTabs("Resources");
-        }}
-     }else{
-        const msg="You can not start from contacts and locations tab but start from basic tab";
-        this.setState({notice:msg});
-     }
+
+            if(this.props.formValues.error.length === 0) {
+             const data = {
+                 contact_person_fullname: this.props.contactName,
+                 contact_person_phone: this.props.phoneNumber,
+                 contact_person_email: this.props.contactEmail,
+                 postal_address: this.props.postalAddress,
+                 facility_id: facilityId
+                 };
+
+             const resource = "/ContactPeople";
+             const actionName = "POST_FORM_CONTACT_DATA";       
+              await this.props.postFormData(
+                        data,
+                        resource,
+                        method,
+                        actionName,
+                        token
+                        );
+
+             const Geodata = {
+                datum: 90,
+                longitude: this.props.longitude,
+                latitude: this.props.latitude,
+                facility_id: facilityId,
+               };
+             const resourceGeo = "/Geolocations";
+             const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
+              await this.props.postFormData(
+                     Geodata,
+                     resourceGeo,
+                     method,
+                     actionNameGeo,
+                     token
+                     );
+
+             const facilityData = {
+                   district_id: this.props.district,
+                   };
+             const facilityUrl ="/Facilities/"+facilityId;
+             const facilityMethod = "patch";
+             const facilityActionName = "PATCH_FORM_FACILITY_DATA";
+              await this.props.postFormData(
+                    facilityData,
+                    facilityUrl,
+                    facilityMethod,
+                    facilityActionName,
+                    token
+                    );
+
+             const locationData = {
+                   catchment_area: "area here",
+                   catchment_population: 5000,
+                   facility_id: facilityId
+                   };
+             const locationUrl ="/Locations";
+             const locationActionName = "POST_FORM_LOCATION_DATA";
+              await this.props.postFormData(
+                    locationData,
+                    locationUrl,
+                    method,
+                    locationActionName,
+                    token
+                    );
+
+             const addressData = {
+                   physical_address: "physical address here",
+                   postal_address: this.props.postalAddress,
+                   facility_id: facilityId
+                   };
+             const addressUrl ="/Addresses";
+             const addressActionName = "POST_FORM_ADDRESS_DATA";
+              await this.props.postFormData(
+                    addressData,
+                    addressUrl,
+                    method,
+                    addressActionName,
+                    token
+                    );
+
+              if (this.props.postResponse.contactResponse.status === 200 &&
+                  this.props.postResponse.geolocationResponse.status === 200 && 
+                  this.props.postResponse.districtResponse.status === 200 &&
+                  this.props.postResponse.locationResponse.status === 200 && 
+                  this.props.postResponse.addressResponse.status === 200) {
+                    this.props.handleNextForTabs("Resources");
+              }
+            }
+        }else{
+              const msg="Please you have not saved data from previous tab";
+              this.setState({notice:msg});
+        }
     }
 
     validation(e) {

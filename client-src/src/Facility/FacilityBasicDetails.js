@@ -65,7 +65,8 @@ class FacilityBasicDetails extends Component<Props> {
         );
         if (this.props.postResponse.basicResponse.status === 200) {
             this.props.handleNextForTabs("Contacts and Locations");
-        }}
+        }
+      }
     }
 
     validation(e) {

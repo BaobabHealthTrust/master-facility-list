@@ -7,6 +7,7 @@ import FacilityContacts from "./FacilityContacts";
 import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
 import FacilityAddServices from "./FacilityAddServices";
+import FacilitiesHome from "./FacilitiesHome";
 import { addFormValues } from "../actions";
 import { connect } from "react-redux";
 import {
@@ -26,7 +27,8 @@ type Props = {
     facilityOwners: Array<FacilityOwner>,
     facilityTypes: Array<FacilityType>,
     serviceTypes: Array<serviceTypes>,
-    services: Array<services>
+    services: Array<services>,
+    handleCancelAddFacility: Function,
 };
 
 class FacilityTabs extends React.Component<Props, State> {
@@ -42,9 +44,9 @@ class FacilityTabs extends React.Component<Props, State> {
         this.setState({ activeTab: tabName });
     };
 
-    handleCancel=()=>{
-        this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
-        this.setState({ activeTab: "Basic" });
+    handleCancel= ()=>{
+         this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+         this.props.handleCancelAddFacility();
     }
 
     render() {

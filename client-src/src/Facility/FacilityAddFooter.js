@@ -31,7 +31,7 @@ class FacilityAddFooter extends Component<Props> {
                     id="submit"
                     type="submit"
                 >
-                    Next
+                   {this.props.tabPreviousName==="Utilities"? "Finish":"Next"} 
                 </Button>
                 {this.props.tabName !== "Basic" && (
                     <a

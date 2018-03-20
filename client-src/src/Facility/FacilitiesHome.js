@@ -83,6 +83,13 @@ class FacilitiesHome extends Component {
         footerResizer();
     }
 
+    handleCancelAddFacility() {
+        this.setState({
+            isAddFacility: false
+        });
+        footerResizer();
+    }
+
     render() {
         return (
             <div>
@@ -116,7 +123,8 @@ class FacilitiesHome extends Component {
                                     handleClose={() => this.handleClose()}
                                 />
                             ) : this.state.isAddFacility ? (
-                                <AddFacility />
+                                <AddFacility 
+                                handleCancelAddFacility={()=>this.handleCancelAddFacility()}/>
                             ) : this.state.isShowSearchResults ? (
                                 <div>
                                     <FacilityList
