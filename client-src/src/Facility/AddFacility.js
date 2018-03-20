@@ -11,7 +11,10 @@ import footerResizer from "../helpers/footerResize";
 import FacilityTabs from "./FacilityTabs";
 import { fetchResources } from "../actions";
 
-class AddFacility extends React.Component<Props, State> {
+type Props ={
+    handleCancelAddFacility: Function,
+}
+class AddFacility extends React.Component<Props> {
     componentDidMount() {
         footerResizer();
     }
@@ -48,7 +51,8 @@ class AddFacility extends React.Component<Props, State> {
                     </div>
                 </div>
 
-                <FacilityTabs />
+                <FacilityTabs 
+                handleCancelAddFacility={()=>this.props.handleCancelAddFacility()}/>
                 {this.props.isError ? (
                     <blockquote>
                         <h4>

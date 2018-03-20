@@ -5,6 +5,8 @@ export default (
         geolocationResponse: "",
         districtResponse: "",
         facilityUtilityResponse: "",
+        locationResponse: "",
+        addressResponse: "",
     },
     action
 ) => {
@@ -33,6 +35,16 @@ export default (
             return {
                 ...state,
                 facilityUtilityResponse: action.payload
+            };
+        case "POST_FORM_LOCATION_DATA":
+            return {
+                ...state,
+                locationResponse: action.payload
+            };
+        case "POST_FORM_ADDRESS_DATA":
+            return {
+                ...state,
+                addressResponse: action.payload
             };
         default:
             return state;
