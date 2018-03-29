@@ -8,6 +8,7 @@ type Props = {
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
     handleCancel: Function,
+    handleCancelEdit: Function
 };
 
 class FacilityAddFooter extends Component<Props> {
@@ -18,29 +19,23 @@ class FacilityAddFooter extends Component<Props> {
                       onClick={() => this.props.handleCancel()}
                      >
                         Or Cancel
-                     </a>
-
-                {/* <a
-                    class="waves-effect waves-light blue btn mfl-tab-btn-space"
-                    }
-                >
-                    Next
-                </a> */} 
+                     </a> 
+                
                 <Button
                     className="blue white-text mfl-tab-btn-space"
                     id="submit"
                     type="submit"
                 >
-                   {this.props.tabPreviousName==="Utilities"? "Finish":"Next"} 
+                   {!this.props.isEditFacility?(this.props.tabPreviousName==="Utilities"? "Finish":"Next"):("Save")}
                 </Button>
-                {this.props.tabName !== "Basic" && (
+                {this.props.isEditFacility? (""):(this.props.tabName !== "Basic" && (
                     <a
                         class="waves-effect waves-light blue btn mfl-tab-btn-space-previous"
                         onClick={() => this.props.handlePreviousForTabs(this.props.tabPreviousName)}
                     >
                         Previous
                     </a>
-                )}
+                ))}
             </div>
         );
     }

@@ -37,6 +37,7 @@ type Props = {
  
 class FacilityBasicDetails extends Component<Props> {
     async submitFormData(e) {
+        await e.preventDefault();
         const data = {
             facility_code: this.props.registrationNumber,
             facility_name: this.props.facilityName,
@@ -51,7 +52,6 @@ class FacilityBasicDetails extends Component<Props> {
             clientId: 1
         };
         const token = sessionStorage.getItem("token");
-        await e.preventDefault();
         const resource = "/Facilities";
         const method = "post";
         const actionName = "POST_FORM_BASIC_DATA";
@@ -68,6 +68,18 @@ class FacilityBasicDetails extends Component<Props> {
         }
       }
     }
+    
+    componentWillMount(){
+        let facilityDetailsData = [];
+            this.props.isEditBasic && (
+            facilityDetailsData =[
+            {value: this.props.facilityNameValue, actionType: "FACILITY_NAME"},
+            {value: this.props.commonNameValue, actionType: "COMMON_NAME"},
+            {value: this.props.facilityCodeValue, actionType: "REGISTRATION_NUMBER"},
+            {value: this.props.dateOpenedValue, actionType: "DATE_OPENED"}],
+            facilityDetailsData.map(detail=>this.props.addFormValues(detail.value,detail.actionType)));
+    }
+
 
     validation(e) {
         const values = validateFunction(e);
@@ -112,7 +124,7 @@ class FacilityBasicDetails extends Component<Props> {
             <div>
                 <div class="row">
                     <form
-                        onSubmit={e => this.submitFormData(e)}
+                        onSubmit={e=>this.submitFormData(e)}
                         class="col s12"
                     >
                         <div class="row">
@@ -280,6 +292,7 @@ class FacilityBasicDetails extends Component<Props> {
                         </div>
                         <FacilityAddFooter
                             tabName={"Basic"}
+                            isEditFacility={this.props.isEditBasic}
                             handleNextForTabs={this.props.handleNextForTabs}
                             handleCancel={this.props.handleCancel}
                         />
