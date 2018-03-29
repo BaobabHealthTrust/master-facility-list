@@ -1,13 +1,67 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import { connect } from "react-redux";
-import { fetchCurrentDetails, setCurrentDetails } from "../actions";
+import { fetchCurrentDetails, setCurrentDetails, addFormValues, postFormData} from "../actions";
 import moment from "moment";
+import FacilityBasicDetails from "./FacilityBasicDetails";
 
-class Summary extends Component {
+type State = {
+    isEditBasic: boolean,
+}
+
+class Summary extends Component<State> {
+     state = {
+       isEditBasic: false,
+    }
+
+    async submitEditBasicData(e) {
+        alert("hey");
+        await e.preventDefault();
+        const id = this.props.match.params.id;
+        const data = {
+            facility_code: this.props.registrationNumber,
+            facility_name: this.props.facilityName,
+            common_name: this.props.commonName,
+            facility_date_opened: this.props.dateOpened,
+            facility_type_id: this.props.facilityType,
+            facility_owner_id: this.props.facilityOwner,
+            facility_operational_status_id: this.props.operationalStatus,
+            facility_regulatory_status_id: this.props.regulatoryStatus,
+            district_id: this.props.current.district.id,
+            client_id: 1,
+            clientId: 1
+        };
+        const token = sessionStorage.getItem("token");
+        const resource = "/Facilities/"+id;
+        const method = "patch";
+        const actionName = "EDIT_FACILITY_BASIC_DATA";
+       if(this.props.error.length === 0) {
+        await this.props.postFormData(
+            data,
+            resource,
+            method,
+            actionName,
+            token
+        );
+        if (this.props.postResponse.editBasicResponse.status === 200) {
+            await this.props.fetchCurrentDetails(id);
+            this.setState({isEditBasic: false});
+        }
+      }
+    }
+
+    toggleEditBasic = ()=>{
+       this.setState({isEditBasic: true});
+       console.log(this.props.current);
+    }
+
+    handleCancel= ()=>{
+         this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+         this.setState({isEditBasic: false});
+    }
+
     async componentDidMount() {
         const id = this.props.match.params.id;
-
         this.props.fetchCurrentDetails(id);
     }
 
@@ -55,6 +109,18 @@ class Summary extends Component {
 
         return (
             <div className="container mfl-container">
+             {sessionStorage.getItem("token") && (
+                     !this.state.isEditBasic?( <a
+                         class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                         onClick ={this.toggleEditBasic}
+                            >
+                         <i class="material-icons left">edit</i> Edit
+                      </a>):(
+                        ""
+                      )
+                        )}
+             {!this.state.isEditBasic?(
+                <div>
                 <div className="row z-depth-2">
                     <div className="col m6 s12">
                         <p className="mfl-summary-header">Common Name</p>
@@ -117,6 +183,23 @@ class Summary extends Component {
                         />
                     </div>
                 </div>
+                </div>):(<FacilityBasicDetails
+                           submitBasicData={(e)=>this.submitEditBasicData(e)}
+                           facilityNameValue={this.props.current.facility_name}
+                           commonNameValue={this.props.current.common_name}
+                           facilityCodeValue={this.props.current.facility_code}
+                           dateOpenedValue={this.props.current.facility_date_opened}
+                           isEditBasic={this.state.isEditBasic}
+                           handleCancel={this.handleCancel}
+                           facilityOwners={this.props.facilityOwners}
+                           facilityTypes={this.props.facilityTypes}
+                           regulatoryStatuses={
+                                        this.props.regulatoryStatuses
+                                    }
+                           operationalStatuses={
+                                        this.props.operationalStatuses
+                                    }
+                            />)}
             </div>
         );
     }
@@ -125,11 +208,30 @@ class Summary extends Component {
 const mapStateToProps = state => {
     return {
         facilities: state.facilities.list,
-        current: state.facilities.currentDetails
+        current: state.facilities.currentDetails,
+        operationalStatuses: state.dependancies.operationalStatuses,
+        regulatoryStatuses: state.dependancies.regulatoryStatuses,
+        facilityOwners: state.dependancies.facilityOwners,
+        facilityTypes: state.dependancies.facilityTypes,
+        facilityName: state.formValues.facilityName,
+        facilityNameError: state.formValues.facilityNameError,
+        commonNameError: state.formValues.commonNameError,
+        error: state.formValues.error,
+        commonName: state.formValues.commonName,
+        operationalStatus: state.formValues.operationalStatus,
+        regulatoryStatus: state.formValues.regulatoryStatus,
+        facilityType: state.formValues.facilityType,
+        facilityOwner: state.formValues.facilityOwner,
+        dateOpened: state.formValues.dateOpened,
+        registrationNumber: state.formValues.registrationNumber,
+        registrationNumberError: state.formValues.registrationNumberError,
+        postResponse: state.postResponse,
     };
 };
 
 export default connect(mapStateToProps, {
     setCurrentDetails,
-    fetchCurrentDetails
+    fetchCurrentDetails,
+    addFormValues,
+    postFormData,
 })(Summary);
