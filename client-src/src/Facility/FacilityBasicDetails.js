@@ -36,8 +36,7 @@ type Props = {
 };
  
 class FacilityBasicDetails extends Component<Props> {
-    async submitFormData(e) {
-        await e.preventDefault();
+    submitCreateBasicData = async () => {
         const data = {
             facility_code: this.props.registrationNumber,
             facility_name: this.props.facilityName,
@@ -124,7 +123,6 @@ class FacilityBasicDetails extends Component<Props> {
             <div>
                 <div class="row">
                     <form
-                        onSubmit={e=>this.submitFormData(e)}
                         class="col s12"
                     >
                         <div class="row">
@@ -293,6 +291,7 @@ class FacilityBasicDetails extends Component<Props> {
                         <FacilityAddFooter
                             tabName={"Basic"}
                             isEditFacility={this.props.isEditBasic}
+                            submitFormData={this.props.isEditBasic? this.props.submitBasicData: this.submitCreateBasicData}
                             handleNextForTabs={this.props.handleNextForTabs}
                             handleCancel={this.props.handleCancel}
                         />
