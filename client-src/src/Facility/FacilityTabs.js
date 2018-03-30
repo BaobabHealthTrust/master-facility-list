@@ -8,7 +8,6 @@ import FacilityAddResources from "./FacilityAddResources";
 import FacilityAddUtilities from "./FacilityAddUtilities";
 import FacilityAddServices from "./FacilityAddServices";
 import FacilitiesHome from "./FacilitiesHome";
-import { addFormValues } from "../actions";
 import { connect } from "react-redux";
 import {
     RegulatoryStatus,
@@ -71,8 +70,8 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Basic" ? (
                                 <FacilityBasicDetails
+                                    isEditBasic={false}
                                     handleNextForTabs={this.handleNextForTabs}
-                                    handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleCancel={this.handleCancel}
                                     facilityOwners={this.props.facilityOwners}
                                     facilityTypes={this.props.facilityTypes}
@@ -188,8 +187,8 @@ const mapStateToProps = state => {
         facilityTypes: state.dependancies.facilityTypes,
         districts: state.dependancies.districts,
         serviceTypes: state.dependancies.serviceInstance,
-        services: state.facilities.services
+        services: state.facilities.services,
     };
 };
 
-export default connect(mapStateToProps, {addFormValues})(FacilityTabs);
+export default connect(mapStateToProps, {})(FacilityTabs);

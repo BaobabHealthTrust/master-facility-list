@@ -14,9 +14,7 @@ class Summary extends Component<State> {
        isEditBasic: false,
     }
 
-    async submitEditBasicData(e) {
-        alert("hey");
-        await e.preventDefault();
+     submitEditBasicData= async ()=> {
         const id = this.props.match.params.id;
         const data = {
             facility_code: this.props.registrationNumber,
@@ -46,6 +44,7 @@ class Summary extends Component<State> {
         if (this.props.postResponse.editBasicResponse.status === 200) {
             await this.props.fetchCurrentDetails(id);
             this.setState({isEditBasic: false});
+            await this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
         }
       }
     }
@@ -184,7 +183,7 @@ class Summary extends Component<State> {
                     </div>
                 </div>
                 </div>):(<FacilityBasicDetails
-                           submitBasicData={(e)=>this.submitEditBasicData(e)}
+                           submitBasicData={this.submitEditBasicData}
                            facilityNameValue={this.props.current.facility_name}
                            commonNameValue={this.props.current.common_name}
                            facilityCodeValue={this.props.current.facility_code}

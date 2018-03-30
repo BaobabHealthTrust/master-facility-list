@@ -8,7 +8,8 @@ type Props = {
     handleNextForTabs: Function,
     handlePreviousForTabs: Function,
     handleCancel: Function,
-    handleCancelEdit: Function
+    handleCancelEdit: Function,
+    submitFormData: Function,
 };
 
 class FacilityAddFooter extends Component<Props> {
@@ -21,13 +22,12 @@ class FacilityAddFooter extends Component<Props> {
                         Or Cancel
                      </a> 
                 
-                <Button
-                    className="blue white-text mfl-tab-btn-space"
-                    id="submit"
-                    type="submit"
+                <a
+                    className="waves-effect waves-light blue btn mfl-tab-btn-space"
+                    onClick={() => this.props.submitFormData()}
                 >
                    {!this.props.isEditFacility?(this.props.tabPreviousName==="Utilities"? "Finish":"Next"):("Save")}
-                </Button>
+                </a>
                 {this.props.isEditFacility? (""):(this.props.tabName !== "Basic" && (
                     <a
                         class="waves-effect waves-light blue btn mfl-tab-btn-space-previous"
