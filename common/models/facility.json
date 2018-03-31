@@ -45,7 +45,7 @@
             "required": true
         },
        "archived_date": {
-            "type": "date"
+            "type": "string"
         }
     },
     "validations": [],

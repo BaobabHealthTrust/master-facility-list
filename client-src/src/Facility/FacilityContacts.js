@@ -38,8 +38,7 @@ class FacilityContacts extends Component<Props, State> {
       notice: "",
     };
 
-    async submitFormData(e) {
-        await e.preventDefault();
+      submitCreateContactData = async () => {
         const token = sessionStorage.getItem("token");
         const method = "post";
 
@@ -157,7 +156,6 @@ class FacilityContacts extends Component<Props, State> {
             <div>
                 <div class="row">
                     <form
-                        onSubmit={e => this.submitFormData(e)}
                         class="col s12"
                     >
                     <span className="red-text">
