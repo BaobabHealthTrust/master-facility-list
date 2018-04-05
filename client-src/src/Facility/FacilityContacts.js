@@ -137,6 +137,19 @@ class FacilityContacts extends Component<Props, State> {
               this.setState({notice:msg});
         }
     }
+    
+    componentWillMount(){
+        let contactDetailsData = [];
+            this.props.isEditContactAndLocation && (
+            contactDetailsData =[
+            {value: this.props.postalAddressValue, actionType: "POSTAL_ADDRESS"},
+            {value: this.props.contactNameValue, actionType: "CONTACT_NAME"},
+            {value: this.props.contactEmailValue, actionType: "CONTACT_EMAIL"},
+            {value: this.props.phoneNumberValue, actionType: "PHONE_NUMBER"},
+            {value: this.props.latitudeValue, actionType: "LATITUDE"},
+            {value: this.props.longitudeValue, actionType: "LONGITUDE"}],
+            contactDetailsData.map(detail=>this.props.addFormValues(detail.value,detail.actionType)));
+        }
 
     validation(e) {
         const values = validateFunction(e);
@@ -320,6 +333,8 @@ class FacilityContacts extends Component<Props, State> {
                             </div>
                         </div>
                         <FacilityAddFooter
+                            isEditFacility={this.props.isEditContactAndLocation}
+                            submitFormData={this.props.isEditContactAndLocation? this.props.submitContactData: this.submitCreateContactData}
                             tabPreviousName={this.state.tabPreviousName}
                             handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}

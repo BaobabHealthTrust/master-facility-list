@@ -27,8 +27,7 @@ class FacilityAddUtilities extends Component<Props, State> {
       notice: ""
     };
 
-    async submitFormData(e) {
-        await e.preventDefault();
+    submitCreateUtilityData = async ()=>{
         if(this.props.postResponse.basicResponse !== ""){
         const facilityId = this.props.postResponse.basicResponse.data.id;
         const data =  this.props.formValues.utilities.map(utility=>{
@@ -81,7 +80,6 @@ class FacilityAddUtilities extends Component<Props, State> {
             <div>
                 <div class="row">
                 <form
-                        onSubmit={e => this.submitFormData(e)}
                         className="col s12"
                     >
                     <span className="red-text">
@@ -124,7 +122,9 @@ class FacilityAddUtilities extends Component<Props, State> {
                         )})}
                         
                         <FacilityAddFooter
+                            isEditFacility={this.props.isEditUtilities}
                             tabPreviousName={this.state.tabPreviousName}
+                            submitFormData={this.props.isEditUtilities? this.props.submitUtilityData: this.submitCreateUtilityData}
                             handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
                             handleNextForTabs={this.props.handleNextForTabs}
                             handleCancel={this.props.handleCancel}
