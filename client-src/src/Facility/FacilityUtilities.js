@@ -1,13 +1,55 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurrentDetails } from "../actions";
+import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurrentDetails,addFormValues, postFormData } from "../actions";
 import { connect } from "react-redux";
-import { uniq, chunk } from "lodash";
+import FacilityAddUtilities from "./FacilityAddUtilities";
+import { uniq, chunk, map } from "lodash";
 
 class FacilityUtilities extends Component {
+
+    state = {
+        isEditUtilities: false
+    };
+
+    submitEditUtilityData = async () => {
+        const facilityId = this.props.match.params.id;
+        const oldUtilityData = map(this.props.utilities,"id");
+
+        const newUtilityData =  this.props.formValues.utilities.map(utility=>{
+               return Object.assign({},
+                {
+                facility_id: facilityId,
+                utility_id: utility,
+                 })
+                });
+        const data ={oldData:oldUtilityData,newData:newUtilityData}
+               const token = sessionStorage.getItem("token");
+               const resource = "/FacilityUtilities/edit";
+               const method = "post";
+               const actionName = "EDIT_FACILITY_UTILITY_DATA";
+               await this.props.postFormData(
+                   data,
+                   resource,
+                   method,
+                   actionName,
+                   token
+               );
+               if (this.props.postResponse.editFacilityUtilityResponse.status === 200) {
+                    this.setState({isEditUtilities: true});
+               }
+    }
+
+    toggleEditUtilities = ()=>{
+       this.setState({isEditUtilities: true});
+    }
+
+    handleCancel= ()=>{
+         this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+         this.setState({isEditUtilities: false});
+    }
+
     async componentDidMount() {
         const id = this.props.match.params.id;
-
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchUtilityTypes();
         await this.props.fetchCurrentUtilities(id);
@@ -39,7 +81,18 @@ class FacilityUtilities extends Component {
 
         return (
             <div className="container mfl-container">
-                <br />
+                {sessionStorage.getItem("token") && (
+                     !this.state.isEditUtilities?( <a
+                         class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                         onClick ={this.toggleEditUtilities}
+                            >
+                         <i class="material-icons left">edit</i> Edit
+                      </a>):(
+                        ""
+                      )
+                        )}
+                {!this.state.isEditUtilities?(
+                <div>
                 {cards.map(card => {
                     return (
                         <div className="row">
@@ -66,6 +119,11 @@ class FacilityUtilities extends Component {
                         </div>
                     );
                 })}
+                </div>):(<FacilityAddUtilities
+                          submitUtilityData={this.submitEditUtilityData}
+                          isEditUtilities={this.state.isEditUtilities}
+                          handleCancel={this.handleCancel}
+                        />)}
             </div>
         );
     }
@@ -76,7 +134,9 @@ const mapStateToProps = state => {
         utilities: state.facilities.currentUtilities,
         facilities: state.facilities.list,
         isLoading: state.facilities.isLoading,
-        utilityTypes: state.dependancies.utilityTypes
+        utilityTypes: state.dependancies.utilityTypes,
+        postResponse: state.postResponse,
+        formValues: state.formValues,
     };
 };
 
@@ -84,5 +144,7 @@ export default connect(mapStateToProps, {
     fetchCurrentUtilities,
     fetchCurrentDetails,
     setCurrentDetails,
-    fetchUtilityTypes
+    fetchUtilityTypes,
+    addFormValues,
+    postFormData
 })(FacilityUtilities);

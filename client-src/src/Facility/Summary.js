@@ -51,7 +51,6 @@ class Summary extends Component<State> {
 
     toggleEditBasic = ()=>{
        this.setState({isEditBasic: true});
-       console.log(this.props.current);
     }
 
     handleCancel= ()=>{
@@ -62,6 +61,7 @@ class Summary extends Component<State> {
     async componentDidMount() {
         const id = this.props.match.params.id;
         this.props.fetchCurrentDetails(id);
+        console.log(this.props.current);
     }
 
     componentWillReceiveProps(newProps) {

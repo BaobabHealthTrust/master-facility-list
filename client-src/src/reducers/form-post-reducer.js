@@ -2,6 +2,7 @@ export default (
     state = {
         basicResponse: "",
         editBasicResponse: "",
+        editFacilityUtilityResponse: "",
         contactResponse: "",
         geolocationResponse: "",
         districtResponse: "",
@@ -51,6 +52,11 @@ export default (
             return {
                 ...state,
                 editBasicResponse: action.payload
+            }; 
+        case "EDIT_FACILITY_UTILITY_DATA":
+            return {
+                ...state,
+                editFacilityUtilityResponse: action.payload
             };  
         default:
             return state;

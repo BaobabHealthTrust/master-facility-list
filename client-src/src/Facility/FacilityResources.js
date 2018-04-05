@@ -5,6 +5,11 @@ import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 
 class FacilityResources extends Component {
+
+    state = {
+        isEditResources: false
+    };
+
     async componentDidMount() {
         const id = this.props.match.params.id;
         await this.props.fetchCurrentDetails(id);
@@ -40,7 +45,16 @@ class FacilityResources extends Component {
 
         return (
             <div className="container mfl-container">
-                <br />
+                {sessionStorage.getItem("token") && (
+                     !this.state.isEditResources?( <a
+                         class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                         onClick ={this.toggleEditResources}
+                            >
+                         <i class="material-icons left">edit</i> Edit
+                      </a>):(
+                        ""
+                      )
+                        )}
                 {cards.map(card => {
                     return (
                         <div className="row">

@@ -15,6 +15,8 @@ import {
     FacilityOwner,
     FacilityType
 } from "../types/model-types";
+import { addFormValues } from "../actions";
+
 
 type State = {
     activeTab: string,
@@ -100,6 +102,7 @@ class FacilityTabs extends React.Component<Props, State> {
                             {this.state.activeTab ===
                             "Contacts and Locations" ? (
                                 <FacilityContacts
+                                    isEditContactAndLocation={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
@@ -121,6 +124,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Resources" ? (
                                 <FacilityAddResources
+                                    isEditResources={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
@@ -141,6 +145,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Utilities" ? (
                                 <FacilityAddUtilities
+                                    isEditUtilities={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
@@ -161,6 +166,7 @@ class FacilityTabs extends React.Component<Props, State> {
                         >
                             {this.state.activeTab === "Services" ? (
                                 <FacilityAddServices
+                                    isEditServices={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
@@ -191,4 +197,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, {})(FacilityTabs);
+export default connect(mapStateToProps, {addFormValues})(FacilityTabs);
