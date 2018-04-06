@@ -82,6 +82,9 @@ class FacilityAddUtilities extends Component<Props, State> {
         footerResizer();
     }
     render() {
+        let utilityCheck = [];
+        this.props.isEditUtilities && (
+           utilityCheck = map(this.props.currentUtilities,"utility_id"));
         const utilityTypes = chunk(this.props.utilityTypes,2);
         return (
             <div>
@@ -105,16 +108,16 @@ class FacilityAddUtilities extends Component<Props, State> {
                                         utility.utility_type_id ===
                                         utilityType.id
                                         )
-                                        .map(utility=>{
+                                        .map((utility,index)=>{
                                         return (<div className="col s6">
                                             
                                             <Input
                                                 type="checkbox"
+                                                checked={utility.id === utilityCheck[index] ? true : false}
                                                 id={utility.id}
                                                 name={utility.utility_name}
                                                 label={utility.utility_name}
-                                                onClick={e=> this.addUtilities(e)}
-                                                
+                                                onClick={e=> this.addUtilities(e)}   
                                             />
                                            
                                     </div> 
