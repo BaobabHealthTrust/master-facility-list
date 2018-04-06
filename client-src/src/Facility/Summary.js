@@ -188,6 +188,10 @@ class Summary extends Component<State> {
                            commonNameValue={this.props.current.common_name}
                            facilityCodeValue={this.props.current.facility_code}
                            dateOpenedValue={this.props.current.facility_date_opened}
+                           operationalStatusValue={this.props.current.facility_operational_status_id}
+                           regulatoryStatusValue={this.props.current.facility_regulatory_status_id}
+                           facilityTypeValue={this.props.current.facility_type_id}
+                           facilityOwnerValue={this.props.current.facility_owner_id}
                            isEditBasic={this.state.isEditBasic}
                            handleCancel={this.handleCancel}
                            facilityOwners={this.props.facilityOwners}

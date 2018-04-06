@@ -160,10 +160,16 @@ class FacilityContacts extends Component<Props, State> {
 
     render() {
         let districtOptions;
-
+       
         if (this.props.districts.length > 0) {
             districtOptions = this.props.districts.map(d => (
-                <option value={d.id}>{d.district_name}</option>
+                <option 
+                   selected={d.id === this.props.district ? true : false}
+                   key={d.id}                
+                   value={d.id}
+                >
+                {d.district_name}
+                </option>
             ));
         }
         return (

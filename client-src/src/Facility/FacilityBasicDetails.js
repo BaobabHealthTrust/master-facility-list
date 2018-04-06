@@ -75,7 +75,11 @@ class FacilityBasicDetails extends Component<Props> {
             {value: this.props.facilityNameValue, actionType: "FACILITY_NAME"},
             {value: this.props.commonNameValue, actionType: "COMMON_NAME"},
             {value: this.props.facilityCodeValue, actionType: "REGISTRATION_NUMBER"},
-            {value: this.props.dateOpenedValue, actionType: "DATE_OPENED"}],
+            {value: this.props.dateOpenedValue, actionType: "DATE_OPENED"},
+            {value: this.props.operationalStatusValue, actionType: "OPERATIONAL_STATUS"},
+            {value: this.props.regulatoryStatusValue, actionType: "REGULATORY_STATUS"},
+            {value: this.props.facilityTypeValue, actionType: "FACILITY_TYPE"},
+            {value: this.props.facilityOwnerValue, actionType: "FACILITY_OWNER"}],
             facilityDetailsData.map(detail=>this.props.addFormValues(detail.value,detail.actionType)));
     }
 
@@ -91,7 +95,13 @@ class FacilityBasicDetails extends Component<Props> {
 
         if (this.props.facilityOwners.length > 0) {
             facilityOwnerOptions = this.props.facilityOwners.map(fo => (
-                <option value={fo.id}>{fo.facility_owner}</option>
+                <option 
+                   selected={fo.id === this.props.facilityOwner ? true : false}
+                   key={fo.id}                
+                   value={fo.id}
+                >
+                {fo.facility_owner}
+                </option>
             ));
         }
 
@@ -99,7 +109,13 @@ class FacilityBasicDetails extends Component<Props> {
 
         if (this.props.operationalStatuses.length > 0) {
             operationalStatusOptions = this.props.operationalStatuses.map(o => (
-                <option value={o.id}>{o.facility_operational_status}</option>
+                <option 
+                  selected={o.id === this.props.operationalStatus ? true : false}
+                  key={o.id}                
+                  value={o.id}
+                >
+                 {o.facility_operational_status}
+                </option>
             ));
         }
 
@@ -107,7 +123,13 @@ class FacilityBasicDetails extends Component<Props> {
 
         if (this.props.regulatoryStatuses.length > 0) {
             regulatoryStatusOptions = this.props.regulatoryStatuses.map(reg => (
-                <option value={reg.id}>{reg.facility_regulatory_status}</option>
+                <option
+                   selected={reg.id === this.props.regulatoryStatus ? true : false}
+                   key={reg.id}                
+                   value={reg.id}
+                >
+                  {reg.facility_regulatory_status}
+                </option>
             ));
         }
 
@@ -115,7 +137,13 @@ class FacilityBasicDetails extends Component<Props> {
 
         if (this.props.facilityTypes.length > 0) {
             facilityTypeOptions = this.props.facilityTypes.map(ft => (
-                <option value={ft.id}>{ft.facility_type}</option>
+                <option
+                   selected={ft.id === this.props.facilityType ? true : false}
+                   key={ft.id}                
+                   value={ft.id}
+                >
+                    {ft.facility_type}
+                </option>
             ));
         }
 
