@@ -147,7 +147,8 @@ class FacilityContacts extends Component<Props, State> {
             {value: this.props.contactEmailValue, actionType: "CONTACT_EMAIL"},
             {value: this.props.phoneNumberValue, actionType: "PHONE_NUMBER"},
             {value: this.props.latitudeValue, actionType: "LATITUDE"},
-            {value: this.props.longitudeValue, actionType: "LONGITUDE"}],
+            {value: this.props.longitudeValue, actionType: "LONGITUDE"},
+            {value: this.props.districtValue, actionType: "DISTRICT"}],
             contactDetailsData.map(detail=>this.props.addFormValues(detail.value,detail.actionType)));
         }
 

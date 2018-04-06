@@ -17,19 +17,18 @@ class FacilityLocation extends Component<State> {
 
     submitEditContactData = async () => {
         const token = sessionStorage.getItem("token");
-        const method = "post";
+        const method = "patch";
         const facilityId = this.props.match.params.id;
-            if(this.props.formValues.error.length === 0) {
+            if(this.props.error.length === 0) {
              const data = {
                  contact_person_fullname: this.props.contactName,
                  contact_person_phone: this.props.phoneNumber,
                  contact_person_email: this.props.contactEmail,
                  postal_address: this.props.postalAddress,
-                 facility_id: facilityId
                  };
-
-             const resource = "/ContactPeople";
-             const actionName = "POST_FORM_CONTACT_DATA";       
+             const contactpeopleId = this.props.current.contactPeople.id;
+             const resource = "/ContactPeople/"+contactpeopleId;
+             const actionName = "EDIT_FORM_CONTACT_DATA";       
               await this.props.postFormData(
                         data,
                         resource,
@@ -38,14 +37,28 @@ class FacilityLocation extends Component<State> {
                         token
                         );
 
+             const facilityData = {
+                   district_id: this.props.district,
+                   };             
+             const facilityUrl ="/Facilities/"+facilityId;
+             const facilityActionName = "PATCH_FORM_FACILITY_DATA";
+              await this.props.postFormData(
+                    facilityData,
+                    facilityUrl,
+                    method,
+                    facilityActionName,
+                    token
+                    );
+
              const Geodata = {
                 datum: 90,
                 longitude: this.props.longitude,
                 latitude: this.props.latitude,
-                facility_id: facilityId,
                };
-             const resourceGeo = "/Geolocations";
-             const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
+             console.log(Geodata);
+             const geolocationId = this.props.current.geolocations.id
+             const resourceGeo = "/Geolocations/"+geolocationId;
+             const actionNameGeo = "EDIT_FORM_GEOLOCATION_DATA";
               await this.props.postFormData(
                      Geodata,
                      resourceGeo,
@@ -54,27 +67,13 @@ class FacilityLocation extends Component<State> {
                      token
                      );
 
-             const facilityData = {
-                   district_id: this.props.district,
-                   };
-             const facilityUrl ="/Facilities/"+facilityId;
-             const facilityMethod = "patch";
-             const facilityActionName = "PATCH_FORM_FACILITY_DATA";
-              await this.props.postFormData(
-                    facilityData,
-                    facilityUrl,
-                    facilityMethod,
-                    facilityActionName,
-                    token
-                    );
-
              const locationData = {
                    catchment_area: "area here",
                    catchment_population: 5000,
-                   facility_id: facilityId
                    };
-             const locationUrl ="/Locations";
-             const locationActionName = "POST_FORM_LOCATION_DATA";
+             const locationId = this.props.current.locations.id;
+             const locationUrl ="/Locations/"+locationId;
+             const locationActionName = "EDIT_FORM_LOCATION_DATA";
               await this.props.postFormData(
                     locationData,
                     locationUrl,
@@ -86,10 +85,10 @@ class FacilityLocation extends Component<State> {
              const addressData = {
                    physical_address: "physical address here",
                    postal_address: this.props.postalAddress,
-                   facility_id: facilityId
                    };
-             const addressUrl ="/Addresses";
-             const addressActionName = "POST_FORM_ADDRESS_DATA";
+            const addressId = this.props.current.addresses.id;
+             const addressUrl ="/Addresses/"+addressId;
+             const addressActionName = "EDIT_FORM_ADDRESS_DATA";
               await this.props.postFormData(
                     addressData,
                     addressUrl,
@@ -98,11 +97,11 @@ class FacilityLocation extends Component<State> {
                     token
                     );
 
-              if (this.props.postResponse.contactResponse.status === 200 &&
-                  this.props.postResponse.geolocationResponse.status === 200 && 
+              if (this.props.postResponse.editContactResponse.status === 200 &&
+                  this.props.postResponse.editGeolocationResponse.status === 200 &&
                   this.props.postResponse.districtResponse.status === 200 &&
-                  this.props.postResponse.locationResponse.status === 200 && 
-                  this.props.postResponse.addressResponse.status === 200) {
+                  this.props.postResponse.editLocationResponse.status === 200 && 
+                  this.props.postResponse.editAddressResponse.status === 200) {
                         await this.props.fetchCurrentDetails(facilityId);
                         this.setState({isEditContactAndLocation: false});
                         await this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
@@ -206,8 +205,9 @@ class FacilityLocation extends Component<State> {
                      contactNameValue = {this.props.current.contactPeople.contact_person_fullname}
                      contactEmailValue = {this.props.current.contactPeople.contact_person_email}
                      phoneNumberValue = {this.props.current.contactPeople.contact_person_phone}
-                     latitudeValue = {""}
-                     longitudeValue = {""}
+                     districtValue = {this.props.current.district_id}
+                     latitudeValue = {this.props.current.geolocations.latitude}
+                     longitudeValue = {this.props.current.geolocations.longitude}
                      isEditContactAndLocation={this.state.isEditContactAndLocation}
                      handleCancel={this.handleCancel}
                      districts={this.props.districts}
@@ -225,6 +225,13 @@ const mapStateToProps = state => {
         districts: state.dependancies.districts,
         error: state.formValues.error,
         postResponse: state.postResponse,
+        contactName: state.formValues.contactName,
+        phoneNumber: state.formValues.phoneNumber,
+        contactEmail: state.formValues.contactEmail,
+        postalAddress: state.formValues.postalAddress,
+        district: state.formValues.district,
+        latitude: state.formValues.latitude,
+        longitude: state.formValues.longitude,
     };
 };
 
@@ -232,4 +239,5 @@ export default connect(mapStateToProps, {
     setCurrentDetails,
     fetchCurrentDetails,
     addFormValues,
+    postFormData
 })(FacilityLocation);

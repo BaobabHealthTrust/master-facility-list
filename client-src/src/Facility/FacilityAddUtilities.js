@@ -4,7 +4,7 @@ import footerResizer from "../helpers/footerResize";
 import { Input, Row } from "react-materialize";
 import { addFormValues, postFormData } from "../actions";
 import FacilityAddFooter from "./FacilityAddFooter";
-import { chunk } from "lodash";
+import { chunk, map } from "lodash";
 import { connect } from "react-redux";
 
 type Props = {
@@ -69,6 +69,13 @@ class FacilityAddUtilities extends Component<Props, State> {
             "REMOVE_UTILITY"
         );
     }
+    }
+
+    componentWillMount() {
+       let utilityData = [];
+       this.props.isEditUtilities && (
+            utilityData = map(this.props.currentUtilities,"id"),
+            utilityData.map(utilityId=>this.props.addFormValues(utilityId.toString(),"ADD_UTILITY")));
     }
 
     componentDidMount() {
@@ -140,6 +147,7 @@ const mapStateToProps = state =>{
         formValues: state.formValues,
         utilityTypes: state.dependancies.utilityTypes,
         utilities: state.facilities.utilities,
+        currentUtilities: state.facilities.currentUtilities,
         postResponse: state.postResponse,
     };
 };
