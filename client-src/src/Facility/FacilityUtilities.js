@@ -3,7 +3,7 @@ import Card from "../common/MflCard";
 import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurrentDetails,addFormValues, postFormData } from "../actions";
 import { connect } from "react-redux";
 import FacilityAddUtilities from "./FacilityAddUtilities";
-import { uniq, chunk, map } from "lodash";
+import { uniq, chunk, map, pull } from "lodash";
 
 class FacilityUtilities extends Component {
 
@@ -13,8 +13,11 @@ class FacilityUtilities extends Component {
 
     submitEditUtilityData = async () => {
         const facilityId = this.props.match.params.id;
+        const token = sessionStorage.getItem("token");
+        const methodDelete = "delete"; 
+        const actionNameEdit = "EDIT_FACILITY_UTILITY_DATA";
         const oldUtilityData = map(this.props.utilities,"id");
-
+      
         const newUtilityData =  this.props.formValues.utilities.map(utility=>{
                return Object.assign({},
                 {
@@ -22,21 +25,33 @@ class FacilityUtilities extends Component {
                 utility_id: utility,
                  })
                 });
-        const data ={oldData:oldUtilityData,newData:newUtilityData}
-               const token = sessionStorage.getItem("token");
-               const resource = "/FacilityUtilities/edit";
-               const method = "post";
-               const actionName = "EDIT_FACILITY_UTILITY_DATA";
-               await this.props.postFormData(
-                   data,
+  
+        await oldUtilityData.map(id=> {
+              let resourceEdit = "/FacilityUtilities/"+id;
+               this.props.postFormData(
+                   [],
+                   resourceEdit,
+                   methodDelete,
+                   actionNameEdit,
+                   token
+               );
+          });
+
+          const resource = "/FacilityUtilities";
+            const method = "post";
+            const actionName = "POST_FORM_FACILITY_UTILITY_DATA";
+            await this.props.postFormData(
+                   newUtilityData,
                    resource,
                    method,
                    actionName,
                    token
                );
-               if (this.props.postResponse.editFacilityUtilityResponse.status === 200) {
-                    this.setState({isEditUtilities: true});
-               }
+               if (this.props.postResponse.facilityUtilityResponse.status === 200) {
+                   await this.props.fetchCurrentDetails(facilityId);
+                   this.setState({isEditUtilities: false});
+                   await this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+               }        
     }
 
     toggleEditUtilities = ()=>{

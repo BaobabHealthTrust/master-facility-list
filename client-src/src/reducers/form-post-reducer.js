@@ -1,14 +1,18 @@
 export default (
     state = {
         basicResponse: "",
-        editBasicResponse: "",
-        editFacilityUtilityResponse: "",
         contactResponse: "",
         geolocationResponse: "",
         districtResponse: "",
         facilityUtilityResponse: "",
         locationResponse: "",
         addressResponse: "",
+        editContactResponse: "",
+        editGeolocationResponse: "",
+        editLocationResponse: "",
+        editAddressResponse: "",
+        editBasicResponse: "",
+        editFacilityUtilityResponse: "",
     },
     action
 ) => {
@@ -57,6 +61,26 @@ export default (
             return {
                 ...state,
                 editFacilityUtilityResponse: action.payload
+            };
+        case "EDIT_FORM_CONTACT_DATA":
+            return {
+                ...state,
+                editContactResponse: action.payload
+            };
+        case "EDIT_FORM_GEOLOCATION_DATA":
+            return {
+                ...state,
+                editGeolocationResponse: action.payload
+            };
+        case "EDIT_FORM_LOCATION_DATA":
+            return {
+                ...state,
+                editLocationResponse: action.payload
+            };
+        case "EDIT_FORM_ADDRESS_DATA":
+            return {
+                ...state,
+                editAddressResponse: action.payload
             };  
         default:
             return state;

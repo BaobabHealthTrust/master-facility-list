@@ -12,6 +12,7 @@ export default function fetchCurrentDetails(id) {
             'contactPeople',
             'addresses',
             'locations',
+            'geolocations',
             { district: 'zone' }
         ]
     };
