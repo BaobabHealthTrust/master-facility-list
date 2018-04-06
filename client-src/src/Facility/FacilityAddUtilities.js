@@ -74,7 +74,7 @@ class FacilityAddUtilities extends Component<Props, State> {
     componentWillMount() {
        let utilityData = [];
        this.props.isEditUtilities && (
-            utilityData = map(this.props.currentUtilities,"id"),
+            utilityData = map(this.props.currentUtilities,"utility_id"),
             utilityData.map(utilityId=>this.props.addFormValues(utilityId.toString(),"ADD_UTILITY")));
     }
 
