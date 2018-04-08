@@ -304,16 +304,19 @@ class FacilityBasicDetails extends Component<Props> {
                                 <input
                                     id="registration_number"
                                     name="registration_number"
-                                    type="text"
+                                    type={this.props.isEditBasic ? "hidden":"text"}
                                     class="validate"
                                     value={this.props.registrationNumber}
                                     onChange={e => this.validation(e)}
                                     placeholder="Registration Number"
                                     required
                                 />
+                                { this.props.isEditBasic ? (""):(
                                 <span className="red-text">
                                     {this.props.registrationNumberError}
                                 </span>
+                                )
+                            }
                             </div>
                         </div>
                         <FacilityAddFooter

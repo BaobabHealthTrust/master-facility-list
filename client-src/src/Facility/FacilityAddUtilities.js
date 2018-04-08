@@ -82,9 +82,10 @@ class FacilityAddUtilities extends Component<Props, State> {
         footerResizer();
     }
     render() {
-        let utilityCheck = [];
+        let oldUtilities = [];
         this.props.isEditUtilities && (
-           utilityCheck = map(this.props.currentUtilities,"utility_id"));
+           oldUtilities = map(this.props.currentUtilities,"utility_id")
+           );
         const utilityTypes = chunk(this.props.utilityTypes,2);
         return (
             <div>
@@ -102,26 +103,26 @@ class FacilityAddUtilities extends Component<Props, State> {
                                 <h6>{utilityType.utility_type}</h6>
                                 <hr />
                                 <div className="row">
-                                {this.props.utilities
+                                { this.props.utilities
                                     .filter(
                                         utility=> 
                                         utility.utility_type_id ===
                                         utilityType.id
                                         )
-                                        .map((utility,index)=>{
+                                        .map(utility=>{
                                         return (<div className="col s6">
                                             
                                             <Input
                                                 type="checkbox"
-                                                checked={utility.id === utilityCheck[index] ? true : false}
+                                                checked={oldUtilities.includes(utility.id)}
                                                 id={utility.id}
                                                 name={utility.utility_name}
                                                 label={utility.utility_name}
                                                 onClick={e=> this.addUtilities(e)}   
                                             />
                                            
-                                    </div> 
-                                    )})
+                                    </div> )
+                                   })
                                 }
                                     </div>
                                     </div>
