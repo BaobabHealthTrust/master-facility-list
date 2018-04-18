@@ -1,7 +1,7 @@
-export default (e, type) => {
+export default (value, type) => {
     return {
         type: type,
-        payload: e.target.value
+        payload: value
     };
 };
 

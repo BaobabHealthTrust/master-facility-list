@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import { connect } from "react-redux";
-import { fetchCurrentDetails, setCurrentDetails, addFormValues, postFormData} from "../actions";
+import { fetchCurrentDetails, setCurrentDetails, addFormValues, postFormData } from "../actions";
 import moment from "moment";
-import FacilityBasicDetails from "./FacilityBasicDetails";
+import { BasicDetailsForm } from "./FacilityForms";
 
 type State = {
     isEditBasic: boolean,
 }
 
 class Summary extends Component<State> {
-     state = {
-       isEditBasic: false,
+    state = {
+        isEditBasic: false,
     }
 
-     submitEditBasicData= async ()=> {
+    submitEditBasicData = async () => {
         const id = this.props.match.params.id;
         const data = {
             facility_code: this.props.registrationNumber,
@@ -30,32 +30,32 @@ class Summary extends Component<State> {
             clientId: 1
         };
         const token = sessionStorage.getItem("token");
-        const resource = "/Facilities/"+id;
+        const resource = "/Facilities/" + id;
         const method = "patch";
         const actionName = "EDIT_FACILITY_BASIC_DATA";
-       if(this.props.error.length === 0) {
-        await this.props.postFormData(
-            data,
-            resource,
-            method,
-            actionName,
-            token
-        );
-        if (this.props.postResponse.editBasicResponse.status === 200) {
-            await this.props.fetchCurrentDetails(id);
-            this.setState({isEditBasic: false});
-            await this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
+        if (this.props.error.length === 0) {
+            await this.props.postFormData(
+                data,
+                resource,
+                method,
+                actionName,
+                token
+            );
+            if (this.props.postResponse.editBasicResponse.status === 200) {
+                await this.props.fetchCurrentDetails(id);
+                this.setState({ isEditBasic: false });
+                await this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
+            }
         }
-      }
     }
 
-    toggleEditBasic = ()=>{
-       this.setState({isEditBasic: true});
+    toggleEditBasic = () => {
+        this.setState({ isEditBasic: true });
     }
 
-    handleCancel= ()=>{
-         this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
-         this.setState({isEditBasic: false});
+    handleCancel = () => {
+        this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
+        this.setState({ isEditBasic: false });
     }
 
     async componentDidMount() {
@@ -108,101 +108,101 @@ class Summary extends Component<State> {
 
         return (
             <div className="container mfl-container">
-             {sessionStorage.getItem("token") && (
-                     !this.state.isEditBasic?( <a
-                         class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
-                         onClick ={this.toggleEditBasic}
-                            >
-                         <i class="material-icons left">edit</i> Edit
-                      </a>):(
-                        ""
-                      )
-                        )}
-             {!this.state.isEditBasic?(
-                <div>
-                <div className="row z-depth-2">
-                    <div className="col m6 s12">
-                        <p className="mfl-summary-header">Common Name</p>
+                {sessionStorage.getItem("token") && (
+                    !this.state.isEditBasic ? (<a
+                        class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                        onClick={this.toggleEditBasic}
+                    >
+                        <i class="material-icons left">edit</i> Edit
+                      </a>) : (
+                            ""
+                        )
+                )}
+                {!this.state.isEditBasic ? (
+                    <div>
+                        <div className="row z-depth-2">
+                            <div className="col m6 s12">
+                                <p className="mfl-summary-header">Common Name</p>
 
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">
-                                text_fields
+                                <p className="mfl-summary-text">
+                                    <i class="material-icons mfl-icon left">
+                                        text_fields
                             </i>
-                            {this.props.current.common_name}
-                        </p>
-                        <br />
-                        <p className="mfl-summary-header">Facility Code</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">map</i>
-                            {this.props.current.district
-                                ? this.props.current.district.zone.zone_name
-                                : ""}
-                        </p>
-                    </div>
+                                    {this.props.current.common_name}
+                                </p>
+                                <br />
+                                <p className="mfl-summary-header">Facility Code</p>
+                                <p className="mfl-summary-text">
+                                    <i class="material-icons mfl-icon left">map</i>
+                                    {this.props.current.district
+                                        ? this.props.current.district.zone.zone_name
+                                        : ""}
+                                </p>
+                            </div>
 
-                    <div className="col m6 s12">
-                        <p className="mfl-summary-header">DATE OPENED</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">today</i>
-                            {moment(
-                                this.props.current.facility_date_opened
-                            ).format("MMMM Do YYYY")}
-                        </p>
+                            <div className="col m6 s12">
+                                <p className="mfl-summary-header">DATE OPENED</p>
+                                <p className="mfl-summary-text">
+                                    <i class="material-icons mfl-icon left">today</i>
+                                    {moment(
+                                        this.props.current.facility_date_opened
+                                    ).format("MMMM Do YYYY")}
+                                </p>
 
-                        <br />
+                                <br />
 
-                        <p className="mfl-summary-header">Facility Type</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">
-                                local_hospital
+                                <p className="mfl-summary-header">Facility Type</p>
+                                <p className="mfl-summary-text">
+                                    <i class="material-icons mfl-icon left">
+                                        local_hospital
                             </i>
-                            {this.props.current.facilityType
-                                ? this.props.current.facilityType.facility_type
-                                : ""}
-                        </p>
-                    </div>
-                </div>
+                                    {this.props.current.facilityType
+                                        ? this.props.current.facilityType.facility_type
+                                        : ""}
+                                </p>
+                            </div>
+                        </div>
 
-                <br />
+                        <br />
 
-                <div className="row">
-                    <div className="col l6 m12 s12">
-                        <Card
-                            heading="contact person"
-                            icon="person"
-                            data={contactPersonData}
-                        />
-                    </div>
+                        <div className="row">
+                            <div className="col l6 m12 s12">
+                                <Card
+                                    heading="contact person"
+                                    icon="person"
+                                    data={contactPersonData}
+                                />
+                            </div>
 
-                    <div className="col l6 m12 s12">
-                        <Card
-                            heading="ownership & regulation"
-                            icon="bookmark"
-                            data={ownershipData}
-                        />
-                    </div>
-                </div>
-                </div>):(<FacilityBasicDetails
-                           submitBasicData={this.submitEditBasicData}
-                           facilityNameValue={this.props.current.facility_name}
-                           commonNameValue={this.props.current.common_name}
-                           facilityCodeValue={this.props.current.facility_code}
-                           dateOpenedValue={this.props.current.facility_date_opened}
-                           operationalStatusValue={this.props.current.facility_operational_status_id}
-                           regulatoryStatusValue={this.props.current.facility_regulatory_status_id}
-                           facilityTypeValue={this.props.current.facility_type_id}
-                           facilityOwnerValue={this.props.current.facility_owner_id}
-                           isEditBasic={this.state.isEditBasic}
-                           handleCancel={this.handleCancel}
-                           facilityOwners={this.props.facilityOwners}
-                           facilityTypes={this.props.facilityTypes}
-                           regulatoryStatuses={
-                                        this.props.regulatoryStatuses
-                                    }
-                           operationalStatuses={
-                                        this.props.operationalStatuses
-                                    }
-                            />)}
+                            <div className="col l6 m12 s12">
+                                <Card
+                                    heading="ownership & regulation"
+                                    icon="bookmark"
+                                    data={ownershipData}
+                                />
+                            </div>
+                        </div>
+                    </div>) : (<BasicDetailsForm
+                        submitBasicData={this.submitEditBasicData}
+                        facilityNameValue={this.props.current.facility_name}
+                        commonNameValue={this.props.current.common_name}
+                        facilityCodeValue={this.props.current.facility_code}
+                        dateOpenedValue={this.props.current.facility_date_opened}
+                        operationalStatusValue={this.props.current.facility_operational_status_id}
+                        regulatoryStatusValue={this.props.current.facility_regulatory_status_id}
+                        facilityTypeValue={this.props.current.facility_type_id}
+                        facilityOwnerValue={this.props.current.facility_owner_id}
+                        isEditBasic={this.state.isEditBasic}
+                        handleCancel={this.handleCancel}
+                        facilityOwners={this.props.facilityOwners}
+                        facilityTypes={this.props.facilityTypes}
+                        regulatoryStatuses={
+                            this.props.regulatoryStatuses
+                        }
+                        operationalStatuses={
+                            this.props.operationalStatuses
+                        }
+                    />)}
             </div>
         );
     }

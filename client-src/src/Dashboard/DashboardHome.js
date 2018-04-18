@@ -7,15 +7,15 @@ import {
     FacilityRegulatoryStatusChart,
     FacilityTypeChart
 } from "./charts";
-import FacilityFilters from "./FacilityFilters";
+import { FacilityFilters } from "../common/"
 import { connect } from "react-redux";
 import type {
     FacilityService,
-    Facility,
-    Owner,
-    OperationalStatus,
-    RegulatoryStatus,
-    FacilityType
+        Facility,
+        Owner,
+        OperationalStatus,
+        RegulatoryStatus,
+        FacilityType
 } from "../types/model-types";
 import { map, uniq, isEmpty, intersection } from "lodash";
 import {
@@ -87,14 +87,14 @@ class DashboardHome extends React.Component<Props, State> {
     ) => {
         const totalFacilities = this.props.facilityServices
             ? this.props.facilityServices.filter(fs => {
-                  return fs.service_id === id;
-              })
+                return fs.service_id === id;
+            })
             : [{}];
 
         const uniqueFacilities = isValuesEmpty
             ? uniq(map(totalFacilities, "facility_id")).length
             : intersection(results, uniq(map(totalFacilities, "facility_id")))
-                  .length;
+                .length;
 
         return uniqueFacilities;
     };
@@ -106,8 +106,8 @@ class DashboardHome extends React.Component<Props, State> {
     ) => {
         const total = this.props.allFacilities
             ? this.props.allFacilities.filter(facility => {
-                  return facility.facility_owner_id === id;
-              })
+                return facility.facility_owner_id === id;
+            })
             : [];
 
         const totalOwnership = isValuesEmpty
@@ -124,8 +124,8 @@ class DashboardHome extends React.Component<Props, State> {
     ) => {
         const total = this.props.allFacilities
             ? this.props.allFacilities.filter(facility => {
-                  return facility.facility_type_id === id;
-              })
+                return facility.facility_type_id === id;
+            })
             : [];
 
         const totalFacilityType = isValuesEmpty
@@ -142,8 +142,8 @@ class DashboardHome extends React.Component<Props, State> {
     ) => {
         const total = this.props.allFacilities
             ? this.props.allFacilities.filter(facility => {
-                  return facility.facility_operational_status_id === id;
-              })
+                return facility.facility_operational_status_id === id;
+            })
             : [];
 
         const totalOperationalStatus = isValuesEmpty
@@ -160,8 +160,8 @@ class DashboardHome extends React.Component<Props, State> {
     ) => {
         const total = this.props.allFacilities
             ? this.props.allFacilities.filter(facility => {
-                  return facility.facility_regulatory_status_id === id;
-              })
+                return facility.facility_regulatory_status_id === id;
+            })
             : [];
 
         const totalRegulatoryStatus = isValuesEmpty
@@ -250,69 +250,69 @@ class DashboardHome extends React.Component<Props, State> {
                             </h4>
                         </blockquote>
                     ) : (
-                        <div className="row">
-                            <div className="col s12">
-                                <div className="mfl-graphs-container">
-                                    <div className="mfl-dash-container">
-                                        <div className="row">
-                                            <div className="col s12 m6 l4 xl2">
-                                                <div className="mfl-tm-5" />
-                                                <Card
-                                                    icon="local_hospital"
-                                                    stat={this.calculateTotal()}
-                                                    title="Total Facilities"
-                                                />
-                                            </div>
-                                            {this.state.dashboardServices.map(
-                                                services => (
+                                <div className="row">
+                                    <div className="col s12">
+                                        <div className="mfl-graphs-container">
+                                            <div className="mfl-dash-container">
+                                                <div className="row">
                                                     <div className="col s12 m6 l4 xl2">
                                                         <div className="mfl-tm-5" />
                                                         <Card
-                                                            icon={services.icon}
-                                                            stat={this.calculateTotalFacilitiesWith(
-                                                                services.id
-                                                            )}
-                                                            title={`Facilities with ${
-                                                                services.displayName
-                                                            }`}
+                                                            icon="local_hospital"
+                                                            stat={this.calculateTotal()}
+                                                            title="Total Facilities"
                                                         />
                                                     </div>
-                                                )
-                                            )}
-                                            {/* TODO: Add Components for the other Statistics */}
-                                        </div>
-                                        {/* <div className="row mfl-tm-2">
+                                                    {this.state.dashboardServices.map(
+                                                        services => (
+                                                            <div className="col s12 m6 l4 xl2">
+                                                                <div className="mfl-tm-5" />
+                                                                <Card
+                                                                    icon={services.icon}
+                                                                    stat={this.calculateTotalFacilitiesWith(
+                                                                        services.id
+                                                                    )}
+                                                                    title={`Facilities with ${
+                                                                        services.displayName
+                                                                        }`}
+                                                                />
+                                                            </div>
+                                                        )
+                                                    )}
+                                                    {/* TODO: Add Components for the other Statistics */}
+                                                </div>
+                                                {/* <div className="row mfl-tm-2">
                                                     <div className="col l12 xl10">
                                                         <FacilityTypeChart data={facilityTypeData} />
                                                     </div>
                                                 </div> */}
-                                        <div className="row mfl-tm-2">
-                                            <div className="col s12 m6 l4 xl3">
-                                                <div className="mfl-tm-5" />
-                                                <FacilityOwnershipChart
-                                                    data={ownershipData}
-                                                />
-                                            </div>
+                                                <div className="row mfl-tm-2">
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5" />
+                                                        <FacilityOwnershipChart
+                                                            data={ownershipData}
+                                                        />
+                                                    </div>
 
-                                            <div className="col s12 m6 l4 xl3">
-                                                <div className="mfl-tm-5" />
-                                                <FacilityOperationalChart
-                                                    data={operationalStatusData}
-                                                />
-                                            </div>
-                                            <div className="col s12 m6 l4 xl3">
-                                                <div className="mfl-tm-5" />
-                                                <FacilityRegulatoryStatusChart
-                                                    data={regulatoryStatusData}
-                                                />
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5" />
+                                                        <FacilityOperationalChart
+                                                            data={operationalStatusData}
+                                                        />
+                                                    </div>
+                                                    <div className="col s12 m6 l4 xl3">
+                                                        <div className="mfl-tm-5" />
+                                                        <FacilityRegulatoryStatusChart
+                                                            data={regulatoryStatusData}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row mfl-tm-2" />
                                             </div>
                                         </div>
-                                        <div className="row mfl-tm-2" />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
                 </div>
             </div>
         );

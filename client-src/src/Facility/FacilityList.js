@@ -6,28 +6,15 @@ import Pagination from "../common/Pagination";
 import GridTable from "../common/GridTable";
 import { truncate } from "lodash";
 import moment from "moment";
-import type {
-    Owner,
-    FacilityType,
-    OperationalStatus,
-    District
-} from "./types/model-types";
+import { Facilities } from '../types/list-types'
 
 type Props = {
-    dataSource: Array<{
-        id: number,
-        facility_code: string,
-        facility_name: string,
-        common_name: string,
-        owner: Owner,
-        facilityType: FacilityType,
-        operationalStatus: OperationalStatus,
-        district: District,
-        facility_date_opened: string
-    }>,
+    dataSource: Facilities,
     downloadAction: Function,
-    toggleAdvancedSearch: Function
+    toggleAdvancedSearch: Function,
+    toggleAddFacility: Function
 };
+
 export default class FacilityList extends React.Component<Props> {
     render() {
         const tableRecords =
@@ -79,12 +66,6 @@ export default class FacilityList extends React.Component<Props> {
                     </div>
                 </div>
 
-                {/* <Table
-                    data={{
-                        headers: tableHeaders,
-                        records: tableRecords
-                    }}
-                /> */}
                 <GridTable data={tableRecords} />
 
                 <Pagination />

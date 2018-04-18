@@ -1,8 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import footerResizer from "../helpers/footerResize";
 import { Input } from "react-materialize";
-import FacilityAddFooter from "./FacilityAddFooter";
 import { connect } from "react-redux";
 
 type Props = {
@@ -12,18 +10,15 @@ type Props = {
 };
 type State = {
     tabPreviousName: string,
- }
+}
 
 class FacilityAddServices extends Component<Props, State> {
-   state = {
-     tabPreviousName: "Utilities",
-   }
-
-    componentDidMount() {
-        footerResizer();
+    state = {
+        tabPreviousName: "Utilities",
     }
+
     render() {
-        
+
         return (
             <div>
                 <div class="row">
@@ -77,12 +72,6 @@ class FacilityAddServices extends Component<Props, State> {
                             <div class="input-field col s6" />
                             <div className="mfl-vertical-ruler-services" />
                         </div>
-                        <FacilityAddFooter
-                            tabPreviousName={this.state.tabPreviousName}
-                            handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
-                            handleNextForTabs={this.props.handleNextForTabs}
-                            handleCancel={this.props.handleCancel}
-                        />
                     </form>
                 </div>
             </div>
