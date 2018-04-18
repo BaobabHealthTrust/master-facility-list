@@ -1,7 +1,4 @@
 
-
-
-
 User.create([
     { username: 'john', email: 'amusukwa@gmail.com', password: 'icecream' },
 ], function (err, users) {

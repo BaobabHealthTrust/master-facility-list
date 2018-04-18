@@ -47,9 +47,3 @@ export type FacilityType = {
     description: string,
     id: number
 }
-
-export type FacilityOwner = {
-    facility_owner: string,
-    description: string,
-    id: number
-}

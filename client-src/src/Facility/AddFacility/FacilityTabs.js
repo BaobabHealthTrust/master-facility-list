@@ -1,21 +1,16 @@
 //@flow
-import * as React from "react";
+import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { Tabs, Tab } from "react-materialize";
-import FacilityBasicDetails from "./FacilityBasicDetails";
-import FacilityContacts from "./FacilityContacts";
-import FacilityAddResources from "./FacilityAddResources";
-import FacilityAddUtilities from "./FacilityAddUtilities";
-import FacilityAddServices from "./FacilityAddServices";
-import FacilitiesHome from "./FacilitiesHome";
+import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm } from '../FacilityForms'
 import { connect } from "react-redux";
 import {
     RegulatoryStatus,
     OperationalStatus,
     FacilityOwner,
     FacilityType
-} from "../types/model-types";
-import { addFormValues } from "../actions";
+} from "../../types/model-types";
+import { addFormValues } from "../../actions";
 
 
 type State = {
@@ -40,14 +35,14 @@ class FacilityTabs extends React.Component<Props, State> {
     handleNextForTabs = (tabName) => {
         this.setState({ activeTab: tabName });
     };
-    
+
     handlePreviousForTabs = (tabName) => {
         this.setState({ activeTab: tabName });
     };
 
-    handleCancel= ()=>{
-         this.props.addFormValues("","REMOVE_ALL_FORM_VALUES");
-         this.props.handleCancelAddFacility();
+    handleCancel = () => {
+        this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
+        this.props.handleCancelAddFacility();
     }
 
     render() {
@@ -56,22 +51,18 @@ class FacilityTabs extends React.Component<Props, State> {
                 <div class="modal-content">
                     <Tabs
                         className="tab-demo z-depth-0 white text-white indicator"
-                        onChange={(t, v) =>
-                            this.setState({ activeTab: v.target.text })
-                        }
+                        onChange={(t, v) => this.setState({ activeTab: v.target.text })}
                     >
                         <Tab
+                            active
                             title="Basic"
                             tabWidth="2"
                             className={
-                                this.state.activeTab === "Basic"
-                                    ? `${"advanced-search-container mfl-add-tab1 mfl-active-tab"}`
-                                    : `${"advanced-search-container mfl-add-tab1 mfl-inactive-tabs"}`
+                                `advanced-search-container mfl-first-tabs ${this.state.activeTab === "Basic" ? 'mfl-active-tab' : 'mfl-inactive-tabs'}`
                             }
-                            active
                         >
-                            {this.state.activeTab === "Basic" ? (
-                                <FacilityBasicDetails
+                            {this.state.activeTab === "Basic" && (
+                                <BasicDetailsForm
                                     isEditBasic={false}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
@@ -84,33 +75,28 @@ class FacilityTabs extends React.Component<Props, State> {
                                         this.props.operationalStatuses
                                     }
                                 />
-                            ) : (
-                                ""
                             )}
                         </Tab>
                         <Tab
                             title="Contacts and Locations"
                             tabWidth="4"
                             className={
-                                this.state.activeTab ===
-                                "Contacts and Locations"
-                                    ? `${"advanced-search-container mfl-add-tabcontacts mfl-active-tab"}`
-                                    : `${"advanced-search-container mfl-add-tabcontacts mfl-inactive-tabs"}`
+                                `advanced-search-container mfl-add-tabcontacts ${this.state.activeTab === "Contacts and Locations" ? 'mfl-active-tab' : 'mfl-inactive-tabs'}`
                             }
                             active
                         >
                             {this.state.activeTab ===
-                            "Contacts and Locations" ? (
-                                <FacilityContacts
-                                    isEditContactAndLocation={false}
-                                    handlePreviousForTabs={this.handlePreviousForTabs}
-                                    handleNextForTabs={this.handleNextForTabs}
-                                    handleCancel={this.handleCancel}
-                                    districts={this.props.districts}
-                                />
-                            ) : (
-                                ""
-                            )}
+                                "Contacts and Locations" ? (
+                                    <ContactsForm
+                                        isEditContactAndLocation={false}
+                                        handlePreviousForTabs={this.handlePreviousForTabs}
+                                        handleNextForTabs={this.handleNextForTabs}
+                                        handleCancel={this.handleCancel}
+                                        districts={this.props.districts}
+                                    />
+                                ) : (
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -123,15 +109,15 @@ class FacilityTabs extends React.Component<Props, State> {
                             active
                         >
                             {this.state.activeTab === "Resources" ? (
-                                <FacilityAddResources
+                                <ResourcesForm
                                     isEditResources={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -144,15 +130,15 @@ class FacilityTabs extends React.Component<Props, State> {
                             active
                         >
                             {this.state.activeTab === "Utilities" ? (
-                                <FacilityAddUtilities
+                                <UtilitiesForm
                                     isEditUtilities={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
                                     handleCancel={this.handleCancel}
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -165,7 +151,7 @@ class FacilityTabs extends React.Component<Props, State> {
                             active
                         >
                             {this.state.activeTab === "Services" ? (
-                                <FacilityAddServices
+                                <ServicesForm
                                     isEditServices={false}
                                     handlePreviousForTabs={this.handlePreviousForTabs}
                                     handleNextForTabs={this.handleNextForTabs}
@@ -174,8 +160,8 @@ class FacilityTabs extends React.Component<Props, State> {
                                     serviceTypes={this.props.serviceTypes}
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                     </Tabs>
                 </div>
@@ -197,4 +183,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, {addFormValues})(FacilityTabs);
+export default connect(mapStateToProps, { addFormValues })(FacilityTabs);

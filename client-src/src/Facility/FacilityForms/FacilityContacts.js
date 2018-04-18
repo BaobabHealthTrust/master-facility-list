@@ -1,9 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import { Input } from "react-materialize";
-import FacilityAddFooter from "./FacilityAddFooter";
-import { District } from "../types/model-types";
-import { addFormValues, postFormData } from "../actions";
+import { District } from "../../types/model-types";
+import { addFormValues, postFormData } from "../../actions";
 import { connect } from "react-redux";
 import validateFunction from "./validation";
 
@@ -29,128 +28,128 @@ type Props = {
 type State = {
     tabPreviousName: string,
     notice: string,
- }
+}
 
 
 class FacilityContacts extends Component<Props, State> {
-    state= {
-      tabPreviousName: "Basic",
-      notice: "",
+    state = {
+        tabPreviousName: "Basic",
+        notice: "",
     };
 
-      submitCreateContactData = async () => {
+    submitCreateContactData = async () => {
         const token = sessionStorage.getItem("token");
         const method = "post";
 
-        if(this.props.postResponse.basicResponse !== ""){
-        const facilityId = this.props.postResponse.basicResponse.data.id;
+        if (this.props.postResponse.basicResponse !== "") {
+            const facilityId = this.props.postResponse.basicResponse.data.id;
 
-            if(this.props.formValues.error.length === 0) {
-             const data = {
-                 contact_person_fullname: this.props.contactName,
-                 contact_person_phone: this.props.phoneNumber,
-                 contact_person_email: this.props.contactEmail,
-                 postal_address: this.props.postalAddress,
-                 facility_id: facilityId
-                 };
+            if (this.props.formValues.error.length === 0) {
+                const data = {
+                    contact_person_fullname: this.props.contactName,
+                    contact_person_phone: this.props.phoneNumber,
+                    contact_person_email: this.props.contactEmail,
+                    postal_address: this.props.postalAddress,
+                    facility_id: facilityId
+                };
 
-             const resource = "/ContactPeople";
-             const actionName = "POST_FORM_CONTACT_DATA";       
-              await this.props.postFormData(
-                        data,
-                        resource,
-                        method,
-                        actionName,
-                        token
-                        );
+                const resource = "/ContactPeople";
+                const actionName = "POST_FORM_CONTACT_DATA";
+                await this.props.postFormData(
+                    data,
+                    resource,
+                    method,
+                    actionName,
+                    token
+                );
 
-             const Geodata = {
-                datum: 90,
-                longitude: this.props.longitude,
-                latitude: this.props.latitude,
-                facility_id: facilityId,
-               };
-             const resourceGeo = "/Geolocations";
-             const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
-              await this.props.postFormData(
-                     Geodata,
-                     resourceGeo,
-                     method,
-                     actionNameGeo,
-                     token
-                     );
+                const Geodata = {
+                    datum: 90,
+                    longitude: this.props.longitude,
+                    latitude: this.props.latitude,
+                    facility_id: facilityId,
+                };
+                const resourceGeo = "/Geolocations";
+                const actionNameGeo = "POST_FORM_GEOLOCATION_DATA";
+                await this.props.postFormData(
+                    Geodata,
+                    resourceGeo,
+                    method,
+                    actionNameGeo,
+                    token
+                );
 
-             const facilityData = {
-                   district_id: this.props.district,
-                   };
-             const facilityUrl ="/Facilities/"+facilityId;
-             const facilityMethod = "patch";
-             const facilityActionName = "PATCH_FORM_FACILITY_DATA";
-              await this.props.postFormData(
+                const facilityData = {
+                    district_id: this.props.district,
+                };
+                const facilityUrl = "/Facilities/" + facilityId;
+                const facilityMethod = "patch";
+                const facilityActionName = "PATCH_FORM_FACILITY_DATA";
+                await this.props.postFormData(
                     facilityData,
                     facilityUrl,
                     facilityMethod,
                     facilityActionName,
                     token
-                    );
+                );
 
-             const locationData = {
-                   catchment_area: "area here",
-                   catchment_population: 5000,
-                   facility_id: facilityId
-                   };
-             const locationUrl ="/Locations";
-             const locationActionName = "POST_FORM_LOCATION_DATA";
-              await this.props.postFormData(
+                const locationData = {
+                    catchment_area: "area here",
+                    catchment_population: 5000,
+                    facility_id: facilityId
+                };
+                const locationUrl = "/Locations";
+                const locationActionName = "POST_FORM_LOCATION_DATA";
+                await this.props.postFormData(
                     locationData,
                     locationUrl,
                     method,
                     locationActionName,
                     token
-                    );
+                );
 
-             const addressData = {
-                   physical_address: "physical address here",
-                   postal_address: this.props.postalAddress,
-                   facility_id: facilityId
-                   };
-             const addressUrl ="/Addresses";
-             const addressActionName = "POST_FORM_ADDRESS_DATA";
-              await this.props.postFormData(
+                const addressData = {
+                    physical_address: "physical address here",
+                    postal_address: this.props.postalAddress,
+                    facility_id: facilityId
+                };
+                const addressUrl = "/Addresses";
+                const addressActionName = "POST_FORM_ADDRESS_DATA";
+                await this.props.postFormData(
                     addressData,
                     addressUrl,
                     method,
                     addressActionName,
                     token
-                    );
+                );
 
-              if (this.props.postResponse.contactResponse.status === 200 &&
-                  this.props.postResponse.geolocationResponse.status === 200 && 
-                  this.props.postResponse.districtResponse.status === 200 &&
-                  this.props.postResponse.locationResponse.status === 200 && 
-                  this.props.postResponse.addressResponse.status === 200) {
+                if (this.props.postResponse.contactResponse.status === 200 &&
+                    this.props.postResponse.geolocationResponse.status === 200 &&
+                    this.props.postResponse.districtResponse.status === 200 &&
+                    this.props.postResponse.locationResponse.status === 200 &&
+                    this.props.postResponse.addressResponse.status === 200) {
                     this.props.handleNextForTabs("Resources");
-              }
+                }
             }
-        }else{
-              const msg="Please you have not saved data from previous tab";
-              this.setState({notice:msg});
+        } else {
+            const msg = "Please you have not saved data from previous tab";
+            this.setState({ notice: msg });
         }
     }
-    
-    componentWillMount(){
+
+    componentWillMount() {
         let contactDetailsData = [];
-            this.props.isEditContactAndLocation && (
-            contactDetailsData =[
-            {value: this.props.postalAddressValue, actionType: "POSTAL_ADDRESS"},
-            {value: this.props.contactNameValue, actionType: "CONTACT_NAME"},
-            {value: this.props.contactEmailValue, actionType: "CONTACT_EMAIL"},
-            {value: this.props.phoneNumberValue, actionType: "PHONE_NUMBER"},
-            {value: this.props.latitudeValue, actionType: "LATITUDE"},
-            {value: this.props.longitudeValue, actionType: "LONGITUDE"},
-            {value: this.props.districtValue, actionType: "DISTRICT"}],
-            contactDetailsData.map(detail=>this.props.addFormValues(detail.value,detail.actionType)));
-        }
+        this.props.isEditContactAndLocation && (
+            contactDetailsData = [
+                { value: this.props.postalAddressValue, actionType: "POSTAL_ADDRESS" },
+                { value: this.props.contactNameValue, actionType: "CONTACT_NAME" },
+                { value: this.props.contactEmailValue, actionType: "CONTACT_EMAIL" },
+                { value: this.props.phoneNumberValue, actionType: "PHONE_NUMBER" },
+                { value: this.props.latitudeValue, actionType: "LATITUDE" },
+                { value: this.props.longitudeValue, actionType: "LONGITUDE" },
+                { value: this.props.districtValue, actionType: "DISTRICT" }],
+            contactDetailsData.map(detail => this.props.addFormValues(detail.value, detail.actionType)));
+    }
 
     validation(e) {
         const values = validateFunction(e);
@@ -160,15 +159,15 @@ class FacilityContacts extends Component<Props, State> {
 
     render() {
         let districtOptions;
-       
+
         if (this.props.districts.length > 0) {
             districtOptions = this.props.districts.map(d => (
-                <option 
-                   selected={d.id === this.props.district ? true : false}
-                   key={d.id}                
-                   value={d.id}
+                <option
+                    selected={d.id === this.props.district ? true : false}
+                    key={d.id}
+                    value={d.id}
                 >
-                {d.district_name}
+                    {d.district_name}
                 </option>
             ));
         }
@@ -178,9 +177,9 @@ class FacilityContacts extends Component<Props, State> {
                     <form
                         class="col s12"
                     >
-                    <span className="red-text">
-                    {this.state.notice}
-                     </span>
+                        <span className="red-text">
+                            {this.state.notice}
+                        </span>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input
@@ -227,7 +226,7 @@ class FacilityContacts extends Component<Props, State> {
                                         )
                                     }>
                                     <option value={`"${
-                                            this.props.district
+                                        this.props.district
                                         }"`}>Select District</option>
                                     {districtOptions}
                                 </Input>
@@ -333,20 +332,12 @@ class FacilityContacts extends Component<Props, State> {
                             <div class="col s3">
                                 <a
                                     class="waves-effect waves-light btn mfl-select-tab"
-                                    //onClick={e => this.props.toggleAddFacility(e)}
+                                //onClick={e => this.props.toggleAddFacility(e)}
                                 >
                                     Or Select GeoLocation
                                 </a>
                             </div>
                         </div>
-                        <FacilityAddFooter
-                            isEditFacility={this.props.isEditContactAndLocation}
-                            submitFormData={this.props.isEditContactAndLocation? this.props.submitContactData: this.submitCreateContactData}
-                            tabPreviousName={this.state.tabPreviousName}
-                            handlePreviousForTabs={(tabName)=>this.props.handlePreviousForTabs(tabName)}
-                            handleNextForTabs={this.props.handleNextForTabs}
-                            handleCancel={this.props.handleCancel}
-                        />
                     </form>
                 </div>
             </div>

@@ -1,10 +1,9 @@
 //@flow
 import React from "react";
-import SecondaryMenu from "../common/SecondaryMenu";
 import { connect } from "react-redux";
 import type { District, FacilityType, OperationalStatus, FacilityOwner } from "../types/model-types";
 import { addSearchValues, fetchBasicDetailsResults, fetchFacilityOwners, removeSearchValues, fetchDistricts, fetchFacilityTypes, fetchOperationalStatuses } from "../actions";
-import FacilityFilterSelector from "../common/FacilityFilterSelector";
+import { FacilityFilterSelector, SecondaryMenu } from "./";
 
 type Props = {
     fetchDistricts: Function,
@@ -40,13 +39,6 @@ class FacilityFilters extends React.Component<Props, State> {
         actionType: "",
         removeAction: "",
         searchValueKey: ""
-    }
-
-    componentDidMount() {
-        this.props.fetchDistricts(),
-            this.props.fetchFacilityTypes();
-        this.props.fetchFacilityOwners();
-        this.props.fetchOperationalStatuses();
     }
 
     resetState = () => {
@@ -165,10 +157,6 @@ const mapStateToProps = store => {
 }
 
 export default connect(mapStateToProps, {
-    fetchDistricts,
-    fetchFacilityTypes,
-    fetchFacilityOwners,
-    fetchOperationalStatuses,
     addSearchValues,
     fetchBasicDetailsResults,
     removeSearchValues

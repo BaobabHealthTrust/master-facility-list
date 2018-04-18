@@ -1,11 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import footerResizer from "../helpers/footerResize";
 import { connect } from "react-redux";
 import { Input } from "react-materialize";
-import FacilityAddFooter from "./FacilityAddFooter";
-import { addFormValues, postFormData } from "../actions";
-import {} from "lodash";
+import { addFormValues, postFormData } from "../../actions";
 
 type Props = {
     handleNextForTabs: Function
@@ -53,9 +50,6 @@ class FacilityAddResources extends Component<Props> {
         console.log(resources);
     }
 
-    componentDidMount() {
-        footerResizer();
-    }
     render() {
         return (
             <div>
@@ -70,7 +64,7 @@ class FacilityAddResources extends Component<Props> {
                                     <div class="input-field col s6">
                                         <h6>{`${
                                             resourceType.resource_type
-                                        }   Resources`}</h6>
+                                            }   Resources`}</h6>
                                         <hr />
                                         <div className="row">
                                             {this.props.resources
@@ -122,10 +116,6 @@ class FacilityAddResources extends Component<Props> {
                                 );
                             })};
                         </div>
-
-                        <FacilityAddFooter
-                            handleNextForTabs={this.props.handleNextForTabs}
-                        />
                     </form>
                 </div>
             </div>

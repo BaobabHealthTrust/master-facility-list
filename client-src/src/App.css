@@ -413,7 +413,7 @@ select.mfl-select {
 .input {
     border: 5px;
     padding: 10px 15px;
-    font: small-caption;	
+    font: small-caption;
     font-size: 1.8;
     width: calc(100% - 50px);
     color: dark-blue-light;
@@ -568,7 +568,7 @@ select.mfl-select {
     -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
     clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
 }
-.mfl-add-tab1 {
+.mfl-first-tabs {
     line-height: 43px;
     text-align: center;
     height: 60px;
