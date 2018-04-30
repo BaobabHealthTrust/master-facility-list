@@ -670,7 +670,7 @@ Promise.all([facilityType, owner, operationalStatus, regulatoryStatus])
                                                 );
                                                 const mciData = {
                                                     service_name:
-                                                        "MCI-Integrated Mangement of child illiness",
+                                                        "MCI-Integrated Mangement of child illness",
                                                     service_description:
                                                         "This is a child Service",
                                                     service_type_id: serviceTypeClinicalId,
