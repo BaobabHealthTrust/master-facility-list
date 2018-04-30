@@ -23,7 +23,7 @@ import removeResultsValues from "../actions/remove-results-values";
 import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
 import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
-import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTag";
+import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTags";
 import DistrictTags from "./AdvancedSearch/DistrictTags";
 import ResourceTags from "./AdvancedSearch/ResourceTags";
 import UtilityTags from "./AdvancedSearch/UtilityTags";
