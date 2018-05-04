@@ -9,9 +9,13 @@ module.exports = async (ParentModel, ChildModel, dependantData) => {
     const schema = dependantData.schema;
     await ChildModel.deleteAll();
 
-    const ids = await ParentModel.find(
-        {where: {referenceName: {inq: schema.map(parent => parent.reference)}}}
-    ).map(entity => entity.id); 
+    const ids = await ParentModel.find({
+        where: {
+            referenceName: {
+                inq: schema.map(parent => parent.reference)
+            }
+        }
+    }).map(entity => entity.id);
 
     const fullData = schema.map((entity, index) => {
         return entity.data.map(prop => {
@@ -21,7 +25,7 @@ module.exports = async (ParentModel, ChildModel, dependantData) => {
             }
         });
     });
-    
+
     const flattenedFullData = _.flatten(fullData);
     const createdChildren = await ChildModel.create(flattenedFullData);
     console.log(createdChildren);

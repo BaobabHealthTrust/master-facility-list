@@ -31,7 +31,7 @@ class FacilitiesHome extends React.Component<Props, State> {
     state = {
         isAdvancedSearch: false,
         isShowSearchResults: false,
-        isAddFacility: true,
+        isAddFacility: false,
     };
 
     componentWillReceiveProps(props) {
