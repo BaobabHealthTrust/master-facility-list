@@ -5,6 +5,8 @@ const factory = require('./independentModelFactory');
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 
+const serviceModelFactory = require('./serviceModelFactory');
+
 const createIndependentModels = async () => {
     // await factory(server.models.Owner, data.owners);
     // await factory(server.models.FacilityType, data.facilityTypes);
@@ -15,13 +17,17 @@ const createIndependentModels = async () => {
     // await factory(server.models.Role, data.roles);
     // await factory(server.models.ResourceType, data.resourceTypes);
     // await factory(server.models.UtilityType, data.utilityTypes);
-    await factory(server.models.ServiceType, data.serviceTypes);
+    //await factory(server.models.ServiceType, data.serviceTypes);
     // await dependentFactory(server.models.Zone, server.models.District, data.districts);
 
     // await dependentFactory(server.models.ResourceType , server.models.Resource, data.resources);
     // await dependentFactory(server.models.UtilityType , server.models.Utility, data.utilities);
     // await dependentFactory(server.models.ServiceType , server.models.Service, data.services);
-    await dependentFactory(server.models.ServiceType, server.models.Service, data.services);
+    
+    //await dependentFactory(server.models.ServiceType, server.models.Service, data.services);
+    const services = await serviceModelFactory(server.models.ServiceType, server.models.Service, data.services)
+    console.log('Logging created l2 services');
+    console.log(JSON.stringify(services, undefined, 2));
 
     await dataSource.disconnect();
 }

@@ -563,6 +563,7 @@ module.exports.utilities = {
 };
 
 const serviceServiceTypeMapping = {
+<<<<<<< Updated upstream
   [refs.SERVICE_TYPES.CLINICAL]: [{
       service_name: "Out patient services (OPD)",
       service_description: "This is out patient Service",
@@ -676,6 +677,128 @@ const serviceServiceTypeMapping = {
       service_category_id: 0
     }
   ]
+=======
+    [refs.SERVICE_TYPES.CLINICAL]: [{
+            service_name: "Out patient services (OPD)",
+            service_description: "This is out patient Service",
+            service_category_id: 0
+        },
+        {
+            service_name: "In patient services (IPD)",
+            service_description: "This is in patient Service",
+            service_category_id: 0
+        },
+        {
+            service_name: "MCI-Integrated Mangement of child illiness",
+            service_description: "This is a child Service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Malaria Diagnosis and Treatment",
+            service_description: "This is malaria service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.THERAPEUTICS]: [{
+            service_name: "Pharmacy",
+            service_description: "This is pharmacy service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Dispensing room",
+            service_description: "This is dispensing service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.PROSTHETICS_AND_MEDICAL_DEVICES]: [{
+            service_name: "Prosthetics",
+            service_description: "This is Prosthetics service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Medical devices",
+            service_description: "This is medical devices service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.NUTRUTION]: [{
+            service_name: "Vitamin A supplementation in pregnat women",
+            service_description: "This is Vitamin A supplementation in pregnat women service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Management of severe malnutrition (children)",
+            service_description: "This is Management of severe malnutrition (children) service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Deworming",
+            service_description: "This is deworming service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Vitamin A supplementation in infants and children 6-59 months",
+            service_description: "This is Vitamin A supplementation in infants and children 6-59 months service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.COMMUNITY_HEALTH]: [{
+            service_name: "Health education",
+            service_description: "This is health education service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Growth monitoring",
+            service_description: "This is  growth monitoring service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.REPRODUCTIVE_AND_CHILD_HEALTH]: [{
+            service_name: "Family planning",
+            service_description: "This is family planning service",
+            service_category_id: 0,
+
+            children: [
+                {
+                    service_name: 'dude',
+                    service_description: 'nnnnfnfn',
+                }
+            ]
+        },
+        {
+            service_name: "Ante-natal Services",
+            service_description: "This is  ante-natal service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Delivery Services",
+            service_description: "This is  delivery service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.VACCINATION]: [{
+            service_name: "Rotavirus",
+            service_description: "This is rotavirus service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Measles Rubella",
+            service_description: "This is  measles rubella service",
+            service_category_id: 0
+        }
+    ],
+    [refs.SERVICE_TYPES.DIAGNOSTICS]: [{
+            service_name: "Laboratory",
+            service_description: "This is laboratory service",
+            service_category_id: 0
+        },
+        {
+            service_name: "Radiology",
+            service_description: "This is  radiology service",
+            service_category_id: 0
+        }
+    ]
+>>>>>>> Stashed changes
 };
 
 module.exports.services = {
