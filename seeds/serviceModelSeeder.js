@@ -2,14 +2,14 @@
 const dependentModelFactory = require('./dependentModelFactory');
 
 module.exports = async (ParentModel, ChildModel, dependantData) => {
-    const createdChildren = dependentModelFactory(ParentModel, ChildModel, dependantData);
-    const l1Children = [];
-    createdChildren.forEach(createdChild => {
+    const topLevelServices = dependentModelFactory(ParentModel, ChildModel, dependantData);
+    const level2Services = [];
+    topLevelServices.forEach(createdChild => {
         if (createdChild.children) {
             createdChild.children.forEach(child => {
                 child.service_catetory_id = createdChild.id;
                 child.service_type_id = createdChild.service_type_id;
-                l1Children.push(child);
+                level2Services.push(child);
             });
         }
     });

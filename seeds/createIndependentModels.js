@@ -5,7 +5,7 @@ const factory = require('./independentModelFactory');
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 
-const serviceModelFactory = require('./serviceModelFactory');
+const serviceModelSeeder = require('./serviceModelSeeder');
 
 const createIndependentModels = async () => {
     // await factory(server.models.Owner, data.owners);
@@ -23,9 +23,8 @@ const createIndependentModels = async () => {
     // await dependentFactory(server.models.ResourceType , server.models.Resource, data.resources);
     // await dependentFactory(server.models.UtilityType , server.models.Utility, data.utilities);
     // await dependentFactory(server.models.ServiceType , server.models.Service, data.services);
-    
     //await dependentFactory(server.models.ServiceType, server.models.Service, data.services);
-    const services = await serviceModelFactory(server.models.ServiceType, server.models.Service, data.services)
+    const services = await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services)
     console.log('Logging created l2 services');
     console.log(JSON.stringify(services, undefined, 2));
 
