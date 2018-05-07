@@ -13,13 +13,12 @@ const {
     Facility
 } = server.models;
 
-const dataSource = server.dataSources.db;
-
 const getIds = async (Model) => {
     return await Model.find({ fields: { id: true } }).map(model => model.id);
 }
 
-const facilitySeeder = async (facilityCount) => {
+module.exports =  async (facilityCount) => {
+    await Facility.deleteAll();
     const facilityTypeIds = await getIds(FacilityType);
     const operationalStatusIds = await getIds(OperationalStatus);
     const ownerIds = await getIds(Owner);
@@ -28,7 +27,7 @@ const facilitySeeder = async (facilityCount) => {
     const clientIds = await getIds(Client);
     const ResourcesIds = await getIds(Resource);
     const facilities = [];
-    for(let counter = 0; counter <= facilityCount; counter++){
+    for(let counter = 0; counter < facilityCount; counter++){
         const facility = {
             facility_code: faker.random.number({min: 1000, max: 9000}),
             facility_name: faker.name.findName(),
@@ -44,10 +43,5 @@ const facilitySeeder = async (facilityCount) => {
         }
         facilities.push(facility);
     }
-    const facilityResults = await Facility.create(facilities);
-    await dataSource.disconnect();
+    return await Facility.create(facilities);
 }
-
-const facilityCount = process.argv[2];
-
-facilitySeeder(facilityCount);

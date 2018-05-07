@@ -67,7 +67,6 @@ export default class FacilityList extends React.Component<Props> {
                 </div>
 
                 <GridTable data={tableRecords} />
-
                 <Pagination />
             </div>
         );
