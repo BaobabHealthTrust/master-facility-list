@@ -576,12 +576,109 @@ const serviceServiceTypeMapping = {
         {
             service_name: "MCI-Integrated Mangement of child illiness",
             service_description: "This is a child Service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "ARI",
+                    service_description: "This is ARI Service",
+                    children: [
+                        {
+                            service_name: "Pneumonia treatment",
+                            service_description: "This is Pneumonia treatment Service",
+                        },
+                        {
+                            service_name: "Treatment of severe pneumonia(Oxygen)",
+                            service_description: "This is treatment of severe pneumonia (Oxygen)",
+                        }
+                    ]
+                },
+                {
+                    service_name: "Diarrhoea diseases",
+                    service_description: "This is diarrhoea Service",
+                    children: [
+                        {
+                            service_name: "ORS",
+                            service_description: "This is ORS Service",
+                        },
+                        {
+                            service_name: "ZINC",
+                            service_description: "This is ZINC Service",
+                        },
+                        {
+                            service_name: "Treatment of severe diarrhoea (IV Fluids)",
+                            service_description: "This is IV Fluids Service",
+                        }
+                    ]
+                },
+                {
+                    service_name: "Community management of nutrition under-5:Plumpy peanut",
+                    service_description: "This is a nutrition under-5 peanut",
+                },
+                {
+                    service_name: "Community management of in under-5: Micronutrient provider",
+                    service_description: "This is a nutrition under-5 micronutrient",
+                },
+                {
+                    service_name: "Community management of nutrition in under-5: Vitamin A",
+                    service_description: "This is a nutrition under-5 vitamin A",
+                }
+            ]
         },
         {
             service_name: "Malaria Diagnosis and Treatment",
             service_description: "This is malaria service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "Slide Microscopy",
+                    service_description: "This is a slice microscopy",
+                },
+                {
+                    service_name: "Rapid Diagnostic Test (MRDT)",
+                    service_description: "This is a rapid diagnostic test",
+                },
+                {
+                    service_name: "RDTs for under-5",
+                    service_description: "This is RDTs for under-5",
+                },
+                {
+                    service_name: "First Line Uncomplicated Treatment",
+                    service_description: "This is a first line uncomplicated treatment",
+                    children: [
+                        {
+                            service_name: "Adult less than 36 kg",
+                            service_description: "This is adult less than 36 kgs",
+                        },
+                        {
+                            service_name: "Adult more than 36 kg",
+                            service_description: "This is adult more than 36 kgs",
+                        },
+                        {
+                            service_name: "Children less than 15 kg",
+                            service_description: "This is a service of children less than 15 kgs",
+                        },
+                        {
+                            service_name: "Children more than 15 kg",
+                            service_description: "This is a service of children more than 15 kgs",
+                        },
+                        
+                    ]
+                },
+                {
+                    service_name: "Treatment of Complicated Malaria",
+                    service_description: "This is a treatment of Complicated malaria",
+                    children: [
+                        {
+                            service_name: "Children, Injectable Artesunate",
+                            service_description: "This is artesunate service for children",
+                        },
+                        {
+                            service_name: "Adult, Injectable Artesunate",
+                            service_description: "This is artesunate service for adult",
+                        }
+                    ]
+                }
+            ]
         }
     ],
     [refs.SERVICE_TYPES.THERAPEUTICS]: [{
@@ -644,20 +741,44 @@ const serviceServiceTypeMapping = {
             service_category_id: 0,
             children: [
                 {
-                    service_name: 'dude',
-                    service_description: 'nnnnfnfn',
+                    service_name: "Injectable",
+                    service_description: "This is Injectable Service",
+                },
+                {
+                    service_name: "Implant",
+                    service_description: "This is Implant service",
                 }
             ]
         },
         {
             service_name: "Ante-natal Services",
             service_description: "This is  ante-natal service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "Tetanus Toxoid",
+                    service_description: "This is Tetanus Toxoid Service",
+                },
+                {
+                    service_name: "ITN Distribution",
+                    service_description: "This is ITN distribution service",
+                }
+            ]
         },
         {
             service_name: "Delivery Services",
             service_description: "This is  delivery service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "Neonatal resuscitation (institutional)",
+                    service_description: "This is neonatal resuscitation Service",
+                },
+                {
+                    service_name: "Post-natal consultation",
+                    service_description: "This is post-natal consultation service",
+                }
+            ]
         }
     ],
     [refs.SERVICE_TYPES.VACCINATION]: [{
@@ -674,12 +795,32 @@ const serviceServiceTypeMapping = {
     [refs.SERVICE_TYPES.DIAGNOSTICS]: [{
             service_name: "Laboratory",
             service_description: "This is laboratory service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "Parasitology",
+                    service_description: "This is Parasitology Service",
+                },
+                {
+                    service_name: "Clinical Chemistry",
+                    service_description: "This is clinical chemistry service",
+                }
+            ]
         },
         {
             service_name: "Radiology",
             service_description: "This is  radiology service",
-            service_category_id: 0
+            service_category_id: 0,
+            children: [
+                {
+                    service_name: "X-ray",
+                    service_description: "This is X-ray Service",
+                },
+                {
+                    service_name: "Ultrasound",
+                    service_description: "This is ultrasound service",
+                }
+            ]
         }
     ]
 };
