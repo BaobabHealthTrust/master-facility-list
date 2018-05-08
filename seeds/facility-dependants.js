@@ -3,6 +3,7 @@
 const server = require('../server/server');
 const faker = require('faker');
 const dataSource = server.dataSources.db;
+const getIds = require('./seed-helpers').getIds;
 
 const {
     Facility,
@@ -11,10 +12,6 @@ const {
     Geolocation,
     ContactPeople
 } = server.models;
-
-const getIds = async (Model) => {
-    return await Model.find({ fields: { id: true } }).map(model => model.id);
-}
 
 module.exports = async () => {
     const facilityIds = await getIds(Facility);

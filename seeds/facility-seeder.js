@@ -1,6 +1,7 @@
 'use strict'
 const server = require('../server/server');
 const faker = require('faker');
+const getIds = require('./seed-helpers').getIds;
 
 const {
     FacilityType, 
@@ -12,10 +13,6 @@ const {
     Resource,
     Facility
 } = server.models;
-
-const getIds = async (Model) => {
-    return await Model.find({ fields: { id: true } }).map(model => model.id);
-}
 
 module.exports =  async (facilityCount) => {
     await Facility.deleteAll();

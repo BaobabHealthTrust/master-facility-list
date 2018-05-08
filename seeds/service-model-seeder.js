@@ -1,5 +1,5 @@
 "use strict";
-const dependentModelFactory = require('./dependentModelFactory');
+const dependentModelFactory = require('./dependent-model-factory');
 
 module.exports = async (ParentModel, ChildModel, dependantData) => {
     const createdTopLevelServices = await dependentModelFactory(ParentModel, ChildModel, dependantData);
