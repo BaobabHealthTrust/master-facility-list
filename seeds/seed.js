@@ -1,13 +1,14 @@
 "use strict";
-const dependentModelFactory = require('./dependentModelFactory');
+const dependentModelFactory = require('./dependent-model-factory');
 const data = require('./data');
-const independentModelFactory = require('./independentModelFactory');
+const independentModelFactory = require('./independent-model-factory');
 const facilitySeeder = require('./facility-seeder');
-const facilityDependents = require('./facilityDependents');
+const facilityDependents = require('./facility-dependants');
+const manyToMany = require('./many-to-many');
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 
-const serviceModelSeeder = require('./serviceModelSeeder');
+const serviceModelSeeder = require('./service-model-seeder');
 
 const seed = async () => {
     try {
@@ -33,8 +34,12 @@ const seed = async () => {
         await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
         await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
         await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
-        const facilities = await facilitySeeder(facilityCount);
+        await facilitySeeder(facilityCount);
+        await console.log(`Created ${facilityCount} facilities`);
         await facilityDependents();
+        await console.log(`Created facilities dependants`);
+        await manyToMany();
+        await console.log('Many to May associations created');
         await dataSource.disconnect();
     } catch (error) {
         console.log(error);
