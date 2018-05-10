@@ -1,35 +1,57 @@
-import React from "react";
+//@flow
+import React, { Component } from "react";
+import { chunk } from "lodash";
+import { connect } from "react-redux";
+import type { Facility } from "../types/model-types";
+import { fetchAdvancedSearchResults, fetchFacilities } from "../actions";
 
-const Pagination = () => {
-    return (
-        <ul class="pagination  right">
-            <li class="disabled">
-                <a href="#!">
-                    <i class="material-icons">chevron_left</i>
-                </a>
-            </li>
-            <li class="active blue">
-                <a href="#!">1</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">2</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">3</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">4</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">5</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">
-                    <i class="material-icons">chevron_right</i>
-                </a>
-            </li>
-        </ul>
-    );
+
+type Props = {
+    allFacilities: Array<Facility>,
+    fetchFacilities: Function,
+    fetchFilteredResults: Function,
+    filteredResults: number[],
+}
+type State = {
+    pageNumber: number,
+}
+
+class Pagination extends Component<Props, State> {
+    state = {
+        pageNumber: 1,
+    }
+    handleClick = async (e) => {
+        await e.currentTarget.innerHTML === "Next" ? this.setState({ pageNumber: this.state.pageNumber + 1 }) : (this.setState({ pageNumber: this.state.pageNumber - 1 })),
+            this.props.filteredResults.length === 0 ? (await this.props.fetchFacilities(this.state.pageNumber)) : ("");
+    }
+
+
+    render() {
+        this.props.filteredResults.length > 0 && this.props.fetchFilteredResults(chunk(this.props.filteredResults, 10)[this.state.pageNumber - 1])
+
+        return (
+            <ul className="pagination  right">
+
+                {this.state.pageNumber > 1 && <li className="waves-effect waves-light btn blue">
+                    <a className="white-text" onClick={this.handleClick}>Previous</a>
+                </li>}
+                {" "}
+                <li className="waves-effect waves-light btn blue">
+                    <a className="white-text" onClick={this.handleClick}>Next</a>
+                </li>
+            </ul>
+        );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        allFacilities: state.facilities.all,
+        filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities,
+    }
 };
 
-export default Pagination;
+export default connect(mapStateToProps, {
+    fetchFacilities,
+    fetchAdvancedSearchResults,
+})(Pagination);

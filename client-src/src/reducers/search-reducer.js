@@ -15,13 +15,13 @@ export default (
     switch (action.type) {
         case "FETCH_QUICK_SEARCH":
             return {
+                ...state,
                 quickSearchFacilities: action.payload.data,
-                advancedSearchFacilities: state.advancedSearchFacilities,
-                advancedSearchResults: state.advancedSearchResults
+
             };
         case "FETCH_BASIC_DETAILS_RESULTS":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
+                ...state,
                 advancedSearchFacilities: {
                     basicDetailsFacilities: map(action.payload.data, "id"),
                     basicDetailsFacilityResources:
@@ -34,12 +34,12 @@ export default (
                         state.advancedSearchFacilities
                             .basicDetailsFacilityServices
                 },
-                advancedSearchResults: state.advancedSearchResults
+
             };
 
         case "FETCH_BASIC_RESOURCE_RESULTS":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
+                ...state,
                 advancedSearchFacilities: {
                     basicDetailsFacilities:
                         state.advancedSearchFacilities.basicDetailsFacilities,
@@ -54,11 +54,11 @@ export default (
                         state.advancedSearchFacilities
                             .basicDetailsFacilityServices
                 },
-                advancedSearchResults: state.advancedSearchResults
+
             };
         case "FETCH_BASIC_UTILITY_RESULTS":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
+                ...state,
                 advancedSearchFacilities: {
                     basicDetailsFacilities:
                         state.advancedSearchFacilities.basicDetailsFacilities,
@@ -73,11 +73,11 @@ export default (
                         state.advancedSearchFacilities
                             .basicDetailsFacilityServices
                 },
-                advancedSearchResults: state.advancedSearchResults
+
             };
         case "FETCH_BASIC_SERVICE_RESULTS":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
+                ...state,
                 advancedSearchFacilities: {
                     basicDetailsFacilities:
                         state.advancedSearchFacilities.basicDetailsFacilities,
@@ -92,17 +92,16 @@ export default (
                         "facility_id"
                     )
                 },
-                advancedSearchResults: state.advancedSearchResults
+
             };
         case "FETCH_ADVANCED_SEARCH_RESULTS":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
-                advancedSearchFacilities: state.advancedSearchFacilities,
+                ...state,
                 advancedSearchResults: action.payload.data
             };
         case "REMOVE_RESULTS_VALUES":
             return {
-                quickSearchFacilities: state.quickSearchFacilities,
+                ...state,
                 advancedSearchFacilities: {
                     basicDetailsFacilities: [],
                     basicDetailsFacilityResources: [],

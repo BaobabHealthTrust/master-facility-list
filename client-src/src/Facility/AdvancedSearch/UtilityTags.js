@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicUtilityDetailsResults from "../../actions/fetch-basic-utility-details-results";
+import { fetchBasicUtilityDetailsResults, removeSearchValues } from "../../actions";
 
 class UtilityTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.typeUtilityInstanceValues,
-                this.props.utilities
+            this.props.searchValues.typeUtilityInstanceValues,
+            this.props.utilities
             )
             .map(entity => {
                 return (

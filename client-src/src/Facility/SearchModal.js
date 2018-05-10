@@ -1,84 +1,83 @@
-import React, { Component } from "react";
+//@flow
+import React from "react";
 import { Tabs, Tab } from "react-materialize";
 import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
 import { connect } from "react-redux";
-import addSearchValues from "../actions/add-search-values";
-import removeSearchValues from "../actions/remove-search-values";
-import fetchBasicDetailsResults from "../actions/fetch-basic-details-results";
-import fetchBasicResourceDetailsResults from "../actions/fetch-basic-resource-details-results";
-import fetchBasicUtilityDetailsResults from "../actions/fetch-basic-utility-details-results";
-import fetchBasicServiceDetailsResults from "../actions/fetch-basic-service-details-results";
+import {
+    addSearchValues,
+    fetchAdvancedSearchResults,
+    fetchBasicDetailsResults,
+    fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults,
+    fetchBasicServiceDetailsResults,
+    fetchCurrentDetails,
+    fetchResourceTypeInstances,
+    fetchUtilityTypeInstances,
+    fetchServiceTypeInstances,
+    removeResultsValues,
+    removeSearchValues
+} from "../actions";
 import SearchTag from "./AdvancedSearch/SearchTag";
 import { map, intersection } from "lodash";
 import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
 import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
-import fetchAdvancedSearchResults from "../actions/fetch-advanced-search-results";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import fetchResourceTypeInstances from "../actions/fetch-resource-type-instances";
-import fetchUtilityTypeInstances from "../actions/fetch-utility-type-instances";
-import fetchServiceTypeInstances from "../actions/fetch-service-type-instances";
-import removeResultsValues from "../actions/remove-results-values";
 import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
 import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
-import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTag";
+import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTags";
 import DistrictTags from "./AdvancedSearch/DistrictTags";
 import ResourceTags from "./AdvancedSearch/ResourceTags";
 import UtilityTags from "./AdvancedSearch/UtilityTags";
 import ServiceTags from "./AdvancedSearch/ServiceTags";
 
-class SearchModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeTab: "Location"
-        };
-    }
+class SearchModal extends React.Component<{}> {
+    state = {
+        activeTab: "Location"
+    };
 
     getObjectFromIds(ids, entities) {
-        return entities.filter(e => ids.includes(e.id.toString()));
+        return entities.filter(entity => ids.includes(entity.id.toString()));
     }
 
-    async handleAddSearchValue(e, type) {
-        await this.props.addSearchValues(e, type);
-        await this.props.fetchBasicResourceDetailsResults(
-            this.props.searchValues
-        );
-        await this.props.fetchBasicUtilityDetailsResults(
-            this.props.searchValues
-        );
-        await this.props.fetchBasicServiceDetailsResults(
-            this.props.searchValues
-        );
+    handleAddSearchValue = async (e, type) => {
+        await this.props.addSearchValues(e.target.value, type);
+        await this.props.fetchBasicResourceDetailsResults(this.props.searchValues);
+        await this.props.fetchBasicUtilityDetailsResults(this.props.searchValues);
+        await this.props.fetchBasicServiceDetailsResults(this.props.searchValues);
         await this.props.fetchBasicDetailsResults(this.props.searchValues);
     }
 
-    async handleRemoveResults(e) {
+    handleRemoveResults = async () => {
         await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
         await this.props.removeResultsValues();
-        await this.props.handleClose(e);
+        await this.props.handleClose();
     }
 
-    handleSearchTypeResourceInstances(e) {
+    handleSearchTypeResourceInstances = (e) => {
         this.props.fetchResourceTypeInstances(e.target.value);
     }
-    handleSearchTypeUtilityInstances(e) {
+    handleSearchTypeUtilityInstances = (e) => {
         this.props.fetchUtilityTypeInstances(e.target.value);
     }
-    handleSearchTypeServiceInstances(e) {
+    handleSearchTypeServiceInstances = (e) => {
         this.props.fetchServiceTypeInstances(e.target.value);
     }
 
-    async getSearchResults(e) {
+    getSearchResults = async () => {
         await this.props.fetchAdvancedSearchResults(this.props.results);
-        await this.props.handleClose(e);
+        await this.props.handleClose();
     }
 
     render() {
         return (
-            <div id="advanced-search" ref="advancedSearch" class="modal-lg">
+            <div
+                id="advanced-search"
+                ref="advancedSearch"
+                className="modal-lg mfl-modal-container"
+            >
                 <div class="modal-content">
                     <div className="mfl-bm-2">
                         <span className="mfl-modal-header">
@@ -103,14 +102,14 @@ class SearchModal extends Component {
                             <span className="right">
                                 <a
                                     className="btn mfl-get-results-btn"
-                                    onClick={e => this.getSearchResults(e)}
+                                    onClick={this.getSearchResults}
                                 >
                                     Get Search Results
                                 </a>
                             </span>
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                     </div>
 
                     <Tabs
@@ -132,8 +131,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Ownership and Regulation"
@@ -141,23 +140,23 @@ class SearchModal extends Component {
                             active
                         >
                             {this.state.activeTab ===
-                            "Ownership and Regulation" ? (
-                                <AdvancedOwnershipRegulation
-                                    operationalStatuses={
-                                        this.props.operationalStatuses
-                                    }
-                                    facilityTypes={this.props.facilityTypes}
-                                    facilityOwners={this.props.facilityOwners}
-                                    regulatoryStatuses={
-                                        this.props.regulatoryStatuses
-                                    }
-                                    handleChange={(e, type) =>
-                                        this.handleAddSearchValue(e, type)
-                                    }
-                                />
-                            ) : (
-                                ""
-                            )}
+                                "Ownership and Regulation" ? (
+                                    <AdvancedOwnershipRegulation
+                                        operationalStatuses={
+                                            this.props.operationalStatuses
+                                        }
+                                        facilityTypes={this.props.facilityTypes}
+                                        facilityOwners={this.props.facilityOwners}
+                                        regulatoryStatuses={
+                                            this.props.regulatoryStatuses
+                                        }
+                                        handleChange={(e, type) =>
+                                            this.handleAddSearchValue(e, type)
+                                        }
+                                    />
+                                ) : (
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -173,8 +172,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
 
                         <Tab
@@ -195,8 +194,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Utilities"
@@ -214,8 +213,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                         <Tab
                             title="Services"
@@ -233,8 +232,8 @@ class SearchModal extends Component {
                                     }
                                 />
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                         </Tab>
                     </Tabs>
                 </div>

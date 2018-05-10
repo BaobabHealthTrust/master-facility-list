@@ -18,6 +18,7 @@ class MflDownload extends Component {
                 <a className="btn-floating btn-large blue">
                     <i className="large material-icons">file_download</i>
                 </a>
+
                 <ul>
                     <li>
                         <a className="btn-floating red">

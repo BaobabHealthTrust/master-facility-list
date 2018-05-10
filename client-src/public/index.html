@@ -11,36 +11,53 @@
     <title>Master Facility List</title>
 </head>
 
-<body>
-    <!-- Import Google Icon Font -->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Import materialize.css -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Import Google Icon Font -->
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Import materialize.css -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    </head>
+</head>
 
-    <body>
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+<body id="body">
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
-        <noscript>
-            You need to enable JavaScript to run this app.
-        </noscript>
-        <div id="root"></div>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
 
-        <script>
-            $(document).ready(function () {
-                // $('.select').material_select();
-                $('.button-collapse').sideNav();
-                $('.tooltipped').tooltip({ delay: 10 });
-            });
-        </script>
-    </body>
+    <script>
+        $(document).ready(function () {
+            // $('.select').material_select();
+            $('.button-collapse').sideNav();
+            $('.tooltipped').tooltip({ delay: 10 });
+            const documentHeight = $(document).innerHeight();
+            const contentHeight = $('.mfl-page-wrap').innerHeight();
+            const marginDiff = documentHeight - contentHeight;
+        });
 
+        $(window).resize((e) => {
+            function scrollBars() {
+                var body = $('body')[0]
+                return {
+                    vertical: body.scrollHeight > body.clientHeight,
+                    horizontal: body.scrollWidth > body.clientWidth
+                }
+            }
+            setTimeout(() => {
+                if (scrollBars().vertical) {
+                    document.querySelector('.page-footer').style.position = "relative";
+                } else {
+                    document.querySelector('.page-footer').style.position = "absolute";
+                }
+            }, 100);
+        })
+    </script>
 </body>
 
 </html>

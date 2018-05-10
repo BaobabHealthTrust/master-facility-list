@@ -1,20 +1,17 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import fetchCurrentResources from "../actions/fetch-current-resources";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
-import fetchResourceTypes from "../actions/fetch-resource-types";
+import { fetchCurrentDetails, fetchCurrentResources, fetchResourceTypes, setCurrentDetails } from "../actions";
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 
 class FacilityResources extends Component {
+
+    state = {
+        isEditResources: false
+    };
+
     async componentDidMount() {
         const id = this.props.match.params.id;
-
-        if (this.props.facilities.length > 0) {
-            await this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchResourceTypes();
         await this.props.fetchCurrentResources(id);
@@ -47,17 +44,26 @@ class FacilityResources extends Component {
         const cards = chunk(presentTypes, 3);
 
         return (
-            <div className="container">
-                <br />
+            <div className="container mfl-container">
+                {sessionStorage.getItem("token") && (
+                     !this.state.isEditResources?( <a
+                         class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                         onClick ={this.toggleEditResources}
+                            >
+                         <i class="material-icons left">edit</i> Edit
+                      </a>):(
+                        ""
+                      )
+                        )}
                 {cards.map(card => {
                     return (
                         <div className="row">
                             {card.map(type => {
                                 const data = this.props.resources
                                     .filter(
-                                        res =>
-                                            res.resource.resource_type_id ===
-                                            type.id
+                                    res =>
+                                        res.resource.resource_type_id ===
+                                        type.id
                                     )
                                     .map(res => [
                                         res.resource.resource_name,

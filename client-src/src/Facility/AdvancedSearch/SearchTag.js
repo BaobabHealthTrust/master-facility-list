@@ -6,12 +6,12 @@ class SearchTag extends React.Component {
             <div className="chip">
                 {this.props.name}
                 <i
-                    onClick={id =>
+                    onClick={id => {
                         this.props.removeSearchValues(
                             this.props.id,
                             this.props.actionType
-                        )
-                    }
+                        );
+                    }}
                     className="mfl-close material-icons"
                 >
                     close

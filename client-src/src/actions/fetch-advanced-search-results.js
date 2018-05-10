@@ -1,5 +1,5 @@
 import axios from "axios";
-import settings from "../settings";
+import settings from '../settings';
 import { map } from "lodash";
 
 export default facilityIds => {
@@ -7,7 +7,7 @@ export default facilityIds => {
     const RESOURCE = `Facilities/`;
 
     const FILTER = {
-        limit: 15,
+        limit: 10,
         where: {
             id: {
                 inq: map(facilityIds)

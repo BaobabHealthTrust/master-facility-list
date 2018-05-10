@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-materialize";
 import { Redirect } from "react-router-dom";
-import hideSearchContainer from "../actions/hide-search-container";
+import { hideSearchContainer } from "../actions";
 import { connect } from "react-redux";
 
 class MflTable extends Component {
@@ -51,10 +51,10 @@ class MflTable extends Component {
         });
 
         return (
-            <div>
+            <div className="mfl-bm-2">
                 <Table
                     hoverable
-                    className="mfl-table z-depth-2 centered responsive-table"
+                    className="mfl-table z-depth-2 centered responsive-table striped"
                 >
                     <thead className="grey">
                         <tr>{headerRows}</tr>

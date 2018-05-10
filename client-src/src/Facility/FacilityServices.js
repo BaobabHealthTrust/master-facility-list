@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
+import {
+    fetchCurrentDetails,
+    fetchCurrentServices,
+    setCurrentDetails
+} from "../actions";
 import Container from "./ServicesContainer";
-import fetchCurrentServices from "../actions/fetch-current-services";
 import { connect } from "react-redux";
 
 class FacilityServices extends Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
-
-        if (this.props.facilities.length > 0) {
-            this.props.setCurrentDetails(this.props.facilities, id);
-        }
-
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchCurrentServices(id);
     }
@@ -25,10 +22,8 @@ class FacilityServices extends Component {
             );
         });
 
-        console.log(clinicalServices);
-
         return (
-            <div className="container">
+            <div className="container mfl-container">
                 <div className="nav-content">
                     <ul className="tabs blue accent-1 mfl-tabs">
                         <li className="tab">

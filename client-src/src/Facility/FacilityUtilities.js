@@ -1,20 +1,63 @@
 import React, { Component } from "react";
 import Card from "../common/MflCard";
-import fetchCurrentUtilities from "../actions/fetch-current-utilities";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
-import fetchUtilityTypes from "../actions/fetch-utility-types";
+import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurrentDetails, addFormValues, postFormData, editFacilityDependancies } from "../actions";
 import { connect } from "react-redux";
-import { uniq, chunk } from "lodash";
+import { UtilitiesForm } from "./FacilityForms";
+import { uniq, chunk, map, pull } from "lodash";
 
 class FacilityUtilities extends Component {
-    async componentDidMount() {
-        const id = this.props.match.params.id;
 
-        if (this.props.facilities.length > 0) {
-            await this.props.setCurrentDetails(this.props.facilities, id);
+    state = {
+        isEditUtilities: false
+    };
+
+    submitEditUtilityData = async () => {
+        const facilityId = this.props.match.params.id;
+        const token = sessionStorage.getItem("token");
+        const resourceName = "FacilityUtilities/";
+        const actionType = "EDIT_FACILITY_UTILITY_DATA";
+        const oldUtilityData = map(this.props.utilities, "id");
+        await oldUtilityData.map(id => {
+            this.props.editFacilityDependancies(id, resourceName, actionType);
+        });
+
+        const newUtilityData = this.props.formValues.utilities.map(utility => {
+            return Object.assign({},
+                {
+                    facility_id: facilityId,
+                    utility_id: utility,
+                })
+        });
+
+        const resource = "/FacilityUtilities";
+        const method = "post";
+        const actionName = "POST_FORM_FACILITY_UTILITY_DATA";
+        await this.props.postFormData(
+            newUtilityData,
+            resource,
+            method,
+            actionName,
+            token
+        );
+        if (this.props.postResponse.facilityUtilityResponse.status === 200) {
+            await this.props.fetchCurrentUtilities(facilityId);
+            this.setState({ isEditUtilities: false });
+            await this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
         }
 
+    }
+
+    toggleEditUtilities = () => {
+        this.setState({ isEditUtilities: true });
+    }
+
+    handleCancel = () => {
+        this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
+        this.setState({ isEditUtilities: false });
+    }
+
+    async componentDidMount() {
+        const id = this.props.match.params.id;
         await this.props.fetchCurrentDetails(id);
         await this.props.fetchUtilityTypes();
         await this.props.fetchCurrentUtilities(id);
@@ -45,34 +88,51 @@ class FacilityUtilities extends Component {
         const cards = chunk(presentTypes, 3);
 
         return (
-            <div className="container">
-                <br />
-                {cards.map(card => {
-                    return (
-                        <div className="row">
-                            {card.map(type => {
-                                const data = this.props.utilities
-                                    .filter(
-                                        util =>
-                                            util.utility.utility_type_id ===
-                                            type.id
-                                    )
-                                    .map(util => [util.utility.utility_name]);
-                                return (
-                                    <div className="col m4 s12">
-                                        <Card
-                                            heading={type.utility_type}
-                                            data={data}
-                                            icon={this.getResourceTypeIcon(
-                                                type.utility_type
-                                            )}
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    );
-                })}
+            <div className="container mfl-container">
+                {sessionStorage.getItem("token") && (
+                    !this.state.isEditUtilities ? (<a
+                        class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
+                        onClick={this.toggleEditUtilities}
+                    >
+                        <i class="material-icons left">edit</i> Edit
+                      </a>) : (
+                            ""
+                        )
+                )}
+                {!this.state.isEditUtilities ? (
+                    <div>
+                        {cards.map(card => {
+                            return (
+                                <div className="row">
+                                    {card.map(type => {
+                                        const data = this.props.utilities
+                                            .filter(
+                                                util =>
+                                                    util.utility.utility_type_id ===
+                                                    type.id
+                                            )
+                                            .map(util => [util.utility.utility_name]);
+                                        return (
+                                            <div className="col m4 s12">
+                                                <Card
+                                                    heading={type.utility_type}
+                                                    data={data}
+                                                    icon={this.getResourceTypeIcon(
+                                                        type.utility_type
+                                                    )}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
+                    </div>) : (<UtilitiesForm
+                        submitUtilityData={this.submitEditUtilityData}
+                        isEditUtilities={this.state.isEditUtilities}
+                        currentUtilities={this.props.utilities}
+                        handleCancel={this.handleCancel}
+                    />)}
             </div>
         );
     }
@@ -83,7 +143,9 @@ const mapStateToProps = state => {
         utilities: state.facilities.currentUtilities,
         facilities: state.facilities.list,
         isLoading: state.facilities.isLoading,
-        utilityTypes: state.dependancies.utilityTypes
+        utilityTypes: state.dependancies.utilityTypes,
+        postResponse: state.postResponse,
+        formValues: state.formValues,
     };
 };
 
@@ -91,5 +153,8 @@ export default connect(mapStateToProps, {
     fetchCurrentUtilities,
     fetchCurrentDetails,
     setCurrentDetails,
-    fetchUtilityTypes
+    fetchUtilityTypes,
+    addFormValues,
+    postFormData,
+    editFacilityDependancies
 })(FacilityUtilities);

@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
+import { fetchAdvancedSearchResults, fetchBasicDetailsResults, removeSearchValues } from "../../actions";
 
 class DistrictTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.districtValues,
-                this.props.districts
+            this.props.searchValues.districtValues,
+            this.props.districts
             )
             .map(entity => {
                 return (
@@ -22,7 +21,11 @@ class DistrictTags extends Component {
                             await this.props.fetchBasicDetailsResults(
                                 this.props.searchValues
                             );
+                            this.props.filteredResults.length > 0 && await this.props.fetchFilteredResults(this.props.filteredResults);
+
                         }}
+                        manageCheckbox={(id) => this.props.manageCheckbox(id)}
+
                     />
                 );
             });
@@ -31,11 +34,13 @@ class DistrictTags extends Component {
 const mapStateToProps = state => {
     return {
         searchValues: state.advancedSearchValues,
-        districts: state.dependancies.districts
+        districts: state.dependancies.districts,
+        filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities,
     };
 };
 
 export default connect(mapStateToProps, {
     removeSearchValues,
-    fetchBasicDetailsResults
+    fetchBasicDetailsResults,
+    fetchAdvancedSearchResults
 })(DistrictTags);

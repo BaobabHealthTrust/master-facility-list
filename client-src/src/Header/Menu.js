@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { Dropdown, NavItem, Button } from "react-materialize";
 
 class Menu extends Component {
     constructor() {
@@ -7,6 +9,12 @@ class Menu extends Component {
         this.state = {
             activePage: "home"
         };
+    }
+    componentDidMount() {
+        sessionStorage.setItem(
+            "firstname",
+            this.props.userDetails.userDetails.firstname
+        );
     }
 
     render() {
@@ -35,7 +43,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/about"
                             onClick={e =>
                                 this.setState({ activePage: "about" })
                             }
@@ -67,7 +75,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/feedback"
                             onClick={e =>
                                 this.setState({ activePage: "feedback" })
                             }
@@ -76,20 +84,45 @@ class Menu extends Component {
                         </Link>
                     </li>
 
-                    <li
-                        className={
-                            this.state.activePage === "contacts" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to=""
-                            onClick={e =>
-                                this.setState({ activePage: "contacts" })
+                    {sessionStorage.getItem("token") ? (
+                        <Dropdown
+                            trigger={
+                                <li className="mfl-nav-item">
+                                    <i className="material-icons">person</i>
+                                    {sessionStorage
+                                        .getItem("firstname")
+                                        .toUpperCase()}
+                                </li>
                             }
                         >
-                            CONTACTS
-                        </Link>
-                    </li>
+                            <NavItem className="mfl-nav-item">
+                                <i className="material-icons">people</i>Edit
+                                Profile
+                            </NavItem>
+                            <NavItem divider />
+                            <NavItem>
+                                <i className="material-icons">lock</i>Logout
+                            </NavItem>
+                        </Dropdown>
+                    ) : (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
+                            }
+                        >
+                            {" "}
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                LOGIN
+                            </Link>
+                        </li>
+                    )}
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     <li
@@ -111,7 +144,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/about"
                             onClick={e =>
                                 this.setState({ activePage: "about" })
                             }
@@ -143,7 +176,7 @@ class Menu extends Component {
                         }
                     >
                         <Link
-                            to=""
+                            to="/feedback"
                             onClick={e =>
                                 this.setState({ activePage: "feedback" })
                             }
@@ -151,25 +184,51 @@ class Menu extends Component {
                             FEEDBACK
                         </Link>
                     </li>
-
-                    <li
-                        className={
-                            this.state.activePage === "contacts" ? "active" : ""
-                        }
-                    >
-                        <Link
-                            to=""
-                            onClick={e =>
-                                this.setState({ activePage: "contacts" })
+                    {sessionStorage.getItem("token") == "" ? (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
                             }
                         >
-                            CONTACTS
-                        </Link>
-                    </li>
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                LOGIN
+                            </Link>
+                        </li>
+                    ) : (
+                        <li
+                            className={
+                                this.state.activePage === "login"
+                                    ? "active"
+                                    : ""
+                            }
+                        >
+                            <Link
+                                to="/login"
+                                onClick={e =>
+                                    this.setState({ activePage: "login" })
+                                }
+                            >
+                                <i className="material_icons">person</i>
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </div>
         );
     }
 }
 
-export default Menu;
+const mapStateToProps = state => {
+    return {
+        userDetails: state.authReducer
+    };
+};
+
+export default connect(mapStateToProps, {})(Menu);

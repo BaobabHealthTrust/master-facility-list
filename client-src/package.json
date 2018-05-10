@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "axios": "^0.16.0",
+        "email-validator": "^1.1.1",
         "loopback-connector-mysql": "^5.2.0",
         "react": "^16.0.0",
         "react-dom": "^16.0.0",
@@ -15,19 +16,22 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "flow": "flow"
     },
     "devDependencies": {
         "flexboxgrid": "^6.3.1",
+        "flow-bin": "^0.64.0",
         "js-file-download": "^0.4.1",
         "lodash": "^4.17.4",
         "moment": "^2.19.2",
+        "react-data-grid": "^3.0.11",
         "react-materialize": "^1.0.16",
         "react-modal": "^3.1.10",
         "react-redux": "^5.0.6",
-        "react-router-dom": "^4.2.2",
         "recompose": "^0.26.0",
         "redux": "^3.7.2",
-        "redux-promise": "^0.5.3"
+        "redux-promise": "^0.5.3",
+        "victory": "^0.24.5"
     }
 }

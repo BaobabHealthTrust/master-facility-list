@@ -4,11 +4,16 @@ import Navbar from "./Navbar";
 import FacilitiesHome from "./Facility/FacilitiesHome";
 import { Route, Switch } from "react-router-dom";
 import FacilityDetails from "./Facility/FacilityDetails";
+import Dashboard from "./Dashboard/DashboardHome";
+import MflAbout from "./common/MflAbout";
+import Footer from "./common/Footer";
+import MflLogin from "./common/MflLogin";
+import MfLFeedback from "./common/MfLFeedback";
 
 class App extends Component {
     render() {
         return (
-            <div>
+            <div className="mfl-page-wrap">
                 <Navbar />
                 <Switch>
                     <Route
@@ -20,10 +25,27 @@ class App extends Component {
                     <Route
                         exact
                         path="/"
-                        render={() => <h1>This is homepage</h1>}
+                        component={Dashboard}
+                    />
+                    <Route
+                        exact
+                        path="/about"
+                        component={MflAbout}
+                    />
+                    <Route
+                        exact
+                        path="/feedback"
+                        component={MfLFeedback}
+                    />
+                    <Route
+                        exact
+                        path="/login"
+                        component={MflLogin}
                     />
                 </Switch>
-            </div>
+
+                <Footer />
+            </div >
         );
     }
 }
