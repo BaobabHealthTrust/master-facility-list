@@ -1,14 +1,14 @@
 "use strict";
-const dependentModelFactory = require('./dependent-model-factory');
-const data = require('./data');
-const independentModelFactory = require('./independent-model-factory');
-const facilitySeeder = require('./facility-seeder');
-const facilityDependents = require('./facility-dependants');
-const manyToMany = require('./many-to-many');
-const server = require("../server/server");
+const dependentModelFactory = require('./seeds/dependent-model-factory');
+const data = require('./seeds/data');
+const independentModelFactory = require('./seeds/independent-model-factory');
+const facilitySeeder = require('./seeds/facility-seeder');
+const facilityDependantsMapper = require('./seeds/facility-dependants-mapper');
+const facilityResourcesUtilitiesServicesMapper = require('./seeds/facility-resources-utilities-services-mapper');
+const server = require("./server/server");
 const dataSource = server.dataSources.db;
 
-const serviceModelSeeder = require('./service-model-seeder');
+const serviceModelSeeder = require('./seeds/service-model-seeder');
 
 const seed = async () => {
     try {
@@ -36,10 +36,10 @@ const seed = async () => {
         await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
         await facilitySeeder(facilityCount);
         await console.log(`Created ${facilityCount} facilities`);
-        await facilityDependents();
+        await facilityDependantsMapper();
         await console.log(`Created facilities dependants`);
-        await manyToMany();
-        await console.log('Many to May associations created');
+        await facilityResourcesUtilitiesServicesMapper();
+        await console.log('seeding done');
         await dataSource.disconnect();
     } catch (error) {
         console.log(error);
