@@ -1,37 +1,65 @@
 {
-  "name": "Address",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "physical_address": {
-      "type": "string",
-      "required": true
+    "name": "Address",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "postal_address": {
-      "type": "string"
+    "properties": {
+        "physical_address": {
+            "type": "string",
+            "required": true
+        },
+        "postal_address": {
+            "type": "string"
+        },
+        "village": {
+            "type": "string"
+        },
+        "ta": {
+            "type": "string"
+        },
+        "facility_id": {
+            "type": "number",
+            "required": true
+        },
+        "client_id": {
+            "type": "number",
+            "required": false
+        }
     },
-    "village": {
-      "type": "string"
+    "validations": [],
+    "relations": {
+        "facility": {
+            "type": "belongsTo",
+            "model": "Facility",
+            "foreignKey": "facility_id"
+        },
+        "client": {
+            "type": "belongsTo",
+            "model": "Client",
+            "foreignKey": "client_id"
+        }
     },
-    "ta": {
-      "type": "string"
-    },
-    "facility_id": {
-      "type": "number",
-      "required": true
-    }
-  },
-  "validations": [],
-  "relations": {
-    "facility": {
-      "type": "belongsTo",
-      "model": "Facility",
-      "foreignKey": "facility_id"
-    }
-  },
-  "acls": [],
-  "methods": {}
+    "acls": [
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        }
+    ],
+    "methods": {}
 }

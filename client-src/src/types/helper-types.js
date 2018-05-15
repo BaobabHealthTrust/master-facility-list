@@ -3,7 +3,8 @@ import {
     RegulatoryStatus,
     OperationalStatus,
     FacilityType,
-    Owner
+    Owner,
+    District
 } from "./model-types"
 
 export type SecondaryLink = {
@@ -14,24 +15,10 @@ export type SecondaryLink = {
 }
 
 export type BasicDetailsFormProps = {
-    handleNextForTabs: Function,
-    handleCancel: Function,
-    addFormValues: Function,
-    postFormData: Function,
-    facilityName: string,
-    facilityNameError: string,
-    commonNameError: string,
-    commonName: string,
-    operationalStatus: string,
-    dateOpened: Date,
-    regulatoryStatus: string,
-    facilityType: string,
-    facilityOwner: string,
+    onNext: Function,
     regulatoryStatuses: Array<RegulatoryStatus>,
     operationalStatuses: Array<OperationalStatus>,
-    facilityOwners: Array<FacilityOwner>,
+    facilityOwners: Array<Owner>,
     facilityTypes: Array<FacilityType>,
-    registrationNumber: string,
-    registrationNumberError: string,
-    postResponse: {}
+    districts: Array<District>
 };
