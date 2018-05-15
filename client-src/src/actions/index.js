@@ -56,3 +56,4 @@ export { default as getUserDetails } from "./get-user-details";
 export { default as addFormValues } from "./add-form-values";
 export { default as postFormData } from "./post-form-data";
 export { default as editFacilityDependancies } from "./edit-facility-dependancies";
+export { default as postBasicFacilityDetails } from "./post-basic-facility-details";
