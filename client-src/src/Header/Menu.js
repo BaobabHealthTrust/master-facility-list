@@ -71,6 +71,23 @@ class Menu extends Component {
 
                     <li
                         className={
+                            this.state.activePage === "users"
+                                ? "active"
+                                : ""
+                        }
+                    >
+                        <Link
+                            to="/users"
+                            onClick={e =>
+                                this.setState({ activePage: "users" })
+                            }
+                        >
+                            *USERS*
+                        </Link>
+                    </li>
+
+                    <li
+                        className={
                             this.state.activePage === "feedback" ? "active" : ""
                         }
                     >

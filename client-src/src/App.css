@@ -73,6 +73,14 @@ body {
 .mfl-tm-2 {
     margin-top: 2% !important;
 }
+.mfl-fl-right{
+    float: right;
+    clear: both;
+}
+
+.mfl-pointable{
+    cursor: pointer;
+}
 
 .mfl-h-10 {
     height: 10%;

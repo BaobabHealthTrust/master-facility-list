@@ -10,6 +10,8 @@ import Footer from "./common/Footer";
 import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
 
+import {UsersHome} from './users';
+
 class App extends Component {
     render() {
         return (
@@ -41,6 +43,11 @@ class App extends Component {
                         exact
                         path="/login"
                         component={MflLogin}
+                    />
+                    <Route
+                        exact
+                        path="/users"
+                        component={UsersHome}
                     />
                 </Switch>
 
