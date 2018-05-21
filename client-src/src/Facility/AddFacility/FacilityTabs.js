@@ -1,67 +1,68 @@
 //@flow
 import React from "react";
-import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm } from '../FacilityForms'
+import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm }
+  from '../FacilityForms'
 import footerResize from '../../helpers/footerResize';
+import { FormWizardTabHeading } from '../../common';
 
 class FacilityTabs extends React.Component<{}> {
 
-    state = {
-        active: 'basic'
-    }
+  state = {
+    active: 'Resources'
+  }
 
-    componentWillUpdate() {
-        footerResize();
-    }
+  componentWillUpdate() {
+    footerResize();
+  }
 
-    componentDidMount() {
-        footerResize();
-    }
+  componentDidMount() {
+    footerResize();
+  }
 
-    render() {
-        return (
-            <div>
-                <div
-                    className="mfl-form-wizard"
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        fontSize: 20,
-                        marginTop: 20
-                    }}
-                >
-                    <div
-                        className={this.state.active == 'basic' ? "mfl-active-form-wizard" : ""}
-                    >
-                        <span>1</span> Basic Details
-                    </div>
-                    <div
-                        className={this.state.active == 'contacts' ? "mfl-active-form-wizard" : ""}
-                    >
-                        <span>2</span> Contacts and Locations
-                    </div>
-                    <div
-                        className={this.state.active == 'resources' ? "mfl-active-form-wizard" : ""}
-                    >
-                        <span>3</span> Facility Resources
-                    </div>
-                    <div><span>4</span> Facility Utilities</div>
-                    <div><span>5</span> Facility Services</div>
-                </div>
-                <div>
-                    {this.state.active == 'basic'
-                        ? <BasicDetailsForm onNext={() => this.setState({ active: 'contacts' })} />
-                        : ""
-                    }
-                    {this.state.active == 'contacts'
-                        ? <ContactsForm onNext={() => this.setState({ active: 'resources' })} />
-                        : ''
-                    }
-                    {this.state.active == 'resources' ? <h5>Facility Resources Form</h5> : ''}
-                </div>
-            </div >
-        );
+  _switchForms = () => {
+    switch (this.state.active) {
+      case 'Basic Details':
+        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
+      case 'Contacts & Location':
+        return <ContactsForm onNext={() => this.setState({ active: 'Resources' })} />
+      case 'Resources':
+        return <ResourcesForm onNext={() => this.setState({ active: 'Utilities' })} />
+      case 'Utilities':
+        return <h2>Utilities Form</h2>
+
+      default:
+        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <div
+          className="mfl-form-wizard"
+          style={styles.container}
+        >
+          <FormWizardTabHeading index="1" title="Basic Details" active={this.state.active} />
+          <FormWizardTabHeading index="2" title="Contacts & Location" active={this.state.active} />
+          <FormWizardTabHeading index="3" title="Resources" active={this.state.active} />
+          <FormWizardTabHeading index="4" title="Utilities" active={this.state.active} />
+        </div>
+        <div>
+          {this._switchForms()}
+        </div>
+      </div >
+    );
+  }
 }
 
 export default FacilityTabs;
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    fontSize: 20,
+    marginTop: 20
+  }
+}
