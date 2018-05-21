@@ -1,15 +1,4 @@
 "use strict";
-const dependentModelFactory = require('./dependent-model-factory');
-const data = require('./data');
-const independentModelFactory = require('./independent-model-factory');
-const facilitySeeder = require('./facility-seeder');
-const facilityDependents = require('./facility-dependants');
-const manyToMany = require('./many-to-many');
-const userSeeder = require('./userseeder');
-const server = require("../server/server");
-const dataSource = server.dataSources.db;
-
-const serviceModelSeeder = require('./service-model-seeder');
 
 const seed = async () => {
     try {
@@ -17,8 +6,6 @@ const seed = async () => {
         if (!facilityCount) {
             console.error('Please specify the number of facilities to be generated');
             process.exit(1);
-        }
-
         await userSeeder(data.users);
         await independentModelFactory(server.models.Owner, data.owners);
         await independentModelFactory(server.models.FacilityType, data.facilityTypes);
@@ -37,10 +24,10 @@ const seed = async () => {
         await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
         await facilitySeeder(facilityCount);
         await console.log(`Created ${facilityCount} facilities`);
-        await facilityDependents();
+        await facilityDependantsMapper();
         await console.log(`Created facilities dependants`);
-        await manyToMany();
-        await console.log('Many to May associations created');
+        await facilityResourcesUtilitiesServicesMapper();
+        await console.log('seeding done');
         await dataSource.disconnect();
     } catch (error) {
         console.log(error);

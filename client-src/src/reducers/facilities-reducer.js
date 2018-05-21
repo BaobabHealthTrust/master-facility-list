@@ -13,7 +13,9 @@ export default (
         typeServiceInstances: [],
         resources: [],
         utilities: [],
-        services: []
+        services: [],
+        basicDetailsResponse: {},
+        contactDetailsResponse: {}
     },
     action
 ) => {
@@ -104,6 +106,18 @@ export default (
                 all: action.payload.data,
                 isLoading: false
             };
+        case "POST_FACILITY_BASIC_DETAILS":
+            return {
+                ...state,
+                basicDetailsResponse: action.payload.data,
+                isLoading: false
+            };
+        case "POST_FACILITY_CONTACT_DETAILS":
+            return {
+                ...state,
+                contactDetailsResponse: action.payload.data,
+                isLoading: false
+            }
         default:
             return state;
     }

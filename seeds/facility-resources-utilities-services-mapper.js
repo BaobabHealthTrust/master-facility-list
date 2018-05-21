@@ -13,7 +13,6 @@ const {
     Utility
 } = server.models;
 
-const dataSource = server.dataSources.db;
 
 module.exports = async () => {
 
@@ -68,5 +67,4 @@ module.exports = async () => {
     await FacilityResource.create(facilityResources);
     await FacilityUtility.create(facilityUtilities);
     await FacilityService.create(facilityServices);
-    await dataSource.disconnect();
 }

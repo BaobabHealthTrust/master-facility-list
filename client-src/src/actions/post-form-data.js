@@ -1,26 +1,19 @@
 import axios from "axios";
 import settings from "../settings";
-export default function postFormData(
-    postData,
-    resource,
-    method,
-    actionName,
-    token
-) {
-    const END_POINT = `${settings.hostname}/api/`;
+const token = "XqmSAgEQsMZlhsHDI8cwfHvcHn8jiFmthgA5JilgNMNk7D39FoOoH8A406hNo7Ue"; //from sessionStorage
 
-    const header = {
-        Authorization: `${token}`
-    };
-    const URL = `${END_POINT}${resource}`;
-    const request = axios({
-        method: method,
-        url: URL,
-        data: postData,
-        headers: header
-    });
-    return {
-        type: actionName,
-        payload: request
-    };
+export default function postFormData(data, resource, method, actionType, endpoint = "") {
+  const END_POINT = `${settings.hostname}/api/`;
+
+  const headers = {
+    Authorization: token
+  };
+
+  const url = `${END_POINT}${resource}/${endpoint}`;
+  const response = axios({ method, url, data, headers });
+
+  return {
+    type: actionType,
+    payload: response
+  };
 }
