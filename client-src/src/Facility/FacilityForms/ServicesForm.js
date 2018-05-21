@@ -7,14 +7,26 @@ import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik } from 'formik';
 import { postFormData } from '../../actions';
 import yup from 'yup';
+import { renderOptions } from './helpers';
+import { Resource, ResourceType } from '../../types/model-types';
 
-class FacilityContactForm extends React.Component<{}> {
+type Props = {
+  response: any,
+  resourceTypes: Array<ResourceType>,
+  resources: Array<Resource>
+}
+
+class ResourcesForm extends React.Component<Props> {
+
+  state = {
+    selectedResourceType: this.props.resourceTypes[0].id
+  }
 
   REQUIRED_MESSAGE = "You can't leave this field blank";
   PHONE_MIN_MESSAGE = "What type of phone number is that?"
   INVALID_NUM_MESSAGE = "This is not a valid number"
 
-  initialValues = {
+  originalValues = {
     postalAddress: "",
     physicalAddress: null,
     contactName: "",
@@ -54,6 +66,11 @@ class FacilityContactForm extends React.Component<{}> {
     if (this.props.response.response) this.props.onNext();
   }
 
+  _filteredResources = () => {
+    return this.props.resources
+      .filter(r => r.resource_type_id === Number(this.state.selectedResourceType));
+  }
+
   render() {
     return (
       <div>
@@ -75,27 +92,21 @@ class FacilityContactForm extends React.Component<{}> {
               <div>
                 <Row>
                   <Input
-                    s={6}
-                    placeholder="Enter Facility Postal Address"
-                    label="Enter Facility Postal Address"
-                    labelClassName="mfl-max-width"
-                    value={values.postalAddress}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.postalAddress && errors.postalAddress}
-                    name="postalAddress"
-                  />
+                    s={3}
+                    type="select"
+                    label="Select Resource Type"
+                    onChange={(e) => this.setState({ selectedResourceType: e.target.value })}
+                  >
+                    {renderOptions(this.props.resourceTypes, "resource_type", )}
+                  </Input>
                   <Input
-                    s={6}
-                    placeholder="Enter Facility Physical Address"
-                    label="Enter Facility Physical Address"
-                    labelClassName="mfl-max-width"
-                    value={values.physicalAddress}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.physicalAddress && errors.physicalAddress}
-                    name="physicalAddress"
-                  />
+                    s={3}
+                    type="select"
+                    label="Select Resource"
+                  >
+                    {
+                      renderOptions(this._filteredResources(), "resource_name")}
+                  </Input>
                 </Row>
                 <Row>
                   <Input
@@ -192,10 +203,12 @@ class FacilityContactForm extends React.Component<{}> {
 
 const mapStateToProps = state => {
   return {
-    response: state.facilities.contactDetailsResponse,
+    response: state.facilities.resourcesResponse,
+    resourceTypes: state.dependancies.resourceTypes,
+    resources: state.facilities.resources
   }
 }
 
 export default connect(mapStateToProps, {
   postFormData
-})(FacilityContactForm);
+})(ResourcesForm);
