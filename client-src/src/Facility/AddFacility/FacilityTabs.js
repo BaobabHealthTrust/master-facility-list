@@ -1,186 +1,68 @@
 //@flow
 import React from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import { Tabs, Tab } from "react-materialize";
-import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm } from '../FacilityForms'
-import { connect } from "react-redux";
-import {
-    RegulatoryStatus,
-    OperationalStatus,
-    FacilityOwner,
-    FacilityType
-} from "../../types/model-types";
-import { addFormValues } from "../../actions";
+import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm }
+  from '../FacilityForms'
+import footerResize from '../../helpers/footerResize';
+import { FormWizardTabHeading } from '../../common';
 
+class FacilityTabs extends React.Component<{}> {
 
-type State = {
-    activeTab: string,
-};
+  state = {
+    active: 'Resources'
+  }
 
-type Props = {
-    regulatoryStatuses: Array<RegulatoryStatus>,
-    operationalStatuses: Array<OperationalStatus>,
-    facilityOwners: Array<FacilityOwner>,
-    facilityTypes: Array<FacilityType>,
-    serviceTypes: Array<serviceTypes>,
-    services: Array<services>,
-    handleCancelAddFacility: Function,
-};
+  componentWillUpdate() {
+    footerResize();
+  }
 
-class FacilityTabs extends React.Component<Props, State> {
-    state = {
-        activeTab: "Basic",
-    };
+  componentDidMount() {
+    footerResize();
+  }
 
-    handleNextForTabs = (tabName) => {
-        this.setState({ activeTab: tabName });
-    };
+  _switchForms = () => {
+    switch (this.state.active) {
+      case 'Basic Details':
+        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
+      case 'Contacts & Location':
+        return <ContactsForm onNext={() => this.setState({ active: 'Resources' })} />
+      case 'Resources':
+        return <ResourcesForm onNext={() => this.setState({ active: 'Utilities' })} />
+      case 'Utilities':
+        return <h2>Utilities Form</h2>
 
-    handlePreviousForTabs = (tabName) => {
-        this.setState({ activeTab: tabName });
-    };
-
-    handleCancel = () => {
-        this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
-        this.props.handleCancelAddFacility();
+      default:
+        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
     }
+  }
 
-    render() {
-        return (
-            <div className="mfl-modal-container">
-                <div class="modal-content">
-                    <Tabs
-                        className="tab-demo z-depth-0 white text-white indicator"
-                        onChange={(t, v) => this.setState({ activeTab: v.target.text })}
-                    >
-                        <Tab
-                            active
-                            title="Basic"
-                            tabWidth="2"
-                            className={
-                                `advanced-search-container mfl-first-tabs ${this.state.activeTab === "Basic" ? 'mfl-active-tab' : 'mfl-inactive-tabs'}`
-                            }
-                        >
-                            {this.state.activeTab === "Basic" && (
-                                <BasicDetailsForm
-                                    isEditBasic={false}
-                                    handleNextForTabs={this.handleNextForTabs}
-                                    handleCancel={this.handleCancel}
-                                    facilityOwners={this.props.facilityOwners}
-                                    facilityTypes={this.props.facilityTypes}
-                                    regulatoryStatuses={
-                                        this.props.regulatoryStatuses
-                                    }
-                                    operationalStatuses={
-                                        this.props.operationalStatuses
-                                    }
-                                />
-                            )}
-                        </Tab>
-                        <Tab
-                            title="Contacts and Locations"
-                            tabWidth="4"
-                            className={
-                                `advanced-search-container mfl-add-tabcontacts ${this.state.activeTab === "Contacts and Locations" ? 'mfl-active-tab' : 'mfl-inactive-tabs'}`
-                            }
-                            active
-                        >
-                            {this.state.activeTab ===
-                                "Contacts and Locations" ? (
-                                    <ContactsForm
-                                        isEditContactAndLocation={false}
-                                        handlePreviousForTabs={this.handlePreviousForTabs}
-                                        handleNextForTabs={this.handleNextForTabs}
-                                        handleCancel={this.handleCancel}
-                                        districts={this.props.districts}
-                                    />
-                                ) : (
-                                    ""
-                                )}
-                        </Tab>
-
-                        <Tab
-                            title="Resources"
-                            className={
-                                this.state.activeTab === "Resources"
-                                    ? `${"advanced-search-container mfl-add-tabresources mfl-active-tab"}`
-                                    : `${"advanced-search-container mfl-add-tabresources mfl-inactive-tabs"}`
-                            }
-                            active
-                        >
-                            {this.state.activeTab === "Resources" ? (
-                                <ResourcesForm
-                                    isEditResources={false}
-                                    handlePreviousForTabs={this.handlePreviousForTabs}
-                                    handleNextForTabs={this.handleNextForTabs}
-                                    handleCancel={this.handleCancel}
-                                />
-                            ) : (
-                                    ""
-                                )}
-                        </Tab>
-
-                        <Tab
-                            title="Utilities"
-                            className={
-                                this.state.activeTab === "Utilities"
-                                    ? `${"advanced-search-container mfl-add-tabs mfl-active-tab"}`
-                                    : `${"advanced-search-container mfl-add-tabs mfl-inactive-tabs"}`
-                            }
-                            active
-                        >
-                            {this.state.activeTab === "Utilities" ? (
-                                <UtilitiesForm
-                                    isEditUtilities={false}
-                                    handlePreviousForTabs={this.handlePreviousForTabs}
-                                    handleNextForTabs={this.handleNextForTabs}
-                                    handleCancel={this.handleCancel}
-                                />
-                            ) : (
-                                    ""
-                                )}
-                        </Tab>
-
-                        <Tab
-                            title="Services"
-                            className={
-                                this.state.activeTab === "Services"
-                                    ? `${"advanced-search-container mfl-add-tabs mfl-active-tab"}`
-                                    : `${"advanced-search-container mfl-add-tabs mfl-inactive-tabs"}`
-                            }
-                            active
-                        >
-                            {this.state.activeTab === "Services" ? (
-                                <ServicesForm
-                                    isEditServices={false}
-                                    handlePreviousForTabs={this.handlePreviousForTabs}
-                                    handleNextForTabs={this.handleNextForTabs}
-                                    handleCancel={this.handleCancel}
-                                    services={this.props.services}
-                                    serviceTypes={this.props.serviceTypes}
-                                />
-                            ) : (
-                                    ""
-                                )}
-                        </Tab>
-                    </Tabs>
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <div
+          className="mfl-form-wizard"
+          style={styles.container}
+        >
+          <FormWizardTabHeading index="1" title="Basic Details" active={this.state.active} />
+          <FormWizardTabHeading index="2" title="Contacts & Location" active={this.state.active} />
+          <FormWizardTabHeading index="3" title="Resources" active={this.state.active} />
+          <FormWizardTabHeading index="4" title="Utilities" active={this.state.active} />
+        </div>
+        <div>
+          {this._switchForms()}
+        </div>
+      </div >
+    );
+  }
 }
 
-const mapStateToProps = state => {
-    return {
-        isError: state.facilities.isNetworkError,
-        operationalStatuses: state.dependancies.operationalStatuses,
-        regulatoryStatuses: state.dependancies.regulatoryStatuses,
-        facilityOwners: state.dependancies.facilityOwners,
-        facilityTypes: state.dependancies.facilityTypes,
-        districts: state.dependancies.districts,
-        serviceTypes: state.dependancies.serviceInstance,
-        services: state.facilities.services,
-    };
-};
+export default FacilityTabs;
 
-export default connect(mapStateToProps, { addFormValues })(FacilityTabs);
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    fontSize: 20,
+    marginTop: 20
+  }
+}

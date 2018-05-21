@@ -1,32 +1,60 @@
 {
-  "name": "Location",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "catchment_area": {
-      "type": "string",
-      "required": true
+    "name": "Location",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "catchment_population": {
-      "type": "number",
-      "required": true
+    "properties": {
+        "catchment_area": {
+            "type": "string",
+            "required": true
+        },
+        "catchment_population": {
+            "type": "number",
+            "required": true
+        },
+        "facility_id": {
+            "type": "number",
+            "required": true
+        },
+        "client_id": {
+            "type": "number",
+            "required": false
+        }
     },
-    "facility_id": {
-      "type": "number",
-      "required": true
-    }
-  },
-  "validations": [],
-  "relations": {
-    "facility": {
-      "type": "belongsTo",
-      "model": "Facility",
-      "foreignKey": "facility_id"
-    }
-  },
-  "acls": [],
-  "methods": {}
+    "validations": [],
+    "relations": {
+        "facility": {
+            "type": "belongsTo",
+            "model": "Facility",
+            "foreignKey": "facility_id"
+        },
+        "client": {
+            "type": "belongsTo",
+            "model": "Client",
+            "foreignKey": "client_id"
+        }
+    },
+    "acls": [
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        }
+    ],
+    "methods": {}
 }

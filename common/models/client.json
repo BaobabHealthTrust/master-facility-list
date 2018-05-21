@@ -32,9 +32,16 @@
         "facilities": {
             "type": "hasMany",
             "model": "Facility",
-            "foreignkey": "client_id"
+            "foreignKey": "client_id"
         }
     },
-    "acls": [],
+    "acls": [
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        }
+    ],
     "methods": {}
 }

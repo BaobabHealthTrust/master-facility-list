@@ -41,13 +41,9 @@ Modify the .env.example file and make sure it reflects your MySQL Database Setti
 
 ## Step 7
 
-Run the fake data generation scripts to populate your database with seed data, in the following order:
+Run the fake data generation script to populate your database with seed data:
 
-### `node seeds/zone-district.js`
-
-### `node seeds/facility-dependency.js`
-
-### `node seeds/facility-fake-data.js 1000` where 1000 is the number of fake facilities you would like to generate
+### `node seed.js [number of facilities]`
 
 ## Step 8
 

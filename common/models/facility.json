@@ -8,7 +8,11 @@
     "properties": {
         "facility_code": {
             "type": "string",
-            "required": true
+            "required": false
+        },
+        "registration_number": {
+            "type": "number",
+            "required": false
         },
         "facility_name": {
             "type": "string",
@@ -44,8 +48,13 @@
             "type": "number",
             "required": true
         },
-       "archived_date": {
-            "type": "string"
+        "archived_date": {
+            "type": "date",
+            "required": false
+        },
+        "published_date": {
+            "type": "date",
+            "required": false
         }
     },
     "validations": [],
@@ -113,6 +122,11 @@
             "type": "belongsTo",
             "model": "District",
             "foreignKey": "district_id"
+        },
+        "client": {
+            "type": "belongsTo",
+            "model": "Client",
+            "foreignKey": "client_id"
         }
     },
     "acls": [
@@ -131,25 +145,19 @@
         {
             "accessType": "WRITE",
             "principalType": "ROLE",
-            "principalId": "trusted",
-            "permission": "ALLOW"
-        },
-        {
-            "accessType": "READ",
-            "principalType": "ROLE",
-            "principalId": "trusted",
+            "principalId": "admin",
             "permission": "ALLOW"
         },
         {
             "accessType": "UPDATE",
             "principalType": "ROLE",
-            "principalId": "trusted",
+            "principalId": "admin",
             "permission": "ALLOW"
         },
         {
             "accessType": "DELETE",
             "principalType": "ROLE",
-            "principalId": "trusted",
+            "principalId": "admin",
             "permission": "ALLOW"
         }
     ],
