@@ -4,8 +4,9 @@ const should = require("chai").should();
 const server = require("../server/server");
 const request = require("supertest")(server);
 const helper = require("./helper");
+const data = require("../seeds/data");
 
-server.models.Facility.create(helper.facility);
+server.models.Facility.create(data.facility);
 
 describe("List Facilities", () => {
     it("Should allow anyone to View a List of Published Facilities", (done) => {
