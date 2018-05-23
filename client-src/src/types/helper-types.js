@@ -16,6 +16,7 @@ export type SecondaryLink = {
 
 export type BasicDetailsFormProps = {
   onNext: Function,
+  submitFacility: Function,
   regulatoryStatuses: Array<RegulatoryStatus>,
   operationalStatuses: Array<OperationalStatus>,
   facilityOwners: Array<Owner>,

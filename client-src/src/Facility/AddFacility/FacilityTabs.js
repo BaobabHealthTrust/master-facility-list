@@ -8,7 +8,8 @@ import { FormWizardTabHeading } from '../../common';
 class FacilityTabs extends React.Component<{}> {
 
   state = {
-    active: 'Resources'
+    active: 'Utilities',
+    facility: {}
   }
 
   componentWillUpdate() {
@@ -22,14 +23,27 @@ class FacilityTabs extends React.Component<{}> {
   _switchForms = () => {
     switch (this.state.active) {
       case 'Basic Details':
-        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
+        return <BasicDetailsForm
+          onNext={() => this.setState({ active: 'Contacts & Location' })}
+          submitFacility={(facility) => this.setState({ facility })}
+        />
       case 'Contacts & Location':
-        return <ContactsForm onNext={() => this.setState({ active: 'Resources' })} />
+        return <ContactsForm
+          onNext={() => this.setState({ active: 'Resources' })}
+          facility={this.state.facility}
+        />
       case 'Resources':
-        return <ResourcesForm onNext={() => this.setState({ active: 'Utilities' })} />
+        return <ResourcesForm
+          onNext={() => this.setState({ active: 'Utilities' })}
+          facility={this.state.facility}
+        />
       case 'Utilities':
-        return <h2>Utilities Form</h2>
-
+        return <UtilitiesForm
+          onNext={() => this.setState({ active: 'Services' })}
+          facility={this.state.facility}
+        />
+      case 'Services':
+        return <h4>Services Form</h4>
       default:
         return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
     }
@@ -46,6 +60,7 @@ class FacilityTabs extends React.Component<{}> {
           <FormWizardTabHeading index="2" title="Contacts & Location" active={this.state.active} />
           <FormWizardTabHeading index="3" title="Resources" active={this.state.active} />
           <FormWizardTabHeading index="4" title="Utilities" active={this.state.active} />
+          <FormWizardTabHeading index="5" title="Services" active={this.state.active} />
         </div>
         <div>
           {this._switchForms()}
