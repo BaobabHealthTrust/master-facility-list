@@ -27,7 +27,7 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
   INVALID_NUM_MESSAGE = "This is not a valid number";
 
   initialValues = this.props.resources.reduce((acc, resource) => {
-    return acc[resource.id]: 0
+    return acc[resource.id];
   }, {})
 
   componentDidMount() {
