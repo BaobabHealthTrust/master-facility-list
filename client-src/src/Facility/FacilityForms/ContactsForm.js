@@ -35,22 +35,28 @@ class FacilityContactForm extends React.Component<{}> {
       .min(7, this.PHONE_MIN_MESSAGE)
       .max(10, this.PHONE_MIN_MESSAGE)
       .required(this.REQUIRED_MESSAGE),
-    catchmentArea: yup.string().min(7, "Catchment Area is Too Short").required(this.REQUIRED_MESSAGE),
-    catchmentPopulation: yup.number(this.INVALID_NUM_MESSAGE).positive().integer().required(this.REQUIRED_MESSAGE),
-    longitude: yup.number().negative().integer().required(this.REQUIRED_MESSAGE),
-    latitude: yup.number().positive().integer().required(this.REQUIRED_MESSAGE)
+    catchmentArea: yup.string()
+      .min(7, "Catchment Area is Too Short")
+      .required(this.REQUIRED_MESSAGE),
+    catchmentPopulation: yup.number(this.INVALID_NUM_MESSAGE)
+      .positive()
+      .integer()
+      .required(this.REQUIRED_MESSAGE),
+    longitude: yup.number(this.INVALID_NUM_MESSAGE)
+      .negative()
+      .required(this.REQUIRED_MESSAGE),
+    latitude: yup.number(this.INVALID_NUM_MESSAGE).positive().required(this.REQUIRED_MESSAGE)
   })
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
     await this.props.postFormData(
-      { data: { ...values, client: 1 }, id: 1400 },
+      { data: { ...values, client: 1 }, id: this.props.facility.id },
       "Facilities",
-      "contactDetails",
       "POST",
-      "POST_FACILITY_CONTACT_DETAILS"
+      "POST_FACILITY_CONTACT_DETAILS",
+      "contactDetails",
     );
     setSubmitting(false);
-    await console.log(this.props.response);
     if (this.props.response.response) this.props.onNext();
   }
 

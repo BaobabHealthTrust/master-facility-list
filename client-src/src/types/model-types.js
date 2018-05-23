@@ -68,3 +68,16 @@ export type FacilityResource = {
   description: string,
   id: number
 }
+
+export type Utility = {
+  utility_name: string,
+  description: string,
+  utility_type_id: number,
+  id: number
+}
+
+export type UtilityType = {
+  utility_type: string,
+  description: string,
+  id: number
+}

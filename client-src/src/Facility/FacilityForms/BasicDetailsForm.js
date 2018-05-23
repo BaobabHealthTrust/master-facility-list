@@ -36,7 +36,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     let errors = {};
     if (values.facilityName.length < 5) errors.facilityName = "Invalid Facility Name"
     if (values.commonName.length < 5) errors.commonName = "Invalid Common Name"
-    if (!/^[0-9]/i.test(values.registrationNumber))
+    if (!/^\d+$/i.test(values.registrationNumber))
       errors.registrationNumber = "Invalid Registration Number Format"
     if (values.registrationNumber.length < 8)
       errors.registrationNumber = "Invalid Registration Number Length"
@@ -65,7 +65,10 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       "POST_FACILITY_BASIC_DETAILS",
     );
     setSubmitting(false);
-    if (this.props.response.id) this.props.onNext();
+    if (this.props.response.id) {
+      this.props.submitFacility(this.props.response)
+      this.props.onNext();
+    }
   }
 
   render() {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import settings from "../settings";
-const token = "XqmSAgEQsMZlhsHDI8cwfHvcHn8jiFmthgA5JilgNMNk7D39FoOoH8A406hNo7Ue"; //from sessionStorage
+const token = "9ADQX9G1PrJ1F09RvKFISeaPV8uaIwpYxIz0BrqevdGZawyNFWHCOdwnjEmP0q9d"; //from sessionStorage
 
 export default function postFormData(data, resource, method, actionType, endpoint = "") {
   const END_POINT = `${settings.hostname}/api/`;

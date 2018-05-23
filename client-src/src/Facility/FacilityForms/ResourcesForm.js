@@ -8,67 +8,63 @@ import { Formik } from 'formik';
 import { postFormData } from '../../actions';
 import yup from 'yup';
 import { renderOptions } from './helpers';
-import { Resource, ResourceType, FacilityResource } from '../../types/model-types';
+import { Resource, ResourceType, FacilityResource, Facility } from '../../types/model-types';
 
 type Props = {
   response: any,
   resourceTypes: Array<ResourceType>,
   resources: Array<Resource>,
-  onNext: Function
+  onNext: Function,
+  facility: Facility
 }
 
 class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
 
-  state = {
-    facilityResources: []
-  }
-
   REQUIRED_MESSAGE = "You can't leave this field blank";
   INVALID_NUM_MESSAGE = "This is not a valid number";
 
-  initialValues = this.props.resources.reduce((acc, resource) => {
-    return acc[resource.id]: 0
-  }, {})
+  initialValues = {}
 
-  componentDidMount() {
-    const facilityResources = this.props.resources.map(r => {
+  validate = values => {
+    let errors = {};
+    this.props.resources.forEach(resource => {
+      const key = `resource_${resource.id}`;
+      if (!values[key])
+        errors[key] = this.REQUIRED_MESSAGE;
+      else {
+        if (!/^\d+$/.test(Number(values[key]))) errors[key] = this.INVALID_NUM_MESSAGE
+        if (values[key].length == 0) errors[key] = this.REQUIRED_MESSAGE
+      }
+    })
+    return errors;
+  }
+
+
+  // TODO: Fakers should have a default client id
+
+  _handleSubmit = async (values, { setSubmitting, setErros }) => {
+    const data = this.props.resources.map(resource => {
       return {
-        facility_id: 1240,
-        resource_id: r.id,
-        quantity: 0,
+        facility_id: this.props.facility.id || 1,
+        client_id: 1,
+        resource_id: resource.id,
+        quantity: Number(values[`resource_${resource.id}`]),
         description: ""
       }
     })
-    this.setState({ facilityResources });
-  }
-
-  _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    // await this.props.postFormData(
-    //   { data: { ...values, client: 1 }, id: 1400 },
-    //   "Facilities",
-    //   "contactDetails",
-    //   "POST",
-    //   "POST_FACILITY_CONTACT_DETAILS"
-    // );
+    await this.props.postFormData(
+      data,
+      "FacilityResources",
+      "POST",
+      "POST_FACILITY_RESOURCES",
+    );
     setSubmitting(false);
     await console.log(this.props.response);
-    if (this.props.response.response) this.props.onNext();
+    if (this.props.response.length > 0) this.props.onNext();
   }
 
   _filteredResources = (typeId) => {
     return this.props.resources.filter(r => r.resource_type_id === typeId);
-  }
-
-  changeQuantity = (id, quantity) => {
-    const facilityResourceIndex = this.state.facilityResources.findIndex(r => r.resource_id == id);
-    const withoutIndexed = this.state.facilityResources.filter((r, i) => i != facilityResourceIndex);
-    const facilityResources = [...withoutIndexed, {
-      facility_id: 1240,
-      resource_id: id,
-      quantity: Number(quantity),
-      description: ""
-    }]
-    this.setState({ facilityResources });
   }
 
   render() {
@@ -77,12 +73,14 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
         <div className="mfl-tm-2" />
         <Formik
           validate={this.validate}
-          validationSchema={this.schema}
+          initialValues={this.initialValues}
           onSubmit={this._handleSubmit}
           render={({
+            values,
             errors,
             touched,
             handleBlur,
+            handleChange,
             handleSubmit,
             isSubmitting,
           }) => (
@@ -96,121 +94,23 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
                             s={3}
                             placeholder={`Enter Total ${resource.resource_name}`}
                             label={`Enter Total ${resource.resource_name}`}
-                            onChange={(e) => this.changeQuantity(resource.id, e.target.value)}
+                            onChange={handleChange}
                             onBlur={handleBlur}
+                            value={values[`resource_${resource.id}`]}
+                            error={touched[`resource_${resource.id}`] && errors[`resource_${resource.id}`]}
+                            name={`resource_${resource.id}`
+                            }
                           />
                         )
                       })
                     })
                   }
-                  {console.log(this.schema)}
                 </Row>
+                <FormWizardNavigation
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                />
               </div>
-              // <div>
-              //   <Row>
-              //     <Input
-              //       s={3}
-              //       type="select"
-              //       label="Select Resource Type"
-              //       onChange={(e) => this.setState({ selectedResourceType: e.target.value })}
-              //     >
-              //       {renderOptions(this.props.resourceTypes, "resource_type", )}
-              //     </Input>
-              //     <Input
-              //       s={3}
-              //       type="select"
-              //       label="Select Resource"
-              //     >
-              //       {
-              //         renderOptions(this._filteredResources(), "resource_name")}
-              //     </Input>
-              //   </Row>
-              //   <Row>
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Contact Person Name"
-              //       label="Enter Contact Person Name"
-              //       labelClassName="mfl-max-width"
-              //       value={values.contactName}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.contactName && errors.contactName}
-              //       name="contactName"
-              //     />
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Contact Person Phone Number"
-              //       label="Enter Contact Person Phone Number"
-              //       labelClassName="mfl-max-width"
-              //       value={values.contactPhoneNumber}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.contactPhoneNumber && errors.contactPhoneNumber}
-              //       name="contactPhoneNumber"
-              //     />
-              //     <Input
-              //       s={6}
-              //       placeholder="Enter Contact Person Email"
-              //       label="Enter Contact Person Email"
-              //       labelClassName="mfl-max-width"
-              //       value={values.contactEmail}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.contactEmail && errors.contactEmail}
-              //       name="contactEmail"
-              //     />
-              //   </Row>
-              //   <Row>
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Catchment Area"
-              //       label="Enter Catchment Area"
-              //       labelClassName="mfl-max-width"
-              //       value={values.catchmentArea}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.catchmentArea && errors.catchmentArea}
-              //       name="catchmentArea"
-              //     />
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Estimated Catchment Population"
-              //       label="Enter Estimated Catchment Population"
-              //       labelClassName="mfl-max-width"
-              //       value={values.catchmentPopulation}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.catchmentPopulation && errors.catchmentPopulation}
-              //       name="catchmentPopulation"
-              //     />
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Facility Longitude"
-              //       label="Enter Facility Longitude"
-              //       labelClassName="mfl-max-width"
-              //       value={values.longitude}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.longitude && errors.longitude}
-              //       name="longitude"
-              //     />
-              //     <Input
-              //       s={3}
-              //       placeholder="Enter Facility Latitude"
-              //       label="Enter Facility Latitude"
-              //       labelClassName="mfl-max-width"
-              //       value={values.latitude}
-              //       onChange={handleChange}
-              //       onBlur={handleBlur}
-              //       error={touched.latitude && errors.latitude}
-              //       name="latitude"
-              //     />
-              //   </Row>
-              //   < FormWizardNavigation
-              //     handleSubmit={handleSubmit}
-              //     isSubmitting={isSubmitting}
-              //   />
-              // </div>
             )}
         />
       </div>

@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import SearchModal from "./SearchModal";
 import { AddFacilityHome } from "./AddFacility";
 import {
-    hideSearchContainer,
-    downloadFacilities,
+  hideSearchContainer,
+  downloadFacilities,
 } from "../actions";
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityList from "./FacilityList";
@@ -14,145 +14,145 @@ import { ProgressBar, ShowError, FetchAllDependancies, FacilityFilters } from '.
 import { Facilities } from '../types/list-types'
 
 type Props = {
-    isLoading: boolean,
-    isError: boolean,
-    searchResults: Facilities,
-    facilities: Facilities,
-    downloadFacilities: Function
+  isLoading: boolean,
+  isError: boolean,
+  searchResults: Facilities,
+  facilities: Facilities,
+  downloadFacilities: Function
 }
 
 type State = {
-    isAdvancedSearch: boolean,
-    isShowSearchResults: boolean,
-    isAddFacility: boolean,
+  isAdvancedSearch: boolean,
+  isShowSearchResults: boolean,
+  isAddFacility: boolean,
 }
 
 class FacilitiesHome extends React.Component<Props, State> {
-    state = {
-        isAdvancedSearch: false,
-        isShowSearchResults: false,
-        isAddFacility: true,
-    };
+  state = {
+    isAdvancedSearch: false,
+    isShowSearchResults: false,
+    isAddFacility: true,
+  };
 
-    componentWillReceiveProps(props) {
-        if (props.searchResults.length > 0) {
-            this.setState(prevState => {
-                prevState.isShowSearchResults = true;
-            });
-        } else {
-            this.setState(prevState => {
-                prevState.isShowSearchResults = false;
-            });
+  componentWillReceiveProps(props) {
+    if (props.searchResults.length > 0) {
+      this.setState(prevState => {
+        prevState.isShowSearchResults = true;
+      });
+    } else {
+      this.setState(prevState => {
+        prevState.isShowSearchResults = false;
+      });
+    }
+
+    const isShowSearchResults = this.state.isShowSearchResults;
+
+    footerResizer();
+  }
+
+  handleClose = () => { this.setState({ isAdvancedSearch: false }); }
+
+  toggleAdvancedSearch = () => {
+    this.setState({ isAdvancedSearch: true });
+    footerResizer();
+  }
+
+  toggleAddFacility = () => {
+    this.setState({ isAddFacility: true });
+    footerResizer();
+  }
+
+  handleCancelAddFacility = () => {
+    this.setState({ isAddFacility: false });
+    footerResizer();
+  }
+
+  render() {
+    const isShowFacilityList = !(this.state.isAddFacility || this.state.isAdvancedSearch || this.state.isShowSearchResults)
+    const isLoadingOrError = this.props.isLoading || this.props.isError
+    return (
+      <div>
+        <FetchAllDependancies />
+
+        {/* Only show filters when Faclity List is showing */}
+        {
+          !(this.state.isAddFacility || this.state.isAdvancedSearch) &&
+          <FacilityFilters
+            url="/facilities"
+            isFilteredResults={true}
+          />
         }
 
-        const isShowSearchResults = this.state.isShowSearchResults;
+        <div className="container mfl-container">
+          <br />
+          {/* Show Progress Bar */}
+          {this.props.isLoading && <ProgressBar />}
 
-        footerResizer();
-    }
+          {/* Show Error Message */}
+          {this.props.isError && <ShowError />}
 
-    handleClose = () => { this.setState({ isAdvancedSearch: false }); }
+          {/* Show Advanced Search Modal */}
+          {
+            (!isLoadingOrError && this.state.isAdvancedSearch)
+            && (
+              <SearchModal
+                handleClose={this.handleClose}
+              />
+            )
+          }
 
-    toggleAdvancedSearch = () => {
-        this.setState({ isAdvancedSearch: true });
-        footerResizer();
-    }
+          {/* Show Add Facility Form */}
+          {
+            (!isLoadingOrError && this.state.isAddFacility)
+            && (
+              <AddFacilityHome
+                handleCancelAddFacility={this.handleCancelAddFacility}
+              />
+            )
+          }
 
-    toggleAddFacility = () => {
-        this.setState({ isAddFacility: true });
-        footerResizer();
-    }
+          {/* Show Facility List with Search Results */}
+          {
+            (!isLoadingOrError && this.state.isShowSearchResults)
+            && (
+              <FacilityList
+                downloadAction={this.props.downloadFacilities}
+                dataSource={this.props.searchResults}
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+              />
+            )
+          }
 
-    handleCancelAddFacility = () => {
-        this.setState({ isAddFacility: false });
-        footerResizer();
-    }
-
-    render() {
-        const isShowFacilityList = !(this.state.isAddFacility || this.state.isAdvancedSearch || this.state.isShowSearchResults)
-        const isLoadingOrError = this.props.isLoading || this.props.isError
-        return (
-            <div>
-                <FetchAllDependancies />
-
-                {/* Only show filters when Faclity List is showing */}
-                {
-                    !(this.state.isAddFacility || this.state.isAdvancedSearch) &&
-                    <FacilityFilters
-                        url="/facilities"
-                        isFilteredResults={true}
-                    />
-                }
-
-                <div className="container mfl-container">
-                    <br />
-                    {/* Show Progress Bar */}
-                    {this.props.isLoading && <ProgressBar />}
-
-                    {/* Show Error Message */}
-                    {this.props.isError && <ShowError />}
-
-                    {/* Show Advanced Search Modal */}
-                    {
-                        (!isLoadingOrError && this.state.isAdvancedSearch)
-                        && (
-                            <SearchModal
-                                handleClose={this.handleClose}
-                            />
-                        )
-                    }
-
-                    {/* Show Add Facility Form */}
-                    {
-                        (!isLoadingOrError && this.state.isAddFacility)
-                        && (
-                            <AddFacilityHome
-                                handleCancelAddFacility={this.handleCancelAddFacility}
-                            />
-                        )
-                    }
-
-                    {/* Show Facility List with Search Results */}
-                    {
-                        (!isLoadingOrError && this.state.isShowSearchResults)
-                        && (
-                            <FacilityList
-                                downloadAction={this.props.downloadFacilities}
-                                dataSource={this.props.searchResults}
-                                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                            />
-                        )
-                    }
-
-                    {/* Show Facility List by default */}
-                    {
-                        (!isLoadingOrError && isShowFacilityList)
-                        && (
-                            <FacilityList
-                                downloadAction={this.props.downloadFacilities}
-                                dataSource={this.props.facilities}
-                                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                                toggleAddFacility={this.toggleAddFacility}
-                            />
-                        )
-                    }
-                </div>
-            </div>
-        );
-    }
+          {/* Show Facility List by default */}
+          {
+            (!isLoadingOrError && isShowFacilityList)
+            && (
+              <FacilityList
+                downloadAction={this.props.downloadFacilities}
+                dataSource={this.props.facilities}
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+                toggleAddFacility={this.toggleAddFacility}
+              />
+            )
+          }
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-        facilities: state.facilities.list,
-        isError: state.facilities.isNetworkError,
-        isLoading: state.facilities.isLoading,
-        download: state.downloads.data,
-        searchResults: state.searchResults.advancedSearchResults,
-        filteredResults:
-            state.searchResults.advancedSearchFacilities.basicDetailsFacilities
-    };
+  return {
+    facilities: state.facilities.list,
+    isError: state.facilities.isNetworkError,
+    isLoading: state.facilities.isLoading,
+    download: state.downloads.data,
+    searchResults: state.searchResults.advancedSearchResults,
+    filteredResults:
+      state.searchResults.advancedSearchFacilities.basicDetailsFacilities
+  };
 };
 
 export default connect(mapStateToProps, {
-    downloadFacilities,
+  downloadFacilities,
 })(FacilitiesHome);
