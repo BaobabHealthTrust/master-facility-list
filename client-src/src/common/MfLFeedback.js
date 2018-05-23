@@ -43,7 +43,7 @@ class MflFeedback extends Component {
                                 </li>
                                 <li className="black-text text-lighten-2">
                                     <span className="mfl-about-icon"><i className="material-icons">email</i></span>
-                                    <a className="mfl-about-text" href="http://health.gov.mw">About Kuunika</a>
+                                    <a className="mfl-about-text" href="http://health.gov.mw">About Malu</a>
                                 </li>
                                 <li className="black-text text-lighten-2">
                                     <span className="mfl-about-icon"><i className="material-icons">insert_link</i></span>
