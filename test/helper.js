@@ -7,6 +7,7 @@ const User = server.models.Client;
 const Role = server.models.Role;
 const RoleMapping = server.models.RoleMapping;
 
+
 const data = require("../seeds/data");
 
 module.exports.get = (endPoint,statusCode, callback) => {
@@ -25,7 +26,7 @@ module.exports.post = (endPoint, data,statusCode, callback) => {
         .set("Accept", "application/json")
         .expect(statusCode)
         .then(callback)
-        .catch(err => console.error(err));
+        .catch(err => console.error("Malu"));
 }
 
 module.exports.createAdmin = async (users) => {
