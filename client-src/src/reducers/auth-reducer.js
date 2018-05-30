@@ -15,6 +15,7 @@ export default (
     }
     switch (action.type) {
         case "CHECK_CREDENTIALS":
+            console.log(action.payload);
             return {
                 isLoginFailed: false,
                 loginResponse: action.payload.data,

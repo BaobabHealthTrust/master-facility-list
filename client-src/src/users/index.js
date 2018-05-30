@@ -1,4 +1,7 @@
 export { default as UsersHome } from './UsersHome';
-export { default as UsersList } from './UsersList';
-export { default as User } from './User';
+export { default as UserList } from './UserList';
+export { default as UserListItem } from './UserListItem';
 export { default as ViewUser } from './ViewUser';
+export { default as UserForm } from './UserForm';
+export { default as UsersPaginator } from './UsersPaginator';
+export { default as EditUserModal } from './EditUserModal';

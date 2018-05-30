@@ -1,3 +1,5 @@
+const server = require("../../server/server");
+
 "use strict";
 
 module.exports = function(Client) {
@@ -9,4 +11,24 @@ module.exports = function(Client) {
         min: 5,
         message: { min: "Password is too short" }
     });
+
+    Client.createAdmin = async (data, cb) => {
+        const client = await server.models.Client.create(data);
+        const role = (await server.models.Role.find({where: {name: 'admin'}}))[0];
+        const roleMap = {
+            principalType: server.models.RoleMapping.USER,
+            principalId: client.id
+        };
+        const map = await role.principals.create(roleMap);
+        await console.log(map);
+        return map;
+    }
+
+    Client.remoteMethod('createAdmin', {
+        accepts: [
+            { arg: 'data', type: 'object' }
+        ],
+        returns: { arg: 'response', type: 'object' },
+        http: { verb: 'post' }
+    })
 };

@@ -73,6 +73,10 @@ body {
 .mfl-tm-2 {
     margin-top: 2% !important;
 }
+
+.mfl-lm-2{
+    margin-left: 2%;
+}
 .mfl-fl-right{
     float: right;
     clear: both;
@@ -745,4 +749,12 @@ select.mfl-select {
 }
 .mfl-services-rule {
     margin-top: -60px;
+}
+.mfl-collection-item{
+    transition-duration: 400ms;
+    padding-bottom: 0;
+    background-color: #ccc;
+}
+.mfl-collection-item:hover{
+    background-color: #eee;
 }
