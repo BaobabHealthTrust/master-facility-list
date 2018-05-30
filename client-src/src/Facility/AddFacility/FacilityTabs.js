@@ -8,7 +8,7 @@ import { FormWizardTabHeading } from '../../common';
 class FacilityTabs extends React.Component<{}> {
 
   state = {
-    active: 'Utilities',
+    active: 'Services',
     facility: {}
   }
 
@@ -43,7 +43,7 @@ class FacilityTabs extends React.Component<{}> {
           facility={this.state.facility}
         />
       case 'Services':
-        return <h4>Services Form</h4>
+        return <ServicesForm facility={this.state.facility} />
       default:
         return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
     }
