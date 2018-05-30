@@ -1,32 +1,36 @@
 
 const initialState = {
-  users: [
-    {
-      firstName: 'Haroon',
-      lastName: 'Twalibu',
-      email: 'haxy@gmail.com',
-      role: 'Systems Administrator'
-    },
-    {
-      firstName: 'Malumbo',
-      lastName: 'Mkandawire',
-      email: 'malumbo@gmail.com',
-      role: 'Systems Administrator'
-    },
-    {
-      firstName: 'Jeremiah',
-      lastName: 'Chienda',
-      email: 'jeremiah@gmail.com',
-      role: 'Systems Administrator'
-    },
-    {
-      firstName: 'Bwighane',
-      lastName: 'Mwalwanda',
-      email: 'bsmwalwanda@gmail.com',
-      role: 'Systems Administrator'
-    }
-  ]
+  users: [],
+  userCreated: false,
+  limit: 5,
+  skip: 0,
+  page: 1
 };
 export default (state = initialState, action) => {
+  switch (action.type) {
+    case "FETCH_USERS":
+      if(action.payload.data){
+        return {
+          ...state,
+          users: action.payload.data
+        };
+      }
+      return state;
+      break;
+    case "POST_USER":
+    console.log(action.payload);
+      return {
+        ...state,
+        userCreated: action.payload.data ? true : false
+      };
+      break
+    case 'ARCHIVE_USER':
+      return {
+        ...state
+      }
+      break;
+    default:
+      break;
+  }
   return state;
 }

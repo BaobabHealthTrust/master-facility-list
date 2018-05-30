@@ -118,61 +118,11 @@ const zoneData = [{
 module.exports.zoneData = zoneData;
 
 module.exports.users = [{
-    username: "haroon12345",
-    password: "haxy",
-    firstname: "Haroon",
-    lastname: "Twalibu",
-    email: "haroon@gmail.com"
-  },
-  {
-    username: "rajab12345",
-    password: "rajab",
-    firstname: "Rajab",
-    lastname: "Rajab",
-    email: "rajab@gmail.com"
-  },
-  {
-    username: "bwighane12345",
-    password: "bwighane",
-    firstname: "Bwighane",
-    lastname: "Mwalwanda",
-    email: "bwighane@gmail.com"
-  },
-  {
-    username: "malumbo12345",
-    password: "malumbo",
-    firstname: "Malumbo",
-    lastname: "Mkandawire",
-    email: "malumo@gmail.com"
-  }
-  ,
-  {
-    username: "jeremiah12345",
-    password: "jeremiah",
-    firstname: "Jeremiah",
-    lastname: "Chienda",
-    email: "jeremiah@gmail.com"
-  },
-  {
-    username: "alice12345",
-    password: "alice",
-    firstname: "Alice",
-    lastname: "Musikwa",
-    email: "alice@gmail.com"
-  },
-  {
-    username: "takondwa12345",
-    password: "takondwa",
-    firstname: "Takondwa",
-    lastname: "Makawa",
-    email: "takondwa@gmail.com"
-  },
-  {
-    username: "blessings12345",
-    password: "blessings",
-    firstname: "Blessings",
-    lastname: "Nthezemu",
-    email: "blessings@gmail.com"
+    username: "mfladminuser",
+    password: "admin",
+    firstname: "Administrator",
+    lastname: "Administrator",
+    email: "administrator@gmail.com"
   }
 ];
 const utilityTypes = [{

@@ -7,7 +7,7 @@ module.exports = async (ParentModel, ChildModel, dependantData) => {
     createdTopLevelServices.forEach(createdTopLevelService => {
         if (createdTopLevelService.children) {
             createdTopLevelService.children.forEach(level1Service => {
-                level1Service.service_category_id = createdTopLevelService.service_category_id;
+                level1Service.service_category_id = createdTopLevelService.id;
                 level1Service.service_type_id = createdTopLevelService.service_type_id;
                 level1Services.push(level1Service);
             });

@@ -27,6 +27,7 @@ class MflLogin extends Component<State, Props> {
         );
 
         if (!this.props.loginResponse.isLoginFailed) {
+            console.log(this.props.loginResponse);
             await sessionStorage.setItem(
                 "token",
                 this.props.loginResponse.loginResponse.id

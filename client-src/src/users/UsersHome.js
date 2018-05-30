@@ -1,22 +1,45 @@
 import React from 'react';
 import footerResizer from "../helpers/footerResize";
 import { Row, Col, Button, Icon, Input, Modal, Card} from 'react-materialize';
-import{ UsersList, ViewUser } from './index';
+import{ UserList, ViewUser, UserForm } from './index';
 import '../App.css';
 
 export default class UsersHome extends React.Component{
     state = {
-        user: null
+        user: null,
+        delay: 3000
     }
 
+    componentWillMount(){
+        if(!sessionStorage.getItem('token')){
+            this.props.history.replace('/');
+        }
+    }
+    
     componentDidMount() {
         footerResizer();
     }
 
     onUserSelected = user => {
+        console.log('Called with user ', user);
         this.setState({
             user
         });
+    }
+
+    showToastMessage = message => {
+        window.Materialize.toast(message, this.state.delay);
+    }
+
+    onUserCreationSuccess = () => {
+        this.showToastMessage('User created successfully');
+        setTimeout(() => {
+            window.location.reload(); 
+        }, this.state.delay);
+    }
+
+    onUserCreationError = () => {
+        this.showToastMessage('Failed to create user, try again');
     }
 
     render() {
@@ -24,30 +47,18 @@ export default class UsersHome extends React.Component{
             <div className="container mfl-container mfl-tm-2">
                 <Row>
                     <Col s={12}>
-                        <h3>
-                            USER MANAGEMENT
-                            <Modal
-                                header='New user'
-                                trigger={<Button waves='light' className="blue mfl-fl-right" style={{ fontSize: '40%' }}>add user</Button>}>
-                                <Row>
-                                    <Input placeholder="Placeholder" s={6} label="First Name" />
-                                    <Input s={6} label="Last Name" />
-                                    <Input s={12} label="disabled" defaultValue="I am not editable" disabled />
-                                    <Input type="password" label="password" s={12} />
-                                    <Input type="email" label="Email" s={12} />
-                                </Row>
-                            </Modal>
-                        </h3>
-                        <Row>
-                            <Col s={12}>
-                                <Input placeholder="search users here" s={12} />
-                            </Col>
-                        </Row>
+                        <h4>
+                            <Icon>people</Icon> USER MANAGEMENT
+                            <UserForm 
+                                onUserCreationSuccess={this.onUserCreationSuccess} 
+                                onUserCreationError={this.onUserCreationError}
+                            />
+                        </h4>
                     </Col>
                 </Row>
                 <Row>
                     <Col s={7}>
-                        <UsersList onUserSelected={this.onUserSelected} />
+                        <UserList onUserSelected={this.onUserSelected} />
                     </Col>
                     <Col s={5}>
                         <ViewUser user={this.state.user} />
