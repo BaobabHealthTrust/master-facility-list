@@ -81,3 +81,17 @@ export type UtilityType = {
   description: string,
   id: number
 }
+
+export type ServiceType = {
+  service_type: string,
+  description: string,
+  id: number
+}
+
+export type Service = {
+  service_name: string,
+  service_description: string,
+  service_type_id: number,
+  service_category_id: number,
+  id: number
+}
