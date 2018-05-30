@@ -1,23 +1,24 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="theme-color" content="#000000">
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <title>Master Facility List</title>
-</head>
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+        <title>Master Facility List</title>
+    </head>
 
-<!-- Import Google Icon Font -->
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!-- Import materialize.css -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Import Google Icon Font -->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Import materialize.css -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
 
@@ -35,7 +36,7 @@
         $(document).ready(function () {
             // $('.select').material_select();
             $('.button-collapse').sideNav();
-            $('.tooltipped').tooltip({ delay: 10 });
+            $('.tooltipped').tooltip({delay: 10});
             const documentHeight = $(document).innerHeight();
             const contentHeight = $('.mfl-page-wrap').innerHeight();
             const marginDiff = documentHeight - contentHeight;
