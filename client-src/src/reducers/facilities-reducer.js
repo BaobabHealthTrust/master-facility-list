@@ -18,6 +18,8 @@ export default (
     contactDetailsResponse: {},
     resourcesResponse: {},
     utilitiesResponse: {},
+    servicesResponse: {},
+    deleteServiceResponse: {}
   },
   action
 ) => {
@@ -130,6 +132,18 @@ export default (
       return {
         ...state,
         utilitiesResponse: action.payload.data,
+        isLoading: false
+      }
+    case "POST_FACILITY_SERVICE":
+      return {
+        ...state,
+        servicesResponse: action.payload.data,
+        isLoading: false
+      }
+    case "DELETE_FACILITY_SERVICE":
+      return {
+        ...state,
+        deleteServiceResponse: action.payload.data,
         isLoading: false
       }
     default:

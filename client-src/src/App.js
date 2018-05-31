@@ -11,43 +11,42 @@ import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
 
 class App extends Component {
-    render() {
-        return (
-            <div className="mfl-page-wrap">
-                <Navbar />
-                <Switch>
-                    <Route
-                        exact
-                        path="/facilities"
-                        component={FacilitiesHome}
-                    />
-                    <Route path="/facilities/:id" component={FacilityDetails} />
-                    <Route
-                        exact
-                        path="/"
-                        component={Dashboard}
-                    />
-                    <Route
-                        exact
-                        path="/about"
-                        component={MflAbout}
-                    />
-                    <Route
-                        exact
-                        path="/feedback"
-                        component={MfLFeedback}
-                    />
-                    <Route
-                        exact
-                        path="/login"
-                        component={MflLogin}
-                    />
-                </Switch>
-
-                <Footer />
-            </div >
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <Switch>
+          <Route
+            exact
+            path="/facilities"
+            component={FacilitiesHome}
+          />
+          <Route path="/facilities/:id" component={FacilityDetails} />
+          <Route
+            exact
+            path="/"
+            component={Dashboard}
+          />
+          <Route
+            exact
+            path="/about"
+            component={MflAbout}
+          />
+          <Route
+            exact
+            path="/feedback"
+            component={MfLFeedback}
+          />
+          <Route
+            exact
+            path="/login"
+            component={MflLogin}
+          />
+        </Switch>
+        <Footer />
+      </div >
+    );
+  }
 }
 
 export default App;

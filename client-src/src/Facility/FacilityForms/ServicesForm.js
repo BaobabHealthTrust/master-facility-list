@@ -5,15 +5,21 @@ import { connect } from "react-redux";
 import { DatePicker, FormWizardNavigation } from '../../common';
 import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik } from 'formik';
-import { postFormData } from '../../actions';
+import { postFormData, fetchCurrentServices, deleteFromApi } from '../../actions';
 import yup from 'yup';
 import { renderOptions } from './helpers';
-import { Service, ServiceType } from '../../types/model-types';
+import { Service, ServiceType, FacilityService, Facility } from '../../types/model-types';
 
 type Props = {
-  response: any,
+  response: FacilityService,
+  facilityServices: Array<FacilityService>,
   serviceTypes: Array<ServiceType>,
-  services: Array<Service>
+  services: Array<Service>,
+  facility: Facility,
+  postFormData: Function,
+  deleteFromApi: Function,
+  deleteServiceResponse: { count: number },
+  onNext: Function
 }
 
 class ServicesForm extends React.Component<Props> {
@@ -43,6 +49,8 @@ class ServicesForm extends React.Component<Props> {
     // TODO: Define one function to get this done
     if (
       firstLevelService === -1
+      &&
+      this._filteredServices(secondLevelService).length > 0
     ) {
       alert("Please select a Subservice");
       setSubmitting(false);
@@ -70,31 +78,52 @@ class ServicesForm extends React.Component<Props> {
     }
 
     let service;
+    // TODO: Validate that a Service isnt already created
+    // TODO: Pagination!
 
+    if (Number(firstLevelService) > 0) service = firstLevelService;
 
-    if (Number(thirdLevelService) > 0) {
-      service = thirdLevelService;
+    if (Number(secondLevelService) > 0) service = secondLevelService;
+
+    if (Number(thirdLevelService) > 0) service = thirdLevelService;
+
+    const data: FacilityService = {
+      service_id: service,
+      client_id: 1,
+      facility_id: this.props.facility.id || 1,
     }
 
-    if (Number(secondLevelService) > 0) {
-      service = secondLevelService;
-    }
-
-    if (Number(firstLevelService) > 0) {
-      service = firstLevelService;
-    }
-
+    await this.props.postFormData(
+      data,
+      "FacilityServices",
+      "POST",
+      "POST_FACILITY_SERVICE"
+    );
     setSubmitting(false);
-    alert(service);
-    // await this.props.postFormData(
-    //   { data: { ...values, client: 1 }, id: 1400 },
-    //   "Facilities",
-    //   "contactDetails",
-    //   "POST",
-    //   "POST_FACILITY_CONTACT_DETAILS"
-    // );
-    // await console.log(this.props.response);
-    // if (this.props.response.response) this.props.onNext();
+
+    if (this.props.response.id > 0) {
+      this._resetForm();
+      this.props.fetchCurrentServices(1);
+      alert('Service Successfully Created');
+    }
+  }
+
+  _remove = async (id) => {
+    await this.props.deleteFromApi(id, "FacilityServices", "DELETE_FACILITY_SERVICE");
+    const response = await this.props.deleteServiceResponse;
+    if (response.count > 0) {
+      this.props.fetchCurrentServices(1);
+      alert("Service Successfully Deleted")
+    }
+  }
+
+  _resetForm = () => {
+    this.setState({
+      selectedServiceType: -1,
+      firstLevelService: -1,
+      secondLevelService: -1,
+      thirdLevelService: -1
+    })
   }
 
   _filteredServices = (category) => {
@@ -104,6 +133,10 @@ class ServicesForm extends React.Component<Props> {
         const isOfCategory = s.service_category_id === Number(category)
         return isServiceType && isOfCategory
       })
+  }
+
+  componentWillMount() {
+    this.props.fetchCurrentServices(1);
   }
 
   render() {
@@ -123,6 +156,7 @@ class ServicesForm extends React.Component<Props> {
                       <Input
                         s={12}
                         type="select"
+                        value={this.state.selectedServiceType}
                         label="Select Service Type"
                         onChange={(e) => this.setState({
                           selectedServiceType: e.target.value,
@@ -184,22 +218,34 @@ class ServicesForm extends React.Component<Props> {
                       }
                       <Row>
                         <Button
-                          className="mfl-rm-5 green"
+                          className="ml-6"
                           onClick={handleSubmit}
                           disabled={isSubmitting}
                         >
-                          {isSubmitting ? "Adding..." : "Add Service"}
+                          {isSubmitting ? "Saving..." : "Add Service"}
                         </Button>
                       </Row>
                     </Row>
                   </div>
-                  <div className="col m6 s12" style={{ padding: 30 }}>
-                    Change stuff here
-                </div>
+                  <div className="col m6 s12">
+                    <h6 className="mb-4 flex items-center">
+                      <i className="material-icons mr-4">verified_user</i> Services
+                    </h6>
+                    {
+                      this.props.facilityServices.map(fs => {
+                        return (
+                          <div className="p-4 mb-2 shadow w-full flex justify-between cursor-pointer">
+                            <div>{fs.service.service_name}</div>
+                            <div><i className="material-icons mr-4" onClick={() => this._remove(fs.id)}>close</i></div>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
                 </div>
                 < FormWizardNavigation
-                  handleSubmit={() => alert('Nexting...')}
-                  isSubmitting={(isSubmitting)}
+                  handleSubmit={() => this.props.onNext()}
+                  isSubmitting={false}
                 />
               </div>
             )}
@@ -211,12 +257,16 @@ class ServicesForm extends React.Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    response: state.facilities.resourcesResponse,
+    facilityServices: state.facilities.currentServices,
+    response: state.facilities.servicesResponse,
     serviceTypes: state.dependancies.serviceTypes,
-    services: state.facilities.services
+    services: state.facilities.services,
+    deleteServiceResponse: state.facilities.deleteServiceResponse
   }
 }
 
 export default connect(mapStateToProps, {
-  postFormData
+  postFormData,
+  fetchCurrentServices,
+  deleteFromApi
 })(ServicesForm);
