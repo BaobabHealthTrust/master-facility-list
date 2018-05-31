@@ -65,6 +65,7 @@ export type FacilityResource = {
   facility_id: number,
   resource_id: number,
   quantity: number,
+  client_id: number,
   description: string,
   id: number
 }
@@ -93,5 +94,12 @@ export type Service = {
   service_description: string,
   service_type_id: number,
   service_category_id: number,
+  id: number
+}
+
+export type FacilityService = {
+  service_id: number,
+  client_id: number,
+  facility_id: number,
   id: number
 }

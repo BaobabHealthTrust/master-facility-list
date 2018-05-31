@@ -43,7 +43,12 @@ class FacilityTabs extends React.Component<{}> {
           facility={this.state.facility}
         />
       case 'Services':
-        return <ServicesForm facility={this.state.facility} />
+        return <ServicesForm
+          onNext={() => this.setState({ active: 'Finish' })}
+          facility={this.state.facility}
+        />
+      case 'Finish':
+        return <div>Finish</div>
       default:
         return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
     }
@@ -52,16 +57,20 @@ class FacilityTabs extends React.Component<{}> {
   render() {
     return (
       <div>
-        <div
-          className="mfl-form-wizard"
-          style={styles.container}
-        >
-          <FormWizardTabHeading index="1" title="Basic Details" active={this.state.active} />
-          <FormWizardTabHeading index="2" title="Contacts & Location" active={this.state.active} />
-          <FormWizardTabHeading index="3" title="Resources" active={this.state.active} />
-          <FormWizardTabHeading index="4" title="Utilities" active={this.state.active} />
-          <FormWizardTabHeading index="5" title="Services" active={this.state.active} />
-        </div>
+        {
+          this.state.active != 'Finish' && (
+            <div
+              className="mfl-form-wizard"
+              style={styles.container}
+            >
+              <FormWizardTabHeading index="1" title="Basic Details" active={this.state.active} />
+              <FormWizardTabHeading index="2" title="Contacts & Location" active={this.state.active} />
+              <FormWizardTabHeading index="3" title="Resources" active={this.state.active} />
+              <FormWizardTabHeading index="4" title="Utilities" active={this.state.active} />
+              <FormWizardTabHeading index="5" title="Services" active={this.state.active} />
+            </div>
+          )
+        }
         <div>
           {this._switchForms()}
         </div>
