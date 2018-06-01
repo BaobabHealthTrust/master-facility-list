@@ -16,8 +16,8 @@ class UserForm extends React.Component {
     }
 
     schema = yup.object().shape({
-        firstname: yup.string().min(4).required(),
-        lastname: yup.string().min(4).required(),
+        firstname: yup.string().min(6).required(),
+        lastname: yup.string().min(6).required(),
         username: yup.string().min(8).required(),
         email: yup.string().email().required(),
         password: yup.string().min(5).required(),

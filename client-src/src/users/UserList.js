@@ -64,11 +64,11 @@ class UsersList extends React.Component{
                                 />
                             ))}
                         </Collection>
-                        <UsersPaginator
+                        {/* <UsersPaginator
                             onNext={this.fetchMoreUsers}
                             onPrevious={this.fetchPreviousUser}
                             showPrevious={this.state.skip !== 0}
-                        />
+                        /> */}
                     </React.Fragment>
 
                     :
