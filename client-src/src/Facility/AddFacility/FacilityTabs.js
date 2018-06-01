@@ -3,12 +3,12 @@ import React from "react";
 import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesForm }
   from '../FacilityForms'
 import footerResize from '../../helpers/footerResize';
-import { FormWizardTabHeading } from '../../common';
+import { FormWizardTabHeading, FinishedForm } from '../../common';
 
 class FacilityTabs extends React.Component<{}> {
 
   state = {
-    active: 'Services',
+    active: 'Basic Details',
     facility: {}
   }
 
@@ -48,9 +48,12 @@ class FacilityTabs extends React.Component<{}> {
           facility={this.state.facility}
         />
       case 'Finish':
-        return <div>Finish</div>
+        return <FinishedForm handleBack={() => this.props.handleCancelAddFacility()} />
       default:
-        return <BasicDetailsForm onNext={() => this.setState({ active: 'Contacts & Location' })} />
+        return <BasicDetailsForm
+          onNext={() => this.setState({ active: 'Contacts & Location' })}
+          submitFacility={(facility) => this.setState({ facility })}
+        />
     }
   }
 

@@ -50,7 +50,7 @@ class FacilityContactForm extends React.Component<{}> {
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
     await this.props.postFormData(
-      { data: { ...values, client: 1 }, id: this.props.facility.id },
+      { data: { ...values, client: 1 }, id: this.props.facility.id || 1 },
       "Facilities",
       "POST",
       "POST_FACILITY_CONTACT_DETAILS",
@@ -62,7 +62,7 @@ class FacilityContactForm extends React.Component<{}> {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="mfl-tm-2" />
         <Formik
           initialValues={this.initialValues}
