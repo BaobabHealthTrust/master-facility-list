@@ -103,7 +103,7 @@ class ServicesForm extends React.Component<Props> {
 
     if (this.props.response.id > 0) {
       this._resetForm();
-      this.props.fetchCurrentServices(1);
+      this.props.fetchCurrentServices(this.props.facility.id || 1);
       alert('Service Successfully Created');
     }
   }
@@ -112,7 +112,7 @@ class ServicesForm extends React.Component<Props> {
     await this.props.deleteFromApi(id, "FacilityServices", "DELETE_FACILITY_SERVICE");
     const response = await this.props.deleteServiceResponse;
     if (response.count > 0) {
-      this.props.fetchCurrentServices(1);
+      this.props.fetchCurrentServices(this.props.facility.id || 1);
       alert("Service Successfully Deleted")
     }
   }
@@ -136,7 +136,7 @@ class ServicesForm extends React.Component<Props> {
   }
 
   componentWillMount() {
-    this.props.fetchCurrentServices(1);
+    this.props.fetchCurrentServices(this.props.facility.id || 1);
   }
 
   render() {

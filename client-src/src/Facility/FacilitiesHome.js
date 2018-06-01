@@ -31,7 +31,7 @@ class FacilitiesHome extends React.Component<Props, State> {
   state = {
     isAdvancedSearch: false,
     isShowSearchResults: false,
-    isAddFacility: true,
+    isAddFacility: false,
   };
 
   componentWillReceiveProps(props) {
@@ -71,7 +71,7 @@ class FacilitiesHome extends React.Component<Props, State> {
     const isShowFacilityList = !(this.state.isAddFacility || this.state.isAdvancedSearch || this.state.isShowSearchResults)
     const isLoadingOrError = this.props.isLoading || this.props.isError
     return (
-      <div className="container">
+      <div>
         <FetchAllDependancies />
 
         {/* Only show filters when Faclity List is showing */}

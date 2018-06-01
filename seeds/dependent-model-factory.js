@@ -1,4 +1,6 @@
 "use strict";
+
+
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 const _ = require('lodash');
@@ -10,7 +12,7 @@ module.exports = async (ParentModel, ChildModel, dependantData) => {
     await ChildModel.deleteAll();
     const ids = await ParentModel.find(
         {where: {referenceName: {inq: schema.map(parent => parent.reference)}}}
-    ).map(entity => entity.id); 
+    ).map(entity => entity.id);
 
     const fullData = schema.map((entity, index) => {
         return entity.data.map(prop => {

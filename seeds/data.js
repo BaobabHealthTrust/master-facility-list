@@ -24,6 +24,19 @@ module.exports.owners = [{
   }
 ];
 
+module.exports.facility = {
+  facility_code: "NB01042",
+  facility_name: "Nkhata-Bay Clinic",
+  common_name: "Jonilenge",
+  facility_date_opened: "2017-10-25T13:27:53.703Z",
+  facility_type_id: 1,
+  facility_owner_id: 1,
+  facility_operational_status_id: 1,
+  facility_regulatory_status_id: 1,
+  district_id: 1,
+  client_id: 1
+};
+
 module.exports.facilityTypes = [{
     facility_type: "District hospital",
     description: "These facilities belongs to districts"
@@ -661,7 +674,7 @@ const serviceServiceTypeMapping = {
                             service_name: "Children more than 15 kg",
                             service_description: "This is a service of children more than 15 kgs",
                         },
-                        
+
                     ]
                 },
                 {

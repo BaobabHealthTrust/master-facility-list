@@ -1,4 +1,6 @@
 "use strict";
+
+
 const dependentModelFactory = require('./seeds/dependent-model-factory');
 const data = require('./seeds/data');
 const independentModelFactory = require('./seeds/independent-model-factory');
@@ -10,13 +12,17 @@ const dataSource = server.dataSources.db;
 const userSeeder = require("./seeds/seed-user");
 const serviceModelSeeder = require('./seeds/service-model-seeder');
 
+
 const seed = async () => {
     try {
+
         const facilityCount = process.argv[2];
-        if (!facilityCount) {
-            console.error('Please specify the number of facilities to be generated');
-            process.exit(1);
+
+      if (!facilityCount) {
+          console.error(' Please specify the number of facilities to be generated');
+          process.exit(1);
         }
+
         await userSeeder(data.users);
         await independentModelFactory(server.models.Owner, data.owners);
         await independentModelFactory(server.models.FacilityType, data.facilityTypes);
@@ -40,7 +46,7 @@ const seed = async () => {
         await facilityResourcesUtilitiesServicesMapper();
         await console.log('seeding done');
         await dataSource.disconnect();
-    } catch (error) {
+    } catch(error) {
         console.log(error);
     }
 }
