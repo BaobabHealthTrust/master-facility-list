@@ -44,30 +44,40 @@ export default class FacilityList extends React.Component<Props> {
           action={this.props.downloadAction}
           fileName="facilities"
         />
-        <div className="row">
-          <div className="col s4 m4 l4">
+        <div className="flex flex-row w-full">
+          <div>
             <a
-              class="btn-flat mfl-advanced-search left"
+              style={{ marginTop: -80 }}
+              class="btn-flat"
               onClick={e => this.props.toggleAdvancedSearch(e)}
-            >
-              Advanced Search
-                        </a>
+            >Advanced Search</a>
           </div>
-          <div className="col s4 m4 l4 mfl-tm-2">
-            {sessionStorage.getItem("token") && (
+          <div>
+            {
+              sessionStorage.getItem('token') && (
+                <a
+                  style={{ marginTop: -80 }}
+                  class="ml-4 waves-effect waves-light btn"
+                  onClick={e => this.props.toggleAddFacility(e)}
+                >
+                  <i class="material-icons left">add</i>Add NewFacility
+                </a>
+              )
+            }
+          </div>
+          {/* <div className="col s4 m4 l4 mfl-tm-2">
+            {sessionStorage.getItem('token') && (
               <a
                 class="waves-effect waves-light btn"
                 onClick={e => this.props.toggleAddFacility(e)}
               >
-                <i class="material-icons left">add</i>Add New
-                Facility
-                            </a>
+                <i class="material-icons left">add</i>Add NewFacility
+              </a>
             )}
-          </div>
+          </div> */}
         </div>
 
         <GridTable data={tableRecords} />
-        <Pagination />
       </div>
     );
   }

@@ -8,27 +8,27 @@ const RoleMapping = server.models.RoleMapping;
 
 module.exports = async (users) => {
 
-    try {
-        await User.destroyAll();
-        await Role.destroyAll();
-        await RoleMapping.destroyAll();
+  try {
+    await User.destroyAll();
+    await Role.destroyAll();
+    await RoleMapping.destroyAll();
 
-        const userIDs = await User.create(users).map(user => user.id);
+    const userIDs = await User.create(users).map(user => user.id);
 
-        const role = await Role.create({ name: 'admin' });
+    const role = await Role.create({ name: 'admin' });
 
-        const userRoleMapping = userIDs.map(userID => {
-          return {
-            principalType: RoleMapping.USER,
-            principalId: userID
-          }
-        })
+    const userRoleMapping = userIDs.map(userID => {
+      return {
+        principalType: RoleMapping.USER,
+        principalId: userID
+      }
+    })
 
-        await role.principals.create(userRoleMapping);
+    await role.principals.create(userRoleMapping);
 
-        await console.log("User, Role and RoleMapping successfully created");
-    } catch (err) {
-        console.error(err);
-    }
+    await console.log("User, Role and RoleMapping successfully created");
+  } catch (err) {
+    console.error(err);
+  }
 
 }

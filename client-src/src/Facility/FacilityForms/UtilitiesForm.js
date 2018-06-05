@@ -89,7 +89,7 @@ class UtilitiesForm extends React.Component<Props> {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="mfl-tm-2" />
         <Formik
           initialValues={this.initialValues}

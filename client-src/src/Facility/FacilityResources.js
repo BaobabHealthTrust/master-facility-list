@@ -34,6 +34,8 @@ class FacilityResources extends Component {
     }
   }
 
+  // TODO: Provide Feedback when there are no Types
+
   render() {
     const presentTypes = this.props.resourceTypes.filter(res =>
       uniq(
@@ -45,7 +47,7 @@ class FacilityResources extends Component {
 
     return (
       <div className="container">
-        {sessionStorage.getItem("token") && (
+        {/* {sessionStorage.getItem("token") && (
           !this.state.isEditResources ? (<a
             class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
             onClick={this.toggleEditResources}
@@ -54,7 +56,7 @@ class FacilityResources extends Component {
                       </a>) : (
               ""
             )
-        )}
+        )} */}
         {cards.map(card => {
           return (
             <div className="row">
@@ -67,7 +69,7 @@ class FacilityResources extends Component {
                   )
                   .map(res => [
                     res.resource.resource_name,
-                    res.quantity
+                    String(res.quantity)
                   ]);
                 return (
                   <div className="col m4 s12">

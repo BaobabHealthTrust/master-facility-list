@@ -9,6 +9,7 @@ import DashboardStatistics from "./dashboard-reducer";
 import AuthReducer from "./auth-reducer";
 import FormValues from "./form-values-reducer";
 import PostResponse from "./form-post-reducer";
+import UsersReducer from "./users-reducer";
 
 const rootReducer = combineReducers({
     facilities: FacilitiesReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     dashboardStatistics: DashboardStatistics,
     authReducer: AuthReducer,
     formValues: FormValues,
-    postResponse: PostResponse
+    postResponse: PostResponse,
+    users: UsersReducer
 });
 
 export default rootReducer;

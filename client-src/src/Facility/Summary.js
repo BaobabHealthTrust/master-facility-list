@@ -108,7 +108,7 @@ class Summary extends Component<State> {
 
     return (
       <div className="container">
-        {sessionStorage.getItem("token") && (
+        {/* {sessionStorage.getItem("token") && (
           !this.state.isEditBasic ? (<a
             class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
             onClick={this.toggleEditBasic}
@@ -117,7 +117,7 @@ class Summary extends Component<State> {
                       </a>) : (
               ""
             )
-        )}
+        )} */}
         {!this.state.isEditBasic ? (
           <div>
             <div className="row z-depth-2">

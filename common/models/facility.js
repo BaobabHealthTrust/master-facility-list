@@ -3,6 +3,15 @@ const server = require("../../server/server");
 
 module.exports = (Facility) => {
   // TODO: Re engineer download and downloadOne remote methods
+
+  Facility.observe('before save', function filterProperties(ctx, next) {
+    if (ctx.instance) {
+      // TODO: Generate actual Facility Code Here
+      ctx.instance.facility_code = 'LL140014';
+    }
+    next();
+  })
+
   Facility.contactDetails = async (data, id, cb) => {
     await server.models.Address.create({
       physical_address: data.physicalAddress,
@@ -43,4 +52,5 @@ module.exports = (Facility) => {
     ],
     returns: { arg: 'response', type: 'string' }
   })
+
 };
