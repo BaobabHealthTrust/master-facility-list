@@ -53,7 +53,7 @@ class FacilitiesHome extends React.Component<Props, State> {
   handleClose = () => { this.setState({ isAdvancedSearch: false }); }
 
   toggleAdvancedSearch = () => {
-    this.setState({ isAdvancedSearch: true });
+    this.setState({ isAdvancedSearch: true, isShowSearchResults: false });
     footerResizer();
   }
 
@@ -76,11 +76,11 @@ class FacilitiesHome extends React.Component<Props, State> {
 
         {/* Only show filters when Faclity List is showing */}
         {
-          !(this.state.isAddFacility || this.state.isAdvancedSearch) &&
-          <FacilityFilters
-            url="/facilities"
-            isFilteredResults={true}
-          />
+          // !(this.state.isAddFacility || this.state.isAdvancedSearch) &&
+          // <FacilityFilters
+          //   url="/facilities"
+          //   isFilteredResults={true}
+          // />
         }
 
         <div className="container mfl-container">

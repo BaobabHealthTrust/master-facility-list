@@ -89,7 +89,7 @@ class FacilityUtilities extends Component {
 
     return (
       <div className="container">
-        {sessionStorage.getItem("token") && (
+        {/* {sessionStorage.getItem("token") && (
           !this.state.isEditUtilities ? (<a
             class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
             onClick={this.toggleEditUtilities}
@@ -98,7 +98,7 @@ class FacilityUtilities extends Component {
                       </a>) : (
               ""
             )
-        )}
+        )} */}
         {!this.state.isEditUtilities ? (
           <div>
             {cards.map(card => {

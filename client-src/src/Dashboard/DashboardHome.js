@@ -54,26 +54,28 @@ type State = {
   dashboardServices: Array<{ id: number, displayName: string, icon: string }>
 };
 
+// TODO: Codes for All Dependancies
+
 class DashboardHome extends React.Component<Props, State> {
   state = {
     dashboardServices: [
       {
-        id: 4,
+        id: 138,
         displayName: "OPD",
         icon: "people"
       },
       {
-        id: 16,
+        id: 152,
         displayName: "ANC",
         icon: "pregnant_woman"
       },
       {
-        id: 15,
+        id: 151,
         displayName: "FAM",
         icon: "wc"
       },
       {
-        id: 23,
+        id: 154,
         displayName: "ARI",
         icon: "smoking_rooms"
       }

@@ -55,6 +55,12 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "DELETE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

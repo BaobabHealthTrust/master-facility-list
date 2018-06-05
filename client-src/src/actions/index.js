@@ -58,3 +58,4 @@ export { default as postFormData } from "./post-form-data";
 export { default as deleteFromApi } from "./delete-from-api";
 export { default as editFacilityDependancies } from "./edit-facility-dependancies";
 export { default as postBasicFacilityDetails } from "./post-basic-facility-details";
+export { default as fetchUsers } from "./fetch-users";

@@ -43,7 +43,7 @@ class SearchModal extends React.Component<{}> {
     }
 
     handleAddSearchValue = async (e, type) => {
-        await this.props.addSearchValues(e.target.value, type);
+        await this.props.addSearchValues(e, type);
         await this.props.fetchBasicResourceDetailsResults(this.props.searchValues);
         await this.props.fetchBasicUtilityDetailsResults(this.props.searchValues);
         await this.props.fetchBasicServiceDetailsResults(this.props.searchValues);
@@ -76,14 +76,14 @@ class SearchModal extends React.Component<{}> {
             <div
                 id="advanced-search"
                 ref="advancedSearch"
-                className="modal-lg mfl-modal-container"
+                className="container"
             >
                 <div class="modal-content">
                     <div className="mfl-bm-2">
                         <span className="mfl-modal-header">
                             Advanced Search
                         </span>
-                        <span className="mfl-modal-close right">
+                        <span className="mfl-modal-close right cursor-pointer">
                             <a onClick={e => this.handleRemoveResults(e)}>
                                 <i class="material-icons">close</i>
                             </a>

@@ -25,6 +25,14 @@
     "email": {
       "type": "string",
       "required": true
+    },
+    "archived_date": {
+      "type": "date",
+      "required": false
+    },
+    "created_at": {
+      "type": "date",
+      "required": false
     }
   },
   "validations": [],
@@ -47,6 +55,12 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "createAdmin"
     }
   ],
   "methods": {}

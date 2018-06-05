@@ -69,7 +69,7 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="mfl-tm-2" />
         <Formik
           validate={this.validate}

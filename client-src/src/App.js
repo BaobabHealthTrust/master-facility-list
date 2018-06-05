@@ -10,10 +10,12 @@ import Footer from "./common/Footer";
 import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
 
+import { UsersHome } from './users';
+
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className="mfl-page-wrap">
         <Navbar />
         <Switch>
           <Route
@@ -42,7 +44,13 @@ class App extends Component {
             path="/login"
             component={MflLogin}
           />
+          <Route
+            exact
+            path="/users"
+            component={UsersHome}
+          />
         </Switch>
+
         <Footer />
       </div >
     );

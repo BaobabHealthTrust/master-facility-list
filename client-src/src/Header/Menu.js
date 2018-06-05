@@ -16,7 +16,11 @@ class Menu extends Component {
       this.props.userDetails.userDetails.firstname
     );
   }
-  // TODO: Get active page from Params
+
+  logout = () => {
+    sessionStorage.removeItem('token');
+  }
+
   render() {
     return (
       <div>
@@ -69,6 +73,26 @@ class Menu extends Component {
                         </Link>
           </li>
 
+          {/* User management section hidden from the public users */}
+          {sessionStorage.getItem('token') ?
+            <li
+              className={
+                this.state.activePage === "users"
+                  ? "active"
+                  : ""
+              }
+            >
+              <Link
+                to="/users"
+                onClick={e =>
+                  this.setState({ activePage: "users" })
+                }
+              >
+                USERS
+                            </Link>
+            </li>
+            : ''
+          }
           <li
             className={
               this.state.activePage === "feedback" ? "active" : ""
@@ -100,7 +124,7 @@ class Menu extends Component {
                 Profile
                             </NavItem>
               <NavItem divider />
-              <NavItem>
+              <NavItem onClick={this.logout}>
                 <i className="material-icons">lock</i>Logout
                             </NavItem>
             </Dropdown>

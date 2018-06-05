@@ -155,7 +155,7 @@ class FacilityLocation extends Component<State> {
 
     return (
       <div className="container">
-        {sessionStorage.getItem("token") && (
+        {/* {sessionStorage.getItem("token") && (
           !this.state.isEditContactAndLocation ? (<a
             class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
             onClick={this.toggleEditContactAndLocation}
@@ -164,7 +164,7 @@ class FacilityLocation extends Component<State> {
                       </a>) : (
               ""
             )
-        )}
+        )} */}
         {!this.state.isEditContactAndLocation ? (
           <div>
             <div className="row">

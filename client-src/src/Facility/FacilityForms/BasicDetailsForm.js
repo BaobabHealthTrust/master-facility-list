@@ -191,7 +191,6 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                   handleSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
                 />
-                {console.log(touched)}
               </div>
             )}
         />
