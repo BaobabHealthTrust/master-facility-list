@@ -155,8 +155,7 @@ body {
     height: 400px;
 }
 
-.mfl-titles h5,
-h6 {
+.mfl-titles h5,h6 {
     margin-top: 30px;
     text-transform: uppercase;
     font-weight: bold;
@@ -166,6 +165,7 @@ h6 {
 }
 
 .mfl-titles h6 {
+    margin-top: 10px;
     margin-bottom: 25px;
 }
 
