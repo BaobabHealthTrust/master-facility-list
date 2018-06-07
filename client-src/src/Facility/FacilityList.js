@@ -40,10 +40,7 @@ export default class FacilityList extends React.Component<Props> {
 
     return (
       <div className="container">
-        <MflDownload
-          action={this.props.downloadAction}
-          fileName="facilities"
-        />
+        {/* TODO: Come back and add a buttonConfiguration for Downloads */}
         <div className="flex flex-row w-full">
           <div>
             <a

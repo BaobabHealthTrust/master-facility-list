@@ -1,9 +1,13 @@
+//Flow
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import { connect } from "react-redux";
 import { fetchCurrentDetails, setCurrentDetails, addFormValues, postFormData } from "../actions";
 import moment from "moment";
 import { BasicDetailsForm } from "./FacilityForms";
+import { Switch, Link, Route } from 'react-router-dom';
+import { Button } from 'react-materialize'
+import MflDownload from "../common/MflDownload";
 
 type State = {
   isEditBasic: boolean,
@@ -108,6 +112,77 @@ class Summary extends Component<State> {
 
     return (
       <div className="container">
+        <Switch>
+          <Route exact path={this.props.match.url} render={() => {
+            return (
+              <div>
+                <div className="row z-depth-2">
+                  <div className="col m6 s12">
+                    <p className="mfl-summary-header">Common Name</p>
+
+                    <p className="mfl-summary-text">
+                      <i class="material-icons mfl-icon left">
+                        text_fields
+                      </i>
+                      {this.props.current.common_name}
+                    </p>
+                    <br />
+                    <p className="mfl-summary-header">Facility Code</p>
+                    <p className="mfl-summary-text">
+                      <i class="material-icons mfl-icon left">map</i>
+                      {this.props.current.district
+                        ? this.props.current.district.zone.zone_name
+                        : ""}
+                    </p>
+                  </div>
+
+                  <div className="col m6 s12">
+                    <p className="mfl-summary-header">DATE OPENED</p>
+                    <p className="mfl-summary-text">
+                      <i class="material-icons mfl-icon left">today</i>
+                      {moment(
+                        this.props.current.facility_date_opened
+                      ).format("MMMM Do YYYY")}
+                    </p>
+
+                    <br />
+
+                    <p className="mfl-summary-header">Facility Type</p>
+                    <p className="mfl-summary-text">
+                      <i class="material-icons mfl-icon left">
+                        local_hospital
+                            </i>
+                      {this.props.current.facilityType
+                        ? this.props.current.facilityType.facility_type
+                        : ""}
+                    </p>
+                  </div>
+                </div>
+
+                <br />
+
+                <div className="row">
+                  <div className="col l6 m12 s12">
+                    <Card
+                      heading="contact person"
+                      icon="person"
+                      data={contactPersonData}
+                    />
+                  </div>
+
+                  <div className="col l6 m12 s12">
+                    <Card
+                      heading="ownership & regulation"
+                      icon="bookmark"
+                      data={ownershipData}
+                    />
+                  </div>
+                </div>
+              </div>
+            )
+          }} />
+          <Route exact path={`${this.props.match.url}/edit`} render={() => <h5>Edit Facility Summary</h5>} />
+        </Switch>
         {/* {sessionStorage.getItem("token") && (
           !this.state.isEditBasic ? (<a
             class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
@@ -118,7 +193,7 @@ class Summary extends Component<State> {
               ""
             )
         )} */}
-        {!this.state.isEditBasic ? (
+        {/* {!this.state.isEditBasic ? (
           <div>
             <div className="row z-depth-2">
               <div className="col m6 s12">
@@ -202,7 +277,7 @@ class Summary extends Component<State> {
             operationalStatuses={
               this.props.operationalStatuses
             }
-          />)}
+          />)} */}
       </div>
     );
   }

@@ -70,7 +70,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       this.props.onNext();
     }
   }
-
+  // TODO: Next Or Something the or should be removed
   render() {
 
     return (
