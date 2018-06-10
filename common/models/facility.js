@@ -1,17 +1,22 @@
 "use strict";
 
+const fs = require("fs");
 const server = require("../../server/server");
 const generateFacilityPdfFile = require("../../download_modules/pdf-one-facility-formatter");
-
-const prepareData = (data) =>{
-    if (data.isArray){
-        return data.map(data => {
-            data.toJSON();
-        });
-    }
-    return data.toJSON();
+const uniq = require("lodash");
+const facilityFilterData = {
+  include: [
+      "locations",
+      "contactPeople",
+      "regulatoryStatus",
+      "operationalStatus",
+      "owner",
+      "facilityType",
+      "addresses",
+      {district: "zone"},
+  ],
+  limit: 1
 }
-
 module.exports = (Facility) => {
 
 
@@ -66,45 +71,41 @@ module.exports = (Facility) => {
      *
      */
     Facility.download =  async (id,cb) => {
-
+      try {
         const facility = await Facility.findOne({
-            where: {id: id},
-            include: [
-                "locations",
-                "contactPeople",
-                "regulatoryStatus",
-                "operationalStatus",
-                "owner",
-                "facilityType",
-                "addresses",
-                {district: "zone"},
-            ],
-            limit: 1
-        });
+            ...facilityFilterData,
+            where: {id: id}
+        }).catch(err => cb(err));
 
         const facilityUtilities = await server.models.FacilityUtility.find({
             where: {facility_id: id},
             include: {utility: "utilityType"}
-        });
+        }).catch(err => cb(err));
 
         const facilityResources = await server.models.FacilityResource.find({
             where: {facility_id: id},
             include: { resource: "resourceType" }
-        });
+        }).catch(err => cb(err));
 
         const facilityServices = await server.models.FacilityService.find({
             where: {facility_id: id},
             include: { service: ["serviceType", "category"] }
-        });
+        }).catch(err => cb(err));
 
-        await generateFacilityPdfFile(
-            facility,
-            facilityUtilities,
-            facilityResources,
-            facilityServices
+
+          await generateFacilityPdfFile(
+            facility.toJSON(),
+            facilityUtilities.map(data => data.toJSON()),
+            facilityResources.map(data => data.toJSON()),
+            facilityServices.map(data => data.toJSON()),
+            (err, stream) => {
+              if (err) return cb(err);
+              cb(null, stream, 'application/pdf');
+            }
         );
-
-        return "Malu working on it.";
+        } catch (error) {
+          console.log(error);
+        }
     }
 
     /** Register a remote method */
@@ -112,7 +113,10 @@ module.exports = (Facility) => {
         description: "Download facility details",
         accepts: { arg: 'id', type: 'number', required: true},
         http: {path: '/download/:id', verb: 'get'},
-        returns: { arg: 'file', type: 'string' }
+        returns: [
+          {arg: 'body', type: 'file', root: true},
+          {arg: 'Content-Type', type: 'string', http: { target: 'header' }}
+        ]
     });
 
     //"blob"\
