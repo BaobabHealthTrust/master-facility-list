@@ -54,12 +54,12 @@ class UserForm extends React.Component {
           isSubmitting,
         }) => (
             <Modal
-              header='Create New User'
+              header={this.props.title}
               dude={"dude"}
               trigger={<Button floating large waves='light' className="blue mfl-fl-right" icon="add" />}
               actions={
                 <div class="">
-                  <Button modal="close" flat waves="light" className="">cancel</Button>
+                  <Button modal="close" flat waves="light">cancel</Button>
                   <Button waves="light" className="blue darken-2" onClick={handleSubmit}>save user</Button>
                 </div>
               }
@@ -73,7 +73,6 @@ class UserForm extends React.Component {
                 <Input
                   s={6}
                   placeholder="Enter User First Name"
-                  label="Enter User First Name"
                   labelClassName="mfl-max-width"
                   value={values.firstname}
                   onChange={handleChange}
@@ -83,7 +82,6 @@ class UserForm extends React.Component {
                 <Input
                   s={6}
                   placeholder="Enter User Last Name"
-                  label="Enter User Last Name"
                   labelClassName="mfl-max-width"
                   value={values.lastname}
                   onChange={handleChange}
@@ -95,7 +93,6 @@ class UserForm extends React.Component {
                 <Input
                   s={6}
                   placeholder="Enter Username"
-                  label="Enter Username"
                   labelClassName="mfl-max-width"
                   value={values.username}
                   onChange={handleChange}
@@ -105,7 +102,6 @@ class UserForm extends React.Component {
                 <Input
                   s={6}
                   placeholder="Enter Email"
-                  label="Enter Email"
                   labelClassName="mfl-max-width"
                   value={values.email}
                   onChange={handleChange}
@@ -113,30 +109,30 @@ class UserForm extends React.Component {
                   name="email"
                 />
               </Row>
-              <Row>
-                <Input
-                  s={6}
-                  placeholder="Enter Password"
-                  label="Enter Password"
-                  labelClassName="mfl-max-width"
-                  value={values.password}
-                  onChange={handleChange}
-                  error={errors.password}
-                  name="password"
-                  type="password"
-                />
-                <Input
-                  s={6}
-                  placeholder="Confirm Password"
-                  label="Confirm Password"
-                  labelClassName="mfl-max-width"
-                  value={values.confirmPassword}
-                  onChange={handleChange}
-                  error={errors.confirmPassword}
-                  name="confirmPassword"
-                  type="password"
-                />
-              </Row>
+              {!this.props.editMode && 
+                <Row>
+                  <Input
+                    s={6}
+                    placeholder="Enter Password"
+                    labelClassName="mfl-max-width"
+                    value={values.password}
+                    onChange={handleChange}
+                    error={errors.password}
+                    name="password"
+                    type="password"
+                  />
+                  <Input
+                    s={6}
+                    placeholder="Confirm Password"
+                    labelClassName="mfl-max-width"
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    error={errors.confirmPassword}
+                    name="confirmPassword"
+                    type="password"
+                  />
+                </Row>
+              }
             </Modal>
           )}
       />

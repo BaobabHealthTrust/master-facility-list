@@ -26,15 +26,21 @@ export default class UsersHome extends React.Component {
     });
   }
 
+  onUserArchived = () => {
+    this.setState({
+      user: null
+    });
+  }
+
   showToastMessage = message => {
     window.Materialize.toast(message, this.state.delay);
   }
 
   onUserCreationSuccess = () => {
-    this.showToastMessage('User created successfully');
+    this.showToastMessage('User created successfully, reloading');
     setTimeout(() => {
       window.location.reload();
-    }, this.state.delay);
+    }, this.state.delay + 800);
   }
 
   onUserCreationError = () => {
@@ -51,6 +57,7 @@ export default class UsersHome extends React.Component {
               <UserForm
                 onUserCreationSuccess={this.onUserCreationSuccess}
                 onUserCreationError={this.onUserCreationError}
+                title="Create new administrator user"
               />
             </h4>
           </Col>
@@ -60,7 +67,7 @@ export default class UsersHome extends React.Component {
             <UserList onUserSelected={this.onUserSelected} />
           </Col>
           <Col s={5}>
-            <ViewUser user={this.state.user} />
+            <ViewUser user={this.state.user} onUserArchived={this.onUserArchived}/>
           </Col>
         </Row>
       </div>

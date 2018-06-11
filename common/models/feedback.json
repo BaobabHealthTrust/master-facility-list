@@ -32,6 +32,13 @@
       "foreignKey": "type_id"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$evryone",
+      "permission": "ALLOW",
+      "property": "feedback"
+    }
+  ],
   "methods": {}
 }

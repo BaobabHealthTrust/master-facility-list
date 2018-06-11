@@ -1,9 +1,10 @@
 import axios from "axios";
 import settings from "../settings";
-const token = sessionStorage.getItem('token');
 
-export default function postFormData(data, resource, method, actionType, endpoint = "") {
+export default async function postFormData(data, resource, method, actionType, endpoint = "") {
+  
   const END_POINT = `${settings.hostname}/api/`;
+  const token = await sessionStorage.getItem('token');
 
   const headers = {
     Authorization: token

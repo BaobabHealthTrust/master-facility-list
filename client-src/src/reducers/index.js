@@ -10,6 +10,7 @@ import AuthReducer from "./auth-reducer";
 import FormValues from "./form-values-reducer";
 import PostResponse from "./form-post-reducer";
 import UsersReducer from "./users-reducer";
+import FeedbackReducer from './feedback-reducer';
 
 const rootReducer = combineReducers({
     facilities: FacilitiesReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     authReducer: AuthReducer,
     formValues: FormValues,
     postResponse: PostResponse,
-    users: UsersReducer
+    users: UsersReducer,
+    feedback: FeedbackReducer
 });
 
 export default rootReducer;
