@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Card from "../common/MflCard";
 import banner from "../banner.png";
 import footerResizer from "../helpers/footerResize";
+import { FeedbackForm } from './index';
 
 class MflFeedback extends Component {
 
@@ -23,6 +24,7 @@ class MflFeedback extends Component {
                     </div>
                     <div className="row mfl-tm-10">
                         <div className="col m8 s12">
+                            <FeedbackForm/>
                             <h5 className="mfl-contact">Instructions to Provide Feedback</h5>
                             <p>
                                 Incididunt ad est deserunt exercitation. Eu veniam ea reprehenderit ex ex non reprehenderit cupidatat ex officia quis elit. Aute tempor ipsum commodo culpa id. Minim velit eu nisi cillum consequat consectetur. Ex magna occaecat ea cupidatat.
@@ -57,6 +59,5 @@ class MflFeedback extends Component {
         );
     }
 }
-
 
 export default MflFeedback;

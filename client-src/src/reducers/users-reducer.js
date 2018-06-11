@@ -1,15 +1,13 @@
 
 const initialState = {
   users: [],
-  userCreated: false,
-  limit: 5,
-  skip: 0,
-  page: 1
+  userCreated: false
 };
 export default (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_USERS":
       if(action.payload.data){
+        console.log(action.payload.data);
         return {
           ...state,
           users: action.payload.data

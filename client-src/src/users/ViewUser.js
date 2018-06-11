@@ -1,12 +1,16 @@
 import React from 'react';
-import { Card, CardTitle, Table, Button } from 'react-materialize';
-import { EditUserModal } from './index';
+import { Card, CardTitle, Table, Button, Icon } from 'react-materialize';
+import { EditUserModal, UserForm } from './index';
 import { connect } from 'react-redux';
 import { postFormData, fetchUsers } from '../actions/index';
 import moment from 'moment';
 import '../App.css';
 
 class ViewUser extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  
 
   archiveUser = async () => {
     await this.props.postFormData(
@@ -17,6 +21,7 @@ class ViewUser extends React.Component {
     );
     // TODO: Check if this has really deleted the user
     await this.props.fetchUsers();
+    this.props.onUserArchived();
   }
 
   emptyUserState = () => (
@@ -30,8 +35,12 @@ class ViewUser extends React.Component {
     <Card
       title="User Details"
       actions={[
-        // <EditUserModal />,
-        <Button waves='light' className="red mfl-lm-" onClick={this.archiveUser}>archive user</Button>
+        <UserForm 
+          editMode={true} 
+          userId={this.props.user.id}
+          title="Edit administrator user"
+          />,
+        <Button waves='light' className="red mfl-lm-2" onClick={this.archiveUser}>archive user</Button>
       ]}>
       <Table>
         <tbody>
@@ -54,7 +63,7 @@ class ViewUser extends React.Component {
         </tbody>
       </Table>
     </Card>
-  ) : 'what??');
+  ) : '');
 
   render() {
     return (
