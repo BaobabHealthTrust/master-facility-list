@@ -6,7 +6,8 @@ import Pagination from "../common/Pagination";
 import GridTable from "../common/GridTable";
 import { truncate } from "lodash";
 import moment from "moment";
-import { Facilities } from '../types/list-types'
+import { Facilities } from '../types/list-types';
+import { Link } from 'react-router-dom';
 
 type Props = {
   dataSource: Facilities,
@@ -41,37 +42,30 @@ export default class FacilityList extends React.Component<Props> {
     return (
       <div className="container">
         {/* TODO: Come back and add a buttonConfiguration for Downloads */}
-        <div className="flex flex-row w-full">
+        <div className="flex flex-row w-full" style={{ marginTop: 64 }}>
           <div>
-            <a
+            <Link
               style={{ marginTop: -80 }}
               class="btn-flat"
-              onClick={e => this.props.toggleAdvancedSearch(e)}
-            >Advanced Search</a>
+              to='/facilities/search'
+            >
+              <i class="material-icons left">search</i> Advanced Search
+            </Link>
           </div>
           <div>
             {
+              // TODO: Only allowed for a token whose user ID is an admin
               sessionStorage.getItem('token') && (
-                <a
+                <Link
                   style={{ marginTop: -80 }}
                   class="ml-4 waves-effect waves-light btn"
-                  onClick={e => this.props.toggleAddFacility(e)}
+                  to='/facilities/add'
                 >
                   <i class="material-icons left">add</i>Add NewFacility
-                </a>
+                </Link>
               )
             }
           </div>
-          {/* <div className="col s4 m4 l4 mfl-tm-2">
-            {sessionStorage.getItem('token') && (
-              <a
-                class="waves-effect waves-light btn"
-                onClick={e => this.props.toggleAddFacility(e)}
-              >
-                <i class="material-icons left">add</i>Add NewFacility
-              </a>
-            )}
-          </div> */}
         </div>
 
         <GridTable data={tableRecords} />

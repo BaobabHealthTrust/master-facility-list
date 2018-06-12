@@ -3,27 +3,56 @@ import React, { Component } from "react";
 import { Input, Navbar, NavItem, Row, Button } from "react-materialize";
 import { connect } from "react-redux";
 import { DatePicker, FormWizardNavigation } from '../../common';
-import { BasicDetailsFormProps } from '../../types/helper-types';
+import { CurrentFacility } from '../../types/helper-types';
 import { Formik } from 'formik';
 import { postFormData } from '../../actions';
+import { Redirect } from 'react-router-dom';
 import yup from 'yup';
 
-class FacilityContactForm extends React.Component<{}> {
+type Props = {
+  response: any,
+  postFormData: Function,
+  current: CurrentFacility,
+  fromAdd: ?boolean
+}
+class FacilityContactForm extends React.Component<Props> {
+
+  state = {
+    cancelForm: false
+  }
 
   REQUIRED_MESSAGE = "You can't leave this field blank";
   PHONE_MIN_MESSAGE = "What type of phone number is that?"
   INVALID_NUM_MESSAGE = "This is not a valid number"
 
   initialValues = {
-    postalAddress: "",
-    physicalAddress: null,
-    contactName: "",
-    contactEmail: "",
-    contactPhoneNumber: "",
-    catchmentArea: "",
-    catchmentPopulation: 0,
-    longitude: "",
-    latitude: ""
+    postalAddress: this.props.fromAdd
+      ? ""
+      : this.props.current.addresses.postal_address,
+    physicalAddress: this.props.fromAdd
+      ? null
+      : this.props.current.addresses.physical_address,
+    contactName: this.props.fromAdd
+      ? ""
+      : this.props.current.contactPeople.contact_person_fullname,
+    contactEmail: this.props.fromAdd
+      ? ""
+      : this.props.current.contactPeople.contact_person_email,
+    contactPhoneNumber: this.props.fromAdd
+      ? ""
+      : this.props.current.contactPeople.contact_person_phone,
+    catchmentArea: this.props.fromAdd
+      ? ""
+      : this.props.current.locations.catchment_area,
+    catchmentPopulation: this.props.fromAdd
+      ? 0
+      : this.props.current.locations.catchment_population,
+    longitude: this.props.fromAdd
+      ? ""
+      : this.props.current.geolocations.longitude,
+    latitude: this.props.fromAdd
+      ? ""
+      : this.props.current.geolocations.latitude
   }
 
   schema = yup.object().shape({
@@ -49,20 +78,30 @@ class FacilityContactForm extends React.Component<{}> {
   })
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
+    const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
+    const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
+
     await this.props.postFormData(
-      { data: { ...values, client: 1 }, id: this.props.facility.id || 1 },
+      { data: { ...values, client: 1 }, id: facilityId },
       "Facilities",
       "POST",
       "POST_FACILITY_CONTACT_DETAILS",
-      "contactDetails",
+      endpoiint,
+      ""
     );
     setSubmitting(false);
-    if (this.props.response.response) this.props.onNext();
+    if (this.props.response.response && this.props.fromAdd) this.props.onNext();
+    if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
   }
 
   render() {
     return (
       <div className="container">
+        {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+        {
+          (this.state.cancelForm && !this.props.fromAdd) &&
+          <Redirect to={`/facilities/${this.props.match.params.id}/locations`} />
+        }
         <div className="mfl-tm-2" />
         <Formik
           initialValues={this.initialValues}
@@ -185,8 +224,10 @@ class FacilityContactForm extends React.Component<{}> {
                   />
                 </Row>
                 < FormWizardNavigation
+                  saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                   handleSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
+                  handleCancel={() => this.setState({ cancelForm: true })}
                 />
               </div>
             )}
@@ -199,6 +240,7 @@ class FacilityContactForm extends React.Component<{}> {
 const mapStateToProps = state => {
   return {
     response: state.facilities.contactDetailsResponse,
+    current: state.facilities.currentDetails
   }
 }
 

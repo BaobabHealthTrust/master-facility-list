@@ -11,6 +11,8 @@ import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
 
 import { UsersHome } from './users';
+import { AddFacilityHome } from "./Facility/AddFacility";
+import SearchModal from "./Facility/SearchModal";
 
 class App extends Component {
   render() {
@@ -23,7 +25,21 @@ class App extends Component {
             path="/facilities"
             component={FacilitiesHome}
           />
-          <Route path="/facilities/:id" component={FacilityDetails} />
+          {
+            sessionStorage.getItem('token') && (
+              <Route
+                exact
+                path='/facilities/add'
+                component={AddFacilityHome}
+              />
+            )
+          }
+          <Route
+            exact
+            path='/facilities/search'
+            component={SearchModal}
+          />
+          <Route path="/facilities/:id/:sections" component={FacilityDetails} />
           <Route
             exact
             path="/"

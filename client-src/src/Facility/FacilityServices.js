@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+//@flow
+import React from "react";
 import {
   fetchCurrentDetails,
   fetchCurrentServices,
@@ -6,8 +7,15 @@ import {
 } from "../actions";
 import Container from "./ServicesContainer";
 import { connect } from "react-redux";
+import { Service, ServiceType } from "../types/model-types";
+import { Tab, Tabs } from 'react-materialize';
 
-class FacilityServices extends Component {
+type Props = {
+  services: Array<{ service: Service }>,
+  serviceTypes: Array<ServiceType>
+}
+
+class FacilityServices extends React.Component<Props> {
   async componentDidMount() {
     const id = this.props.match.params.id;
     await this.props.fetchCurrentDetails(id);
@@ -21,31 +29,27 @@ class FacilityServices extends Component {
         "CLINICAL SERVICES"
       );
     });
-
+    // TODO: Fix odd issue when loading tabs
     return (
       <div className="container">
-        <div className="nav-content">
-          <ul className="tabs blue accent-1 mfl-tabs">
-            <li className="tab">
-              <a href="#clinical">Clinical</a>
-            </li>
-            <li className="tab">
-              <a href="#test2">Community Health</a>
-            </li>
-            <li className="tab">
-              <a href="#test3">Reproductive</a>
-            </li>
-            <li className="tab">
-              <a href="#test4">Other Services</a>
-            </li>
-          </ul>
-        </div>
-
-        <br />
-
-        <div id="clinical" class="col s12">
-          <Container services={clinicalServices} />
-        </div>
+        <Tabs className='tabs blue accent-1 mfl-tabs tabs-fixed-width '>
+          {
+            this.props.serviceTypes.map((type, index) => {
+              return (
+                <Tab title={type.service_type} active={index == 0}>
+                  {
+                    <div className="col s12 mt-4">
+                      <Container facilityType={type.service_type} services={this.props.services.filter(service => {
+                        return service.service.service_type_id === type.id
+                      })}
+                      />
+                    </div>
+                  }
+                </Tab>
+              )
+            })
+          }
+        </Tabs>
       </div>
     );
   }
@@ -54,7 +58,8 @@ class FacilityServices extends Component {
 const mapStateToProps = store => {
   return {
     facilities: store.facilities.list,
-    services: store.facilities.currentServices
+    services: store.facilities.currentServices,
+    serviceTypes: store.dependancies.serviceTypes
   };
 };
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export default function fetchCurrentServices(id) {
+export default (id) => {
   const END_POINT = `${settings.hostname}/api/`;
   const RESOURCE = `FacilityServices/`;
 

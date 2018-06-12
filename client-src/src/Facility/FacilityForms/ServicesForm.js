@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import { postFormData, fetchCurrentServices, deleteFromApi } from '../../actions';
 import yup from 'yup';
 import { renderOptions } from './helpers';
+import { Redirect } from 'react-router-dom'
 import { Service, ServiceType, FacilityService, Facility } from '../../types/model-types';
 
 type Props = {
@@ -19,7 +20,8 @@ type Props = {
   postFormData: Function,
   deleteFromApi: Function,
   deleteServiceResponse: { count: number },
-  onNext: Function
+  onNext: Function,
+  fromAdd: Function
 }
 
 class ServicesForm extends React.Component<Props> {
@@ -28,7 +30,8 @@ class ServicesForm extends React.Component<Props> {
     selectedServiceType: -1,
     firstLevelService: -1,
     secondLevelService: -1,
-    thirdLevelService: -1
+    thirdLevelService: -1,
+    cancelForm: false
   }
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
@@ -90,7 +93,7 @@ class ServicesForm extends React.Component<Props> {
     const data: FacilityService = {
       service_id: service,
       client_id: 1,
-      facility_id: this.props.facility.id || 1,
+      facility_id: await this._getFacilityId(),
     }
 
     await this.props.postFormData(
@@ -103,16 +106,23 @@ class ServicesForm extends React.Component<Props> {
 
     if (this.props.response.id > 0) {
       this._resetForm();
-      this.props.fetchCurrentServices(this.props.facility.id || 1);
+      await this.props.fetchCurrentServices(await this._getFacilityId());
       alert('Service Successfully Created');
     }
+  }
+
+  _getFacilityId = async () => {
+    const facilityId = this.props.fromAdd
+      ? (await this.props.facility.id || 1)
+      : Number(await this.props.match.params.id)
+    return facilityId;
   }
 
   _remove = async (id) => {
     await this.props.deleteFromApi(id, "FacilityServices", "DELETE_FACILITY_SERVICE");
     const response = await this.props.deleteServiceResponse;
     if (response.count > 0) {
-      this.props.fetchCurrentServices(this.props.facility.id || 1);
+      await this.props.fetchCurrentServices(await this._getFacilityId());
       alert("Service Successfully Deleted")
     }
   }
@@ -135,13 +145,18 @@ class ServicesForm extends React.Component<Props> {
       })
   }
 
-  componentWillMount() {
-    this.props.fetchCurrentServices(this.props.facility.id || 1);
+  async componentDidMount() {
+    await this.props.fetchCurrentServices(await this._getFacilityId());
   }
 
   render() {
     return (
       <div className="container">
+        {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+        {
+          (this.state.cancelForm && !this.props.fromAdd) &&
+          <Redirect to={`/facilities/${this.props.match.params.id}/services`} />
+        }
         <div className="mfl-tm-2" />
         <Formik
           onSubmit={this._handleChange}
@@ -243,8 +258,10 @@ class ServicesForm extends React.Component<Props> {
                     }
                   </div>
                 </div>
-                < FormWizardNavigation
+                <FormWizardNavigation
+                  saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                   handleSubmit={() => this.props.onNext()}
+                  handleCancel={() => this.setState({ cancelForm: true })}
                   isSubmitting={false}
                 />
               </div>

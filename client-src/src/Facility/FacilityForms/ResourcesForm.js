@@ -40,7 +40,8 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
   }
 
 
-  // TODO: Fakers should have a default client id
+  // TODO: Get Client ID from Redux store
+  //TODO: Add Loading states!
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
     const data = this.props.resources.map(resource => {

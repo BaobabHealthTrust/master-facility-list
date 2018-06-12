@@ -6,8 +6,13 @@ import { DatePicker, FormWizardNavigation } from '../../common';
 import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik } from 'formik';
 import { postFormData } from '../../actions';
+import { Redirect } from 'react-router-dom';
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
+
+  state = {
+    cancelForm: false
+  }
 
   _renderOptions = (dependancy, entityName) => {
     return dependancy.map(entity => (
@@ -21,17 +26,32 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   }
 
   initalValues = {
-    facilityName: "",
-    commonName: "",
-    operationalStatus: this.props.operationalStatuses[0].id,
-    district: this.props.districts[0].id,
-    facilityType: this.props.facilityTypes[0].id,
-    regulatoryStatus: this.props.regulatoryStatuses[0].id,
-    facilityOwner: this.props.facilityOwners[0].id,
-    dateOpened: "1975-01-01",
-    registrationNumber: 0
+    facilityName: this.props.fromAdd ? "" : this.props.currentFacility.facility_name,
+    commonName: this.props.fromAdd ? "" : this.props.currentFacility.common_name,
+    operationalStatus: this.props.fromAdd
+      ? this.props.operationalStatuses[0].id
+      : this.props.currentFacility.facility_operational_status_id,
+    district: this.props.fromAdd
+      ? this.props.districts[0].id
+      : this.props.currentFacility.district_id,
+    facilityType: this.props.fromAdd
+      ? this.props.facilityTypes[0].id
+      : this.props.currentFacility.facility_type_id,
+    regulatoryStatus: this.props.fromAdd
+      ? this.props.regulatoryStatuses[0].id
+      : this.props.currentFacility.facility_regulatory_status_id,
+    facilityOwner: this.props.fromAdd
+      ? this.props.facilityOwners[0].id
+      : this.props.currentFacility.facility_owner_id,
+    dateOpened: this.props.fromAdd
+      ? "1975-01-01"
+      : this.props.currentFacility.facility_date_opened.slice(0, 10),
+    registrationNumber: this.props.fromAdd
+      ? 0
+      : (this.props.currentFacility.registration_number || 0)
   }
 
+  // TODO: Update this validation to YUP
   validate = values => {
     let errors = {};
     if (values.facilityName.length < 5) errors.facilityName = "Invalid Facility Name"
@@ -58,23 +78,36 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       "client_id": 1
     }
     setSubmitting(true)
+    const id = this.props.fromAdd ? "" : this.props.match.params.id
+    const method = this.props.fromAdd ? "POST" : "PUT"
     await this.props.postFormData(
       data,
       "Facilities",
-      "POST",
+      method,
       "POST_FACILITY_BASIC_DETAILS",
+      "",
+      id
     );
     setSubmitting(false);
-    if (this.props.response.id) {
+    if (this.props.response.id && this.props.fromAdd) {
       this.props.submitFacility(this.props.response)
       this.props.onNext();
     }
+    //TODO: Show success or error message for all forms
+    if (this.props.response.id && !this.props.fromAdd) {
+      this.setState({ cancelForm: true })
+    }
   }
-  // TODO: Next Or Something the or should be removed
   render() {
-
+    const dateOpened = this.props.currentFacility.facility_date_opened.slice(0, 10).split('-');
+    // TODO: Fetch your own dependancies in case you have been refreshed
     return (
       <div className="container">
+        {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+        {
+          (this.state.cancelForm && !this.props.fromAdd) &&
+          <Redirect to={`/facilities/${this.props.match.params.id}/summary`} />
+        }
         <div className="mfl-tm-2" />
         <Formik
           initialValues={this.initalValues}
@@ -173,6 +206,9 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                 <Row>
                   <DatePicker
                     suffix="Opened"
+                    year={!this.props.fromAdd && dateOpened[0]}
+                    month={!this.props.fromAdd && dateOpened[1]}
+                    day={!this.props.fromAdd && dateOpened[2]}
                     onChange={(date) => setFieldValue("dateOpened", date)}
                   />
                   <Input
@@ -188,8 +224,10 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                   />
                 </Row>
                 <FormWizardNavigation
+                  saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                   handleSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
+                  handleCancel={() => this.setState({ cancelForm: true })}
                 />
               </div>
             )}
@@ -199,7 +237,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     regulatoryStatuses: state.dependancies.regulatoryStatuses,
     facilityOwners: state.dependancies.facilityOwners,
@@ -207,6 +245,7 @@ const mapStateToProps = state => {
     districts: state.dependancies.districts,
     operationalStatuses: state.dependancies.operationalStatuses,
     response: state.facilities.basicDetailsResponse,
+    currentFacility: state.facilities.currentDetails
   }
 }
 
