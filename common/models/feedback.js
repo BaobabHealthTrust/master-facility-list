@@ -4,7 +4,10 @@ const server = require("../../server/server");
 module.exports = function(Feedback) {
 
     Feedback.feedback = async (data, cb) => {
-        return await data;
+        console.log(data);
+        return {
+            
+        }
     }
 
     Feedback.remoteMethod('feedback', {

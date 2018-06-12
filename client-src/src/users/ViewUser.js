@@ -1,27 +1,37 @@
 import React from 'react';
 import { Card, CardTitle, Table, Button, Icon } from 'react-materialize';
-import { EditUserModal, UserForm } from './index';
+import { EditUserModal, UserForm, ChangePasswordForm } from './index';
 import { connect } from 'react-redux';
 import { postFormData, fetchUsers } from '../actions/index';
 import moment from 'moment';
 import '../App.css';
 
 class ViewUser extends React.Component {
+
+  state = {
+    delay: 3000
+  }
+
   constructor(props) {
     super(props);
   }
   
+  showToastMessage = message => {
+    window.Materialize.toast(message, this.state.delay);
+  }
 
   archiveUser = async () => {
-    await this.props.postFormData(
-      { archived_date: moment().format('YYYY-MM-DD') },
-      `Clients/${this.props.user.id}`,
-      'PATCH',
-      'ARCHIVE_USER'
-    );
-    // TODO: Check if this has really deleted the user
-    await this.props.fetchUsers();
-    this.props.onUserArchived();
+    if(await window.confirm('Are you sure you want archive this user?')){
+      await this.props.postFormData(
+        { archived_date: moment().format('YYYY-MM-DD') },
+        `Clients/${this.props.user.id}`,
+        'PATCH',
+        'ARCHIVE_USER'
+      );
+      // TODO: Check if this has really deleted the user
+      await this.props.fetchUsers();
+      this.props.onUserArchived();
+    }
   }
 
   emptyUserState = () => (
@@ -35,12 +45,18 @@ class ViewUser extends React.Component {
     <Card
       title="User Details"
       actions={[
-        <UserForm 
-          editMode={true} 
-          userId={this.props.user.id}
-          title="Edit administrator user"
-          />,
-        <Button waves='light' className="red mfl-lm-2" onClick={this.archiveUser}>archive user</Button>
+        <EditUserModal 
+          user={this.props.user}
+          onUserUpdateSuccess={this.props.onUserUpdateSuccess}
+          onUserUpdateError={this.props.onUserUpdateError}
+        />,
+        <ChangePasswordForm user={this.props.user}/>,
+        <Button 
+          waves='light' 
+          className="red"
+          onClick={this.archiveUser}>
+            archive
+          </Button>
       ]}>
       <Table>
         <tbody>

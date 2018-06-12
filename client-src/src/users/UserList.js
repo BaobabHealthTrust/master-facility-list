@@ -45,7 +45,7 @@ class UsersList extends React.Component{
                     this.props.users ? 
 
                     <React.Fragment>
-                            <Card className="user-list" title="System Administrators">
+                            <Card className="user-list">
                             <Grid
                                 rows={this.props.users}
                                 columns={[
