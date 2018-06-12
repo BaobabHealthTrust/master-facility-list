@@ -37,6 +37,13 @@ module.exports.facility = {
   client_id: 1
 };
 
+module.exports.contactPeople = {
+    contact_person_fullname: "Malu Mzota",
+    contact_person_phone: "+265 999 21 30 85",
+    facility_id: 1,
+};
+
+
 module.exports.facilityTypes = [{
     facility_type: "District hospital",
     description: "These facilities belongs to districts"
