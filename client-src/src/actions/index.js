@@ -59,4 +59,5 @@ export { default as deleteFromApi } from "./delete-from-api";
 export { default as editFacilityDependancies } from "./edit-facility-dependancies";
 export { default as postBasicFacilityDetails } from "./post-basic-facility-details";
 export { default as fetchUsers } from "./fetch-users";
+export { default as fetchUserAccessTokens } from "./fetch-user-access-tokens";
 export { default as fetchFeedbackTypes } from "./fetch-feedback-types";

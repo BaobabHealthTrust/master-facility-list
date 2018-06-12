@@ -20,7 +20,6 @@ module.exports = function(Client) {
             principalId: client.id
         };
         const map = await role.principals.create(roleMap);
-        await console.log(map);
         return map;
     }
 
