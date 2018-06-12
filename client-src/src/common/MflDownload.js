@@ -16,7 +16,7 @@ export default ({ buttonConfiguration, mainButtonConfiguration }) => {
               <li>
                 <a
                   className={`btn-floating ${buttonConfig.color} darken-1 tooltipped`}
-                  data-delay='20'
+                  data-delay='500'
                   data-tooltip={buttonConfig.name}
                   onClick={buttonConfig.action}
                 >

@@ -230,105 +230,132 @@ module.exports.roles = [{
 
 const districtZoneMapping = {
   [refs.ZONES.NORTH]: [{
-    district_name: "Nkhata Bay"
+    district_name: "Nkhata Bay",
+    distict_code: "KB"
   },
   {
-    district_name: "Chitipa"
+    district_name: "Chitipa",
+    district_code: "CP"
   },
   {
-    district_name: "Karonga"
+    district_name: "Karonga",
+    district_code: "KA"
   },
   {
-    district_name: "Mzuzu Central"
+    district_name: "Mzuzu Central",
+    district_code: "MU"
   },
   {
-    district_name: "Rumphi"
+    district_name: "Rumphi",
+    district_code: "RU"
   },
   {
-    district_name: "Neno"
+    district_name: "Mzimba",
+    district_code: "MZ"
   },
   {
-    district_name: "Mzimba"
-  },
-  {
-    district_name: "Likoma"
+    district_name: "Likoma",
+    district_code: "LK"
   }
   ],
 
   [refs.ZONES.CENTRAL_EAST]: [{
-    district_name: "Dowa"
+    district_name: "Dowa",
+    district_code: "DA"
   },
   {
-    district_name: "Kasungu"
+    district_name: "Kasungu",
+    district_code: "KU"
   },
   {
-    district_name: "Nkhotakota"
+    district_name: "Nkhotakota",
+    district_code: "NK"
   },
   {
-    district_name: "Ntchisi"
+    district_name: "Ntchisi",
+    district_code: "NT"
   },
   {
-    district_name: "Salima"
+    district_name: "Salima",
+    district_code: "SA"
   }
   ],
 
   [refs.ZONES.CENTRAL_WEST]: [{
-    district_name: "Kamuzu Central"
+    district_name: "Kamuzu Central",
+    district_code: "KC"
   },
   {
-    district_name: "Dedza"
+    district_name: "Dedza",
+    district_code: "DE"
   },
   {
-    district_name: "Lilongwe"
+    district_name: "Lilongwe",
+    district_code: "LL"
   },
   {
-    district_name: "Mchinji"
+    district_name: "Mchinji",
+    district_code: "MC"
   },
   {
-    district_name: "Ntcheu"
+    district_name: "Ntcheu",
+    district_code: "NT"
   }
   ],
 
   [refs.ZONES.SOUTH_EAST]: [{
-    district_name: "Balaka"
+    district_name: "Balaka",
+    district_code: "BK"
   },
   {
-    district_name: "Machinga"
+    district_name: "Machinga",
+    district_code: "MC"
   },
   {
-    district_name: "Mangochi"
+    district_name: "Mangochi",
+    district_code: "MG"
   },
   {
-    district_name: "Mulanje"
+    district_name: "Mulanje",
+    district_code: "MU"
   },
   {
-    district_name: "Phalombe"
+    district_name: "Phalombe",
+    district_code: "PH"
   }
   ],
 
   [refs.ZONES.SOUTH_WEST]: [{
-    district_name: "Blantyre"
+    district_name: "Blantyre",
+    district_code: "BT"
   },
   {
-    district_name: "Queens Elizabeth"
+    district_name: "Queens Elizabeth",
+    district_code: "QE"
   },
   {
-    district_name: "Chiradzulu"
+    district_name: "Chiradzulu",
+    district_code: "CR"
   },
   {
-    district_name: "Chikwawa"
+    district_name: "Chikwawa",
+    district_code: "CK"
   },
   {
-    district_name: "Mwanza"
+    district_name: "Mwanza",
+    district_code: "MW"
   },
   {
-    district_name: "Neno"
+    district_name: "Neno",
+    district_code: "NE"
   },
   {
-    district_name: "Nsanje"
+    district_name: "Nsanje",
+    district_code: "NS"
   },
   {
-    district_name: "Thyolo"
+    district_name: "Thyolo",
+    district_code: "TH"
   }
   ]
 };

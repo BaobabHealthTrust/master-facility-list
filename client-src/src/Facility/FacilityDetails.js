@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import SecondaryMenu from "../common/SecondaryMenu";
 import footerResizer from "../helpers/footerResize";
 import MflDownload from "../common/MflDownload";
+import { ShowError, FetchAllDependancies } from "../common";
+import { BasicDetailsForm, ContactsForm, ServicesForm } from "./FacilityForms";
 
 type Props = {
   match: any,
@@ -22,21 +24,42 @@ type ButtonConfiguration = Array<{
   icon: string,
   name: string
 }>
-
 class FacilityDetails extends React.Component<Props> {
+
+  state = {
+    pushTo: null
+  }
+
   componentWillReceiveProps() {
-    footerResizer();
+    this.setState({ pushTo: null });
+    // footerResizer();
   }
 
   buttonConfiguration: ButtonConfiguration = [
-    { icon: 'delete', action: () => alert('Deleting...'), color: 'red', name: 'Delete Facility' },
-    { icon: 'edit', action: () => alert('Editting...'), color: 'green', name: 'Edit Facility' },
-    { icon: 'file_download', action: () => alert('Downloading...'), color: 'blue', name: 'Download Facility Details' }
+    {
+      icon: 'delete',
+      action: () => alert('Deleting...'),
+      color: 'red',
+      name: 'Delete Facility'
+    },
+    {
+      icon: 'edit',
+      action: () => this.setState({ pushTo: `${this.props.location.pathname}/edit` }),
+      color: 'green',
+      name: 'Edit Facility'
+    },
+    {
+      icon: 'file_download',
+      action: () => alert('Downloading...'),
+      color: 'blue',
+      name: 'Download Facility Details'
+    }
   ]
 
   render() {
+    const pathArr: string[] = this.props.location.pathname.split('/');
     const id = this.props.match.params.id;
-    const summaryLink = `/facilities/${id}`;
+    const summaryLink = `/facilities/${id}/summary`;
     const locationsLink = `/facilities/${id}/locations`;
     const resourcesLink = `/facilities/${id}/resources`;
     const utilitiesLink = `/facilities/${id}/utilities`;
@@ -99,53 +122,61 @@ class FacilityDetails extends React.Component<Props> {
           break;
       }
     }
-
     return (
       <div>
+        {
+          this.state.pushTo && <Redirect to={this.state.pushTo} />
+        }
         <SecondaryMenu links={links} defaultActivePage={"summary"} />
-        <div className="container mfl-titles">
-          <h5>
-            {this.props.current.facility_name}
-            {this.props.current.operationalStatus ? (
-              <span
-                style={{ float: 'none' }}
-                id="badge"
-                className={badgeClass}
-                data-badge-caption={
-                  this.props.current.operationalStatus
-                    .facility_operational_status
-                }
-              />
-            ) : (
-                ""
-              )}
-          </h5>
-          <h6>
-            {this.props.current.facility_code},&nbsp;
-                        {this.props.current.district
-              ? this.props.current.district.district_name
-              : ""}
-          </h6>
-          <div className='absolute pin-r'>
-            <MflDownload
-              buttonConfiguration={this.buttonConfiguration}
-              mainButtonConfiguration={{ color: 'teal', icon: 'more_horiz' }}
-            />
+        <div className="container mfl-titles flex flex-row justify-between">
+          <div>
+            <h5>
+              {/* TODO: Fetch Current Data Here on your own */}
+              <FetchAllDependancies />
+              {this.props.current.facility_name}
+              {
+                this.props.current.operationalStatus && (
+                  <span
+                    style={{ float: 'none' }}
+                    id="badge"
+                    className={badgeClass}
+                    data-badge-caption={
+                      this.props.current.operationalStatus
+                        .facility_operational_status
+                    }
+                  />
+                )
+              }
+            </h5>
+            <h6>
+              {this.props.current.facility_code},&nbsp;
+              {this.props.current.district && this.props.current.district.district_name}
+            </h6>
+          </div>
+          <div className="mt-4">
+            {
+              (pathArr[pathArr.length - 1] != 'edit' && sessionStorage.getItem('token')) && (
+                <MflDownload
+                  buttonConfiguration={this.buttonConfiguration}
+                  mainButtonConfiguration={{ color: 'teal', icon: 'more_horiz' }}
+                />
+              )
+            }
           </div>
         </div>
         {this.props.isError ? (
-          <blockquote>
-            <h4>
-              "Sorry, we cannot connect to the Server. Please
-              check your Network"
-                        </h4>
-          </blockquote>
+          <ShowError />
         ) : (
             <Switch>
               <Route
                 exact
-                path="/facilities/:id"
+                path="/facilities/:id/summary"
                 component={Summary}
+              />
+              <Route
+                exact
+                path="/facilities/:id/summary/edit"
+                component={BasicDetailsForm}
               />
 
               <Route
@@ -153,6 +184,12 @@ class FacilityDetails extends React.Component<Props> {
                 path="/facilities/:id/locations"
                 component={Location}
               />
+              <Route
+                exact
+                path="/facilities/:id/locations/edit"
+                component={ContactsForm}
+              />
+
               <Route
                 exact
                 path="/facilities/:id/resources"
@@ -163,10 +200,16 @@ class FacilityDetails extends React.Component<Props> {
                 path="/facilities/:id/utilities"
                 component={Utilities}
               />
+
               <Route
                 exact
                 path="/facilities/:id/services"
                 component={Services}
+              />
+              <Route
+                exact
+                path="/facilities/:id/services/edit"
+                component={ServicesForm}
               />
             </Switch>
           )}

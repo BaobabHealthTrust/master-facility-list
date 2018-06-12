@@ -12,6 +12,7 @@ import FacilityList from "./FacilityList";
 import footerResizer from "../helpers/footerResize";
 import { ProgressBar, ShowError, FetchAllDependancies, FacilityFilters } from '../common'
 import { Facilities } from '../types/list-types'
+import { Route, Switch } from 'react-router-dom';
 
 type Props = {
   isLoading: boolean,
@@ -30,8 +31,7 @@ type State = {
 class FacilitiesHome extends React.Component<Props, State> {
   state = {
     isAdvancedSearch: false,
-    isShowSearchResults: false,
-    isAddFacility: false,
+    isShowSearchResults: false
   };
 
   componentWillReceiveProps(props) {
@@ -91,50 +91,21 @@ class FacilitiesHome extends React.Component<Props, State> {
           {/* Show Error Message */}
           {this.props.isError && <ShowError />}
 
-          {/* Show Advanced Search Modal */}
-          {
+          {/* {
             (!isLoadingOrError && this.state.isAdvancedSearch)
             && (
               <SearchModal
                 handleClose={this.handleClose}
               />
             )
-          }
+          } */}
 
-          {/* Show Add Facility Form */}
-          {
-            (!isLoadingOrError && this.state.isAddFacility)
-            && (
-              <AddFacilityHome
-                handleCancelAddFacility={this.handleCancelAddFacility}
-              />
-            )
-          }
-
-          {/* Show Facility List with Search Results */}
-          {
-            (!isLoadingOrError && this.state.isShowSearchResults)
-            && (
-              <FacilityList
-                downloadAction={this.props.downloadFacilities}
-                dataSource={this.props.searchResults}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-              />
-            )
-          }
-
-          {/* Show Facility List by default */}
-          {
-            (!isLoadingOrError && isShowFacilityList)
-            && (
-              <FacilityList
-                downloadAction={this.props.downloadFacilities}
-                dataSource={this.props.facilities}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                toggleAddFacility={this.toggleAddFacility}
-              />
-            )
-          }
+          <FacilityList
+            downloadAction={this.props.downloadFacilities}
+            dataSource={this.props.facilities}
+            toggleAdvancedSearch={this.toggleAdvancedSearch}
+            toggleAddFacility={this.toggleAddFacility}
+          />
         </div>
       </div>
     );

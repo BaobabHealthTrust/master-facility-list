@@ -6,7 +6,7 @@ import { AddEntityHeading } from '../../common'
 
 export default ({ handleCancelAddFacility }) => {
   return (
-    <div>
+    <div className='mt-8 container'>
       <AddEntityHeading title="Add New Facility" entityName="" icon="local_hospital" />
       <FacilityTabs
         handleCancelAddFacility={handleCancelAddFacility}

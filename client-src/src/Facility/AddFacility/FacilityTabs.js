@@ -24,26 +24,31 @@ class FacilityTabs extends React.Component<{}> {
     switch (this.state.active) {
       case 'Basic Details':
         return <BasicDetailsForm
+          fromAdd
           onNext={() => this.setState({ active: 'Contacts & Location' })}
           submitFacility={(facility) => this.setState({ facility })}
         />
       case 'Contacts & Location':
         return <ContactsForm
+          fromAdd
           onNext={() => this.setState({ active: 'Resources' })}
           facility={this.state.facility}
         />
       case 'Resources':
         return <ResourcesForm
+          fromAdd
           onNext={() => this.setState({ active: 'Utilities' })}
           facility={this.state.facility}
         />
       case 'Utilities':
         return <UtilitiesForm
+          fromAdd
           onNext={() => this.setState({ active: 'Services' })}
           facility={this.state.facility}
         />
       case 'Services':
         return <ServicesForm
+          fromAdd
           onNext={() => this.setState({ active: 'Finish' })}
           facility={this.state.facility}
         />
@@ -51,6 +56,7 @@ class FacilityTabs extends React.Component<{}> {
         return <FinishedForm handleBack={() => this.props.handleCancelAddFacility()} />
       default:
         return <BasicDetailsForm
+          fromAdd
           onNext={() => this.setState({ active: 'Contacts & Location' })}
           submitFacility={(facility) => this.setState({ facility })}
         />
