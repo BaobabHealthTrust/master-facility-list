@@ -15,6 +15,14 @@ const fonts = {
     }
 };
 
+/** Table layouts */
+const layout = {
+    paddingLeft: function(i, node) { return 10; },
+    paddingRight: function(i, node) { return 10; },
+    paddingTop: function(i, node) { return 5; },
+    paddingBottom: function(i, node) { return 5; }
+}
+
 /**
  * Create a centered table
  * @param {object} table Table object.
@@ -30,6 +38,31 @@ const centerTable = (table) => {
             table,
             pad,
         ]
+    }
+};
+
+/**
+ * creates a table
+ * @param {string} title Table title
+ * @param {array} table Table
+ */
+const createTable = (title = null, table = null) => {
+    return {
+        margin: [0, 10, 0, 30],
+        table: {
+            widths: ['100%'],
+            body: [
+                [{
+                    text: title,
+                    bold: true
+                }],
+                [{
+                    columns: table,
+                    columnGap: 15
+                }]
+            ]
+        },
+        layout: layout
     }
 };
 
@@ -84,64 +117,65 @@ const headRow = (title = 'Not available', margin) => {
     ];
 };
 
+/**
+ * Renders facility resources
+ * @param {array} resources Resources object.
+ */
 const renderResources = (resources) => {
-  const normalised = resources.map((res) => {
-    return {
-      type: res.resource.resourceType.resource_type,
-      desc: res.quantity + " " + res.resource.resource_name
+    if (resources == null) {
+        return [{
+            stack: ['Resources are not available on this facility'],
+            fontSize: 12
+        }];
     }
-  });
 
-  const resourceTypes = normalised.map(res => res.type);
-  const uniqResourceTypes = uniq.uniqWith(resourceTypes, uniq.isEqual);
-
-  const columnA = [];
-
-  const length = Math.ceil(uniqResourceTypes.length / 2);
-
-  uniqResourceTypes.splice(0, length).forEach(type => {
-    columnA.push({
-      text: type,
-      width: '*',
-      bold: true,
-      margin: [0, 10, 0, 0]
+    const normalised = resources.map((res) => {
+        return {
+            type: res.resource.resourceType.resource_type,
+            desc: res.quantity + " " + res.resource.resource_name
+        }
     });
 
-    let data = normalised.filter(res => res.type === type);
-    columnA.push({
-      ul: data.map(e => e.desc)
-    });
-  });
+    const types = normalised.map(res => res.type);
+    const uniqTypes = uniq.uniqWith(types, uniq.isEqual);
+    const typesPart = uniqTypes.splice(0, Math.ceil(uniqTypes.length / 2));
 
-  const columnB = [];
-  uniqResourceTypes.forEach(type => {
-    columnB.push({
-      text: type,
-      width: '*',
-      bold: true,
-      margin: [0, 10, 0, 0]
-    });
+    /**
+     * Generate a column
+     * @param {array} column Column.
+     * @param {array} columnData Resources types.
+     */
+    const processColumn = (column = null, columnData) => {
+        columnData.forEach(type => {
+            column.push({
+                text: type,
+                bold: true,
+                margin: [0, 10, 0, 0]
+            });
 
-    let data = normalised.filter(res => res.type === type);
-    columnB.push({
-      ul: data.map(e => e.desc)
-    });
-  });
+            let data = normalised.filter(res => res.type === type);
+            column.push({ul: data.map(e => e.desc)});
+        });
+        return column;
+    };
 
-  return [{
-    stack: columnA,
-    fontSize: 12,
-    width: '*'
-  }, {
-    stack: columnB,
-    fontSize: 12,
-    width: '*'
-  }];
+    return [
+        {
+            stack: processColumn([], typesPart),
+            fontSize: 12,
+            width: '*'
+        },
+        {
+            stack: processColumn([], uniqTypes),
+            fontSize: 12,
+            width: '*'
+        }
+    ];
 };
 
 /**
- * Renders services
- * @param {object} services Services object.
+ * Renders facility services
+ * @param {array} services Services object.
  */
 const renderServices = (services) => {
     if (services == null) {
@@ -162,83 +196,65 @@ const renderServices = (services) => {
 
     const types = data.map(res => res.type);
     const uniqTypes = uniq.uniqWith(types, uniq.isEqual);
+    const typesPart = uniqTypes.splice(0, Math.ceil(uniqTypes.length / 2));
 
-    const columnA = [];
-    const length = Math.ceil(uniqTypes.length / 2);
-
-    uniqTypes.splice(0, length).forEach(type => {
-        columnA.push({
-            text: type,
-            bold: true,
-            margin: [0, 10, 0, 0]
-        });
-
-        let typesData = data.filter(e => e.type == type);
-        let parents = typesData.filter(e => e.parent == 0);
-
-        parents.forEach(parent => {
-            let children = typesData.filter(e => e.parent == parent.id);
-            if (children.length > 0) {
-                columnA.push({
-                    ul: [[
-                        {text: parent.desc},
-                        {ol: children.map(e => e.desc)}
-                    ]]
-                });
-            } else {
-              columnA.push({
-                  ul: [{
-                      text: parent.desc
-                  }]
-              });
-            }
-        });
-
-    });
-
-    const columnB = [];
-    uniqTypes.forEach(type => {
-        columnB.push({
-          text: type,
-          bold: true,
-          margin: [0, 10, 0, 0]
-        });
-
-        let typesData = data.filter(e => e.type == type);
-        let parents = typesData.filter(e => e.parent == 0);
-
-        parents.forEach(parent => {
-          let children = typesData.filter(e => e.parent == parent.id);
-          if (children.length > 0) {
-            columnB.push({
-              ul: [[
-                { text: parent.desc },
-                { ol: children.map(e => e.desc) }
-              ]]
+    /**
+     * Generate a column
+     * @param {array} column Column.
+     * @param {array} columnData Services types.
+     */
+    const processColumn = (column = null, columnData) => {
+        columnData.forEach(type => {
+            column.push({
+                text: type,
+                bold: true,
+                margin: [0, 10, 0, 0]
             });
-          } else {
-            columnB.push({
-              ul: [{
-                text: parent.desc
-              }]
+
+            let typeData = data.filter(e => e.type == type);
+            let parents = typeData.filter(e => e.parent == 0);
+
+            parents.forEach(parent => {
+                let children = typeData.filter(e => e.parent == parent.id);
+                if (children.length > 0) {
+                    column.push({
+                        ul: [[
+                            {text: parent.desc},
+                            {ol: children.map(e => e.desc)}
+                        ]]
+                    });
+                } else {
+                    column.push({ul: [{text: parent.desc}]});
+                }
             });
-          }
         });
-    });
+        return column;
+    };
 
     return [
         {
-            stack: columnA,
+            stack: processColumn([], typesPart),
             fontSize: 12
         },
         {
-            stack: columnB,
+            stack: processColumn([], uniqTypes),
             fontSize: 12
         }
     ];
 };
 
+/**
+ * Render facility utilities.
+ * @param {array} utilities Facility utilities.
+ */
 const renderUtilities = (utilities) => {
+    if (utilities == null) {
+        return [{
+            stack: ['Utilities are not available on this facility'],
+            fontSize: 12
+        }];
+    }
+
     const normalised = utilities.map((util) => {
         return {
             type: util.utility.utilityType.utility_type,
@@ -246,52 +262,40 @@ const renderUtilities = (utilities) => {
         }
     });
 
-    const utilityTypes = normalised.map(res => res.type);
-    const uniqUtilityTypes = uniq.uniqWith(utilityTypes, uniq.isEqual);
+    const types = normalised.map(res => res.type);
+    const uniqTypes = uniq.uniqWith(types, uniq.isEqual);
 
-    const columnA = [];
+    /**
+     * Generate a column
+     * @param {array} column Column.
+     * @param {array} columnData Utilities types.
+     */
+    const processColumn = (column = null, columnData) => {
+        columnData.forEach(type => {
+            column.push({
+                text: type,
+                bold: true,
+                margin: [0, 10, 0, 0]
+            });
 
-    const length = Math.ceil(uniqUtilityTypes.length / 2);
-
-    uniqUtilityTypes.splice(0, length).forEach(type => {
-        columnA.push({
-            text: type,
-            bold: true,
-            margin: [0, 10, 0, 0]
+            let data = normalised.filter(res => res.type === type);
+            column.push({ul: data.map(e => e.desc)});
         });
+        return column;
+    };
 
-        let data = normalised.filter(res => res.type === type);
-        columnA.push({
-            ul: data.map(e => e.desc)
-        });
-    });
+    const typesPart = uniqTypes.splice(0, Math.ceil(uniqTypes.length / 2));
 
-  const columnB = [];
-  uniqUtilityTypes.forEach(type => {
-    columnB.push({
-      text: type,
-      bold: true,
-      margin: [0, 10, 0, 0]
-    });
-
-    let data = normalised.filter(res => res.type === type);
-
-    columnB.push({
-      ul: data.map(e => e.desc)
-    });
-  });
-
-  return [
-    {
-      stack: columnA,
-      fontSize: 12
-    },
-    {
-      stack: columnB,
-      fontSize: 12
-    }
-  ];
-
+    return [
+        {
+            stack: processColumn([], typesPart),
+            fontSize: 12
+        },
+        {
+            stack: processColumn([], uniqTypes),
+            fontSize: 12
+        }
+    ];
 };
 
 const footer = (currentPage, pageCount) => {
@@ -302,14 +306,7 @@ const footer = (currentPage, pageCount) => {
     };
 }
 
-module.exports = (
-    facility,
-    utilities,
-    resources,
-    services,
-    callback
-) => {
-
+module.exports = (facility, utilities, resources, services, callback) => {
     const printer = new pdfMake(fonts);
     const content = [];
 
@@ -334,30 +331,12 @@ module.exports = (
         alignment: "center",
     });
 
-    const dateOpened = moment(facility.facility_date_opened).format("MMM Do YYYY");
+    const date = facility.facility_date_opened;
+    const dateOpened = moment(date).format("MMM Do YYYY");
     const dateDownloaded = moment(new Date()).format("MMM Do YYYY");
 
-    const linelessRow = (title = 'Not available') => {
-      return [
-        {
-          colSpan: 3,
-          bold: true,
-          border: [
-            false,
-            false,
-            false,
-            true
-          ],
-          text: title,
-          fontSize: 12
-        },
-        "",
-        ""
-      ];
-    };
-
     const commonTable = centerTable({
-        margin: [0,0,0,30],
+        margin: [0, 0, 0, 30],
         width: 'auto',
         table: {
             body: [
@@ -371,14 +350,14 @@ module.exports = (
     });
     content.push(commonTable);
 
-    const summaryTable = centerTable({
-        width: 'auto',
+    content.push({
         pageBreak: 'after',
         table: {
+            widths: ['100%'],
             body: [
-                ['Facility'],
+                ['FACILITY'],
                 [{
-                    margin: [0,0,0,10],
+                    margin: [0, 0, 0, 10],
                     table: {
                         body: [
                             headRow("OWNERSHIP", [0, 10, 0, 0]),
@@ -408,81 +387,45 @@ module.exports = (
                                 facility.locations.catchment_population,
                                 true
                             ),
-                            row("District", facility.district.district_name, true),
+                            row(
+                                "District",
+                                facility.district.district_name,
+                                true
+                            ),
                             row("Zone", facility.district.zone.zone_name, true),
                             headRow("CONTACTS", [0, 10, 0, 0]),
-                            row("Postal", facility.addresses.postal_address, true),
-                            row("Physical", facility.addresses.physical_address, true)
+                            row(
+                                "Postal",
+                                facility.addresses.postal_address,
+                                true
+                            ),
+                            row(
+                                "Physical",
+                                facility.addresses.physical_address,
+                                true
+                            )
                         ]
                     }
                 }]
             ]
         },
-        layout: {
-            paddingLeft: function(i, node) { return 10; },
-            paddingRight: function(i, node) { return 10; },
-            paddingTop: function(i, node) { return 5; },
-            paddingBottom: function(i, node) { return 5; }
-        }
-    });
-    content.push(summaryTable);
-
-    content.push({
-        margin: [0, 10, 0, 30],
-        table: {
-            widths: ['100%'],
-            body: [
-                ['SERVICES'],
-                [{ columns: renderServices(services), columnGap: 15 }]
-            ]
-        },
-        layout: {
-            paddingLeft: function (i, node) { return 10; },
-            paddingRight: function (i, node) { return 10; },
-            paddingTop: function (i, node) { return 8; },
-            paddingBottom: function (i, node) { return 8; }
-        }
+        layout: layout
     });
 
-    content.push({
-      margin: [0, 0, 0, 30],
-      table: {
-        widths: ['100%'],
-        body: [
-          ['resources'],
-          [{ columns: renderResources(resources), columnGap: 15 }]
-        ]
-      },
-      layout: {
-        paddingLeft: function (i, node) { return 10; },
-        paddingRight: function (i, node) { return 10; },
-        paddingTop: function (i, node) { return 5; },
-        paddingBottom: function (i, node) { return 5; }
-      }
-    });
-
-    content.push({
-        table: {
-            widths: ['100%'],
-            body: [
-                ['utilities'],
-                [{ columns: renderUtilities(utilities), columnGap: 15 }]
-            ]
-        },
-        layout: {
-            paddingLeft: function (i, node) { return 10; },
-            paddingRight: function (i, node) { return 10; },
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; }
-        }
-    });
+    content.push(createTable('FACILITY SERVICES', renderServices(services)));
+    content.push(createTable('FACILITY RESOURCES', renderResources(resources)));
+    content.push(createTable('FACILITY UTILITIES', renderUtilities(utilities)));
 
     const docDefinition = {
         footer: footer,
         content: content
     };
 
-    const pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.end();
-    callback(null, pdfDoc);
+    try {
+        const pdfDoc = printer.createPdfKitDocument(docDefinition);
+        pdfDoc.end();
+        callback(null, pdfDoc);
+    } catch (error) {
+        callback(error);
+    }
 };
