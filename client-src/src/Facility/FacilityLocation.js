@@ -44,7 +44,7 @@ class FacilityLocation extends Component<State> {
             <div className="col m6 s12">
               <div className="z-depth-2">
                 {/* TODO: Make Map Live! */}
-                {/* <MFLGoogleMap isMarkerShown /> */}
+                <MFLGoogleMap isMarkerShown />
               </div>
             </div>
 

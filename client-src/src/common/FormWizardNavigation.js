@@ -12,13 +12,18 @@ export default (props) => {
       justifyContent: 'flex-end'
     }}
     >
-      <Button
-        className="mfl-rm-2"
-        onClick={handleSubmit}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Saving..." : props.saveButton}
-      </Button>
+      {
+        props.saveButton && (
+          <Button
+            className="mfl-rm-2"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : props.saveButton}
+          </Button>
+
+        )
+      }
       <Button
         flat
         onClick={props.handleCancel}

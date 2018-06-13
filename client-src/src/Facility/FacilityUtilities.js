@@ -79,26 +79,18 @@ class FacilityUtilities extends Component {
   }
 
   render() {
-    const presentTypes = this.props.utilityTypes.filter(util =>
-      uniq(
-        this.props.utilities.map(util => util.utility.utility_type_id)
-      ).includes(util.id)
-    );
+    const presentTypes = this.props.utilities
+      ? (this.props.utilityTypes.filter(util =>
+        uniq(
+          this.props.utilities.map(util => util.utility.utility_type_id)
+        ).includes(util.id)
+      ))
+      : []
 
     const cards = chunk(presentTypes, 3);
 
     return (
       <div className="container">
-        {/* {sessionStorage.getItem("token") && (
-          !this.state.isEditUtilities ? (<a
-            class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
-            onClick={this.toggleEditUtilities}
-          >
-            <i class="material-icons left">edit</i> Edit
-                      </a>) : (
-              ""
-            )
-        )} */}
         {!this.state.isEditUtilities ? (
           <div>
             {cards.map(card => {
@@ -140,7 +132,7 @@ class FacilityUtilities extends Component {
 
 const mapStateToProps = state => {
   return {
-    utilities: state.facilities.currentUtilities,
+    utilities: state.facilities.currentUtilities.data,
     facilities: state.facilities.list,
     isLoading: state.facilities.isLoading,
     utilityTypes: state.dependancies.utilityTypes,

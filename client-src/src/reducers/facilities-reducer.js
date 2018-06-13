@@ -3,7 +3,7 @@ export default (
     list: [],
     all: [],
     currentDetails: {},
-    currentResources: [],
+    currentResources: {},
     currentUtilities: [],
     currentServices: [],
     isNetworkError: false,

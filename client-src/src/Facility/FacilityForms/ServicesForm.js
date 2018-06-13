@@ -83,6 +83,8 @@ class ServicesForm extends React.Component<Props> {
     let service;
     // TODO: Validate that a Service isnt already created
     // TODO: Pagination!
+    // TODO: Make sure to add all services that are greater than 0 at once
+    // TODO: Make sure to delete all services who are dependent on the current service at once
 
     if (Number(firstLevelService) > 0) service = firstLevelService;
 
@@ -259,7 +261,7 @@ class ServicesForm extends React.Component<Props> {
                   </div>
                 </div>
                 <FormWizardNavigation
-                  saveButton={this.props.fromAdd ? 'Next' : 'Save'}
+                  saveButton={null}
                   handleSubmit={() => this.props.onNext()}
                   handleCancel={() => this.setState({ cancelForm: true })}
                   isSubmitting={false}

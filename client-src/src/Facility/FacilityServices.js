@@ -9,10 +9,12 @@ import Container from "./ServicesContainer";
 import { connect } from "react-redux";
 import { Service, ServiceType } from "../types/model-types";
 import { Tab, Tabs } from 'react-materialize';
+import { Col, Card } from 'react-materialize';
 
 type Props = {
   services: Array<{ service: Service }>,
-  serviceTypes: Array<ServiceType>
+  serviceTypes: Array<ServiceType>,
+  allServices: Array<Service>
 }
 
 class FacilityServices extends React.Component<Props> {
@@ -23,13 +25,8 @@ class FacilityServices extends React.Component<Props> {
   }
 
   render() {
-    const clinicalServices = this.props.services.filter(service => {
-      return (
-        service.service.serviceType.service_type.toUpperCase() ===
-        "CLINICAL SERVICES"
-      );
-    });
     // TODO: Fix odd issue when loading tabs
+    //TODO: Fix Services Hierarchy
     return (
       <div className="container">
         <Tabs className='tabs blue accent-1 mfl-tabs tabs-fixed-width '>
@@ -38,12 +35,43 @@ class FacilityServices extends React.Component<Props> {
               return (
                 <Tab title={type.service_type} active={index == 0}>
                   {
-                    <div className="col s12 mt-4">
-                      <Container facilityType={type.service_type} services={this.props.services.filter(service => {
-                        return service.service.service_type_id === type.id
-                      })}
-                      />
-                    </div>
+                    this.props.allServices.filter(service => {
+                      return (
+                        service.service_type_id === type.id && service.service_category_id === 0
+                      )
+                    }).map(tlService => {
+                      return (
+                        <Col m={4} s={12}>
+                          <Card title={tlService.service_name}>
+                            <ul>
+                              {
+                                this.props.allServices.filter(service => {
+                                  return service.service_category_id === tlService.id
+                                }).map(slService => {
+                                  return (
+                                    <li>
+                                      <h6>{slService.service_name}</h6>
+                                      <ul>
+                                        {
+                                          this.props.allServices.filter(service => {
+                                            return service.service_category_id === slService.id
+                                          }).map(tlService => (
+                                            <li className='mt-4 ml-8'>
+                                              >
+                                              {tlService.service_name}
+                                            </li>
+                                          ))
+                                        }
+                                      </ul>
+                                    </li>
+                                  )
+                                })
+                              }
+                            </ul>
+                          </Card>
+                        </Col>
+                      )
+                    })
                   }
                 </Tab>
               )
@@ -59,9 +87,12 @@ const mapStateToProps = store => {
   return {
     facilities: store.facilities.list,
     services: store.facilities.currentServices,
-    serviceTypes: store.dependancies.serviceTypes
+    serviceTypes: store.dependancies.serviceTypes,
+    allServices: store.facilities.services
   };
 };
+
+// TODO: Services and others should go into reducer yake
 
 export default connect(mapStateToProps, {
   setCurrentDetails,

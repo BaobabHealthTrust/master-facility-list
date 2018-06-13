@@ -11,7 +11,7 @@ import SecondaryMenu from "../common/SecondaryMenu";
 import footerResizer from "../helpers/footerResize";
 import MflDownload from "../common/MflDownload";
 import { ShowError, FetchAllDependancies } from "../common";
-import { BasicDetailsForm, ContactsForm, ServicesForm } from "./FacilityForms";
+import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
 
 type Props = {
   match: any,
@@ -197,8 +197,19 @@ class FacilityDetails extends React.Component<Props> {
               />
               <Route
                 exact
+                path="/facilities/:id/resources/edit"
+                component={ResourcesForm}
+              />
+
+              <Route
+                exact
                 path="/facilities/:id/utilities"
                 component={Utilities}
+              />
+              <Route
+                exact
+                path="/facilities/:id/utilities/edit"
+                component={UtilitiesForm}
               />
 
               <Route
