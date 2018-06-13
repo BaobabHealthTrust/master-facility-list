@@ -15,9 +15,9 @@ export default ({ buttonConfiguration, mainButtonConfiguration }) => {
             return (
               <li>
                 <a
-                  className={`btn-floating ${buttonConfig.color} darken-1 tooltipped`}
-                  data-delay='500'
-                  data-tooltip={buttonConfig.name}
+                  className={`btn-floating ${buttonConfig.color} darken-1`}
+                  // data-delay='500'
+                  // data-tooltip={buttonConfig.name}
                   onClick={buttonConfig.action}
                 >
                   <i className="material-icons">{buttonConfig.icon}</i>

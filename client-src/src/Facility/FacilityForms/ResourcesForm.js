@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import { postFormData } from '../../actions';
 import yup from 'yup';
 import { renderOptions } from './helpers';
+import { Redirect } from 'react-router-dom';
 import { Resource, ResourceType, FacilityResource, Facility } from '../../types/model-types';
 
 type Props = {
@@ -15,42 +16,66 @@ type Props = {
   resourceTypes: Array<ResourceType>,
   resources: Array<Resource>,
   onNext: Function,
-  facility: Facility
+  facility: Facility,
+  fromAdd: Function,
+  currentResources: Array<FacilityResource>
 }
 
-class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
+class ResourcesForm extends React.Component<Props, {}> {
+  state = {
+    cancelForm: false
+  }
 
   REQUIRED_MESSAGE = "You can't leave this field blank";
+  NO_VALUE_MESSAGE = "Please add this";
   INVALID_NUM_MESSAGE = "This is not a valid number";
 
-  initialValues = {}
 
   validate = values => {
     let errors = {};
     this.props.resources.forEach(resource => {
       const key = `resource_${resource.id}`;
-      if (!values[key])
-        errors[key] = this.REQUIRED_MESSAGE;
+      if (values[key] === null)
+        errors[key] = this.NO_VALUE_MESSAGE;
       else {
         if (!/^\d+$/.test(Number(values[key]))) errors[key] = this.INVALID_NUM_MESSAGE
-        if (values[key].length == 0) errors[key] = this.REQUIRED_MESSAGE
       }
     })
     return errors;
   }
 
+  _getInitialValues = () => {
+    if (this.props.fromAdd) return {};
 
+    let initialValues = {};
+
+    this.props.currentResources.forEach(resource => {
+      initialValues[`resource_${resource.resource_id}`] = resource.quantity
+    })
+
+    return initialValues
+  }
+
+  _getFacilityId = async () => {
+    const facilityId = this.props.fromAdd
+      ? (await this.props.facility.id || 1)
+      : Number(await this.props.match.params.id)
+    return facilityId;
+  }
   // TODO: Get Client ID from Redux store
   //TODO: Add Loading states!
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
+    const id = await this._getFacilityId();
+    const date = new Date();
     const data = this.props.resources.map(resource => {
       return {
-        facility_id: this.props.facility.id || 1,
+        facility_id: id,
         client_id: 1,
         resource_id: resource.id,
         quantity: Number(values[`resource_${resource.id}`]),
-        description: ""
+        description: "",
+        created_date: date
       }
     })
     await this.props.postFormData(
@@ -60,8 +85,8 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
       "POST_FACILITY_RESOURCES",
     );
     setSubmitting(false);
-    await console.log(this.props.response);
-    if (this.props.response.length > 0) this.props.onNext();
+    if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
+    if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true })
   }
 
   _filteredResources = (typeId) => {
@@ -74,7 +99,7 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
         <div className="mfl-tm-2" />
         <Formik
           validate={this.validate}
-          initialValues={this.initialValues}
+          initialValues={this._getInitialValues()}
           onSubmit={this._handleSubmit}
           render={({
             values,
@@ -86,30 +111,39 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
             isSubmitting,
           }) => (
               <div>
+                {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+                {
+                  (this.state.cancelForm && !this.props.fromAdd) &&
+                  <Redirect to={`/facilities/${this.props.match.params.id}/resources`} />
+                }
                 <Row>
                   {
                     this.props.resourceTypes.map(type => {
                       return this._filteredResources(type.id).map(resource => {
                         return (
-                          <Input
-                            s={3}
-                            placeholder={`Enter Total ${resource.resource_name}`}
-                            label={`Enter Total ${resource.resource_name}`}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values[`resource_${resource.id}`]}
-                            error={touched[`resource_${resource.id}`] && errors[`resource_${resource.id}`]}
-                            name={`resource_${resource.id}`
-                            }
-                          />
+                          <div>
+                            <Input
+                              s={3}
+                              placeholder={`Enter Total ${resource.resource_name}`}
+                              label={`Enter Total ${resource.resource_name}`}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values[`resource_${resource.id}`]}
+                              error={touched[`resource_${resource.id}`] && errors[`resource_${resource.id}`]}
+                              name={`resource_${resource.id}`}
+                            />
+                            {console.log(values)}
+                          </div>
                         )
                       })
                     })
                   }
                 </Row>
                 <FormWizardNavigation
+                  saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                   handleSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
+                  handleCancel={() => this.setState({ cancelForm: true })}
                 />
               </div>
             )}
@@ -121,6 +155,7 @@ class ResourcesForm extends React.Component<Props, Array<FacilityResource>> {
 
 const mapStateToProps = state => {
   return {
+    currentResources: state.facilities.currentResources.data,
     response: state.facilities.resourcesResponse,
     resourceTypes: state.dependancies.resourceTypes,
     resources: state.facilities.resources

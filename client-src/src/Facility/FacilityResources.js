@@ -37,26 +37,18 @@ class FacilityResources extends Component {
   // TODO: Provide Feedback when there are no Types
 
   render() {
-    const presentTypes = this.props.resourceTypes.filter(res =>
-      uniq(
-        this.props.resources.map(res => res.resource.resource_type_id)
-      ).includes(res.id)
-    );
+    const presentTypes = this.props.resources
+      ? (this.props.resourceTypes.filter(res =>
+        uniq(
+          this.props.resources.map(res => res.resource.resource_type_id)
+        ).includes(res.id)
+      ))
+      : []
 
     const cards = chunk(presentTypes, 3);
 
     return (
       <div className="container">
-        {/* {sessionStorage.getItem("token") && (
-          !this.state.isEditResources ? (<a
-            class="waves-effect waves-light green btn mfl-tab-btn-space-previous"
-            onClick={this.toggleEditResources}
-          >
-            <i class="material-icons left">edit</i> Edit
-                      </a>) : (
-              ""
-            )
-        )} */}
         {cards.map(card => {
           return (
             <div className="row">
@@ -93,7 +85,7 @@ class FacilityResources extends Component {
 
 const mapStateToProps = state => {
   return {
-    resources: state.facilities.currentResources,
+    resources: state.facilities.currentResources.data,
     facilities: state.facilities.list,
     isLoading: state.facilities.isLoading,
     resourceTypes: state.dependancies.resourceTypes

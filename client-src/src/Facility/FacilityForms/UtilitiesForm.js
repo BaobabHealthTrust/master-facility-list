@@ -7,28 +7,41 @@ import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik, FieldArray } from 'formik';
 import { postFormData } from '../../actions';
 import yup from 'yup';
+import { Redirect } from 'react-router-dom';
 import { chunk } from 'lodash';
 import { renderOptions } from './helpers';
-import { Utility, FacilityResource, Facility, UtilityType } from '../../types/model-types';
+import { Utility, FacilityResource, Facility, UtilityType, FacilityUtility }
+  from '../../types/model-types';
 
 type Props = {
   response: any,
   utilityTypes: Array<UtilityType>,
   utilities: Array<Utility>,
   onNext: Function,
-  facility: Facility
+  facility: Facility,
+  fromAdd: ?boolean,
+  currentUtilities: Array<FacilityUtility>
 }
 
 class UtilitiesForm extends React.Component<Props> {
 
-  initialValues = {
-    utilities: []
+  state = {
+    cancelForm: false
   }
 
-  componentDidMount() {
-    this.props.utilities.forEach(utility => {
-      const key = `utility_${utility.id}`;
-    })
+  _getInitialState = () => {
+    if (this.props.fromAdd) return { utilities: [] };
+
+    const utilities = this.props.currentUtilities.map(util => util.utility_id);
+    return { utilities };
+  }
+
+  // TODO: Maybe this could go somewhere
+  _getFacilityId = async () => {
+    const facilityId = this.props.fromAdd
+      ? (await this.props.facility.id || 1)
+      : Number(await this.props.match.params.id)
+    return facilityId;
   }
 
   _renderCardHeading = (title) => {
@@ -62,11 +75,14 @@ class UtilitiesForm extends React.Component<Props> {
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
     if (this._validate(values)) {
+      const id = await this._getFacilityId();
+      const date = new Date()
       const data = values.utilities.map(util => {
         return {
-          facility_id: this.props.facility.id || 1,
+          facility_id: id,
           utility_id: util,
-          client_id: 1
+          client_id: 1,
+          created_date: date
         }
       })
       await this.props.postFormData(
@@ -77,7 +93,8 @@ class UtilitiesForm extends React.Component<Props> {
       );
       setSubmitting(false);
       await console.log(this.props.response);
-      if (this.props.response.length > 0) this.props.onNext();
+      if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
+      if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true });
     } else {
       setSubmitting(false);
     }
@@ -90,9 +107,14 @@ class UtilitiesForm extends React.Component<Props> {
   render() {
     return (
       <div className="container">
+        {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+        {
+          (this.state.cancelForm && !this.props.fromAdd) &&
+          <Redirect to={`/facilities/${this.props.match.params.id}/utilities`} />
+        }
         <div className="mfl-tm-2" />
         <Formik
-          initialValues={this.initialValues}
+          initialValues={this._getInitialState()}
           onSubmit={this._handleSubmit}
           render={({
             values,
@@ -103,6 +125,7 @@ class UtilitiesForm extends React.Component<Props> {
                 name="utilities"
                 render={({ push, remove }) => (
                   <div>
+                    {console.log(values)}
                     {
                       this.props.utilityTypes.map(card => {
                         return (
@@ -116,6 +139,7 @@ class UtilitiesForm extends React.Component<Props> {
                                         <Input
                                           s={4}
                                           type="checkbox"
+                                          checked={values.utilities.includes(utility.id)}
                                           name="utilities"
                                           label={utility.utility_name}
                                           onChange={() => {
@@ -136,8 +160,10 @@ class UtilitiesForm extends React.Component<Props> {
                       })
                     }
                     <FormWizardNavigation
+                      saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                       handleSubmit={handleSubmit}
                       isSubmitting={isSubmitting}
+                      handleCancel={() => this.setState({ cancelForm: true })}
                     />
                   </div>
                 )}
@@ -155,6 +181,7 @@ const mapStateToProps = state => {
     utilityTypes: state.dependancies.utilityTypes,
     response: state.facilities.utilitiesResponse,
     utilities: state.facilities.utilities,
+    currentUtilities: state.facilities.currentUtilities.data
   }
 }
 

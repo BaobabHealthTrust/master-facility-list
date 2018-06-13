@@ -24,6 +24,10 @@
     "client_id": {
       "type": "number",
       "required": false
+    },
+    "created_date": {
+      "type": "date",
+      "required": false
     }
   },
   "validations": [],

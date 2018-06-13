@@ -87,6 +87,14 @@ export type FacilityResource = {
   id: number
 }
 
+export type FacilityUtility = {
+  id: number,
+  facility_id: number,
+  utility_id: number,
+  client_id: ?number,
+  created_date: ?string
+}
+
 export type Utility = {
   utility_name: string,
   description: string,
