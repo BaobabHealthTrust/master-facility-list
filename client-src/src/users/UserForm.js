@@ -38,7 +38,9 @@ class UserForm extends React.Component {
       "POST_USER",
       "createAdmin",
     );
-    this.props.userCreated ? this.props.onUserCreationSuccess() : this.props.onUserCreationError();
+    this.props.userCreated ? 
+      this.props.onUserCreationSuccess() : 
+      this.props.onUserCreationError();
   }
 
   render() {
