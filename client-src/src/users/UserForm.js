@@ -38,7 +38,9 @@ class UserForm extends React.Component {
       "POST_USER",
       "createAdmin",
     );
-    this.props.userCreated ? this.props.onUserCreationSuccess() : this.props.onUserCreationError();
+    this.props.userCreated ? 
+      this.props.onUserCreationSuccess() : 
+      this.props.onUserCreationError();
   }
 
   render() {
@@ -54,7 +56,8 @@ class UserForm extends React.Component {
           touched,
           handleChange,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
+          handleBlur
         }) => (
             <Modal
               header={this.props.title}
@@ -83,7 +86,9 @@ class UserForm extends React.Component {
                   labelClassName="mfl-max-width"
                   value={values.firstname}
                   onChange={handleChange}
-                  error={errors.firstname}
+                  error={errors.firstname} 
+                  onBlur={handleBlur}
+                  error={touched.firstname && errors.firstname}
                   name="firstname"
                 />
                 <Input
@@ -93,6 +98,8 @@ class UserForm extends React.Component {
                   value={values.lastname}
                   onChange={handleChange}
                   error={errors.lastname}
+                  onBlur={handleBlur}
+                  error={touched.lastname && errors.lastname}
                   name="lastname"
                 />
               </Row>
@@ -104,6 +111,8 @@ class UserForm extends React.Component {
                   value={values.username}
                   onChange={handleChange}
                   error={errors.username}
+                  onBlur={handleBlur}
+                  error={touched.username && errors.username}
                   name="username"
                 />
                 <Input
@@ -113,6 +122,8 @@ class UserForm extends React.Component {
                   value={values.email}
                   onChange={handleChange}
                   error={errors.email}
+                  onBlur={handleBlur}
+                  error={touched.email && errors.email}
                   name="email"
                 />
               </Row>
@@ -124,6 +135,8 @@ class UserForm extends React.Component {
                   value={values.password}
                   onChange={handleChange}
                   error={errors.password}
+                  onBlur={handleBlur} 
+                  error={touched.password && errors.password} 
                   name="password"
                   type="password"
                 />
@@ -134,6 +147,8 @@ class UserForm extends React.Component {
                   value={values.confirmPassword}
                   onChange={handleChange}
                   error={errors.confirmPassword}
+                  onBlur={handleBlur}
+                  error={touched.confirmPassword && errors.confirmPassword}
                   name="confirmPassword"
                   type="password"
                 />
