@@ -1,5 +1,6 @@
 const initialValues = {
-    feedbackTypes: []
+    feedbackTypes: [],
+    feedbackSubmitted: false
 }
 export default (state = initialValues, action) => {
     switch (action.type) {
@@ -12,6 +13,13 @@ export default (state = initialValues, action) => {
             }
             break;
         case 'POST_FEEDBACK':
+            console.log(action);
+            if(action.payload.data){
+                return {
+                    ...state,
+                    feedbackSubmitted: true
+                }
+            }
             return state;
             break;
         default:

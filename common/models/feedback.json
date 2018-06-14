@@ -35,7 +35,7 @@
   "acls": [
     {
       "principalType": "ROLE",
-      "principalId": "$evryone",
+      "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "feedback"
     }
