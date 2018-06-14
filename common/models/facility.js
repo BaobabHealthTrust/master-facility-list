@@ -235,8 +235,9 @@ module.exports = (Facility) => {
    * @param {string} format File format.
    * @param {callback} cb Callback.
    */
-  Facility.downloadFacilities = async (data, cb) => {
+  Facility.downloadFacilities = async (json, cb) => {
     try {
+      const data = JSON.parse(json);
       if (!data.hasOwnProperty('format') || !data.hasOwnProperty('format')) {
         const error = new Error("Invalid post format.");
         error.name = "ERROR";
@@ -296,7 +297,6 @@ module.exports = (Facility) => {
       error.status = 400;
       error.message = "Invalid facility ID.";
       cb(error);
-
     } catch (error) {
       cb(error);
     }
@@ -305,8 +305,8 @@ module.exports = (Facility) => {
   /** Register download  remote method */
   Facility.remoteMethod('downloadFacilities', {
     description: "All facilities download",
-    accepts: { arg: "data", type: "object" },
-    http: { path: '/download', verb: 'post' },
+    accepts: {arg: "data", type: "string"},
+    http: {path: '/download', verb: 'get'},
     returns: [
       { arg: 'body', type: 'file', root: true },
       { arg: 'Content-Type', type: 'string', http: { target: 'header' } }
