@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import fileDownload from "js-file-download";
 
 export default ({ buttonConfiguration, mainButtonConfiguration }) => {
   return (

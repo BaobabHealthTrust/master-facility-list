@@ -1,36 +1,49 @@
 "use strict";
 
+
 const should = require("chai").should();
 const server = require("../server/server");
 const request = require("supertest")(server);
 const helper = require('./helper');
-const data = require('../seeds/data');
 
-const user =  {
-    password: data.users[0].password,
-    email: data.users[0].email
-}
 
 helper.createAdmin();
 
 describe("Login Test", () => {
 
     it("Should allow an administrator client to login successfully",(done) => {
-        helper.post("/api/Clients/login", user ,200 , (res) => {
+        const user =  {
+            password: "haxy",
+            email: "haroon@gmail.com"
+        };
+
+        const url = "/api/Clients/login";
+
+        const callback = (res) => {
             should.exist(res.body.id);
             done();
-        });
+        }
+
+        helper.post(url, user, 200, callback);
     });
 
-    it("Should displays appropriate error message to unauthenticated to login",(done) => {
-        helper.post(
-            "/api/Clients/login",{
-                password: data.users[0].password,
-                email: data.users[0].email + "ma",
-            } , 401 , (res) => {
-                res.body.error.message.should.equal('login failed');
-                done();
-            });
-    });
+    // it(
+    //     "Should display appropriate error message to unauthenticated to login",
+    //     (done) => {
+    //         const user = {
+    //             password: 'malawi',
+    //             email: "haroon@gmail.com",
+    //         };
+
+    //         const url = "/api/Clients/login";
+
+    //         const callback = (res) => {
+    //             res.body.error.message.should.equal('login failed');
+    //             done();
+    //         }
+
+    //         helper.post(url, user, 401 ,callback);
+    //     }
+    // );
 
 });

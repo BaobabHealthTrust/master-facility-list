@@ -103,8 +103,6 @@ class FacilitiesHome extends React.Component<Props, State> {
           <FacilityList
             downloadAction={this.props.downloadFacilities}
             dataSource={this.props.facilities}
-            toggleAdvancedSearch={this.toggleAdvancedSearch}
-            toggleAddFacility={this.toggleAddFacility}
           />
         </div>
       </div>

@@ -39,6 +39,7 @@ export type CurrentFacility = {
   facility_regulatory_status_id: number,
   facility_type_id: number,
   registration_number: number,
+  published_date: ?string
 }
 
 export type BasicDetailsFormProps = {
@@ -53,3 +54,10 @@ export type BasicDetailsFormProps = {
   fromAdd: ?boolean,
   currentFacility: CurrentFacility
 };
+
+export type ButtonConfiguration = Array<{
+  color: string,
+  action: Function,
+  icon: string,
+  name: string
+}>
