@@ -10,6 +10,7 @@ import yup from 'yup';
 import { renderOptions } from './helpers';
 import { Redirect } from 'react-router-dom'
 import { Service, ServiceType, FacilityService, Facility } from '../../types/model-types';
+// import { postFormDataInterface } from "../../types/function-types";
 
 type Props = {
   response: FacilityService,
@@ -32,6 +33,10 @@ class ServicesForm extends React.Component<Props> {
     secondLevelService: -1,
     thirdLevelService: -1,
     cancelForm: false
+  }
+
+  _publishFacility = () => {
+    //
   }
 
   _handleChange = async (values, { setSubmitting, setErros }) => {

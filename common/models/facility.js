@@ -18,6 +18,17 @@ module.exports = (Facility) => {
     }
   })
 
+  // TODO: Do the same thing for archived client
+  Facility.observe('access', async function filterArchivedAndUnpublished(ctx) {
+    const query = { and: [{ published_date: { neq: null } }, { archived_date: null }] };
+    if (!ctx.query) ctx.query = { where: query };
+    if (ctx.query) {
+      if (ctx.query.where) ctx.query.where = { and: [ctx.query.where, query] }
+      else ctx.query.where = query
+      console.log(ctx.query);
+    }
+  })
+
   Facility.contactDetails = async (data, id, cb) => {
     await server.models.Address.create({
       physical_address: data.physicalAddress,
