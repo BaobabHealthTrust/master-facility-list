@@ -3,7 +3,7 @@
 const moment = require("moment");
 const json2csv = require("json2csv");
 
-module.exports = function(queriedDetails, res) {
+module.exports = function(queriedDetails, callback) {
 	const fields = [
 		"CODE",
 		"NAME",
@@ -31,21 +31,15 @@ module.exports = function(queriedDetails, res) {
 				"MMM Do YY"
 			)
 		});
-	});
-	const csvDetails = json2csv({
-		data: csvArrayData,
-		fields: fields
-	});
-	const datetime = new Date();
-	res.set("Expires", "Tue, 03 Jul 2001 06:00:00 GMT");
-	res.set(
-		"Cache-Control",
-		"max-age=0, no-cache, must-revalidate, proxy-revalidate"
-	);
-	res.set("Last-Modified", datetime + "GMT");
-	res.set("Content-Type", "application/force-download");
-	res.set("Content-Type", "application/octet-stream");
-	res.set("Content-Disposition", "attachment;filename=facilities.csv");
-	res.set("Content-Transfer-Encoding", "binary");
-	res.send(csvDetails);
+    });
+
+    try {
+        const csvDetails = json2csv({
+            data: csvArrayData,
+            fields: fields
+        });
+        callback(null, csvDetails);
+    } catch (error) {
+        callback(error);
+    }
 };
