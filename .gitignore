@@ -18,9 +18,6 @@
 coverage
 node_modules
 npm-debug.log
-<<<<<<< HEAD
-=======
 *.env
 *.env.example
 .env
->>>>>>> fc321d8d9ac00109626f4a99aba88e1c252abb67

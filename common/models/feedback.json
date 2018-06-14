@@ -7,6 +7,13 @@
   },
   "properties": {
     "message": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "email": {
       "type": "string"
     },
     "data": {
@@ -25,6 +32,13 @@
       "foreignKey": "type_id"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "feedback"
+    }
+  ],
   "methods": {}
 }
