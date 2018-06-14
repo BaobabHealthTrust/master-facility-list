@@ -7,23 +7,20 @@ import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
 import { connect } from "react-redux";
+import { Button } from 'react-materialize';
 import SecondaryMenu from "../common/SecondaryMenu";
 import footerResizer from "../helpers/footerResize";
 import MflDownload from "../common/MflDownload";
 import { ShowError, FetchAllDependancies } from "../common";
 import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
+import settings from '../settings';
+import { ButtonConfiguration } from '../types/helper-types';
 
 type Props = {
   match: any,
   current: any
 };
 
-type ButtonConfiguration = Array<{
-  color: string,
-  action: Function,
-  icon: string,
-  name: string
-}>
 class FacilityDetails extends React.Component<Props> {
 
   state = {
@@ -50,7 +47,9 @@ class FacilityDetails extends React.Component<Props> {
     },
     {
       icon: 'file_download',
-      action: () => alert('Downloading...'),
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download/${this.props.match.params.id}`
+      ),
       color: 'blue',
       name: 'Download Facility Details'
     }
@@ -155,11 +154,25 @@ class FacilityDetails extends React.Component<Props> {
           </div>
           <div className="mt-4">
             {
-              (pathArr[pathArr.length - 1] != 'edit' && sessionStorage.getItem('token')) && (
+              (pathArr[pathArr.length - 1] != 'edit' && sessionStorage.getItem('token'))
+              && (
                 <MflDownload
                   buttonConfiguration={this.buttonConfiguration}
                   mainButtonConfiguration={{ color: 'teal', icon: 'more_horiz' }}
                 />
+              )
+            }
+            {
+              (pathArr[pathArr.length - 1] != 'edit' && !sessionStorage.getItem('token')) && (
+                <Button
+                  className='mt-4 flex flex-row align-center'
+                  onClick={() => {
+                    window.open(`${settings.hostname}/api/facilities/download/${this.props.match.params.id}`)
+                  }}
+                >
+                  <i class="material-icons">file_download</i>
+                  <div>Download</div>
+                </Button>
               )
             }
           </div>

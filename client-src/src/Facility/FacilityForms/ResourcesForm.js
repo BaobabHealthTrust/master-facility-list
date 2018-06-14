@@ -41,6 +41,7 @@ class ResourcesForm extends React.Component<Props, {}> {
         if (!/^\d+$/.test(Number(values[key]))) errors[key] = this.INVALID_NUM_MESSAGE
       }
     })
+    console.log(errors);
     return errors;
   }
 
@@ -132,7 +133,6 @@ class ResourcesForm extends React.Component<Props, {}> {
                               error={touched[`resource_${resource.id}`] && errors[`resource_${resource.id}`]}
                               name={`resource_${resource.id}`}
                             />
-                            {console.log(values)}
                           </div>
                         )
                       })

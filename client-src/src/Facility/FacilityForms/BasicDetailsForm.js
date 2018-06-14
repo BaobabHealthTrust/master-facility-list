@@ -48,7 +48,10 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       : this.props.currentFacility.facility_date_opened.slice(0, 10),
     registrationNumber: this.props.fromAdd
       ? 0
-      : (this.props.currentFacility.registration_number || 0)
+      : (this.props.currentFacility.registration_number || 0),
+    publishedDate: this.props.fromAdd
+      ? null
+      : this.props.currentFacility.published_date
   }
 
   // TODO: Update this validation to YUP
@@ -66,16 +69,17 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
 
   handleSubmit = async (values, { setSubmitting, setErrors }) => {
     const data = {
-      "registration_number": values.registrationNumber,
-      "facility_name": values.facilityName,
-      "common_name": values.commonName,
-      "facility_date_opened": values.dateOpened,
-      "facility_type_id": values.facilityType,
-      "facility_owner_id": values.facilityOwner,
-      "facility_operational_status_id": values.operationalStatus,
-      "facility_regulatory_status_id": values.regulatoryStatus,
-      "district_id": values.district,
-      "client_id": 1
+      registration_number: values.registrationNumber,
+      facility_name: values.facilityName,
+      common_name: values.commonName,
+      facility_date_opened: values.dateOpened,
+      facility_type_id: values.facilityType,
+      facility_owner_id: values.facilityOwner,
+      facility_operational_status_id: values.operationalStatus,
+      facility_regulatory_status_id: values.regulatoryStatus,
+      district_id: values.district,
+      client_id: 1,
+      published_date: values.publishedDate
     }
     setSubmitting(true)
     const id = this.props.fromAdd ? "" : this.props.match.params.id

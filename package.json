@@ -7,8 +7,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha ",
-    "test-watch": "nodemon --exec \"npm test\"",
+    "test": "mocha",
     "start": "node ."
   },
   "dependencies": {
