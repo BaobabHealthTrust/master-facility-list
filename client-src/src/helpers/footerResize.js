@@ -7,11 +7,12 @@ function scrollBars() {
 }
 
 export default () => {
-    setTimeout(() => {
-        if (scrollBars().vertical) {
-            document.querySelector('.page-footer').style.position = "relative";
-        } else {
-            document.querySelector('.page-footer').style.position = "absolute";
-        }
-    }, 0);
+    document.querySelector('.page-footer').style.display = "none";
+    // setTimeout(() => {
+    //     if (scrollBars().vertical) {
+    //         document.querySelector('.page-footer').style.position = "relative";
+    //     } else {
+    //         document.querySelector('.page-footer').style.position = "absolute";
+    //     }
+    // }, 0);
 }

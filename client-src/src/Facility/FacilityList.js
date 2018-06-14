@@ -11,6 +11,7 @@ import { Facilities } from '../types/list-types';
 import { Link } from 'react-router-dom';
 import { ButtonConfiguration } from '../types/helper-types';
 import { Card } from "react-materialize";
+import { Redirect } from 'react-router-dom';
 
 type Props = {
   dataSource: Facilities,
@@ -19,6 +20,10 @@ type Props = {
 };
 
 export default class FacilityList extends React.Component<Props> {
+
+  state = {
+    redirectLink: null
+  }
 
   buttonConfiguration: ButtonConfiguration = [
     {
@@ -40,6 +45,12 @@ export default class FacilityList extends React.Component<Props> {
       name: 'Download PDF'
     }
   ]
+
+  redirect = facilityId => {
+    this.setState({
+      redirectLink: `/facilities/${facilityId}/summary`
+    })
+  }
 
   render() {
     const tableRecords =
@@ -77,7 +88,7 @@ export default class FacilityList extends React.Component<Props> {
 
     const defaultSorting = [{ columnName: 'name', direction: 'asc' }];
 
-    return (
+    const defaultView = (
       <div className="container">
         {/* TODO: Come back and add a buttonConfiguration for Downloads */}
         <div className="flex flex-row w-full justify-between">
@@ -121,10 +132,16 @@ export default class FacilityList extends React.Component<Props> {
             columns={columns}
             pageSize={10}
             defaultSorting={defaultSorting}
-            rowSelected={(facility) => console.log(JSON.stringify(facility, null, 2))}
+            rowSelected={facility => this.redirect(facility.id) }
           />
         </Card>
       </div>
+    )
+
+    return (
+      <React.Fragment>
+        {this.state.redirectLink ? <Redirect to={this.state.redirectLink} /> : defaultView}
+      </React.Fragment>
     );
   }
 }
