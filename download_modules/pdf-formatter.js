@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const mime = require("mime");
 
-module.exports = function(queriedDetails, res) {
+module.exports = function(facilities, callback) {
 	const body = [
 		[
 			{text: "CODE", style: "tableHeader"},
@@ -19,32 +19,35 @@ module.exports = function(queriedDetails, res) {
 			{text: "DISTRICT", style: "tableHeader"},
 			{text: "DATE OPENED", style: "tableHeader"}
 		]
-	];
-	queriedDetails.forEach(details => {
-		const jsonDetails = details.toJSON();
+    ];
+
+	facilities.forEach(facility => {
+		let data = facility.toJSON();
 		body.push([
-			jsonDetails.facility_code,
-			jsonDetails.facility_name,
-			jsonDetails.facility_name,
-			jsonDetails.owner.facility_owner,
-			jsonDetails.facilityType.facility_type,
-			jsonDetails.operationalStatus.facility_operational_status,
-			jsonDetails.district.zone.zone_name,
-			jsonDetails.district.district_name,
-			moment(jsonDetails.facility_date_opened).format("MMM Do YY")
+			data.facility_code,
+			data.facility_name,
+			data.facility_name,
+			data.owner.facility_owner,
+			data.facilityType.facility_type,
+			data.operationalStatus.facility_operational_status,
+			data.district.zone.zone_name,
+			data.district.district_name,
+			moment(data.facility_date_opened).format("MMM Do YY")
 		]);
-	});
-	const fonts = {
-		Roboto: {
-			normal: "./node_modules/fontkit/Roboto-Regular.ttf",
-			bold: "./node_modules/fontkit/Roboto-Medium.ttf",
-			italics: "./node_modules/fontkit/Roboto-Italic.ttf",
-			bolditalics: "./node_modules/fontkit/Roboto-MediumItalic.ttf"
-		}
-	};
+    });
+
+  /** PDF file Fonts */
+  const fonts = {
+    Roboto: {
+      normal: "./fonts/Roboto-Regular.ttf",
+      bold: "./fonts/Roboto-Medium.ttf",
+      italics: "./fonts/Roboto-Italic.ttf",
+      bolditalics: "./fonts/Roboto-MediumItalic.ttf"
+    }
+  };
 
 	const currentDate = new Date();
-	const facilityListHeading = "    LIST OF HEALTH FACILITIES";
+	const facilityListHeading = "LIST OF HEALTH FACILITIES";
 	const printer = new PdfPrinter(fonts);
 	const docDefinition = {
 		footer: function(currentPage, pageCount) {
@@ -141,7 +144,12 @@ module.exports = function(queriedDetails, res) {
 			}
 		]
 	};
-	const pdfDoc = printer.createPdfKitDocument(docDefinition);
-	const pdfFile = pdfDoc.pipe(fs.createWriteStream("facilities.pdf"));
-	pdfDoc.end();
+
+    try {
+        const pdfDoc = printer.createPdfKitDocument(docDefinition);
+        pdfDoc.end();
+        callback(null, pdfDoc);
+    } catch (error) {
+        callback(error);
+    }
 };
