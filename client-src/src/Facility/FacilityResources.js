@@ -1,10 +1,17 @@
+//@flow
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import { fetchCurrentDetails, fetchCurrentResources, fetchResourceTypes, setCurrentDetails } from "../actions";
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
+import { Resource, Facility, ResourceType } from "../types/model-types";
 
-class FacilityResources extends Component {
+type Props = {
+  resources: Array<Resource>,
+  facilities: Array<Facility>,
+  resourceTypes: Array<ResourceType>
+}
+class FacilityResources extends Component<Props> {
 
   state = {
     isEditResources: false
@@ -33,8 +40,6 @@ class FacilityResources extends Component {
         return "local_hospital";
     }
   }
-
-  // TODO: Provide Feedback when there are no Types
 
   render() {
     const presentTypes = this.props.resources

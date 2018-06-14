@@ -43,6 +43,7 @@
     "loopback-connector-mysql": "^5.2.0",
     "mocha": "^4.0.1",
     "nsp": "^2.1.0",
+    "prettier": "^1.13.5",
     "react-file-download": "^0.3.5",
     "supertest": "^3.0.0"
   },
