@@ -37,7 +37,7 @@ class FetchAllDependancies extends React.Component<{}> {
     }
 }
 
-export default connect(state => null, {
+export default connect(state => {}, {
     fetchDistricts,
     fetchFacilityTypes,
     fetchFacilityOwners,
