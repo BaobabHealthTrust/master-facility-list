@@ -8,10 +8,21 @@ import { Formik } from 'formik';
 
 class FeedbackForm extends React.Component{
 
+    state = {
+        delay: 3000
+    }
+
     componentWillMount() {
         this.props.fetchFeedbackTypes();
     }
-    
+
+    initialValues = {
+        name: '',
+        message: '',
+        email: '',
+        feedbackType: ''
+    }
+
     schema = yup.object().shape({
         name: yup.string(),
         message: yup.string().required(),
@@ -20,9 +31,30 @@ class FeedbackForm extends React.Component{
 
     })
 
-    _handleChange = async (values, { setSubmitting, setErros }) => {
-        await this.props.postFormData(values, 'Feedbacks', 'POST', 'POST_FEEDBACK');
-        // TODO: Notify feedback sent
+    showToastMessage = message => {
+        window.Materialize.toast(message, this.state.delay);
+    }
+
+    notifyFeedbackSent = () => {
+        this.showToastMessage('Feedback sent successfully!');
+    }
+
+    _handleChange = async (values, { setSubmitting, setErros, resetForm }) => {
+        await this.props.postFormData(
+            { data: 
+                {   ...values, 
+                    type_id: values.feedbackType 
+                }
+            }, 
+            'Feedbacks', 
+            'POST', 
+            'POST_FEEDBACK',
+            'feedback'
+        );
+        if (this.props.feedbackSubmitted) {
+            this.notifyFeedbackSent();
+            resetForm();
+        }
     }
 
     render() {
@@ -73,7 +105,6 @@ class FeedbackForm extends React.Component{
                                         onChange={(e) => setFieldValue('feedbackType', e.target.value)}
                                         error={errors.feedbackType}
                                     >
-                                        <option value="">please select a feedback</option>
                                         {this.props.feedbackTypes.map(feedbackType => (
                                             <option
                                                 key={feedbackType.id}
@@ -97,7 +128,11 @@ class FeedbackForm extends React.Component{
 
                                 </Row>
                                 <Row>
-                                    <Col><Button className="blue" waves='light' onClick={handleSubmit}>submit feedback</Button></Col>
+                                    <Col>
+                                        <Button className="blue" waves='light' onClick={handleSubmit}>
+                                            submit feedback
+                                        </Button>
+                                    </Col>
                                 </Row>
                             </Card>
                         )}
@@ -109,7 +144,8 @@ class FeedbackForm extends React.Component{
 }
 
 const mapStateToProps = state => ({
-    feedbackTypes: state.feedback.feedbackTypes
+    feedbackTypes: state.feedback.feedbackTypes,
+    feedbackSubmitted: state.feedback.feedbackSubmitted
 })
 
 const mapDispatchToProps = {

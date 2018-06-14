@@ -4,6 +4,7 @@ import { Collection, Row, Input, Card } from 'react-materialize';
 import { UserListItem } from './index';
 import { fetchUsers } from '../actions/index';
 import '../App.css';
+import './UserStyles.css';
 
 import { 
     Grid, 
@@ -49,6 +50,7 @@ class UsersList extends React.Component{
                             <Grid
                                 rows={this.props.users}
                                 columns={[
+                                    { name: 'username', title: 'Username' },
                                     { name: 'firstname', title: 'Firstname' },
                                     { name: 'lastname', title: 'Lastname' },
                                     { name: 'email', title: 'Email' },
@@ -68,7 +70,7 @@ class UsersList extends React.Component{
                                 <Table rowComponent={TableRow} />
                                 <TableHeaderRow showSortingControls />
                                 <Toolbar />
-                                <SearchPanel />
+                                <SearchPanel id="search" />
                                 <PagingPanel />
                             </Grid>
                         </Card>

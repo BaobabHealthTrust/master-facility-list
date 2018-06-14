@@ -759,7 +759,6 @@ select.mfl-select {
     background-color: #eee;
 }
 .user-list .MuiInput-underline-9:before,
-.user-list .MuiInput-underline-9:active,
-.user-list .MuiInput-underline-9:focus {
-    content: none;
+.user-list .MuiInput-focused-7:before{
+    content: none !important;
 }
