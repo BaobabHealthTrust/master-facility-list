@@ -4,9 +4,11 @@ import MflDownload from "../common/MflDownload";
 import Table from "../common/Table";
 import Pagination from "../common/Pagination";
 import GridTable from "../common/GridTable";
+import MflGrid from '../common/MflGrid';
 import { truncate } from "lodash";
 import moment from "moment";
 import { Facilities } from '../types/list-types'
+import { Card } from "react-materialize";
 
 type Props = {
   dataSource: Facilities,
@@ -37,6 +39,20 @@ export default class FacilityList extends React.Component<Props> {
           )
         };
       });
+
+
+    const columns = [
+      { name: 'code', title: 'CODE' },
+      { name: 'name', title: 'NAME' },
+      { name: 'commonname', title: 'COMMON NAME' },
+      { name: 'ownership', title: 'OWNERSHIP' },
+      { name: 'type', title: 'TYPE' },
+      { name: 'status', title: 'STATUS' },
+      { name: 'district', title: 'DISTRICT' },
+      { name: 'dateopened', title: 'DATE OPENED' },
+    ]
+
+    const defaultSorting = [{ columnName: 'name', direction: 'asc' }];
 
     return (
       <div className="container">
@@ -77,7 +93,16 @@ export default class FacilityList extends React.Component<Props> {
           </div> */}
         </div>
 
-        <GridTable data={tableRecords} />
+        {/* <GridTable data={tableRecords} /> */}
+        <Card>
+          <MflGrid
+            rows={tableRecords}
+            columns={columns}
+            pageSize={10}
+            defaultSorting={defaultSorting}
+            rowSelected={(facility) => console.log(JSON.stringify(facility, null, 2))}
+          />
+        </Card>
       </div>
     );
   }
