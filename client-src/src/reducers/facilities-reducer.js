@@ -19,7 +19,8 @@ export default (
     resourcesResponse: {},
     utilitiesResponse: {},
     servicesResponse: {},
-    deleteServiceResponse: {}
+    deleteServiceResponse: {},
+    patchResponse: {}
   },
   action
 ) => {
@@ -144,6 +145,12 @@ export default (
       return {
         ...state,
         deleteServiceResponse: action.payload.data,
+        isLoading: false
+      }
+    case "PATCH_BASIC_DETAILS":
+      return {
+        ...state,
+        patchResponse: action.payload.data,
         isLoading: false
       }
     default:

@@ -40,35 +40,15 @@ export default class FacilityList extends React.Component<Props> {
   ]
 
   render() {
-    const tableRecords =
-      this.props.dataSource &&
-      this.props.dataSource.map(facility => {
-        return {
-          id: facility.id,
-          code: facility.facility_code,
-          name: facility.facility_name.toUpperCase(),
-          commonname: facility.common_name,
-          ownership: facility.owner.facility_owner.toUpperCase(),
-          type: facility.facilityType.facility_type.toUpperCase(),
-          status: truncate(
-            facility.operationalStatus.facility_operational_status.toUpperCase(),
-            { length: 12 }
-          ),
-          district: facility.district.district_name.toUpperCase(),
-          dateopened: moment(facility.facility_date_opened).format(
-            "MMM Do YY"
-          )
-        };
-      });
+    const tableRecords = this.props.dataSource || []
 
+    // TODO: Fix issue with margin top
     return (
       <div className="container">
-        {/* TODO: Come back and add a buttonConfiguration for Downloads */}
         <div className="flex flex-row w-full justify-between">
-          <div className="flex flex-row w-full" style={{ marginTop: 20 }}>
+          <div className="flex flex-row">
             <div>
               <Link
-                style={{ marginTop: -80 }}
                 class="btn-flat"
                 to='/facilities/search'
               >
@@ -80,7 +60,6 @@ export default class FacilityList extends React.Component<Props> {
                 // TODO: Only allowed for a token whose user ID is an admin
                 sessionStorage.getItem('token') && (
                   <Link
-                    style={{ marginTop: -80 }}
                     class="ml-4 waves-effect waves-light btn"
                     to='/facilities/add'
                   >
@@ -90,7 +69,7 @@ export default class FacilityList extends React.Component<Props> {
               }
             </div>
           </div>
-          <div style={{ marginTop: -40 }}>
+          <div style={{ marginTop: -10 }}>
             <MflDownload
               buttonConfiguration={this.buttonConfiguration}
               mainButtonConfiguration={{ color: 'teal', icon: 'file_download' }}

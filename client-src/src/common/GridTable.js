@@ -20,7 +20,7 @@ class GridTable extends React.Component {
         sortable: true
       },
       {
-        key: "commonname",
+        key: "common",
         name: "COMMON NAME",
         width: 200,
         sortable: true
@@ -50,7 +50,7 @@ class GridTable extends React.Component {
         sortable: true
       },
       {
-        key: "dateopened",
+        key: "dateOpened",
         name: "DATE OPENED",
         width: 200,
         sortable: true,
