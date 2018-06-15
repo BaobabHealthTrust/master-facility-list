@@ -4,11 +4,13 @@ import { BasicDetailsForm, ContactsForm, ResourcesForm, UtilitiesForm, ServicesF
   from '../FacilityForms'
 import footerResize from '../../helpers/footerResize';
 import { FormWizardTabHeading, FinishedForm } from '../../common';
+import { Redirect } from 'react-router-dom'
 
 class FacilityTabs extends React.Component<{}> {
 
   state = {
     active: 'Basic Details',
+    redirect: false,
     facility: {}
   }
 
@@ -53,7 +55,7 @@ class FacilityTabs extends React.Component<{}> {
           facility={this.state.facility}
         />
       case 'Finish':
-        return <FinishedForm handleBack={() => this.props.handleCancelAddFacility()} />
+        return <FinishedForm handleBack={() => this.setState({ redirect: true })} />
       default:
         return <BasicDetailsForm
           fromAdd
@@ -81,6 +83,7 @@ class FacilityTabs extends React.Component<{}> {
           )
         }
         <div>
+          {this.state.redirect && <Redirect to='/facilities' />}
           {this._switchForms()}
         </div>
       </div >

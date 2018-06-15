@@ -68,7 +68,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   }
 
   handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    const data = {
+    let data = {
       registration_number: values.registrationNumber,
       facility_name: values.facilityName,
       common_name: values.commonName,
@@ -79,10 +79,17 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       facility_regulatory_status_id: values.regulatoryStatus,
       district_id: values.district,
       client_id: 1,
-      published_date: values.publishedDate
     }
+
+    if (!this.props.fromAdd) {
+      data = {
+        ...data,
+        published_date: values.publishedDate
+      }
+    }
+
     setSubmitting(true)
-    const id = this.props.fromAdd ? "" : this.props.match.params.id
+    const id = this.props.fromAdd ? null : this.props.match.params.id
     const method = this.props.fromAdd ? "POST" : "PUT"
     await this.props.postFormData(
       data,
@@ -103,7 +110,6 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     }
   }
   render() {
-    const dateOpened = this.props.currentFacility.facility_date_opened.slice(0, 10).split('-');
     // TODO: Fetch your own dependancies in case you have been refreshed
     return (
       <div className="container">
@@ -210,9 +216,9 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                 <Row>
                   <DatePicker
                     suffix="Opened"
-                    year={!this.props.fromAdd && dateOpened[0]}
-                    month={!this.props.fromAdd && dateOpened[1]}
-                    day={!this.props.fromAdd && dateOpened[2]}
+                    year={!this.props.fromAdd && values.dateOpened[0]}
+                    month={!this.props.fromAdd && values.dateOpened[1]}
+                    day={!this.props.fromAdd && values.dateOpened[2]}
                     onChange={(date) => setFieldValue("dateOpened", date)}
                   />
                   <Input

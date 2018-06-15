@@ -90,21 +90,9 @@ class FacilitiesHome extends React.Component<Props, State> {
 
           {/* Show Error Message */}
           {this.props.isError && <ShowError />}
-
-          {/* {
-            (!isLoadingOrError && this.state.isAdvancedSearch)
-            && (
-              <SearchModal
-                handleClose={this.handleClose}
-              />
-            )
-          } */}
-
-          <FacilityList
-            downloadAction={this.props.downloadFacilities}
-            dataSource={this.props.facilities}
-          />
+          <FacilityList dataSource={this.props.facilities} />
         </div>
+
       </div>
     );
   }
@@ -112,7 +100,7 @@ class FacilitiesHome extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    facilities: state.facilities.list,
+    facilities: state.facilities.list.data,
     isError: state.facilities.isNetworkError,
     isLoading: state.facilities.isLoading,
     download: state.downloads.data,

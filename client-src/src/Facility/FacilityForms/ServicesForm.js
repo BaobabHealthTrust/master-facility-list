@@ -22,7 +22,8 @@ type Props = {
   deleteFromApi: Function,
   deleteServiceResponse: { count: number },
   onNext: Function,
-  fromAdd: Function
+  fromAdd: Function,
+  patchResponse: any
 }
 
 class ServicesForm extends React.Component<Props> {
@@ -35,9 +36,21 @@ class ServicesForm extends React.Component<Props> {
     cancelForm: false
   }
 
-  _publishFacility = () => {
-    //
+  _publishFacility = async () => {
+    await this.props.postFormData(
+      {
+        id: (this.props.facility.id || 1),
+        district_id: (this.props.facility.district_id || 1)
+      },
+      "Facilities",
+      "POST",
+      "PATCH_BASIC_DETAILS",
+      "publish"
+    )
+    if (this.props.patchResponse) this.props.onNext()
+    else alert('Could not Finalize Process');
   }
+
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
 
@@ -266,8 +279,8 @@ class ServicesForm extends React.Component<Props> {
                   </div>
                 </div>
                 <FormWizardNavigation
-                  saveButton={null}
-                  handleSubmit={() => this.props.onNext()}
+                  saveButton={this.props.fromAdd && 'Next'}
+                  handleSubmit={this._publishFacility}
                   handleCancel={() => this.setState({ cancelForm: true })}
                   isSubmitting={false}
                 />
@@ -285,7 +298,8 @@ const mapStateToProps = state => {
     response: state.facilities.servicesResponse,
     serviceTypes: state.dependancies.serviceTypes,
     services: state.facilities.services,
-    deleteServiceResponse: state.facilities.deleteServiceResponse
+    deleteServiceResponse: state.facilities.deleteServiceResponse,
+    patchResponse: state.facilities.patchResponse
   }
 }
 
