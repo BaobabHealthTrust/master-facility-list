@@ -6,6 +6,7 @@ const generateCsvFile = require("../../download_modules/csv-formatter");
 const generateExcelFile = require("../../download_modules/excel-formatter");
 const generateFile = require("../../download_modules/pdf-one-facility-formatter");
 const _ = require("lodash");
+const moment = require("moment");
 
 module.exports = (Facility) => {
 
@@ -14,16 +15,19 @@ module.exports = (Facility) => {
       const district_id = _.padStart(ctx.instance.district_id, 2, '0');
       const id = _.padStart(String(ctx.instance.id), 4, '0');
       const district = await server.models.District.findOne({ where: { id: district_id } });
-      const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
-        facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
-          if (err) console.error(err);
+      if (ctx.instance.published_date) {
+        const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
+          facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
+            if (err) console.error(err);
+          })
         })
-      })
+      }
     }
   })
 
   // TODO: Do the same thing for archived client
   Facility.observe('access', async function filterArchivedAndUnpublished(ctx) {
+    if (ctx.options && ctx.options.skipAccessFilter) return;
     const query = { and: [{ published_date: { neq: null } }, { archived_date: null }] };
     if (!ctx.query) ctx.query = { where: query };
     if (ctx.query) {
@@ -137,12 +141,83 @@ module.exports = (Facility) => {
     return "Data Successfully Updated";
   }
 
+  Facility.publish = async (id, district_id, cb) => {
+    await Facility.findById(id, {}, { skipAccessFilter: true }).then(facility => {
+      facility.updateAttributes({
+        published_date: new Date(),
+        district_id
+      })
+    }).catch(err => console.error(err))
+
+    return "Successfully Published Facility"
+  }
+
+  Facility.list = async (filter, regex, cb) => {
+    console.log(regex)
+    const facilities = await Facility.find({
+      ...filter,
+      include: [
+        'owner',
+        'facilityType',
+        'operationalStatus',
+        'regulatoryStatus',
+        'contactPeople',
+        'locations',
+        { district: 'zone' }
+      ]
+    })
+
+    const formattedFacilities = facilities.map(facility => {
+      const formattedFacility = facility.toJSON();
+      return {
+        id: facility.id,
+        code: facility.facility_code,
+        name: facility.facility_name,
+        common: facility.common_name,
+        ownership: formattedFacility.owner.facility_owner,
+        type: formattedFacility.facilityType.facility_type,
+        status: formattedFacility.operationalStatus.facility_operational_status,
+        district: formattedFacility.district.district_name,
+        dateOpened: moment(facility.facility_date_opened).format("MMM Do YY"),
+        string: `${facility.facility_name}${facility.facility_code}${facility.common_name}`
+          + `${formattedFacility.owner.facility_owner}${formattedFacility.facilityType.facility_type}`
+          + `${formattedFacility.operationalStatus.facility_operational_status}`
+          + `${formattedFacility.district.district_name}`
+      }
+    })
+
+    // TODO: Handle Blank Regex
+    return regex
+      ? formattedFacilities.filter(facility => {
+        return new RegExp(`.*${regex.toUpperCase()}`).test(facility.string.toUpperCase());
+      }).filter((facility, index) => index < 5)
+      : formattedFacilities;
+  }
+
+  // TODO: Protect these remote methods from unauthorized users
   Facility.remoteMethod('updateContactDetails', {
     accepts: [
       { arg: 'data', type: 'object' },
       { arg: 'id', type: 'number' }
     ],
     returns: { arg: 'response', type: 'string' }
+  })
+
+  Facility.remoteMethod('publish', {
+    accepts: [
+      { arg: 'id', type: 'number' },
+      { arg: 'district_id', type: 'number' },
+    ],
+    returns: { arg: 'response', type: 'string' }
+  })
+
+  Facility.remoteMethod('list', {
+    accepts: [
+      { arg: 'filter', type: 'object' },
+      { arg: 'regex', type: 'string' },
+    ],
+    returns: { arg: 'data', type: 'object' },
+    http: { verb: 'get' }
   })
 
   Facility.remoteMethod('contactDetails', {
