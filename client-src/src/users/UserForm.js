@@ -20,11 +20,11 @@ class UserForm extends React.Component {
   }
 
   schema = yup.object().shape({
-    firstname: yup.string().min(6).required(),
-    lastname: yup.string().min(6).required(),
-    username: yup.string().min(8).required(),
-    email: yup.string().email().required(),
-    password: yup.string().min(5).required(),
+    firstname: yup.string().min(6).required("First name is required"),
+    lastname: yup.string().min(6).required("last name is required"),
+    username: yup.string().min(8).required("username is required"),
+    email: yup.string().email("enter a valid email address").required("email is required"),
+    password: yup.string().min(5, "atleast 5 characters long").required("password is required"),
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null])
       .required('Password confirm is required')
@@ -80,6 +80,7 @@ class UserForm extends React.Component {
               }
             >
               <Row>
+              {/* TODO: mark required fields with asterisks */}
                 <Input
                   s={6}
                   placeholder="Enter User First Name"
@@ -97,7 +98,8 @@ class UserForm extends React.Component {
                   labelClassName="mfl-max-width"
                   value={values.lastname}
                   onChange={handleChange}
-                  error={errors.lastname}
+                  error="bddbbd d   d"
+                  // error={errors.lastname}
                   onBlur={handleBlur}
                   error={touched.lastname && errors.lastname}
                   name="lastname"

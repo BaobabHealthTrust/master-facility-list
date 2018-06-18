@@ -764,3 +764,8 @@ select.mfl-select {
     content: none !important;
     border: none !important;
 }
+.partner-logo{
+    height: 100px;
+    display: block;
+    margin: auto;
+}

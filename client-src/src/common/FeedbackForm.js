@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchFeedbackTypes, postFormData } from '../actions';
 import yup from 'yup';
 import { Formik } from 'formik';
+import { Z_DEFAULT_STRATEGY } from 'zlib';
 
 class FeedbackForm extends React.Component{
 
@@ -25,8 +26,8 @@ class FeedbackForm extends React.Component{
 
     schema = yup.object().shape({
         name: yup.string(),
-        message: yup.string().required(),
-        email: yup.string().email(),
+        message: yup.string().required('this is required'),
+        email: yup.string().email().required("email address is required"),
         feedbackType: yup.number().required()
 
     })
@@ -40,6 +41,7 @@ class FeedbackForm extends React.Component{
     }
 
     _handleChange = async (values, { setSubmitting, setErros, resetForm }) => {
+        setSubmitting(true)
         await this.props.postFormData(
             { data: 
                 {   ...values, 
@@ -96,6 +98,7 @@ class FeedbackForm extends React.Component{
                                         name="email"
                                         type="email"
                                     />
+                                    {errors.name}
                                     <Input
                                         s={12}
                                         type='select'
@@ -130,7 +133,7 @@ class FeedbackForm extends React.Component{
                                 <Row>
                                     <Col>
                                         <Button className="blue" waves='light' onClick={handleSubmit}>
-                                            submit feedback
+                                            {isSubmitting ? 'sending...' : 'send feedback'}
                                         </Button>
                                     </Col>
                                 </Row>

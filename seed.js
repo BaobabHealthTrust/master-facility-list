@@ -25,6 +25,7 @@ const seed = async () => {
 
     await userSeeder(data.users);
     await independentModelFactory(server.models.Owner, data.owners);
+    await independentModelFactory(server.models.FeedbackType, data.feedbackTypes);
     await independentModelFactory(server.models.FacilityType, data.facilityTypes);
     await independentModelFactory(server.models.RegulatoryStatus, data.regulatoryStatuses);
     await independentModelFactory(server.models.OperationalStatus, data.operationalStatuses);
