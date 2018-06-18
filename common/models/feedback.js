@@ -14,7 +14,7 @@ module.exports = function(Feedback) {
             text: data.message,
         };
         try {
-            sgMail.send(msg);
+            await sgMail.send(msg);
         } catch (error) {
             // TODO: log the error or something
         }
