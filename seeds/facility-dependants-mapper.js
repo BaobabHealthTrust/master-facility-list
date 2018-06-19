@@ -41,7 +41,7 @@ module.exports = async () => {
             facility_id: id,
             postal_address: address
         });
-        
+
         addresses.push({
             physical_address: faker.address.streetAddress(),
             postal_address: faker.address.secondaryAddress(),
@@ -70,7 +70,7 @@ module.exports = async () => {
         });
 
     });
-    
+
     await ContactPeople.create(contactPeople);
     await Address.create(addresses);
     await Location.create(locations);
