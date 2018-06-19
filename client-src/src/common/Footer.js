@@ -19,21 +19,14 @@ export default (props) => {
         </a>
         <footer className="light-blue darken-4 align-middle" >
         <div className="row px-4 py-4">
-                <div className="col m4">
-                    <img style={{ width: 90, height: 30 }} src={kuunika_logo} />
-                  </div>
-
-                  <div className="col m4 white-text text-center">
-                      <p className="white-text text-lighten-4">
-                        <a href="mailto:moh@health.gov.mw">moh@health.gov.mw</a>
-                      </p>
-                  </div>
-
-                  <div className="col m4 white-text text-right">
-                      <span className="mfl-copy text-left mt-4">© {(new Date()).getFullYear()} Copyright, Republic of Malawi, Ministry of Health</span>
-                  </div>
-
+            <div className="col m6">
+                <img style={{ width: 90, height: 30 }} src={kuunika_logo} />
               </div>
+
+                <div className="col m6 white-text text-right">
+                    <span className="mfl-copy text-left mt-4">© {(new Date()).getFullYear()} Copyright, Republic of Malawi, Ministry of Health</span>
+                </div>
+            </div>
         </footer>
         </div>
     )

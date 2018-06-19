@@ -43,6 +43,13 @@ const processFacility = facility => {
  * @param {function} callback callback function.
  */
 module.exports = (facilities, callback) => {
+    if (facilities == null) {
+        const error = new Error("Facilities can not be null.");
+        error.name = "ERROR";
+        error.status = 400;
+        callback(error);
+    }
+
     try {
         const data = facilities.map(processFacility);
         const file = json2csv({data, fields});

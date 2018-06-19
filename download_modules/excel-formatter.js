@@ -65,6 +65,13 @@ const processFacility = facility => {
  * @param {function} callback callback function.
  */
 module.exports = function(facilities, callback) {
+    if (facilities == null) {
+        const error = new Error("Facilities can not be null.");
+        error.name = "ERROR";
+        error.status = 400;
+        callback(error);
+    }
+
     try {
         facilities.forEach(processFacility);
 
