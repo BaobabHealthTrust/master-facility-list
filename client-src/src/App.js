@@ -12,13 +12,13 @@ import MfLFeedback from "./common/MfLFeedback";
 import { UsersHome } from './users';
 import { AddFacilityHome } from "./Facility/AddFacility";
 import SearchModal from "./Facility/SearchModal";
-import ScrollButton from './common/ScrollButton';
 
 class App extends Component {
   render() {
     return (
       <div className="mfl-page-wrap">
         <Navbar />
+        <div className="content">
         <Switch>
           <Route
             exact
@@ -66,7 +66,7 @@ class App extends Component {
             component={UsersHome}
           />
         </Switch>
-        <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
+        </div>
         <Footer />
       </div >
     );

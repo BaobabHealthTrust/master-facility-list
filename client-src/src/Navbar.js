@@ -38,7 +38,7 @@ class Navbar extends Component {
 
     render() {
         return (
-            <div>
+            <div className="header">
                 <nav>
                     <div className="nav-wrapper blue darken-4">
                         <a href="" className="center hide-on-med-and-up">
