@@ -9,6 +9,7 @@ import moment from "moment";
 import { Facilities } from '../types/list-types';
 import { Link } from 'react-router-dom';
 import { ButtonConfiguration } from '../types/helper-types';
+import settings from '../settings';
 
 type Props = {
   dataSource: Facilities,
@@ -21,19 +22,40 @@ export default class FacilityList extends React.Component<Props> {
   buttonConfiguration: ButtonConfiguration = [
     {
       icon: 'file_copy',
-      action: () => alert('Downloading Excel...'),
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {
+            "district_id": 6
+          },
+          "format": "csv"
+        })
+      ),
       color: 'blue',
       name: 'Download CSV'
     },
     {
       icon: 'grid_on',
-      action: () => alert('Downloading Excel...'),
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {
+            "district_id": 6
+          },
+          "format": "excel"
+        })
+      ),
       color: 'green',
       name: 'Download Excel'
     },
     {
       icon: 'picture_as_pdf',
-      action: () => alert('Downloading Excel...'),
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {
+            "district_id": 6
+          },
+          "format": "pdf"
+        })
+      ),
       color: 'red',
       name: 'Download PDF'
     }

@@ -9,7 +9,6 @@ import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
 import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
-
 import { UsersHome } from './users';
 import { AddFacilityHome } from "./Facility/AddFacility";
 import SearchModal from "./Facility/SearchModal";
@@ -19,6 +18,7 @@ class App extends Component {
     return (
       <div className="mfl-page-wrap">
         <Navbar />
+        <div className="content">
         <Switch>
           <Route
             exact
@@ -66,7 +66,7 @@ class App extends Component {
             component={UsersHome}
           />
         </Switch>
-
+        </div>
         <Footer />
       </div >
     );

@@ -7,6 +7,13 @@ const path = require("path");
 const mime = require("mime");
 
 module.exports = function(facilities, callback) {
+  if (facilities == null) {
+    const error = new Error("Facilities can not be null.");
+    error.name = "ERROR";
+    error.status = 400;
+    callback(error);
+  }
+
 	const body = [
 		[
 			{text: "CODE", style: "tableHeader"},
@@ -48,101 +55,89 @@ module.exports = function(facilities, callback) {
 
 	const currentDate = new Date();
 	const facilityListHeading = "LIST OF HEALTH FACILITIES";
-	const printer = new PdfPrinter(fonts);
-	const docDefinition = {
-		footer: function(currentPage, pageCount) {
-			return {
-				margin: 10,
-				columns: [
-					{
-						style: "header",
-						margin: [10, 0, 0, 0],
-						columns: [
-							{
-								image: "./images/malawi.png",
-								width: 20
-							}
-						]
-					},
-					{
-						fontSize: 9,
-						text: [
-							{
-								text: +currentPage.toString()
-							}
-						],
-						alignment: "right"
-					}
-				]
-			};
-		},
-		content: [
-			{
-				style: "header",
-				margin: [10, 0, 0, 0],
-				columns: [
-					{
-						image: "./images/malawi.png",
-						width: 80
-					},
-					{
-						alignment: "center",
-						margin: [80, 30, 0, 0],
-						style: "tableExample",
-						table: {
-							body: [
-								[
-									{
-										border: [false, false, false, false],
-										text: "MASTER HEALTH FACILITY REGISTRY"
-									}
-								],
-								[
-									{
-										border: [false, false, false, false],
-										text: "LIST OF HEALTH FACILITIES"
-									}
-								]
-							]
-						}
-					}
-				]
-			},
-			{
-				text:
-					"Date downloaded: " +
-					moment(currentDate).format("MMM Do YYYY"),
-				alignment: "right"
-			},
+    const printer = new PdfPrinter(fonts);
 
-			{
-				margin: [-18, 0, 0, 8],
-				canvas: [
-					{
-						type: "line",
-						x1: 0,
-						y1: 10,
-						x2: 540,
-						y2: 10,
-						lineWidth: 3,
-						lineCap: "round"
-					}
-				]
-			},
-			{
-				margin: [-37, 0, 0, 0],
-				style: "tableExample",
-				table: {
-					headerRows: 1,
-					body
-				},
-				layout: {
-					fillColor: function(i, node) {
-						return i % 2 === 0 ? "#CCCCCC" : null;
-					}
-				}
-			}
-		]
+	const docDefinition = {
+      pageOrientation: 'landscape',
+      pageSize: 'A4',
+		  footer: function(currentPage, pageCount) {
+          return {
+              margin: [0, 6, 0, 0],
+              fontSize: 9,
+              text: [
+                  {
+                      text: currentPage.toString() + " of " + pageCount.toString()
+                  }
+              ],
+              alignment: "center"
+          };
+		  },
+		  content: [
+          {
+              image: "./images/malawi.png",
+              width: 90,
+              margin: [0, 20, 0, 20],
+              alignment: "center",
+          },
+          {
+              text: "MASTER HEALTH FACILITY REGISTRY",
+              bold: true,
+              margin: [0, 0, 0, 4],
+              alignment: "center",
+          },
+          {
+              text: "LIST OF HEALTH FACILITIES",
+              bold: true,
+              margin: [0, 0, 0, 20],
+              alignment: "center",
+          },
+          {
+            text:
+              "Date downloaded: " +
+              moment(currentDate).format("MMM Do YYYY"),
+              alignment: "right"
+          },
+          {
+            margin: [0, 0, 0, 8],
+            canvas: [
+              {
+                type: "line",
+                x1: 0,
+                y1: 10,
+                x2: 760,
+                y2: 10,
+                lineWidth: 1,
+                lineCap: "round"
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                width: '*',
+                text: ''
+              },
+              {
+                width: 'auto',
+                style: "tableExample",
+                fontSize: 10,
+                table: {
+                  headerRows: 1,
+                  body
+                },
+                layout: {
+                  fillColor: function(i, node) {
+                    return i % 2 === 0 ? "#CCCCCC" : null;
+                  }
+                }
+              },
+              {
+                width: '*',
+                text: ''
+              },
+            ]
+          }
+		  ]
 	};
 
     try {

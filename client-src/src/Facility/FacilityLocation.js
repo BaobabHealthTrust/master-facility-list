@@ -37,44 +37,40 @@ class FacilityLocation extends Component<State> {
       ]
       : [];
 
-    return (
-      <div className="container">
+    const position = this.props.current.geolocations
+      ? {
+          lat: parseFloat(this.props.current.geolocations.latitude),
+          lng: parseFloat(this.props.current.geolocations.longitude)
+        }
+        :
+      { lat: -13.9626121, lng: 33.7741195 };
+
+    return <div className="container">
         <div>
           <div className="row">
             <div className="col m6 s12">
               <div className="z-depth-2">
-                {/* TODO: Make Map Live! */}
-                <MFLGoogleMap isMarkerShown />
+                  <MFLGoogleMap
+                      position = {position}
+                      isMarkerShown
+                  />
               </div>
             </div>
 
             <div className="col m6 s12">
               <div className="row">
-                <Card
-                  heading="Location"
-                  icon="location_on"
-                  data={locationData}
-                />
+                <Card heading="Location" icon="location_on" data={locationData} />
               </div>
               <div className="row">
-                <Card
-                  heading="Address"
-                  icon="location_city"
-                  data={addressData}
-                />
+                <Card heading="Address" icon="location_city" data={addressData} />
               </div>
               <div className="row">
-                <Card
-                  heading="contact person"
-                  icon="person"
-                  data={contactPersonData}
-                />
+                <Card heading="contact person" icon="person" data={contactPersonData} />
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
 }
 
