@@ -7,6 +7,13 @@ const path = require("path");
 const mime = require("mime");
 
 module.exports = function(facilities, callback) {
+  if (facilities == null) {
+    const error = new Error("Facilities can not be null.");
+    error.name = "ERROR";
+    error.status = 400;
+    callback(error);
+  }
+
 	const body = [
 		[
 			{text: "CODE", style: "tableHeader"},
