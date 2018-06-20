@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Collection, Row, Input, Card } from 'react-materialize';
 import { UserListItem } from './index';
 import { fetchUsers } from '../actions/index';
+import { MflGrid } from '../common/index';
 import '../App.css';
 import './UserStyles.css';
 
@@ -31,15 +32,15 @@ class UsersList extends React.Component{
     }
 
     render() {
-        const TableRow = ({ row, ...restProps }) => (
-            <Table.Row
-                {...restProps}
-                onClick={() => this.props.onUserSelected(row)}
-                style={{
-                    cursor: 'pointer',
-                }}
-            />
-        );
+        const columns = [
+            { name: 'username', title: 'Username' },
+            { name: 'firstname', title: 'Firstname' },
+            { name: 'lastname', title: 'Lastname' },
+            { name: 'email', title: 'Email' },
+        ];
+
+        const defaultSorting = [{ columnName: 'firstname', direction: 'asc' }];
+
         return (
             <React.Fragment>
                 {
@@ -47,32 +48,15 @@ class UsersList extends React.Component{
 
                     <React.Fragment>
                             <Card className="user-list">
-                            <Grid
-                                rows={this.props.users}
-                                columns={[
-                                    { name: 'username', title: 'Username' },
-                                    { name: 'firstname', title: 'Firstname' },
-                                    { name: 'lastname', title: 'Lastname' },
-                                    { name: 'email', title: 'Email' },
-                                ]}>
-                                <SortingState
-                                    defaultSorting={[{ columnName: 'firstname', direction: 'asc' }]}
-                                />
-                                <IntegratedSorting />
-                                <PagingState
-                                    defaultCurrentPage={0}
-                                    pageSize={10}
-                                />
-                                <IntegratedPaging />
-                                <FilteringState defaultFilters={[]} />
-                                <SearchState />
-                                <IntegratedFiltering />
-                                <Table rowComponent={TableRow} />
-                                <TableHeaderRow showSortingControls />
-                                <Toolbar />
-                                <SearchPanel id="search" />
-                                <PagingPanel />
-                            </Grid>
+                            <MflGrid 
+                                rows={this.props.users} 
+                                columns={columns}
+                                pageSize={10}
+                                defaultSorting={defaultSorting}
+                                rowSelected={
+                                    (user) => this.props.onUserSelected(user)
+                                }
+                            />
                         </Card>
                     </React.Fragment>
 

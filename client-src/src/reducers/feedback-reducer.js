@@ -2,10 +2,11 @@ const initialValues = {
     feedbackTypes: [],
     feedbackSubmitted: false
 }
+
 export default (state = initialValues, action) => {
     switch (action.type) {
         case 'FETCH_FEEDBACK_TYPES':
-            if(action.payload.data){
+            if(action.payload.data) {
                 return {
                     ...state,
                     feedbackTypes: action.payload.data
@@ -13,8 +14,7 @@ export default (state = initialValues, action) => {
             }
             break;
         case 'POST_FEEDBACK':
-            console.log(action);
-            if(action.payload.data){
+            if(action.payload.data) {
                 return {
                     ...state,
                     feedbackSubmitted: true

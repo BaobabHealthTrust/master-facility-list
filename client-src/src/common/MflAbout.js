@@ -6,6 +6,7 @@ import banner from "../banner.png";
 import baobabHealth from "../baobab-health.jpg";
 import Lin from "../Lin.png";
 import footerResizer from "../helpers/footerResize";
+import '../App.css';
 
 class MflAbout extends Component {
 
@@ -17,8 +18,8 @@ class MflAbout extends Component {
         return (
             <div>
                 <div className="container mfl-dash-container mfl-ref">
-                    <img src={banner} className="mfl-abs mfl-banner-img" />
-                    <div className="mfl-abs mfl-parallax"><h3>About the Malawi Master Health Facility List</h3></div>
+                    <img src={banner} className="mfl-abs mfl-banner-img"style={{width: "100%"}} />
+                    <div className="mfl-abs mfl-parallax"><h3>About the Malawi Master Health Facility Registry</h3></div>
                 </div>
                 <div className="container mfl-modal-container">
                     <div className="row">
@@ -58,59 +59,65 @@ class MflAbout extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col m6 s12">
-                            <h5 className=" blue-text mfl-contact">Partners</h5>
-                        </div>
-                    </div>
-                    <div className="row mfl-tm-2">
-                        <div className="col s12 m4 l3">
-                            <div className="mlf-w-9 mfl-shadow">
-                                <div className="mfl-card-title  blue darken-3">
-                                    <h5>Kuunika</h5>
-                                </div>
-                                <div>
-                                    <div className="partner-logos">
-                                        <img src={kuunika} alt="kuunika logo" width="200" height="100" />
-                                    </div>
+                    {/* TODO: resize all partners images */}
+                        <div className="col m12 s12">
+                            <h5 className="mfl-contact">Partners</h5>
+                            <div class="row">
+                                <div className="col s12 m4 l3">
+                                    <div className="mlf-w-9 mfl-shado">
+                                        <div>
+                                            <div className="partner-logos">
+                                                <img 
+                                                    src={kuunika} 
+                                                    alt="kuunika logo"
+                                                    className="partner-logo"
+                                                    />
+                                            </div>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m4 l3">
-                            <div className="mlf-w-9 mfl-shadow">
-                                <div className="mfl-card-title  blue darken-3">
-                                    <h5>Ministry of Health</h5>
-                                </div>
-                                <div>
-                                    <div className="partner-logos">
-                                        <img src={moh} alt="Ministry of Health" width="200" height="100" />
+                                        </div>
                                     </div>
+                                </div>
+                                <div className="col s12 m4 l3">
+                                    <div className="mlf-w-9 mfl-shado">
+                                        <div>
+                                            <div className="partner-logos">
+                                                <img 
+                                                    src={moh} 
+                                                    alt="Ministry of Health"
+                                                    className="partner-logo"
+                                                    />
+                                            </div>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m4 l3">
-                            <div className="mlf-w-9 mfl-shadow">
-                                <div className="mfl-card-title  blue darken-3">
-                                    <h5>Luke International</h5>
-                                </div>
-                                <div>
-                                    <div className="partner-logos">
-                                        <img src={Lin} alt="Center for Monitoring and Evaluation Department" width="200" height="100" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m4 l3">
-                            <div className="mlf-w-9 mfl-shadow">
-                                <div className="mfl-card-title  blue darken-3">
-                                    <h5>baobab Health</h5>
-                                </div>
-                                <div>
-                                    <div className="partner-logos">
-                                        <img src={baobabHealth} alt="baobab health logo" width="200" height="100" />
+                                <div className="col s12 m4 l3">
+                                    <div className="mlf-w-9 mfl-shado">
+                                        <div>
+                                            <div className="partner-logos">
+                                                <img 
+                                                    src={baobabHealth} 
+                                                    alt="baobab health logo" 
+                                                    className="partner-logo"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="col s12 m4 l3">
+                                    <div className="mlf-w-9 mfl-shado">
+                                        <div>
+                                            <div className="partner-logos">
+                                                <img 
+                                                    src={Lin} 
+                                                    alt="Center for Monitoring and Evaluation Department" 
+                                                    className="partner-logo"
+                                                    />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
