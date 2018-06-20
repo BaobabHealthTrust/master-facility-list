@@ -34,39 +34,6 @@ class FacilitiesHome extends React.Component<Props, State> {
     isShowSearchResults: false
   };
 
-  componentWillReceiveProps(props) {
-    if (props.searchResults.length > 0) {
-      this.setState(prevState => {
-        prevState.isShowSearchResults = true;
-      });
-    } else {
-      this.setState(prevState => {
-        prevState.isShowSearchResults = false;
-      });
-    }
-
-    const isShowSearchResults = this.state.isShowSearchResults;
-
-    footerResizer();
-  }
-
-  handleClose = () => { this.setState({ isAdvancedSearch: false }); }
-
-  toggleAdvancedSearch = () => {
-    this.setState({ isAdvancedSearch: true, isShowSearchResults: false });
-    footerResizer();
-  }
-
-  toggleAddFacility = () => {
-    this.setState({ isAddFacility: true });
-    footerResizer();
-  }
-
-  handleCancelAddFacility = () => {
-    this.setState({ isAddFacility: false });
-    footerResizer();
-  }
-
   render() {
     const isShowFacilityList = !(this.state.isAddFacility || this.state.isAdvancedSearch || this.state.isShowSearchResults)
     const isLoadingOrError = this.props.isLoading || this.props.isError

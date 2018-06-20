@@ -20,11 +20,7 @@ class DistrictTags extends Component {
               await this.props.fetchBasicDetailsResults(
                 this.props.searchValues
               );
-              this.props.filteredResults.length > 0 && await this.props.fetchFilteredResults(this.props.filteredResults);
-
             }}
-            manageCheckbox={(id) => this.props.manageCheckbox(id)}
-
           />
         );
       });

@@ -14,17 +14,35 @@ import MflDownload from "../common/MflDownload";
 import { ShowError, FetchAllDependancies } from "../common";
 import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
 import settings from '../settings';
+import { postFormData } from '../actions'
 import { ButtonConfiguration } from '../types/helper-types';
+import { Facility } from '../types/model-types';
 
 type Props = {
   match: any,
-  current: any
+  current: any,
+  postFormData: Function,
+  response: Partial<Facility>
 };
 
 class FacilityDetails extends React.Component<Props> {
 
   state = {
-    pushTo: null
+    pushTo: null,
+    redirect: false
+  }
+
+  _handleArchive = async () => {
+    await this.props.postFormData(
+      { archived_date: new Date() },
+      "Facilities",
+      "PATCH",
+      "PATCH_BASIC_DETAILS",
+      "",
+      this.props.match.params.id
+    )
+    if (this.props.response) this.setState({ redirect: true })
+    else alert('Something went wrong')
   }
 
   componentWillReceiveProps() {
@@ -35,7 +53,7 @@ class FacilityDetails extends React.Component<Props> {
   buttonConfiguration: ButtonConfiguration = [
     {
       icon: 'delete',
-      action: () => alert('Deleting...'),
+      action: () => this._handleArchive(),
       color: 'red',
       name: 'Delete Facility'
     },
@@ -123,9 +141,8 @@ class FacilityDetails extends React.Component<Props> {
     }
     return (
       <div>
-        {
-          this.state.pushTo && <Redirect to={this.state.pushTo} />
-        }
+        {this.state.pushTo && <Redirect to={this.state.pushTo} />}
+        {this.state.redirect && <Redirect to='/facilities' />}
         <SecondaryMenu links={links} defaultActivePage={"summary"} />
         <div className="container mfl-titles flex flex-row justify-between">
           <div>
@@ -245,8 +262,9 @@ class FacilityDetails extends React.Component<Props> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isError: state.facilities.isNetworkError
+    isError: state.facilities.isNetworkError,
+    response: state.facilities.patchResponse
   };
 };
 
-export default connect(mapStateToProps, null)(FacilityDetails);
+export default connect(mapStateToProps, { postFormData })(FacilityDetails);

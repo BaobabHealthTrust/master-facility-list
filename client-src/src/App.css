@@ -758,3 +758,8 @@ select.mfl-select {
 .mfl-collection-item:hover{
     background-color: #eee;
 }
+
+
+.MuiInput-underline-9:before, .MuiInput-underline-9:after {
+  border: none !important;
+}

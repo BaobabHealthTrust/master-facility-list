@@ -69,6 +69,7 @@ class Navbar extends Component {
                 <input
                   id="search"
                   type="search"
+                  placeholder="Enter Facility Name or Facility Code"
                   required
                   onClick={e => this.maximizeSearch(e)}
                   onBlur={e => this.restoreSearch(e)}
