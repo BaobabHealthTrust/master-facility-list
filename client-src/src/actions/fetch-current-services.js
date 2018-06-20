@@ -3,16 +3,10 @@ import settings from '../settings';
 
 export default (id) => {
   const END_POINT = `${settings.hostname}/api/`;
-  const RESOURCE = `FacilityServices/`;
+  const RESOURCE = `FacilityServices/hierarchy`;
 
-  const FILTER = {
-    where: {
-      facility_id: id
-    },
-    include: { service: ['serviceType', 'category'] }
-  };
+  const URL = `${END_POINT}${RESOURCE}?facility_id=${id}`;
 
-  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
   const request = axios.get(URL);
   return {
     type: 'FETCH_CURRENT_SERVICES',

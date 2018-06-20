@@ -10,12 +10,12 @@ const moment = require("moment");
 
 module.exports = (Facility) => {
 
-  Facility.observe('after save', async function filterProperties(ctx) {
+  Facility.observe('after save', async function generateFacilityCode(ctx) {
     if (ctx.instance) {
       const district_id = _.padStart(ctx.instance.district_id, 2, '0');
       const id = _.padStart(String(ctx.instance.id), 4, '0');
       const district = await server.models.District.findOne({ where: { id: district_id } });
-      if (ctx.instance.published_date) {
+      if (ctx.instance.published_date && !ctx.instance.archived_date) {
         const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
           facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
             if (err) console.error(err);
@@ -153,7 +153,6 @@ module.exports = (Facility) => {
   }
 
   Facility.list = async (filter, regex, cb) => {
-    console.log(regex)
     const facilities = await Facility.find({
       ...filter,
       include: [

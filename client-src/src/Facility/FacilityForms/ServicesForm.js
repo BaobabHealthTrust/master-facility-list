@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { Input, Navbar, NavItem, Row, Button } from "react-materialize";
+import { Input, Navbar, NavItem, Row, Button, Pagination } from "react-materialize";
 import { connect } from "react-redux";
 import { DatePicker, FormWizardNavigation } from '../../common';
 import { BasicDetailsFormProps } from '../../types/helper-types';
@@ -33,7 +33,8 @@ class ServicesForm extends React.Component<Props> {
     firstLevelService: -1,
     secondLevelService: -1,
     thirdLevelService: -1,
-    cancelForm: false
+    cancelForm: false,
+    pageNumber: 1
   }
 
   _publishFacility = async () => {
@@ -98,20 +99,16 @@ class ServicesForm extends React.Component<Props> {
       return;
     }
 
-    let service;
-    // TODO: Validate that a Service isnt already created
-    // TODO: Pagination!
-    // TODO: Make sure to add all services that are greater than 0 at once
-    // TODO: Make sure to delete all services who are dependent on the current service at once
+    let services = [];
 
-    if (Number(firstLevelService) > 0) service = firstLevelService;
+    if (Number(firstLevelService) > 0) services.push(firstLevelService);
 
-    if (Number(secondLevelService) > 0) service = secondLevelService;
+    if (Number(secondLevelService) > 0) services.push(secondLevelService);
 
-    if (Number(thirdLevelService) > 0) service = thirdLevelService;
+    if (Number(thirdLevelService) > 0) services.push(thirdLevelService);
 
-    const data: FacilityService = {
-      service_id: service,
+    const data = {
+      service_ids: services,
       client_id: 1,
       facility_id: await this._getFacilityId(),
     }
@@ -120,11 +117,12 @@ class ServicesForm extends React.Component<Props> {
       data,
       "FacilityServices",
       "POST",
-      "POST_FACILITY_SERVICE"
+      "POST_FACILITY_SERVICE",
+      "saveMany"
     );
     setSubmitting(false);
 
-    if (this.props.response.id > 0) {
+    if (this.props.response) {
       this._resetForm();
       await this.props.fetchCurrentServices(await this._getFacilityId());
       alert('Service Successfully Created');
@@ -266,15 +264,83 @@ class ServicesForm extends React.Component<Props> {
                     <h6 className="mb-4 flex items-center">
                       <i className="material-icons mr-4">verified_user</i> Services
                     </h6>
+                    {/* TODO: Should go in own component */}
                     {
-                      this.props.facilityServices.map(fs => {
-                        return (
-                          <div className="p-4 mb-2 shadow w-full flex justify-between cursor-pointer">
-                            <div>{fs.service.service_name}</div>
-                            <div><i className="material-icons mr-4" onClick={() => this._remove(fs.id)}>close</i></div>
-                          </div>
-                        )
+                      this.props.facilityServices && this.props.facilityServices.filter((fs, i) => {
+                        return (i >= (this.state.pageNumber - 1) * 3) && (i < this.state.pageNumber * 3)
                       })
+                        .map(fs => {
+                          return (
+                            <div className="p-4 mb-2 shadow w-full cursor-pointer">
+                              <div className="flex justify-between">
+                                <div><strong>{fs.service.service_name}</strong></div>
+                                <div>
+                                  <i
+                                    className="material-icons mr-4"
+                                    onClick={() => this._remove(fs.facilityService.id)}
+                                  >
+                                    close
+                                </i>
+                                </div>
+                              </div>
+                              {
+                                fs.children && fs.children.map(fs => {
+                                  return (
+                                    <div>
+                                      <div className="flex justify-between mt-4 ml-4">
+                                        <div>{fs.service.service_name}</div>
+                                        <div>
+                                          <i
+                                            className="material-icons mr-4"
+                                            onClick={() => this._remove(fs.facilityService.id)}
+                                          >
+                                            close
+                                        </i>
+                                        </div>
+                                      </div>
+                                      {
+                                        fs.children && fs.children.map(fs => {
+                                          return (
+                                            <div className="flex justify-between mt-4 ml-8">
+                                              <div>{fs.service.service_name}</div>
+                                              <div>
+                                                <i
+                                                  className="material-icons mr-4"
+                                                  onClick={() => this._remove(fs.facilityService.id)}
+                                                >
+                                                  close
+                                           </i>
+                                              </div>
+                                            </div>
+                                          )
+                                        })
+                                      }
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          )
+                        })
+                    }
+                    {
+                      (this.props.facilityServices && this.props.facilityServices.length) > 3 && (
+                        <Pagination
+                          items={
+                            this.props.facilityServices
+                              ? this.props.facilityServices.length
+                              : 0
+                          }
+                          activePage={1}
+                          maxButtons={
+                            this.props.facilityServices
+                              ? Math.floor(this.props.facilityServices.length / 3)
+                              : 0
+                          }
+                          onSelect={(number) => this.setState({ pageNumber: number })}
+                          className="mt-4"
+                        />
+                      )
                     }
                   </div>
                 </div>
@@ -294,7 +360,7 @@ class ServicesForm extends React.Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    facilityServices: state.facilities.currentServices,
+    facilityServices: state.facilities.currentServices.hierarchy,
     response: state.facilities.servicesResponse,
     serviceTypes: state.dependancies.serviceTypes,
     services: state.facilities.services,
