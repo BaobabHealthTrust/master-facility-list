@@ -24,9 +24,7 @@ export default class FacilityList extends React.Component<Props> {
       icon: 'file_copy',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {
-            "district_id": 6
-          },
+          "where": {},
           "format": "csv"
         })
       ),
@@ -37,9 +35,7 @@ export default class FacilityList extends React.Component<Props> {
       icon: 'grid_on',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {
-            "district_id": 6
-          },
+          "where": {},
           "format": "excel"
         })
       ),
@@ -50,9 +46,7 @@ export default class FacilityList extends React.Component<Props> {
       icon: 'picture_as_pdf',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {
-            "district_id": 6
-          },
+          "where": {},
           "format": "pdf"
         })
       ),
