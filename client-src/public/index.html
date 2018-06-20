@@ -86,32 +86,15 @@
             const nav = $('.header');
             const footer = $('.footer');
 
+            const height = $(this).height() - nav.height() - footer.height();
+            content.css('min-height', height);
 
-            const $window = $(window).on('resize', function () {
-                const height = $(this).height() - nav.height() - footer.height();
-                content.css('min-height', height);
-            }).trigger('resize');
-
-
+            $(window).on({
+              'resize': () => {content.css('min-height', height);},
+              'change': () => { content.css('min-height', height);}
+            });
         });
 
-
-        $(window).resize((e) => {
-            function scrollBars() {
-                var body = $('body')[0]
-                return {
-                    vertical: body.scrollHeight > body.clientHeight,
-                    horizontal: body.scrollWidth > body.clientWidth
-                }
-            }
-            setTimeout(() => {
-                if (scrollBars().vertical) {
-                    document.querySelector('.page-footer').style.position = "relative";
-                } else {
-                    document.querySelector('.page-footer').style.position = "absolute";
-                }
-            }, 100);
-        })
     </script>
 </body>
 
