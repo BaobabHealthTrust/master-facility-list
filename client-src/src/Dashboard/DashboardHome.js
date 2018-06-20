@@ -5,7 +5,8 @@ import {
   FacilityOwnershipChart,
   FacilityOperationalChart,
   FacilityRegulatoryStatusChart,
-  FacilityTypeChart
+  FacilityTypeChart,
+  FacilitiesByTypeAndOwnership
 } from "./charts";
 import { FacilityFilters } from "../common/"
 import { connect } from "react-redux";
@@ -28,6 +29,11 @@ import {
   fetchDashboardFacilityServices
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
+
+import { Doughnut, Bar } from 'react-chartjs-2'
+
+import mapmalawi from '../mapmalawi.png';
+// import '../App.css';
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -234,7 +240,7 @@ class DashboardHome extends React.Component<Props, State> {
     //       y: this.calculateOperationalStatus(operationalStatus.id)
     //     };
     //   }
-    // );
+    // )
 
     return (
       <div className="container">

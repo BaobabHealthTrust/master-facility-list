@@ -759,7 +759,12 @@ select.mfl-select {
     background-color: #eee;
 }
 
-
 .MuiInput-underline-9:before, .MuiInput-underline-9:after {
   border: none !important;
+}
+
+.partner-logo{
+    height: 100px;
+    display: block;
+    margin: auto;
 }

@@ -20,11 +20,11 @@ class UserForm extends React.Component {
   }
 
   schema = yup.object().shape({
-    firstname: yup.string().min(6).required(),
-    lastname: yup.string().min(6).required(),
-    username: yup.string().min(8).required(),
-    email: yup.string().email().required(),
-    password: yup.string().min(5).required(),
+    firstname: yup.string().min(6).required("First name is required"),
+    lastname: yup.string().min(6).required("last name is required"),
+    username: yup.string().min(8).required("username is required"),
+    email: yup.string().email("enter a valid email address").required("email is required"),
+    password: yup.string().min(5, "atleast 5 characters long").required("password is required"),
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null])
       .required('Password confirm is required')
@@ -38,7 +38,9 @@ class UserForm extends React.Component {
       "POST_USER",
       "createAdmin",
     );
-    this.props.userCreated ? this.props.onUserCreationSuccess() : this.props.onUserCreationError();
+    this.props.userCreated ? 
+      this.props.onUserCreationSuccess() : 
+      this.props.onUserCreationError();
   }
 
   render() {
@@ -54,7 +56,8 @@ class UserForm extends React.Component {
           touched,
           handleChange,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
+          handleBlur
         }) => (
             <Modal
               header={this.props.title}
@@ -77,13 +80,16 @@ class UserForm extends React.Component {
               }
             >
               <Row>
+              {/* TODO: mark required fields with asterisks */}
                 <Input
                   s={6}
                   placeholder="Enter User First Name"
                   labelClassName="mfl-max-width"
                   value={values.firstname}
                   onChange={handleChange}
-                  error={errors.firstname}
+                  error={errors.firstname} 
+                  onBlur={handleBlur}
+                  error={touched.firstname && errors.firstname}
                   name="firstname"
                 />
                 <Input
@@ -92,7 +98,10 @@ class UserForm extends React.Component {
                   labelClassName="mfl-max-width"
                   value={values.lastname}
                   onChange={handleChange}
-                  error={errors.lastname}
+                  error="bddbbd d   d"
+                  // error={errors.lastname}
+                  onBlur={handleBlur}
+                  error={touched.lastname && errors.lastname}
                   name="lastname"
                 />
               </Row>
@@ -104,6 +113,8 @@ class UserForm extends React.Component {
                   value={values.username}
                   onChange={handleChange}
                   error={errors.username}
+                  onBlur={handleBlur}
+                  error={touched.username && errors.username}
                   name="username"
                 />
                 <Input
@@ -113,6 +124,8 @@ class UserForm extends React.Component {
                   value={values.email}
                   onChange={handleChange}
                   error={errors.email}
+                  onBlur={handleBlur}
+                  error={touched.email && errors.email}
                   name="email"
                 />
               </Row>
@@ -124,6 +137,8 @@ class UserForm extends React.Component {
                   value={values.password}
                   onChange={handleChange}
                   error={errors.password}
+                  onBlur={handleBlur} 
+                  error={touched.password && errors.password} 
                   name="password"
                   type="password"
                 />
@@ -134,6 +149,8 @@ class UserForm extends React.Component {
                   value={values.confirmPassword}
                   onChange={handleChange}
                   error={errors.confirmPassword}
+                  onBlur={handleBlur}
+                  error={touched.confirmPassword && errors.confirmPassword}
                   name="confirmPassword"
                   type="password"
                 />

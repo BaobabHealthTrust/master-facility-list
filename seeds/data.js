@@ -23,6 +23,16 @@ module.exports.owners = [{
   description: "These are NGO owned facilities"
 }
 ];
+module.exports.feedbackTypes = [
+  {
+  feedback_type: "General feedback",
+  description: "General feedback"
+  },
+  {
+    feedback_type: "Feature request feedback",
+    description: "Feature request feedback"
+  }
+];
 
 module.exports.facility = {
   facility_code: "NB01042",

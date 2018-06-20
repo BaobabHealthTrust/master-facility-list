@@ -4,12 +4,15 @@ import MflDownload from "../common/MflDownload";
 import Table from "../common/Table";
 import Pagination from "../common/Pagination";
 import GridTable from "../common/GridTable";
+import MflGrid from '../common/MflGrid';
 import { truncate } from "lodash";
 import moment from "moment";
 import { Facilities } from '../types/list-types';
 import { Link } from 'react-router-dom';
 import { ButtonConfiguration } from '../types/helper-types';
 import settings from '../settings';
+import { Card } from "react-materialize";
+import { Redirect } from 'react-router-dom';
 
 type Props = {
   dataSource: Facilities,
@@ -18,6 +21,10 @@ type Props = {
 };
 
 export default class FacilityList extends React.Component<Props> {
+
+  state = {
+    redirectLink: null
+  }
 
   buttonConfiguration: ButtonConfiguration = [
     {
@@ -55,11 +62,30 @@ export default class FacilityList extends React.Component<Props> {
     }
   ]
 
+  redirect = facilityId => {
+    this.setState({
+      redirectLink: `/facilities/${facilityId}/summary`
+    })
+  }
+
   render() {
     const tableRecords = this.props.dataSource || []
 
-    // TODO: Fix issue with margin top
-    return (
+
+    const columns = [
+      { name: 'code', title: 'CODE' },
+      { name: 'name', title: 'NAME' },
+      { name: 'common', title: 'COMMON NAME' },
+      { name: 'ownership', title: 'OWNERSHIP' },
+      { name: 'type', title: 'TYPE' },
+      { name: 'status', title: 'STATUS' },
+      { name: 'district', title: 'DISTRICT' },
+      { name: 'dateOpened', title: 'DATE OPENED' },
+    ]
+
+    const defaultSorting = [{ columnName: 'name', direction: 'asc' }];
+
+    const defaultView = (
       <div className="container">
         <div className="flex flex-row w-full justify-between">
           <div className="flex flex-row">
@@ -93,8 +119,23 @@ export default class FacilityList extends React.Component<Props> {
           </div>
         </div>
 
-        <GridTable data={tableRecords} />
+        {/* <GridTable data={tableRecords} /> */}
+        <Card>
+          <MflGrid
+            rows={tableRecords}
+            columns={columns}
+            pageSize={10}
+            defaultSorting={defaultSorting}
+            rowSelected={facility => this.redirect(facility.id)}
+          />
+        </Card>
       </div>
+    )
+
+    return (
+      <React.Fragment>
+        {this.state.redirectLink ? <Redirect to={this.state.redirectLink} /> : defaultView}
+      </React.Fragment>
     );
   }
 }

@@ -12,6 +12,8 @@ module.exports = function(Client) {
         message: { min: "Password is too short" }
     });
 
+    // TODO: remote hook to only get null users
+
     Client.createAdmin = async (data, cb) => {
         const client = await server.models.Client.create(data);
         const role = (await server.models.Role.find({where: {name: 'admin'}}))[0];
@@ -30,4 +32,6 @@ module.exports = function(Client) {
         returns: { arg: 'response', type: 'object' },
         http: { verb: 'post' }
     })
+
+
 };
