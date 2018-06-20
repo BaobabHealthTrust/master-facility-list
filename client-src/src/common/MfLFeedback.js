@@ -25,7 +25,6 @@ class MflFeedback extends Component {
                     <div className="row mfl-tm-10">
                         <div className="col m8 s12">
                             <FeedbackForm/>
-                           
                         </div>
                         <div className="col m4 s12">
                             <h5 className="mfl-contact">Contacts</h5>
@@ -33,10 +32,6 @@ class MflFeedback extends Component {
                                 <li className="black-text text-lighten-2">
                                     <span className="mfl-about-icon"><i className="material-icons">phone</i></span>
                                     <a className="mfl-about-text" href="http://health.gov.mw">Download guidelines</a>
-                                </li>
-                                <li className="black-text text-lighten-2">
-                                    <span className="mfl-about-icon"><i className="material-icons">email</i></span>
-                                    <a className="mfl-about-text" href="http://health.gov.mw">About Malu</a>
                                 </li>
                                 <li className="black-text text-lighten-2">
                                     <span className="mfl-about-icon"><i className="material-icons">insert_link</i></span>
