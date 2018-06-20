@@ -72,9 +72,9 @@ class FacilityContactForm extends React.Component<Props> {
       .integer()
       .required(this.REQUIRED_MESSAGE),
     longitude: yup.number(this.INVALID_NUM_MESSAGE)
-      .negative()
+      .positive()
       .required(this.REQUIRED_MESSAGE),
-    latitude: yup.number(this.INVALID_NUM_MESSAGE).positive().required(this.REQUIRED_MESSAGE)
+    latitude: yup.number(this.INVALID_NUM_MESSAGE).negative().required(this.REQUIRED_MESSAGE)
   })
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
