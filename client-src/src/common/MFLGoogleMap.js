@@ -1,5 +1,6 @@
 import React from "react";
 import { compose, withProps } from "recompose";
+
 import {
     withScriptjs,
     withGoogleMap,
@@ -19,11 +20,13 @@ const MFLGoogleMap = compose(
     withGoogleMap
 )(props => (
     <GoogleMap
-        defaultZoom={8}
-        defaultCenter={{ lat: -13.9626121, lng: 33.7741195 }}
+        defaultZoom = {8}
+        defaultCenter={props.position}
     >
         {props.isMarkerShown && (
-            <Marker position={{ lat: -13.9626121, lng: 33.7741195 }} />
+            <Marker
+                position={props.position}
+            />
         )}
     </GoogleMap>
 ));

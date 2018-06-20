@@ -1,42 +1,32 @@
 import React from "react";
+import kuunika_logo from '../kuunika_logo.png';
+import {Button} from 'react-materialize';
 
 export default (props) => {
     return (
-        <footer className="page-footer light-blue darken-4">
-            <div className="container">
-                <div className="row mfl-no-margin">
-                    <div className="col s12 m4 white-text">
-                        <h5 className="mfl-contact">Contact Us</h5>
-                    </div>
-                    <div className="col s12 m8 white-text">
-                        <div className="row">
-                            <div className="col m6">
-                                <ul>
-                                    <li className="white-text text-lighten-4">
-                                        <span className="mfl-sm-icon"><i className="material-icons">call</i></span>
-                                        +265 1 21 37 81
-                                    </li>
-                                    <li className="white-text text-lighten-4">
-                                        <span className="mfl-sm-icon"><i className="material-icons">email</i></span>
-                                        <a href="mailto:moh@health.gov.mw">moh@health.gov.mw</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="col m6">
-                                <ul>
-                                    <li className="white-text text-lighten-4">
-                                        <span className="mfl-sm-icon"><i className="material-icons">insert_link</i></span>
-                                        <a href="http://health.gov.mw">www.health.gov.mw</a>
-                                    </li>
-                                </ul>
-                                <span className="mfl-copy">© {(new Date()).getFullYear()} Copyright, Republic of Malawi, Ministry of Health</span>
-                            </div>
-                        </div>
+        <div className='footer'>
+        <a href="#" className='pin-r' id="back-to-top" title="Back to top">
+          <Button
+            floating
+            small
+            className='absolute mr-4 pin-r blue'
+          >
+            <i class="material-icons">
+              keyboard_arrow_up
+                </i>
+          </Button>
+        </a>
+        <footer className="light-blue darken-4 align-middle" >
+        <div className="row px-4 py-4 mx-0 my-0">
+            <div className="col m6">
+                <img style={{ width: 90, height: 30 }} src={kuunika_logo} />
+              </div>
 
-                    </div>
-
+                <div className="col m6 white-text text-right">
+                    <span className="mfl-copy text-left mt-4">© {(new Date()).getFullYear()} Copyright, Republic of Malawi, Ministry of Health</span>
                 </div>
             </div>
         </footer>
+        </div>
     )
 }

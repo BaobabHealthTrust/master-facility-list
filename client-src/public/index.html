@@ -20,6 +20,25 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
 
+    <style>
+        #back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 9999;
+            width: 32px;
+            height: 32px;
+            line-height: 30px;
+            cursor: pointer;
+            transition: opacity 0.2s ease-out;
+            opacity: 0;
+        }
+        #back-to-top.show {
+            opacity: 1;
+        }
+    </style>
+
+
 </head>
 
 <body id="body">
@@ -40,24 +59,42 @@
             const documentHeight = $(document).innerHeight();
             const contentHeight = $('.mfl-page-wrap').innerHeight();
             const marginDiff = documentHeight - contentHeight;
+
+            if ($('#back-to-top').length) {
+              var scrollTrigger = 100, // px
+                backToTop = function () {
+                  var scrollTop = $(window).scrollTop();
+                  if (scrollTop > scrollTrigger) {
+                    $('#back-to-top').addClass('show');
+                  } else {
+                    $('#back-to-top').removeClass('show');
+                  }
+                };
+              backToTop();
+              $(window).on('scroll', function () {
+                backToTop();
+              });
+              $('#back-to-top').on('click', function (e) {
+                e.preventDefault();
+                $('html,body').animate({
+                  scrollTop: 0
+                }, 700);
+              });
+            }
+
+            const content = $('.content');
+            const nav = $('.header');
+            const footer = $('.footer');
+
+            const height = $(this).height() - nav.height() - footer.height();
+            content.css('min-height', height);
+
+            $(window).on({
+              'resize': () => {content.css('min-height', height)},
+              'change': () => { content.css('min-height', height)}
+            });
         });
 
-        $(window).resize((e) => {
-            function scrollBars() {
-                var body = $('body')[0]
-                return {
-                    vertical: body.scrollHeight > body.clientHeight,
-                    horizontal: body.scrollWidth > body.clientWidth
-                }
-            }
-            setTimeout(() => {
-                if (scrollBars().vertical) {
-                    document.querySelector('.page-footer').style.position = "relative";
-                } else {
-                    document.querySelector('.page-footer').style.position = "absolute";
-                }
-            }, 100);
-        })
     </script>
 </body>
 

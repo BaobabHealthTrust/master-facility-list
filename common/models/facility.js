@@ -236,61 +236,61 @@ module.exports = (Facility) => {
    *
    */
   Facility.downloadFacility = async (id, cb) => {
-    try {
-      const error = new Error();
-      error.name = "ERROR";
-      error.status = 400;
+      try {
+        const error = new Error();
+        error.name = "ERROR";
+        error.status = 400;
 
-      const facility = await Facility.findOne({
-        where: { id: id },
-        include: [
-          "locations",
-          "contactPeople",
-          "regulatoryStatus",
-          "operationalStatus",
-          "owner",
-          "facilityType",
-          "addresses",
-          { district: "zone" },
-        ],
-        limit: 1
-      }).catch(err => cb(err));
-
-      if (facility) {
-        const utilities = await server.models.FacilityUtility.find({
-          where: { facility_id: id },
-          include: { utility: "utilityType" }
+        const facility = await Facility.findOne({
+            where: {id},
+            include: [
+                "locations",
+                "contactPeople",
+                "regulatoryStatus",
+                "operationalStatus",
+                "owner",
+                "facilityType",
+                "addresses",
+                { district: "zone" },
+            ],
+            limit: 1
         }).catch(err => cb(err));
 
-        const resources = await server.models.FacilityResource.find({
-          where: { facility_id: id },
-          include: { resource: "resourceType" }
-        }).catch(err => cb(err));
+        if (facility) {
+          const utilities = await server.models.FacilityUtility.find({
+              where: { facility_id: id },
+              include: { utility: "utilityType" }
+          }).catch(err => cb(err));
 
-        const services = await server.models.FacilityService.find({
-          where: { facility_id: id },
-          include: { service: ["serviceType", "category"] }
-        }).catch(err => cb(err));
+          const resources = await server.models.FacilityResource.find({
+              where: { facility_id: id },
+              include: { resource: "resourceType" }
+          }).catch(err => cb(err));
 
-        await generateFile(
-          facility.toJSON(),
-          utilities.map(data => data.toJSON()),
-          resources.map(data => data.toJSON()),
-          services.map(data => data.toJSON()),
-          (err, stream) => {
-            if (err) {
-              return cb(err);
-            }
-            cb(null, stream, 'application/pdf');
-          }
-        );
-      } else {
-        error.message = "Invalid facility ID.";
-        cb(error);
+          const services = await server.models.FacilityService.find({
+              where: { facility_id: id },
+              include: { service: ["serviceType", "category"] }
+          }).catch(err => cb(err));
+
+          await generateFile(
+              facility.toJSON(),
+              utilities.map(data => data.toJSON()),
+              resources.map(data => data.toJSON()),
+              services.map(data => data.toJSON()),
+              (err, stream) => {
+                  if (err) {
+                      return cb(err);
+                  }
+                  cb(null, stream, 'application/pdf');
+              }
+          );
+        } else {
+            error.message = "Invalid facility ID.";
+            cb(error);
+        }
+      } catch (error) {
+          console.log("Malu" + error);
       }
-    } catch (error) {
-      console.log("Malu" + error);
-    }
   }
 
   /** Register download  remote method */
@@ -309,8 +309,9 @@ module.exports = (Facility) => {
    * @param {string} format File format.
    * @param {callback} cb Callback.
    */
-  Facility.downloadFacilities = async (data, cb) => {
+  Facility.downloadFacilities = async (json, cb) => {
     try {
+      const data = JSON.parse(json);
       if (!data.hasOwnProperty('format') || !data.hasOwnProperty('format')) {
         const error = new Error("Invalid post format.");
         error.name = "ERROR";
@@ -370,7 +371,6 @@ module.exports = (Facility) => {
       error.status = 400;
       error.message = "Invalid facility ID.";
       cb(error);
-
     } catch (error) {
       cb(error);
     }
@@ -379,8 +379,8 @@ module.exports = (Facility) => {
   /** Register download  remote method */
   Facility.remoteMethod('downloadFacilities', {
     description: "All facilities download",
-    accepts: { arg: "data", type: "object" },
-    http: { path: '/download', verb: 'post' },
+    accepts: {arg: "data", type: "string"},
+    http: {path: '/download', verb: 'get'},
     returns: [
       { arg: 'body', type: 'file', root: true },
       { arg: 'Content-Type', type: 'string', http: { target: 'header' } }

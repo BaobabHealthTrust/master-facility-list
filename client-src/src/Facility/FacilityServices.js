@@ -1,10 +1,12 @@
 //@flow
 import React from "react";
+
 import {
   fetchCurrentDetails,
   fetchCurrentServices,
   setCurrentDetails
 } from "../actions";
+
 import Container from "./ServicesContainer";
 import { connect } from "react-redux";
 import { Service, ServiceType } from "../types/model-types";
@@ -97,7 +99,6 @@ const mapStateToProps = store => {
 };
 
 // TODO: Services and others should go into reducer yake
-
 export default connect(mapStateToProps, {
   setCurrentDetails,
   fetchCurrentDetails,
