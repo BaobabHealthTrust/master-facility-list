@@ -5,7 +5,8 @@ import {
   FacilityOwnershipChart,
   FacilityOperationalChart,
   FacilityRegulatoryStatusChart,
-  FacilityTypeChart
+  FacilityTypeChart,
+  FacilitiesByTypeAndOwnership
 } from "./charts";
 import { FacilityFilters } from "../common/"
 import { connect } from "react-redux";
@@ -28,6 +29,11 @@ import {
   fetchDashboardFacilityServices
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
+
+import { Doughnut, Bar } from 'react-chartjs-2'
+
+import mapmalawi from '../mapmalawi.png';
+// import '../App.css';
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -235,6 +241,47 @@ class DashboardHome extends React.Component<Props, State> {
       }
     );
 
+    const doughnutData = {
+      datasets: [{
+        data: [10, 20],
+        backgroundColor: [
+          '#1976D2',
+          '#0D47A1',
+        ],
+      }],
+      labels: [
+        'closed',
+        'opened'
+      ],
+      colors: [
+        '#768392',
+        '#568392'
+      ]
+    };
+
+    const barData = {
+      labels: ["Registered", "Not certified", "Suspended", "Cancelled", "Not Registered"],
+      datasets: [{
+        label: '',
+        data: [12, 19, 3, 5, 2],
+        backgroundColor: [
+          '#0D47A1',
+          '#0D47A1',
+          '#0D47A1',
+          '#0D47A1',
+          '#0D47A1',
+        ],
+        borderColor: [
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+        ],
+        borderWidth: 1
+      }]
+    };
+
     return (
       <div>
         <FacilityFilters url="" isFilteredResults={false} />
@@ -249,67 +296,73 @@ class DashboardHome extends React.Component<Props, State> {
               <h4>
                 "Sorry, we cannot connect to the Server. Please
                 check your Network"
-                            </h4>
+              </h4>
             </blockquote>
           ) : (
                 <div className="row">
-                  <div className="col s12">
-                    <div className="mfl-graphs-container">
-                      <div className="mfl-dash-container">
-                        <div className="row">
-                          <div className="col s12 m6 l4 xl2">
+                  <div className="col s12 m3">
+                    <div className="z-depth-2 mlf-w-9">
+                      <div className="mfl-card-title bg-grey-light">
+                        select district
+                      </div>
+                      <div className=" mfl-p-2 mfl-bm-5">
+                        <div>
+                          <img src={mapmalawi} alt="map of malawi" className="mfl-p-2" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col s12 m9">
+                    <div className="row">
+                      {this.state.dashboardServices.map(
+                        services => (
+                          <div className="col s12 m3">
                             <div className="mfl-tm-5" />
                             <Card
-                              icon="local_hospital"
-                              stat={this.calculateTotal()}
-                              title="Total Facilities"
+                              icon={services.icon}
+                              stat={this.calculateTotalFacilitiesWith(
+                                services.id
+                              )}
+                              title={`Facilities with ${
+                                services.displayName
+                                }`}
                             />
                           </div>
-                          {this.state.dashboardServices.map(
-                            services => (
-                              <div className="col s12 m6 l4 xl2">
-                                <div className="mfl-tm-5" />
-                                <Card
-                                  icon={services.icon}
-                                  stat={this.calculateTotalFacilitiesWith(
-                                    services.id
-                                  )}
-                                  title={`Facilities with ${
-                                    services.displayName
-                                    }`}
-                                />
-                              </div>
-                            )
-                          )}
-                          {/* TODO: Add Components for the other Statistics */}
-                        </div>
-                        {/* <div className="row mfl-tm-2">
-                                                    <div className="col l12 xl10">
-                                                        <FacilityTypeChart data={facilityTypeData} />
-                                                    </div>
-                                                </div> */}
-                        <div className="row mfl-tm-2">
-                          <div className="col s12 m6 l4 xl3">
-                            <div className="mfl-tm-5" />
-                            <FacilityOwnershipChart
-                              data={ownershipData}
-                            />
+                        )
+                      )}
+                    </div>
+                    <div className="row">
+                      <div className="col s12 m6">
+                        <div className="z-depth-2 mlf-w-9">
+                          <div className="mfl-card-title bg-grey-light">
+                            Facilities by Licensing status
                           </div>
-
-                          <div className="col s12 m6 l4 xl3">
-                            <div className="mfl-tm-5" />
-                            <FacilityOperationalChart
-                              data={operationalStatusData}
-                            />
-                          </div>
-                          <div className="col s12 m6 l4 xl3">
-                            <div className="mfl-tm-5" />
-                            <FacilityRegulatoryStatusChart
-                              data={regulatoryStatusData}
-                            />
+                          <div className=" mfl-p-2 mfl-bm-5">
+                            <Bar data={barData} />
                           </div>
                         </div>
-                        <div className="row mfl-tm-2" />
+                      </div>
+                      <div className="col s12 m6">
+                        <div className="z-depth-2 mlf-w-9">
+                          <div className="mfl-card-title bg-grey-light">
+                            Facilities by operational status
+                          </div>
+                          <div className=" mfl-p-2 mfl-bm-5">
+                            <Doughnut data={doughnutData} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col s12">
+                        <div className="z-depth-2 mlf-w-9">
+                          <div className="mfl-card-title bg-grey-light">
+                            Facilities by operational status
+                          </div>
+                          <div className=" mfl-p-2 mfl-bm-5">
+                            <FacilitiesByTypeAndOwnership />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

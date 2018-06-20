@@ -59,6 +59,7 @@ class MflAbout extends Component {
                         </div>
                     </div>
                     <div className="row">
+                    {/* TODO: resize all partners images */}
                         <div className="col m12 s12">
                             <h5 className="mfl-contact">Partners</h5>
                             <div class="row">
