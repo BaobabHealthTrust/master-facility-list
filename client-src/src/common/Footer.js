@@ -1,7 +1,6 @@
 import React from "react";
 import kuunika_logo from '../kuunika_logo.png';
 import {Button} from 'react-materialize';
-import AddIcon from '@material-ui/icons/Add';
 
 export default (props) => {
     return (
@@ -18,7 +17,7 @@ export default (props) => {
           </Button>
         </a>
         <footer className="light-blue darken-4 align-middle" >
-        <div className="row px-4 py-4">
+        <div className="row px-4 py-4 mx-0 my-0">
             <div className="col m6">
                 <img style={{ width: 90, height: 30 }} src={kuunika_logo} />
               </div>
