@@ -6,6 +6,7 @@ import { fetchCurrentDetails, setCurrentDetails } from "../actions";
 import moment from "moment";
 import { BasicDetailsForm } from "./FacilityForms";
 import { CurrentFacility } from "../types/helper-types";
+import { ProgressBar } from 'react-materialize';
 class Summary extends Component<{ current: CurrentFacility }> {
 
   async componentDidMount() {
@@ -33,43 +34,51 @@ class Summary extends Component<{ current: CurrentFacility }> {
       <div className="container">
         <div>
           <div className="row z-depth-2">
-            <div className="col m6 s12">
-              {this._renderHeadingSection('Common Name', 'text_fields', this.props.current.common_name)}
-              {owner && this._renderHeadingSection('Owner', 'meeting_room', owner.facility_owner)}
-              {
-                regulatoryStatus && this._renderHeadingSection(
-                  'Regulatory Status',
-                  'visibility',
-                  regulatoryStatus.facility_regulatory_status
-                )
-              }
-            </div>
+            {
+              this.props.isLoading
+                ? <ProgressBar />
+                : (
+                  <div>
+                    <div className="col m6 s12">
+                      {this._renderHeadingSection('Common Name', 'text_fields', this.props.current.common_name)}
+                      {owner && this._renderHeadingSection('Owner', 'meeting_room', owner.facility_owner)}
+                      {
+                        regulatoryStatus && this._renderHeadingSection(
+                          'Regulatory Status',
+                          'visibility',
+                          regulatoryStatus.facility_regulatory_status
+                        )
+                      }
+                    </div>
 
-            <div className="col m6 s12">
-              {
-                this._renderHeadingSection(
-                  'Date Opened',
-                  'today',
-                  moment(facility_date_opened).format('MMMM DD YYYY')
+                    <div className="col m6 s12">
+                      {
+                        this._renderHeadingSection(
+                          'Date Opened',
+                          'today',
+                          moment(facility_date_opened).format('MMMM DD YYYY')
+                        )
+                      }
+                      {
+                        facilityType &&
+                        this._renderHeadingSection(
+                          'Facility Type',
+                          'local_hospital',
+                          facilityType.facility_type
+                        )
+                      }
+                      {
+                        operationalStatus &&
+                        this._renderHeadingSection(
+                          'Operational Status',
+                          'warning',
+                          operationalStatus.facility_operational_status
+                        )
+                      }
+                    </div>
+                  </div>
                 )
-              }
-              {
-                facilityType &&
-                this._renderHeadingSection(
-                  'Facility Type',
-                  'local_hospital',
-                  facilityType.facility_type
-                )
-              }
-              {
-                operationalStatus &&
-                this._renderHeadingSection(
-                  'Operational Status',
-                  'warning',
-                  operationalStatus.facility_operational_status
-                )
-              }
-            </div>
+            }
           </div>
         </div>
       </div>
@@ -80,6 +89,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
+    isLoading: state.facilities.isLoading
   };
 };
 

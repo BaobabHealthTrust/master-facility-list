@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { DatePicker, FormWizardNavigation } from '../../common';
 import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik } from 'formik';
-import { postFormData } from '../../actions';
+import { postFormData, fetchCurrentDetails } from '../../actions';
 import { Redirect } from 'react-router-dom';
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
@@ -109,6 +109,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       this.setState({ cancelForm: true })
     }
   }
+
   render() {
     // TODO: Fetch your own dependancies in case you have been refreshed
     return (
@@ -260,5 +261,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-  postFormData
+  postFormData,
+  fetchCurrentDetails
 })(FacilityBasicDetails);

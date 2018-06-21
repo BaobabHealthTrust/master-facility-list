@@ -1,10 +1,12 @@
 //@flow
 import React from 'react'
 
-export default () => {
+export default ({ message = "Sorry, we cannot connect to the Server. Please check your Network" }) => {
   return (
-    <blockquote>
-      <h4>"Sorry, we cannot connect to the Server. Please check your Network" </h4>
-    </blockquote>
+    <div className='container mt-8'>
+      <blockquote>
+        <h4>{message} </h4>
+      </blockquote>
+    </div>
   )
 }
