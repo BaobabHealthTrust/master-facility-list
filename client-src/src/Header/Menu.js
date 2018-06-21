@@ -21,6 +21,7 @@ class Menu extends Component {
     sessionStorage.removeItem('token');
   }
 
+  // TODO: Menu Active States should read from url
   render() {
     return (
       <div>
@@ -109,25 +110,9 @@ class Menu extends Component {
           </li>
 
           {sessionStorage.getItem("token") ? (
-            <Dropdown
-              trigger={
-                <li className="mfl-nav-item">
-                  <i className="material-icons">person</i>
-                  {sessionStorage
-                    .getItem("firstname")
-                    .toUpperCase()}
-                </li>
-              }
-            >
-              <NavItem className="mfl-nav-item">
-                <i className="material-icons">people</i>Edit
-                Profile
-                            </NavItem>
-              <NavItem divider />
-              <NavItem onClick={this.logout}>
-                <i className="material-icons">lock</i>Logout
-                            </NavItem>
-            </Dropdown>
+            <li onClick={this.logout}>
+              <a>LOGOUT</a>
+            </li>
           ) : (
               <li
                 className={

@@ -11,7 +11,7 @@ import { Button } from 'react-materialize';
 import SecondaryMenu from "../common/SecondaryMenu";
 import footerResizer from "../helpers/footerResize";
 import MflDownload from "../common/MflDownload";
-import { ShowError, FetchAllDependancies } from "../common";
+import { ShowError, FetchAllDependancies, ProgressBar } from "../common";
 import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
 import settings from '../settings';
 import { postFormData } from '../actions'
@@ -194,66 +194,69 @@ class FacilityDetails extends React.Component<Props> {
             }
           </div>
         </div>
-        {this.props.isError ? (
-          <ShowError />
-        ) : (
-            <Switch>
-              <Route
-                exact
-                path="/facilities/:id/summary"
-                component={Summary}
-              />
-              <Route
-                exact
-                path="/facilities/:id/summary/edit"
-                component={BasicDetailsForm}
-              />
+        {this.props.error.message == "Network Error" && <ShowError />}
+        {this.props.error.response && <ShowError message="This Resource does not exit" />}
+        {
+          this.props.isLoading
+            ? <ProgressBar />
+            : (
+              <Switch>
+                <Route
+                  exact
+                  path="/facilities/:id/summary"
+                  component={Summary}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/summary/edit"
+                  component={BasicDetailsForm}
+                />
 
-              <Route
-                exact
-                path="/facilities/:id/locations"
-                component={Location}
-              />
-              <Route
-                exact
-                path="/facilities/:id/locations/edit"
-                component={ContactsForm}
-              />
+                <Route
+                  exact
+                  path="/facilities/:id/locations"
+                  component={Location}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/locations/edit"
+                  component={ContactsForm}
+                />
 
-              <Route
-                exact
-                path="/facilities/:id/resources"
-                component={Resources}
-              />
-              <Route
-                exact
-                path="/facilities/:id/resources/edit"
-                component={ResourcesForm}
-              />
+                <Route
+                  exact
+                  path="/facilities/:id/resources"
+                  component={Resources}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/resources/edit"
+                  component={ResourcesForm}
+                />
 
-              <Route
-                exact
-                path="/facilities/:id/utilities"
-                component={Utilities}
-              />
-              <Route
-                exact
-                path="/facilities/:id/utilities/edit"
-                component={UtilitiesForm}
-              />
+                <Route
+                  exact
+                  path="/facilities/:id/utilities"
+                  component={Utilities}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/utilities/edit"
+                  component={UtilitiesForm}
+                />
 
-              <Route
-                exact
-                path="/facilities/:id/services"
-                component={Services}
-              />
-              <Route
-                exact
-                path="/facilities/:id/services/edit"
-                component={ServicesForm}
-              />
-            </Switch>
-          )}
+                <Route
+                  exact
+                  path="/facilities/:id/services"
+                  component={Services}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/services/edit"
+                  component={ServicesForm}
+                />
+              </Switch>
+            )}
       </div>
     );
   }
@@ -262,8 +265,9 @@ class FacilityDetails extends React.Component<Props> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isError: state.facilities.isNetworkError,
-    response: state.facilities.patchResponse
+    error: state.facilities.error,
+    response: state.facilities.patchResponse,
+    isLoading: state.facilities.isLoading,
   };
 };
 

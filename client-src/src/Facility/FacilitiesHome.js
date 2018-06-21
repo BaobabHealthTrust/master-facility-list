@@ -16,7 +16,7 @@ import { Route, Switch } from 'react-router-dom';
 
 type Props = {
   isLoading: boolean,
-  isError: boolean,
+  error: any,
   searchResults: Facilities,
   facilities: Facilities,
   downloadFacilities: Function
@@ -53,11 +53,14 @@ class FacilitiesHome extends React.Component<Props, State> {
         <div className="container mfl-container">
           <br />
           {/* Show Progress Bar */}
-          {this.props.isLoading && <ProgressBar />}
+          {this.props.error.message == "Network Error" && <ProgressBar />}
 
           {/* Show Error Message */}
-          {this.props.isError && <ShowError />}
-          <FacilityList dataSource={this.props.facilities} />
+          {
+            this.props.isLoading
+              ? <ProgressBar />
+              : <FacilityList dataSource={this.props.facilities} />
+          }
         </div>
 
       </div>
@@ -68,7 +71,7 @@ class FacilitiesHome extends React.Component<Props, State> {
 const mapStateToProps = state => {
   return {
     facilities: state.facilities.list.data,
-    isError: state.facilities.isNetworkError,
+    error: state.facilities.error,
     isLoading: state.facilities.isLoading,
     download: state.downloads.data,
     searchResults: state.searchResults.advancedSearchResults,

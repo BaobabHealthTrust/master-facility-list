@@ -6,7 +6,7 @@ export default (
     currentResources: {},
     currentUtilities: [],
     currentServices: [],
-    isNetworkError: false,
+    error: {},
     isLoading: true,
     typeResourceInstances: [],
     typeUtilityInstances: [],
@@ -27,7 +27,7 @@ export default (
   if (action.error) {
     return {
       ...state,
-      isNetworkError: true,
+      error: action.payload,
       isLoading: false
     };
   }

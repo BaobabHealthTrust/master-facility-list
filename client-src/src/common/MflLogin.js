@@ -47,7 +47,7 @@ class MflLogin extends Component<State, Props> {
       <div className="container mfl-container">
         <div className="mfl-login-container blue darken-4">
           <h4 className="white-text">Login Here</h4>
-          {this.props.loginResponse.isLoginFailed && <h6>Wrong Login Credentials</h6>}
+          {this.props.loginResponse.isLoginFailed && <h6 className="text-white">Wrong Login Credentials</h6>}
           <div className="mfl-tm-5" />
           <div className="mfl-login-input-container">
             <div className="mfl-login-icon grey lighten-2 grey-text">
