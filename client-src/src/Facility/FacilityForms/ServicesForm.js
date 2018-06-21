@@ -328,13 +328,13 @@ class ServicesForm extends React.Component<Props> {
                         <Pagination
                           items={
                             this.props.facilityServices
-                              ? this.props.facilityServices.length
+                              ? Math.ceil(this.props.facilityServices.length / 3)
                               : 0
                           }
-                          activePage={1}
+                          activePage={this.state.pageNumber}
                           maxButtons={
                             this.props.facilityServices
-                              ? Math.floor(this.props.facilityServices.length / 3)
+                              ? Math.ceil(this.props.facilityServices.length / 3)
                               : 0
                           }
                           onSelect={(number) => this.setState({ pageNumber: number })}
