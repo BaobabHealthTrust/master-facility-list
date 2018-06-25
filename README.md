@@ -35,9 +35,15 @@ Navigate into the source code directory for the front-end application, i.e. `cd 
 
 Navigate back into the root directory of the project, i.e. `cd ..` and set the NODE_ENV to staging, i.e. `export NODE_ENV=staging`. This notifies loopback that you are in the staging environment.
 
+
 ## Step 6
 
 Modify the .env.example file and make sure it reflects your MySQL Database Settings. Create a .env file with the contents of your .env.example file, i.e. `mv .env.example .env`
+
+## Step 7
+
+At this point you will need to run the migration command to migrate the loopback models into your MySQL instance.  To do that, globally install the loopback migration tool, `npm i -g loopback-migration-tool` and then run `lb-migration migrate` to complete the migration.
+`
 
 ## Step 7
 
