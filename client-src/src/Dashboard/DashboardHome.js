@@ -6,7 +6,9 @@ import {
   FacilityOperationalChart,
   FacilityRegulatoryStatusChart,
   FacilityTypeChart,
-  FacilitiesByTypeAndOwnership
+  FacilitiesByTypeAndOwnership,
+  FacilitiesByLicensingStatus,
+  FacilitiesByOperationalStatus
 } from "./charts";
 import { FacilityFilters } from "../common/"
 import { connect } from "react-redux";
@@ -244,7 +246,22 @@ class DashboardHome extends React.Component<Props, State> {
 
     return (
       <div className="container">
-        <h6>Under Construction</h6>
+        <div class="row">
+          <div class="col s12">
+            <h1 class="text-center">under construction</h1>
+          </div>
+        </div>
+        {false && 
+          (
+            <div class="row">
+              <div class="col s12">
+                <FacilitiesByTypeAndOwnership />
+                <FacilitiesByLicensingStatus />
+                <FacilitiesByOperationalStatus />
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }

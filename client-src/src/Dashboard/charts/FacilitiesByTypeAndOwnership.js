@@ -57,7 +57,7 @@ class FacilitiesByTypeAndOwnership extends React.Component{
             }
         ]
         return (
-            <BarChart width={750} height={250} data={data}>
+            <BarChart width={800} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
