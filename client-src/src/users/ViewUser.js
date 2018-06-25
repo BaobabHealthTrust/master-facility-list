@@ -9,7 +9,8 @@ import '../App.css';
 class ViewUser extends React.Component {
 
   state = {
-    delay: 3000
+    delay: 3000,
+    userId: sessionStorage.getItem('userId')
   }
 
   constructor(props) {
@@ -41,6 +42,23 @@ class ViewUser extends React.Component {
     </Card>
   );
 
+  showDeleteButton = () => {
+    const propsUserId = Number(this.props.user.id);
+    const storageUserId = Number(sessionStorage.getItem('id'));
+
+    if(propsUserId === storageUserId){
+      return ''
+    }
+    return (
+      <Button
+        waves='light'
+        className="red"
+        onClick={this.archiveUser}>
+        delete
+      </Button>
+    );
+  }
+
   userView = () => (this.props.user ? (
     <Card
       title="User Details"
@@ -51,12 +69,8 @@ class ViewUser extends React.Component {
           onUserUpdateError={this.props.onUserUpdateError}
         />,
         <ChangePasswordForm user={this.props.user}/>,
-        <Button 
-          waves='light' 
-          className="red"
-          onClick={this.archiveUser}>
-            archive
-          </Button>
+        this.showDeleteButton()
+
       ]}>
       <Table>
         <tbody>
