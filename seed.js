@@ -23,6 +23,8 @@ const seed = async () => {
       process.exit(1);
     }
 
+    await dataSource.automigrate(err => console.error(err));
+
     await userSeeder(data.users);
     await independentModelFactory(server.models.Owner, data.owners);
     await independentModelFactory(server.models.FeedbackType, data.feedbackTypes);
