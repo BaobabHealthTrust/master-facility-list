@@ -1,4 +1,6 @@
 import React from 'react';
+import { MflCardGeneric } from '../../common';
+
 import {
     BarChart,
     CartesianGrid,
@@ -56,8 +58,9 @@ class FacilitiesByTypeAndOwnership extends React.Component{
                 central_hospital: 8
             }
         ]
-        return (
-            <BarChart width={750} height={250} data={data}>
+
+        const view = (
+            <BarChart width={800} height={300} data={data} id="bwighane">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -69,6 +72,9 @@ class FacilitiesByTypeAndOwnership extends React.Component{
                 <Bar dataKey="hospital" fill="#ff3300" />
                 <Bar dataKey="central_hospital" fill="#ff29f4" />
             </BarChart>
+        )
+        return (
+            <MflCardGeneric heading="facilities by type and ownership" view={view}/>
         );
 
     }

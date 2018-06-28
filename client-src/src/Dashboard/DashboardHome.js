@@ -6,9 +6,15 @@ import {
   FacilityOperationalChart,
   FacilityRegulatoryStatusChart,
   FacilityTypeChart,
-  FacilitiesByTypeAndOwnership
+  FacilitiesByTypeAndOwnership,
+  FacilitiesByLicensingStatus,
+  FacilitiesByOperationalStatus
 } from "./charts";
-import { FacilityFilters } from "../common/"
+import { 
+  FacilityFilters, 
+  MflCardGeneric,
+  MFLGoogleMap
+} from "../common/"
 import { connect } from "react-redux";
 import type {
   FacilityService,
@@ -33,7 +39,7 @@ import footerResizer from "../helpers/footerResize";
 import { Doughnut, Bar } from 'react-chartjs-2'
 
 import mapmalawi from '../mapmalawi.png';
-// import '../App.css';
+import '../App.css';
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -244,7 +250,30 @@ class DashboardHome extends React.Component<Props, State> {
 
     return (
       <div className="container">
-        <h6>Under Construction</h6>
+        <div className="row">
+          <div className="col s12 m3 mfl-tm-5">
+            <MflCardGeneric heading="map of amalawi" view={<MFLGoogleMap/>}/>
+          </div>
+          <div className="col s12 m9">
+            <div className="row">
+              <div className="col s12 m6">
+                <div class="outer-recharts-surface">
+                  <FacilitiesByLicensingStatus />
+                </div>
+              </div>
+              <div className="col s12 m6">
+                <div className="outer-recharts-surface">
+                  <FacilitiesByOperationalStatus />
+                </div>
+              </div>
+              <div class="col s12">
+                <div class="outer-recharts-surface">
+                  <FacilitiesByTypeAndOwnership />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
