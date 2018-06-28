@@ -27,16 +27,11 @@ class ViewUser extends React.Component {
   }
 
   archiveUser = async () => {
-    // TODO: merge with malumbos branch
     await this.props.postFormData(
-      {
-        'archived_user_id': this.props.user.id,
-        'user_id': await sessionStorage.getItem('id')
-      },
-      `Clients`,
+      { archived_date: moment().format('YYYY-MM-DD') },
+      `Clients/${this.props.user.id}`,
       'PATCH',
-      'ARCHIVE_USER',
-      'archiveUser'
+      'ARCHIVE_USER'
     );
     // TODO: Check if this has really deleted the user
     await this.props.fetchUsers();
@@ -50,11 +45,13 @@ class ViewUser extends React.Component {
           <Col m={6} s={12} style={{ minWidth: '400px' }}>
             <Card
               title='Confirm' 
+              className='blu darken-4' 
+              textClassName='white-tex'
               actions={
                 [
                   <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
-                  <Button className="btn-flat" onClick={() => {
-                    this.archiveUser();
+                  <Button className="btn-flat" onClick={async () => {
+                    await this.archiveUser();
                     onClose();
                   }}>Yes</Button>
                 ]
