@@ -42,34 +42,17 @@ class UsersList extends React.Component{
         const defaultSorting = [{ columnName: 'firstname', direction: 'asc' }];
 
         return (
-            <React.Fragment>
-                {
-                    this.props.users ? 
-
-                    <React.Fragment>
-                            <Card className="user-list">
-                            <MflGrid 
-                                rows={this.props.users} 
-                                columns={columns}
-                                pageSize={10}
-                                defaultSorting={defaultSorting}
-                                rowSelected={
-                                    (user) => this.props.onUserSelected(user)
-                                }
-                            />
-                        </Card>
-                    </React.Fragment>
-
-                    :
-
-                    <Card title="No users">
-                        <p>
-                            Currently, there are no users in the system
-                        </p>
-                    </Card>
-                }
-                
-            </React.Fragment>
+            <Card className="user-list">
+                <MflGrid
+                    rows={this.props.users}
+                    columns={columns}
+                    pageSize={10}
+                    defaultSorting={defaultSorting}
+                    rowSelected={
+                        (user) => this.props.onUserSelected(user)
+                    }
+                />
+            </Card>
         );
     }
 }

@@ -1,15 +1,21 @@
 import React from 'react';
-import { Card, CardTitle, Table, Button, Icon } from 'react-materialize';
+import { Card, CardTitle, Table, Button, Icon, Col } from 'react-materialize';
 import { EditUserModal, UserForm, ChangePasswordForm } from './index';
 import { connect } from 'react-redux';
 import { postFormData, fetchUsers } from '../actions/index';
+import { MflConfirmModal } from '../common';
 import moment from 'moment';
+
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
 import '../App.css';
 
 class ViewUser extends React.Component {
 
   state = {
-    delay: 3000
+    delay: 3000,
+    userId: sessionStorage.getItem('userId')
   }
 
   constructor(props) {
@@ -21,17 +27,41 @@ class ViewUser extends React.Component {
   }
 
   archiveUser = async () => {
-    if(await window.confirm('Are you sure you want archive this user?')){
-      await this.props.postFormData(
-        { archived_date: moment().format('YYYY-MM-DD') },
-        `Clients/${this.props.user.id}`,
-        'PATCH',
-        'ARCHIVE_USER'
-      );
-      // TODO: Check if this has really deleted the user
-      await this.props.fetchUsers();
-      this.props.onUserArchived();
-    }
+    await this.props.postFormData(
+      { archived_date: moment().format('YYYY-MM-DD') },
+      `Clients/${this.props.user.id}`,
+      'PATCH',
+      'ARCHIVE_USER'
+    );
+    // TODO: Check if this has really deleted the user
+    await this.props.fetchUsers();
+    this.props.onUserArchived();
+  }
+
+  confirmUserArchive = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <Col m={6} s={12} style={{ minWidth: '400px' }}>
+            <Card
+              title='Confirm' 
+              className='blu darken-4' 
+              textClassName='white-tex'
+              actions={
+                [
+                  <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                  <Button className="btn-flat" onClick={async () => {
+                    await this.archiveUser();
+                    onClose();
+                  }}>Yes</Button>
+                ]
+              }>
+              Are you sure you want to delete this user ?
+            </Card>
+          </Col>
+        )
+      }
+    })
   }
 
   emptyUserState = () => (
@@ -40,6 +70,23 @@ class ViewUser extends React.Component {
       <p>Select a user from the list for more details</p>
     </Card>
   );
+
+  showDeleteButton = () => {
+    const propsUserId = Number(this.props.user.id);
+    const storageUserId = Number(sessionStorage.getItem('id'));
+
+    if(propsUserId === storageUserId){
+      return ''
+    }
+    return (
+      <Button
+        waves='light'
+        className="red"
+        onClick={this.confirmUserArchive}>
+        delete user
+      </Button>
+    );
+  }
 
   userView = () => (this.props.user ? (
     <Card
@@ -51,12 +98,8 @@ class ViewUser extends React.Component {
           onUserUpdateError={this.props.onUserUpdateError}
         />,
         <ChangePasswordForm user={this.props.user}/>,
-        <Button 
-          waves='light' 
-          className="red"
-          onClick={this.archiveUser}>
-            archive
-          </Button>
+        this.showDeleteButton()
+
       ]}>
       <Table>
         <tbody>

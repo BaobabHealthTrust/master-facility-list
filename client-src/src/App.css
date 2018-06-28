@@ -768,3 +768,9 @@ select.mfl-select {
     display: block;
     margin: auto;
 }
+
+/* Dashboard chart styles */
+
+.outer-recharts-surface .recharts-surface {
+    
+}

@@ -51,7 +51,9 @@ module.exports = function(Client) {
         http: { verb: 'post' }
     })
 
-    Client.archiveUser = async (user_id, archived_user_id, cb) => {
+    Client.archiveUser = async (data, cb) => {
+        // const {user_id, archived_user_id} = data;
+        console.log(user_id, archived_user_id);
         if (user_id == archived_user_id) {
             error = new Error("Admin client self delete is not allowed.");
             error.name = "Error";
@@ -80,8 +82,7 @@ module.exports = function(Client) {
 
     Client.remoteMethod('archiveUser', {
       accepts: [
-        {arg: 'user_id',type: 'number'},
-        {arg: 'archived_user_id',type: 'number'}
+        {arg: 'data',type: 'object'}
       ],
       returns: {
         arg: 'response',
