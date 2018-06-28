@@ -1,8 +1,10 @@
 import React from 'react';
+import { MflCardGeneric } from '../../common';
 import {
     PieChart,
     Pie,
-    Legend
+    Legend,
+    Cell
 } from 'recharts';
 
 export default class FacilitiesByOperationalStatus extends React.Component{
@@ -11,11 +13,20 @@ export default class FacilitiesByOperationalStatus extends React.Component{
             { name: 'Closed', value: 30 },
             { name: 'Opened', value: 20 }
         ]
-        return (
-            <PieChart width={800} height={400}>
-                <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={150} fill="#0D47A1" />
+        const COLORS = ['#0D47A1', '#87CEEB'];
+        const view = (
+            <PieChart width={400} height={300} onMouseEnter={this.onPieEnter}>
+                <Pie
+                    data={data}
+                    outerRadius={100}
+                    fill="#8884d8">
+                    { data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />) }
+                </Pie>
                 <Legend verticalAlign="bottom" height={40} />
             </PieChart>
         )
+        return (
+            <MflCardGeneric heading="Facilities by operational status" view={view}/>
+        );
     }
 }

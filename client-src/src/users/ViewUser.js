@@ -1,9 +1,14 @@
 import React from 'react';
-import { Card, CardTitle, Table, Button, Icon } from 'react-materialize';
+import { Card, CardTitle, Table, Button, Icon, Col } from 'react-materialize';
 import { EditUserModal, UserForm, ChangePasswordForm } from './index';
 import { connect } from 'react-redux';
 import { postFormData, fetchUsers } from '../actions/index';
+import { MflConfirmModal } from '../common';
 import moment from 'moment';
+
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
 import '../App.css';
 
 class ViewUser extends React.Component {
@@ -22,17 +27,44 @@ class ViewUser extends React.Component {
   }
 
   archiveUser = async () => {
-    if(await window.confirm('Are you sure you want archive this user?')){
-      await this.props.postFormData(
-        { archived_date: moment().format('YYYY-MM-DD') },
-        `Clients/${this.props.user.id}`,
-        'PATCH',
-        'ARCHIVE_USER'
-      );
-      // TODO: Check if this has really deleted the user
-      await this.props.fetchUsers();
-      this.props.onUserArchived();
-    }
+    // TODO: merge with malumbos branch
+    await this.props.postFormData(
+      {
+        'archived_user_id': this.props.user.id,
+        'user_id': await sessionStorage.getItem('id')
+      },
+      `Clients`,
+      'PATCH',
+      'ARCHIVE_USER',
+      'archiveUser'
+    );
+    // TODO: Check if this has really deleted the user
+    await this.props.fetchUsers();
+    this.props.onUserArchived();
+  }
+
+  confirmUserArchive = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <Col m={6} s={12} style={{ minWidth: '400px' }}>
+            <Card
+              title='Confirm' 
+              actions={
+                [
+                  <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                  <Button className="btn-flat" onClick={() => {
+                    this.archiveUser();
+                    onClose();
+                  }}>Yes</Button>
+                ]
+              }>
+              Are you sure you want to delete this user ?
+            </Card>
+          </Col>
+        )
+      }
+    })
   }
 
   emptyUserState = () => (
@@ -53,8 +85,8 @@ class ViewUser extends React.Component {
       <Button
         waves='light'
         className="red"
-        onClick={this.archiveUser}>
-        delete
+        onClick={this.confirmUserArchive}>
+        delete user
       </Button>
     );
   }
