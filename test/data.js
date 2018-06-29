@@ -18,6 +18,15 @@ module.exports.operationalStatus = {
     description: "This facility is now operational"
 };
 
+module.exports.address = {
+  "physical_address": "string",
+  "postal_address": "string",
+  "village": "string",
+  "ta": "string",
+  "facility_id": 1,
+  "client_id": 1
+};
+
 module.exports.regulatoryStatus = {
     facility_regulatory_status: "Registered",
     description: "This is a registered facility"
@@ -68,7 +77,8 @@ module.exports.facility = {
 
 module.exports.location = {
   catchment_area: "Area 3",
-  catchment_population: 5000
+  catchment_population: 5000,
+  facility_id: 1
 };
 
 module.exports.contactPeople = {

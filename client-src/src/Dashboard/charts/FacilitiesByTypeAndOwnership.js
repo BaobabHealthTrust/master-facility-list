@@ -60,7 +60,7 @@ class FacilitiesByTypeAndOwnership extends React.Component{
         ]
 
         const view = (
-            <BarChart width={800} height={300} data={data} id="bwighane">
+            <BarChart width={900} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />

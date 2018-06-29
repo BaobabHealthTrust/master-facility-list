@@ -388,82 +388,74 @@ module.exports = (Facility) => {
   });
 
 
-  // 
-  Facility.downloadFacilities = async (json, cb) => {
-    try {
-      const data = JSON.parse(json);
-      if (!data.hasOwnProperty('format') || !data.hasOwnProperty('format')) {
-        const error = new Error("Invalid post format.");
-        error.name = "ERROR";
-        error.status = 400;
-        cb(error);
-      }
-
-      const facilities = await Facility.find({
-        where: data.where,
-        include: [
-          "locations",
-          "contactPeople",
-          "regulatoryStatus",
-          "operationalStatus",
-          "owner",
-          "facilityType",
-          { district: "zone" }
-        ]
-      }).catch(err => cb(err));
-
-      const callback = (err, stream) => {
-        if (err) {
-          return cb(err);
-        }
-
-        let contentType = null;
-        switch (data.format) {
-          case 'csv':
-            contentType = "text/csv";
-            break;
-
-          case 'pdf':
-            contentType = "application/pdf";
-            break;
-
-          case 'excel':
-            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            break;
-        }
-        cb(null, stream, contentType);
-      }
-
-      if (data.format == "pdf") {
-        generatePdfFile(facilities, callback);
-      }
-
-      if (data.format == "excel") {
-        generateExcelFile(facilities, callback);
-      }
-
-      if (data.format == "csv") {
-        generateCsvFile(facilities, callback);
-      }
-
-      const error = new Error();
-      error.name = "ERROR";
-      error.status = 400;
-      error.message = "Invalid facility ID.";
-      cb(error);
-    } catch (error) {
-      cb(error);
-    }
+  Facility.regulatoryStatus = async (district_id, cb) => {
+      const regulatoryStatuses = await server.models.RegulatoryStatus.find();
+      const facilities = await server.models.Facility.find();
+      return regulatoryStatuses.map(regulatoryStatus => ({
+        name: regulatoryStatus.facility_regulatory_status,
+        count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
+      }));
   };
 
-  /** Register download  remote method */
-  Facility.remoteMethod('dashboard', {
-    description: "retrieves dashboard requred information",
-    // accepts: { arg: "data", type: "string" },
-    http: { path: '/dashboard', verb: 'get' },
+  Facility.remoteMethod('regulatoryStatus', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/regulatorystatuses', verb: 'get' },
     returns: [
-      { arg: 'body', type: 'file', root: true },
-      { arg: 'Content-Type', type: 'string', http: { target: 'header' } }
+      { arg: 'response', type: 'array'}
+    ]
+  });
+
+  Facility.operationalStatus = async (district_id, cb) => {
+    const operationalStatuses = await server.models.OperationalStatus.find();
+    const facilities = await server.models.Facility.find();
+    return operationalStatuses.map(operationalStatus => ({
+      name: operationalStatus.facility_operational_status,
+      value: facilities.filter(facility => (facility.facility_operational_status_id == operationalStatus.id)).length
+    }));
+  };
+
+  Facility.remoteMethod('operationalStatus', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/operationalstatuses', verb: 'get' },
+    returns: [
+      { arg: 'response', type: 'array' }
+    ]
+  });
+
+
+  Facility.facilitiesByTypeAndOwnership = async (district_id, cb) => {
+    const owners = await server.models.Owner.find();
+    const facilityTypes = await server.models.FacilityType.find();
+
+    const mapped  = [];
+    const data = [];
+
+    owners.forEach( owner => {
+        mapped.push({
+            ...owner,
+            types: facilityTypes
+        });
+    });
+
+    const facilities = await server.models.Facility.find();
+
+    mapped.forEach(map => {
+        let obj = new Object;
+        obj.name = map.__data.facility_owner;
+        const types = map.types.map(e => {
+          _.merge(obj, {[e.facility_type]: facilities.filter(facility => (facility.facility_owner_id == map.__data.id && facility.facility_type_id == e.id)).length});
+        });
+        data.push(obj);
+    });
+
+    return data;
+  };
+
+  Facility.remoteMethod('facilitiesByTypeAndOwnership', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/typeandownership', verb: 'get' },
+    returns: [
+      { arg: 'response', type: 'array' }
     ]
   });
 

@@ -20,14 +20,13 @@ const data = require("./data");
 module.exports.createAdmin = async (client) => {
     try {
         const user = await Client.create(client);
-
         const role = await Role.create({
-          name: 'admin'
+            name: 'admin'
         });
 
         const roleMapping = {
-          principalType: RoleMapping.USER,
-          principalId: user.id
+            principalType: RoleMapping.USER,
+            principalId: user.id
         };
 
         await role.principals.create(roleMapping);
