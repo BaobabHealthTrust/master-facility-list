@@ -20,7 +20,9 @@ export default (
     utilitiesResponse: {},
     servicesResponse: {},
     deleteServiceResponse: {},
-    patchResponse: {}
+    patchResponse: {},
+    facilitiesByRegulatoryStatus: [],
+    facilitiesByOperationalStatus: []
   },
   action
 ) => {
@@ -153,6 +155,18 @@ export default (
         patchResponse: action.payload.data,
         isLoading: false
       }
+    case 'FETCH_FACILITIES_BY_REGULATORY_STATUSES':
+      return {
+        ...state,
+        facilitiesByRegulatoryStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_OPERATIONAL_STATUSES':
+      return {
+        ...state,
+        facilitiesByOperationalStatus: action.payload.data.response
+      }
+      break;
     default:
       return state;
   }
