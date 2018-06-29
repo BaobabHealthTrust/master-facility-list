@@ -23,8 +23,7 @@ describe("List Facilities", () => {
 
     after(done => dataSource.automigrate(err => done(err)));
 
-    let desc = "Should allow users to view a list of published facilities";
-    it(desc, (done) => {
+    it("Should Allow anyone to View a List of Published Facilities", (done) => {
         helper.get('/api/Facilities',200, res => {
             res.body.should.be.an('array');
             res.body[0].facility_name.should.equal(data.facility.facility_name);

@@ -34,6 +34,7 @@ describe("Create Facility", function() {
         });
     });
 
+
 //     // it("Should  Automatically generates a Facility Code upon creation of Basic Details", (done) => {
 //     //     server.models.Facility.find( {where: {facility_code: facilityData.facility_code}, limit: 1}, async (err, facility) => {
 //     //       if(facility){
@@ -44,9 +45,30 @@ describe("Create Facility", function() {
 //     // });
 
     it("Should Display appropriate error message when an Unauthorized Client attempts to create Facility Basic Details", function (done) {
-        helper.post("/api/Facilities", data.facility, 401, function(res) {
+        const token = "8xqdmBzlXWRbOxUMofXVj4mnEPjJJ6s7k5CbLaIVDTtxqw1aHDclMB4KSP7biqHr";
+        helper.post("/api/Facilities?access_token=" + token, data.facility, 401, function (res) {
             res.body.error.message.should.equal('Authorization Required');
             done();
+        });
+    });
+
+    it ("Should Displays appropriate error message when a different Authorized Administrator attempts to Create Location Details of a Facility", done => {
+        const contact = data.contactPeople;
+        helper.post("/api/ContactPeople", data.facility, 401, function (res) {
+            res.body.error.message.should.equal('Authorization Required');
+            done();
+        });
+    });
+
+    if ("should Allow the same Authorized Administrator Who Created the Basic Details to Create Location Details of a Facility",done => {
+        helper.post("/api/Clients/login", data.user, 200, function(res) {
+            const url = "/api/ContactPeople?access_token=" + res.body.id;
+            const contact = data.contactPeople;
+            helper.post(url, contact, 200, function(res) {
+                res.body.should.be.an('object');
+                res.body.contact_person_fullname.should.equal(contact.contact_person_fullname);
+                done();
+            });
         });
     });
 

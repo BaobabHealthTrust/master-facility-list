@@ -1,26 +1,28 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
+import { connect } from 'react-redux';
 import {
     PieChart,
     Pie,
     Legend,
     Cell
 } from 'recharts';
+import { operationalStatuses } from '../../actions';
 
-export default class FacilitiesByOperationalStatus extends React.Component{
+class FacilitiesByOperationalStatus extends React.Component{
+    componentDidMount() {
+        this.props.operationalStatuses()
+    }
+
     render (){
-        const data = [
-            { name: 'Closed', value: 30 },
-            { name: 'Opened', value: 20 }
-        ]
-        const COLORS = ['#0D47A1', '#87CEEB'];
+        const data = this.props.data;
         const view = (
             <PieChart width={400} height={300} onMouseEnter={this.onPieEnter}>
                 <Pie
                     data={data}
                     outerRadius={100}
                     fill="#8884d8">
-                    { data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />) }
+                    {/* { data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />) } */}
                 </Pie>
                 <Legend verticalAlign="bottom" height={40} />
             </PieChart>
@@ -30,3 +32,12 @@ export default class FacilitiesByOperationalStatus extends React.Component{
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        data: state.facilities.facilitiesByOperationalStatus
+    }
+}
+const mapDispatchToProps = {
+    operationalStatuses
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByOperationalStatus);

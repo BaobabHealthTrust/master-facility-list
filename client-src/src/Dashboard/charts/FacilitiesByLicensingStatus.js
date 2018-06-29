@@ -1,5 +1,6 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
+import { connect } from 'react-redux';
 import {
     BarChart,
     CartesianGrid,
@@ -9,34 +10,16 @@ import {
     Legend,
     Bar
 } from 'recharts';
+import { regulatoryStatuses } from '../../actions';
 
 class FacilitiesByLicensingStatus extends React.Component{
+    componentDidMount() {
+        this.props.regulatoryStatuses()
+    }
     render() {
-        const data = [
-            {
-                name: 'Registered',
-                count: 1,
-            },
-            {
-                name: 'Pending Certification',
-                count: 3,
-            },
-            {
-                name: 'Reg Suspended',
-                count: 9,
-            },
-            {
-                name: 'Reg Canceled',
-                count: 1,
-            },
-            {
-                name: 'NotRegistered',
-                count: 6,
-            }
-        ]
-
+        const data = [];
         const view = (
-            <BarChart width={400} height={300} data={data}>
+            <BarChart width={400} height={300} data={this.props.data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -50,4 +33,12 @@ class FacilitiesByLicensingStatus extends React.Component{
         );
     }
 }
-export default FacilitiesByLicensingStatus;
+const mapStateToProps = state => {
+    return {
+        data: state.facilities.facilitiesByRegulatoryStatus
+    }
+}
+const mapDispatchToProps = {
+    regulatoryStatuses
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByLicensingStatus);
