@@ -38,6 +38,8 @@ import footerResizer from "../helpers/footerResize";
 
 import { Doughnut, Bar } from 'react-chartjs-2'
 
+import { regulatoryStatuses } from '../actions';
+
 import mapmalawi from '../mapmalawi.png';
 import '../App.css';
 
@@ -251,10 +253,10 @@ class DashboardHome extends React.Component<Props, State> {
     return (
       <div className="container">
         <div className="row">
-          <div className="col s12 m3 mfl-tm-5">
+          {/* <div className="col s12 m3 mfl-tm-5">
             <MflCardGeneric heading="map of amalawi" view={<MFLGoogleMap/>}/>
-          </div>
-          <div className="col s12 m9">
+          </div> */}
+          <div className="col s12 m12">
             <div className="row">
               <div className="col s12 m6">
                 <div class="outer-recharts-surface">

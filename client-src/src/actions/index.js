@@ -60,4 +60,6 @@ export { default as editFacilityDependancies } from "./edit-facility-dependancie
 export { default as postBasicFacilityDetails } from "./post-basic-facility-details";
 export { default as fetchUsers } from "./fetch-users";
 export { default as fetchUserAccessTokens } from "./fetch-user-access-tokens";
-export { default as fetchFeedbackTypes } from "./fetch-feedback-types";
+export { default as fetchFeedbackTypes } from "./fetch-feedback-types"; 
+export { default as regulatoryStatuses } from "./fetch-facilities-by-regulatory-statuses";
+export { default as operationalStatuses } from "./fetch-facilities-by-operational-statuses";
