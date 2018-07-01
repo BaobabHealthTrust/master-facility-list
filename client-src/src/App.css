@@ -772,5 +772,9 @@ select.mfl-select {
 /* Dashboard chart styles */
 
 .outer-recharts-surface .recharts-surface {
-    
+
+}
+
+#districts path:hover{
+  fill: #0D47A1;
 }
