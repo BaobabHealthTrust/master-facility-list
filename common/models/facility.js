@@ -8,6 +8,19 @@ const generateFile = require("../../download_modules/pdf-one-facility-formatter"
 const _ = require("lodash");
 const moment = require("moment");
 
+const getDistrictsIDs = async (data=null) => {
+    if(data && data != []){
+        const districtsNames = await data.map( name => _.capitalize(name));
+        const districts = await server.models.District.find({
+            where: { district_name: { inq: districtsNames } }
+        });
+        if (districts){
+            return districts.map(district => district.id);
+        }
+    } 
+    return [];
+};
+
 module.exports = (Facility) => {
 
   Facility.observe('after save', async function generateFacilityCode(ctx) {
@@ -289,7 +302,7 @@ module.exports = (Facility) => {
             cb(error);
         }
       } catch (error) {
-          console.log("Malu" + error);
+          console.log(error);
       }
   }
 
@@ -388,9 +401,16 @@ module.exports = (Facility) => {
   });
 
 
-  Facility.regulatoryStatus = async (district_id, cb) => {
+  Facility.regulatoryStatus = async (districts, cb) => {
       const regulatoryStatuses = await server.models.RegulatoryStatus.find();
-      const facilities = await server.models.Facility.find();
+      const IDs = await getDistrictsIDs(districts);
+
+      let facilities = null;
+      if (!IDs.length) {
+        facilities = await server.models.Facility.find();
+      } else{
+        facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+      }
       return regulatoryStatuses.map(regulatoryStatus => ({
         name: regulatoryStatus.facility_regulatory_status,
         count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
@@ -400,14 +420,23 @@ module.exports = (Facility) => {
   Facility.remoteMethod('regulatoryStatus', {
     description: "retrieves the aggragate data for facility types and ownership",
     http: { path: '/aggregates/regulatorystatuses', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array'},
     returns: [
       { arg: 'response', type: 'array'}
     ]
   });
 
-  Facility.operationalStatus = async (district_id, cb) => {
+  Facility.operationalStatus = async (districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+    
+    let facilities = null;
+    if (!IDs.length) {
+      facilities = await server.models.Facility.find();
+    } else{
+      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+    }
+
     const operationalStatuses = await server.models.OperationalStatus.find();
-    const facilities = await server.models.Facility.find();
     return operationalStatuses.map(operationalStatus => ({
       name: operationalStatus.facility_operational_status,
       value: facilities.filter(facility => (facility.facility_operational_status_id == operationalStatus.id)).length
@@ -417,13 +446,22 @@ module.exports = (Facility) => {
   Facility.remoteMethod('operationalStatus', {
     description: "retrieves the aggragate data for facility types and ownership",
     http: { path: '/aggregates/operationalstatuses', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array' },
     returns: [
       { arg: 'response', type: 'array' }
     ]
   });
 
 
-  Facility.facilitiesByTypeAndOwnership = async (district_id, cb) => {
+  Facility.facilitiesByTypeAndOwnership = async (districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+
+    let facilities = null;
+    if (!IDs.length) {
+      facilities = await server.models.Facility.find();
+    } else {
+      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+    }
     const owners = await server.models.Owner.find();
     const facilityTypes = await server.models.FacilityType.find();
 
@@ -436,8 +474,6 @@ module.exports = (Facility) => {
             types: facilityTypes
         });
     });
-
-    const facilities = await server.models.Facility.find();
 
     mapped.forEach(map => {
         let obj = new Object;
@@ -454,6 +490,7 @@ module.exports = (Facility) => {
   Facility.remoteMethod('facilitiesByTypeAndOwnership', {
     description: "retrieves the aggragate data for facility types and ownership",
     http: { path: '/aggregates/typeandownership', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array' },
     returns: [
       { arg: 'response', type: 'array' }
     ]

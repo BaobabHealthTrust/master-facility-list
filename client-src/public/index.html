@@ -60,6 +60,9 @@
             const contentHeight = $('.mfl-page-wrap').innerHeight();
             const marginDiff = documentHeight - contentHeight;
 
+            $(document).tooltip();
+
+
             if ($('#back-to-top').length) {
               var scrollTrigger = 100, // px
                 backToTop = function () {
@@ -85,14 +88,25 @@
             const content = $('.content');
             const nav = $('.header');
             const footer = $('.footer');
+            const win = $(window);
 
-            const height = $(this).height() - nav.height() - footer.height();
+            const height = win.height() - nav.height() - footer.height();
             content.css('min-height', height);
 
-            $(window).on({
+            win.on({
               'resize': () => {content.css('min-height', height)},
-              'change': () => { content.css('min-height', height)}
+              'change': () => { content.css('min-height', height)},
+              'onload': () => { content.css('min-height', height) }
             });
+
+            const map = $('.map');
+            const mapHeight = height - 100;
+            map.css('min-height', (mapHeight) + 'px');
+            map.on({
+                'resize': () => { content.css('min-height', mapHeight) },
+                'change': () => { content.css('min-height', mapHeight) }
+            });
+
         });
 
     </script>

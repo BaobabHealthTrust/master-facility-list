@@ -339,6 +339,10 @@ const districtZoneMapping = {
   {
     district_name: "Phalombe",
     district_code: "PH"
+  },
+  {
+    district_name: "Zomba",
+    district_code: "ZA"
   }
   ],
 

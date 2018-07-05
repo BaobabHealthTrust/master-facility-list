@@ -1,6 +1,5 @@
 import React from 'react';
-import { MflCardGeneric } from '../../common';
-import { connect } from 'react-redux';
+
 import {
     BarChart,
     CartesianGrid,
@@ -10,12 +9,10 @@ import {
     Legend,
     Bar
 } from 'recharts';
-import { regulatoryStatuses } from '../../actions';
+
+import { MflCardGeneric } from '../../common';
 
 class FacilitiesByLicensingStatus extends React.Component{
-    componentDidMount() {
-        this.props.regulatoryStatuses()
-    }
     render() {
         const data = [];
         const view = (
@@ -33,12 +30,4 @@ class FacilitiesByLicensingStatus extends React.Component{
         );
     }
 }
-const mapStateToProps = state => {
-    return {
-        data: state.facilities.facilitiesByRegulatoryStatus
-    }
-}
-const mapDispatchToProps = {
-    regulatoryStatuses
-}
-export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByLicensingStatus);
+export default FacilitiesByLicensingStatus;
