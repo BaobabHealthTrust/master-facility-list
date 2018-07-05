@@ -32,13 +32,21 @@ import {
   fetchRegulatoryStatuses,
   fetchServices,
   fetchFacilities,
-  fetchDashboardFacilityServices
+  fetchDashboardFacilityServices,
+  regulatoryStatuses,
+  facilitiesWithService,
+  fetchAllFacilities
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
 
 import { Doughnut, Bar } from 'react-chartjs-2'
 
-import { regulatoryStatuses } from '../actions';
+import { 
+  TotalFacilities, 
+  FacilitiesWithANC, 
+  FacilitiesWithHTC, 
+  FacilitiesWithOPD 
+} from './charts/mini-cards';
 
 import mapmalawi from '../mapmalawi.png';
 import '../App.css';
@@ -209,6 +217,10 @@ class DashboardHome extends React.Component<Props, State> {
     await this.props.fetchDashboardFacilityServices(
       map(this.state.dashboardServices, "id")
     );
+    await this.props.facilitiesWithService('Out patient services (OPD)', 'FETCH_FACILITIES_WITH_OPD');
+    await this.props.facilitiesWithService('Ante - natal Services', 'FETCH_FACILITIES_WITH_ANC');
+    await this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC');
+    await this.props.fetchAllFacilities();
   }
 
   componentWillReceiveProps() {
@@ -216,74 +228,63 @@ class DashboardHome extends React.Component<Props, State> {
   }
 
   render() {
-    // TODO: Redo Dashboard!
-    // const facilityTypeData = this.props.facilityTypes.map(type => {
-    //   return {
-    //     facilityType: type.facility_type,
-    //     total: this.calculateFacilityType(type.id)
-    //   };
-    // });
-
-    // const ownershipData = this.props.owners.map(owner => {
-    //   return {
-    //     ownership: owner.facility_owner,
-    //     total: this.calculateOwnership(owner.id)
-    //   };
-    // });
-
-    // const regulatoryStatusData = this.props.regulatoryStatuses.map(
-    //   regulatoryStatus => {
-    //     return {
-    //       regulatoryStatus:
-    //         regulatoryStatus.facility_regulatory_status,
-    //       total: this.calculateRegulatoryStatus(regulatoryStatus.id)
-    //     };
-    //   }
-    // );
-
-    // const operationalStatusData = this.props.operationalStatuses.map(
-    //   operationalStatus => {
-    //     return {
-    //       x: operationalStatus.facility_operational_status,
-    //       y: this.calculateOperationalStatus(operationalStatus.id)
-    //     };
-    //   }
-    // )
-
     return (
-      <div className="container">
-        <div className="row">
-          {/* <div className="col s12 m3 mfl-tm-5">
-            <MflCardGeneric heading="map of amalawi" view={<MFLGoogleMap/>}/>
-          </div> */}
-          <div className="col s12 m12">
+      <React.Fragment>
+        <div className="container">
             <div className="row">
-              <div className="col s12 m6">
-                <div class="outer-recharts-surface">
-                  <FacilitiesByLicensingStatus />
+              {/* <div className="col s12 m4">
+                <MflCardGeneric heading="map of amalawi" view={<MFLGoogleMap />} />
+              </div> */}
+              <div className="col s12">
+                <div className="row">
+                  <div className="col s12 m3">
+                    <TotalFacilities title={'Total Facilities'} count={this.props.allFacilities.length} icon={'business'} />
+                  </div>
+                  <div className="col s12 m3">
+                    <FacilitiesWithANC title={'Facilities with ANC'} icon={'business'} count={this.props.facilitiesWithANC.length} />
+                  </div>
+                  <div className="col s12 m3">
+                    <FacilitiesWithHTC title={'Facilities with HTC'} icon={'business'} count={this.props.facilitiesWithHTC.length} />
+                  </div>
+                  <div className="col s12 m3">
+                    <FacilitiesWithOPD title={'Facilities with OPD'} icon={'business'} count={this.props.facilitiesWithOPD.length} />
+                  </div>
+                  <div className="col s12 m12">
+                    <div className="row">
+                      <div className="col s12 m6">
+                        <div class="outer-recharts-surface">
+                          <FacilitiesByLicensingStatus />
+                        </div>
+                      </div>
+                      <div className="col s12 m6">
+                        <div className="outer-recharts-surface">
+                          <FacilitiesByOperationalStatus />
+                        </div>
+                      </div>
+                      <div class="col s12">
+                        <div class="outer-recharts-surface">
+                          <FacilitiesByTypeAndOwnership />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col s12 m6">
-                <div className="outer-recharts-surface">
-                  <FacilitiesByOperationalStatus />
-                </div>
-              </div>
-              <div class="col s12">
-                <div class="outer-recharts-surface">
-                  <FacilitiesByTypeAndOwnership />
-                </div>
-              </div>
+
             </div>
           </div>
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = store => {
   return {
+    facilitiesWithOPD: store.facilities.facilitiesWithOPD,
+    facilitiesWithANC: store.facilities.facilitiesWithANC,
+    facilitiesWithHTC: store.facilities.facilitiesWithHTC,
     facilityServices: store.dashboardStatistics.facilityServices,
+    all: store.facilities.allFacilities,
     services: store.dependancies.services,
     allFacilities: store.facilities.all,
     owners: store.dependancies.facilityOwners,
@@ -312,10 +313,13 @@ const mapStateToProps = store => {
 
 export default connect(mapStateToProps, {
   fetchDashboardFacilityServices,
-  fetchServices,
   fetchFacilities,
+  fetchServices,
   fetchFacilityTypes,
   fetchFacilityOwners,
   fetchOperationalStatuses,
-  fetchRegulatoryStatuses
+  fetchRegulatoryStatuses,
+  facilitiesWithService,
+  fetchAllFacilities
 })(DashboardHome);
+connect()

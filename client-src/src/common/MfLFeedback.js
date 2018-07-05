@@ -40,7 +40,9 @@ class MflFeedback extends Component {
               </ul>
               <h5 className="mfl-contact">Instructions to Provide Feedback</h5>
               <p>
-                Incididunt ad est deserunt exercitation. Eu veniam ea reprehenderit ex ex non reprehenderit cupidatat ex officia quis elit. Aute tempor ipsum commodo culpa id. Minim velit eu nisi cillum consequat consectetur. Ex magna occaecat ea cupidatat.
+                Please give us your feedback on the experience you have using this system. 
+                We will be glad to assist on any problems you may be having. 
+                Comments and recommendations for future improvements are also welcome
               </p>
             </div>
           </div>

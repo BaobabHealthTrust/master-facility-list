@@ -3,8 +3,9 @@ import Card from "../common/MflCard";
 import kuunika from "../kuunika.png";
 import moh from "../moh.jpg";
 import banner from "../banner.png";
-import baobabHealth from "../baobab-health.jpg";
-import Lin from "../Lin.png";
+import baobab from "../logos/baobab.jpg";
+import lin from "../logos/lin.png";
+import lighthouse from "../logos/lighthouse.jpg";
 import footerResizer from "../helpers/footerResize";
 import '../App.css';
 
@@ -17,17 +18,22 @@ class MflAbout extends Component {
     render() {
         return (
             <div>
-                <div className="container mfl-dash-container mfl-ref">
-                    <img src={banner} className="mfl-abs mfl-banner-img"style={{width: "100%"}} />
-                    <div className="mfl-abs mfl-parallax"><h3>About the Malawi Master Health Facility Registry</h3></div>
+                <div style={{ backgroundImage: 'url("https://cdn-images-1.medium.com/max/660/1*WgROsTKa6diRYTG5K0R5mw.jpeg")'}}>
+                    <div style={{ padding: '6rem 2rem', backgroundColor: 'rgba(0,0,0,.5)' }}>
+                        <h3 className="text-center" style={{color: 'white'}}>About the Malawi Master Health Facility Registry</h3>
+                    </div>
                 </div>
+                {/* <div className="containe mfl-dash-container mfl-ref" style={{background: 'yellow', border: '1px solid red'}}>
+                    <img src={banner} className="mfl-abs mfl-banner-img"style={{width: "130px"}} />
+                    <div className="mfl-abs mfl-parallax" style={{backkground: 'yellow'}}><h3>About the Malawi Master Health Facility Registry</h3></div>
+                </div> */}
                 <div className="container mfl-modal-container">
                     <div className="row">
                         <div className="col s12 m12 l12">
                             <h4 className="mfl-contact white-text">About Malawi Master Health Facility Registry</h4>
                         </div>
                     </div>
-                    <div className="row mfl-tm-10">
+                    <div className="row">
                         <div className="col m8 s12">
                             <h5 className="mfl-contact">Purpose</h5>
                             <p>
@@ -67,25 +73,26 @@ class MflAbout extends Component {
                                     <div className="mlf-w-9 mfl-shado">
                                         <div>
                                             <div className="partner-logos">
-                                                <img 
-                                                    src={kuunika} 
-                                                    alt="kuunika logo"
-                                                    className="partner-logo"
-                                                    />
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col s12 m4 l3">
-                                    <div className="mlf-w-9 mfl-shado">
-                                        <div>
-                                            <div className="partner-logos">
-                                                <img 
-                                                    src={moh} 
+                                                <img
+                                                    src={moh}
                                                     alt="Ministry of Health"
                                                     className="partner-logo"
-                                                    />
+                                                />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col s12 m4 l3">
+                                    <div className="mlf-w-9 mfl-shado">
+                                        <div>
+                                            <div className="partner-logos">
+                                                <img
+                                                    src={lighthouse}
+                                                    alt="kuunika logo"
+                                                    className="partner-logo"
+                                                />
                                             </div>
 
                                         </div>
@@ -96,7 +103,7 @@ class MflAbout extends Component {
                                         <div>
                                             <div className="partner-logos">
                                                 <img 
-                                                    src={baobabHealth} 
+                                                    src={baobab} 
                                                     alt="baobab health logo" 
                                                     className="partner-logo"
                                                 />
@@ -109,7 +116,7 @@ class MflAbout extends Component {
                                         <div>
                                             <div className="partner-logos">
                                                 <img 
-                                                    src={Lin} 
+                                                    src={lin} 
                                                     alt="Center for Monitoring and Evaluation Department" 
                                                     className="partner-logo"
                                                     />
