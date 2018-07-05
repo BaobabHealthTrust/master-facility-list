@@ -1,18 +1,14 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
-import { connect } from 'react-redux';
+
 import {
     PieChart,
     Pie,
     Legend,
     Cell
 } from 'recharts';
-import { operationalStatuses } from '../../actions';
 
 class FacilitiesByOperationalStatus extends React.Component{
-    componentDidMount() {
-        this.props.operationalStatuses()
-    }
 
     render (){
         const data = this.props.data;
@@ -32,12 +28,5 @@ class FacilitiesByOperationalStatus extends React.Component{
         );
     }
 }
-const mapStateToProps = state => {
-    return {
-        data: state.facilities.facilitiesByOperationalStatus
-    }
-}
-const mapDispatchToProps = {
-    operationalStatuses
-}
-export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByOperationalStatus);
+
+export default FacilitiesByOperationalStatus;
