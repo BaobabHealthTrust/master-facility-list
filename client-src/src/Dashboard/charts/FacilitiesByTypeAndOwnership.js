@@ -1,9 +1,5 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
-import { facilityTypeAndOwnership } from '../../actions'
-import { connect } from 'react-redux';
-import { MflBar } from './index'
-import _ from 'lodash'
 import randomcolor from 'randomcolor';
 
 import {
@@ -18,21 +14,17 @@ import {
 
 import { curveCatmullRom } from 'd3-shape';
 
-
 class FacilitiesByTypeAndOwnership extends React.Component{
-    componentDidMount() {
-        this.props.facilityTypeAndOwnership()
-    }
     render() {
         const view = (
             <React.Fragment>
-                <BarChart width={1100} height={300} data={this.props.facilitiesByTypeAndOwnership}>
+                <BarChart width={1100} height={300} data={this.props.data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {this.props.facilitiesByTypeAndOwnershipKeys.map(key => (
+                    {this.props.keys.map(key => (
                         <Bar dataKey={key} fill={randomcolor()} />
                     ))}
                 </BarChart>
@@ -44,14 +36,5 @@ class FacilitiesByTypeAndOwnership extends React.Component{
 
     }
 }
-const mapStateToProps = state => {
-    return {
-        facilitiesByTypeAndOwnership: state.facilities.facilitiesByTypeAndOwnership,
-        facilitiesByTypeAndOwnershipKeys: state.facilities.facilitiesByTypeAndOwnershipKeys
-    }
-}
 
-const mapDispatchToProps = {
-    facilityTypeAndOwnership
-}
-export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByTypeAndOwnership);
+export default FacilitiesByTypeAndOwnership;

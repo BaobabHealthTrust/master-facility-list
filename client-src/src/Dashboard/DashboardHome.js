@@ -31,7 +31,8 @@ import {
     operationalStatuses,
     regulatoryStatuses,
     facilitiesWithService,
-    fetchAllFacilities
+    fetchAllFacilities,
+    facilityTypeAndOwnership
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
 
@@ -131,6 +132,7 @@ class DashboardHome extends React.Component<Props, State> {
         
         this.props.regulatoryStatuses(this.state.districts);
         this.props.operationalStatuses(this.state.districts);
+        this.props.facilityTypeAndOwnership(this.state.districts);
     }
 
     async componentDidMount() {
@@ -143,6 +145,7 @@ class DashboardHome extends React.Component<Props, State> {
         await this.props.fetchDashboardFacilityServices(
             map(this.state.dashboardServices, "id")
         );
+        await this.props.facilityTypeAndOwnership(this.state.districts);
     }
 
     componentWillReceiveProps() {
@@ -173,7 +176,10 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
                 <div class="col s12">
                   <div class="outer-recharts-surface">
-                    <FacilitiesByTypeAndOwnership />
+                    <FacilitiesByTypeAndOwnership 
+                        data={this.props.facilitiesByTypeAndOwnership}
+                        keys={this.props.facilitiesByTypeAndOwnershipKeys} 
+                    />
                   </div>
                 </div>
               </div>
@@ -214,7 +220,9 @@ const mapStateToProps = store => {
         results:
         store.searchResults.advancedSearchFacilities.basicDetailsFacilities,
         dependancyIsLoading: store.dependancies.isLoading,
-        dependancyIsNetworkError: store.dependancies.isNetworkError
+        dependancyIsNetworkError: store.dependancies.isNetworkError,
+        facilitiesByTypeAndOwnership: store.facilities.facilitiesByTypeAndOwnership,
+        facilitiesByTypeAndOwnershipKeys: store.facilities.facilitiesByTypeAndOwnershipKeys
     };
 };
 
@@ -230,6 +238,7 @@ export default connect(mapStateToProps, {
   fetchOperationalStatuses,
   fetchRegulatoryStatuses,
   facilitiesWithService,
-  fetchAllFacilities
+  fetchAllFacilities,
+  facilityTypeAndOwnership
 })(DashboardHome);
 connect()
