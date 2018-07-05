@@ -30,9 +30,7 @@ module.exports = (Facility) => {
       const district = await server.models.District.findOne({ where: { id: district_id } });
       if (ctx.instance.published_date && !ctx.instance.archived_date) {
         const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
-          // facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
-          //   if (err) console.error(err);
-          // })
+          
         })
       }
     }
@@ -491,6 +489,35 @@ module.exports = (Facility) => {
     description: "retrieves the aggragate data for facility types and ownership",
     http: { path: '/aggregates/typeandownership', verb: 'get' },
     accepts: { arg: 'districts', type: 'array' },
+    returns: [
+      { arg: 'response', type: 'array' }
+    ]
+  });
+
+  Facility.facilitiesByService = async (service_name, district_id, cb) => {
+    if (!service_name){
+      return [];
+    }
+    const serviceIds = await server.models.Service.find().filter(service => {
+      return _.lowerCase(service.service_name).includes(_.lowerCase(service_name));
+    }).map(service => service.id);
+    const facilityIds = await server.models.FacilityService.find().filter(facilityService => {
+      return serviceIds.includes(facilityService.service_id); 
+    }).map(facilityService => facilityService.facility_id);
+    const facilities = await server.models.Facility.find({where: {id: {inq: facilityIds}}});
+    if(district_id){
+      return [];
+    }
+    return facilities;
+  };
+
+  Facility.remoteMethod('facilitiesByService', {
+    description: "retrieves facilities given a specific service",
+    http: { path: '/facilitieswithservice', verb: 'get' },
+    accepts: [
+      { arg: 'service_name', type: 'string' },
+      { arg: 'district_id', type: 'number' }
+    ],
     returns: [
       { arg: 'response', type: 'array' }
     ]

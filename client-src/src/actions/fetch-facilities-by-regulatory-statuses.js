@@ -1,6 +1,5 @@
 import axios from "axios";
 import settings from '../settings';
-import { map } from "lodash";
 
 export default districts => {
     const END_POINT = `${settings.hostname}/api/Facilities/aggregates/regulatorystatuses?districts=${JSON.stringify(districts)}`;

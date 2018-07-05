@@ -29,10 +29,20 @@ import {
     fetchFacilities,
     fetchDashboardFacilityServices,
     operationalStatuses,
-    regulatoryStatuses
+    regulatoryStatuses,
+    facilitiesWithService,
+    fetchAllFacilities
 } from "../actions";
-
 import footerResizer from "../helpers/footerResize";
+
+import { Doughnut, Bar } from 'react-chartjs-2'
+
+import { 
+  TotalFacilities, 
+  FacilitiesWithANC, 
+  FacilitiesWithHTC, 
+  FacilitiesWithOPD 
+} from './charts/mini-cards';
 import '../App.css';
 
 type Props = {
@@ -167,6 +177,7 @@ class DashboardHome extends React.Component<Props, State> {
                   </div>
                 </div>
               </div>
+
             </div>
 
           </div>
@@ -213,8 +224,12 @@ export default connect(mapStateToProps, {
   regulatoryStatuses,
   operationalStatuses,
   fetchFacilities,
+  fetchServices,
   fetchFacilityTypes,
   fetchFacilityOwners,
   fetchOperationalStatuses,
-  fetchRegulatoryStatuses
+  fetchRegulatoryStatuses,
+  facilitiesWithService,
+  fetchAllFacilities
 })(DashboardHome);
+connect()

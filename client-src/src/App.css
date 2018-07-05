@@ -768,13 +768,6 @@ select.mfl-select {
     display: block;
     margin: auto;
 }
-
-/* Dashboard chart styles */
-
-.outer-recharts-surface .recharts-surface {
-
-}
-
 .content{
     margin: 0;
 }
@@ -802,4 +795,7 @@ svg #districts path:hover{
 
 .mapClick{
     fill:#0D47A1;
+}
+.react-confirm-alert-overlay{
+    background: rgba(0, 0, 0, 0.8) !important;
 }

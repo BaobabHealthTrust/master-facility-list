@@ -1,5 +1,10 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
+import { facilityTypeAndOwnership } from '../../actions'
+import { connect } from 'react-redux';
+import { MflBar } from './index'
+import _ from 'lodash'
+import randomcolor from 'randomcolor';
 
 import {
     BarChart,
@@ -15,63 +20,23 @@ import { curveCatmullRom } from 'd3-shape';
 
 
 class FacilitiesByTypeAndOwnership extends React.Component{
+    componentDidMount() {
+        this.props.facilityTypeAndOwnership()
+    }
     render() {
-        const data = [
-            {
-                name: 'Private',
-                clinic: 2,
-                dispensary: 1,
-                health_center: 2,
-                hospital: 1,
-                central_hospital: 4
-            },
-            {
-                name: 'Government',
-                clinic: 2,
-                dispensary: 1,
-                health_center: 10,
-                hospital: 3,
-                central_hospital: 4
-            },
-            {
-                name: 'Parastatal',
-                clinic: 2,
-                dispensary: 1,
-                health_center: 3,
-                hospital: 3,
-                central_hospital: 9
-            },
-            {
-                name: 'CHAM',
-                clinic: 2,
-                dispensary: 1,
-                health_center: 0,
-                hospital: 7,
-                central_hospital: 4
-            },
-            {
-                name: 'Non-Governmental',
-                clinic: 2,
-                dispensary: 1,
-                health_center: 2,
-                hospital: 1,
-                central_hospital: 8
-            }
-        ]
-
         const view = (
-            <BarChart width={900} height={300} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="clinic" fill="#0D47A1" />
-                <Bar dataKey="health_center" fill="#7b82ff" />
-                <Bar dataKey="dispensary" fill="#9a2eff" />
-                <Bar dataKey="hospital" fill="#ff3300" />
-                <Bar dataKey="central_hospital" fill="#ff29f4" />
-            </BarChart>
+            <React.Fragment>
+                <BarChart width={1100} height={300} data={this.props.facilitiesByTypeAndOwnership}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {this.props.facilitiesByTypeAndOwnershipKeys.map(key => (
+                        <Bar dataKey={key} fill={randomcolor()} />
+                    ))}
+                </BarChart>
+            </React.Fragment>
         )
         return (
             <MflCardGeneric heading="facilities by type and ownership" view={view}/>
@@ -79,5 +44,14 @@ class FacilitiesByTypeAndOwnership extends React.Component{
 
     }
 }
+const mapStateToProps = state => {
+    return {
+        facilitiesByTypeAndOwnership: state.facilities.facilitiesByTypeAndOwnership,
+        facilitiesByTypeAndOwnershipKeys: state.facilities.facilitiesByTypeAndOwnershipKeys
+    }
+}
 
-export default FacilitiesByTypeAndOwnership;
+const mapDispatchToProps = {
+    facilityTypeAndOwnership
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FacilitiesByTypeAndOwnership);

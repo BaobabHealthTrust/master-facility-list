@@ -63,3 +63,6 @@ export { default as fetchUserAccessTokens } from "./fetch-user-access-tokens";
 export { default as fetchFeedbackTypes } from "./fetch-feedback-types"; 
 export { default as regulatoryStatuses } from "./fetch-facilities-by-regulatory-statuses";
 export { default as operationalStatuses } from "./fetch-facilities-by-operational-statuses";
+export { default as facilityTypeAndOwnership } from "./fetch-facilities-by-type-and-ownership";
+export { default as facilitiesWithService } from "./fetch-facilities-with-service";
+export { default as fetchAllFacilities } from "./fetch-all-facilities";

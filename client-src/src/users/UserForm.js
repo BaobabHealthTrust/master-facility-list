@@ -87,7 +87,6 @@ class UserForm extends React.Component {
                   labelClassName="mfl-max-width"
                   value={values.firstname}
                   onChange={handleChange}
-                  error={errors.firstname} 
                   onBlur={handleBlur}
                   error={touched.firstname && errors.firstname}
                   name="firstname"

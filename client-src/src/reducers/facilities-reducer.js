@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default (
   state = {
     list: [],
@@ -22,7 +24,13 @@ export default (
     deleteServiceResponse: {},
     patchResponse: {},
     facilitiesByRegulatoryStatus: [],
-    facilitiesByOperationalStatus: []
+    facilitiesByOperationalStatus: [],
+    facilitiesByTypeAndOwnership: [],
+    facilitiesByTypeAndOwnershipKeys: [],
+    allFacilities: [],
+    facilitiesWithOPD: [],
+    facilitiesWithANC: [],
+    facilitiesWithHTC: []
   },
   action
 ) => {
@@ -165,6 +173,49 @@ export default (
       return {
         ...state,
         facilitiesByOperationalStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_TYPE_AND_OWNERSHIP':
+      
+      if(action.payload.data.response){
+        const snakeCased = action.payload.data.response.map(facilityByTypeAndOnwership => {
+          const _facilityByTypeAndOwnership = _.mapKeys(facilityByTypeAndOnwership, (key, value) => {
+            return _.snakeCase(value);
+          });
+          return _facilityByTypeAndOwnership;
+        });
+        return {
+          ...state,
+          facilitiesByTypeAndOwnership: snakeCased,
+          facilitiesByTypeAndOwnershipKeys: _.keys(snakeCased[0])
+        }
+      }
+      return {...state}
+      break;
+    case 'FETCH_FACILITIES_WITH_OPD':
+        return {
+          ...state,
+          facilitiesWithOPD: action.payload.data.response
+        }
+      break;
+    case 'FETCH_FACILITIES_WITH_ANC':
+      return {
+        ...state,
+        facilitiesWithANC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_WITH_HTC':
+      return {
+        ...state,
+        facilitiesWithHTC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_ALL_FACILITIES':
+      console.clear()
+      console.log('ddoeodeendnndendeudn')
+      return {
+        ...state,
+        allFacilities: action.payload.data.response
       }
       break;
     default:
