@@ -1,6 +1,5 @@
 import React from 'react';
 import { MflCardGeneric } from '../../common';
-
 import {
     PieChart,
     Pie,
@@ -18,7 +17,7 @@ class FacilitiesByOperationalStatus extends React.Component{
                     data={data}
                     outerRadius={100}
                     fill="#8884d8">
-                    {/* { data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />) } */}
+                    { data.map((entry, index) => <Cell fill={'#456723'} />) }
                 </Pie>
                 <Legend verticalAlign="bottom" height={40} />
             </PieChart>
