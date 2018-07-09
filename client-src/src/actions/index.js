@@ -65,4 +65,4 @@ export { default as regulatoryStatuses } from "./fetch-facilities-by-regulatory-
 export { default as operationalStatuses } from "./fetch-facilities-by-operational-statuses";
 export { default as facilityTypeAndOwnership } from "./fetch-facilities-by-type-and-ownership";
 export { default as facilitiesWithService } from "./fetch-facilities-with-service";
-export { default as fetchAllFacilities } from "./fetch-all-facilities";
+export { default as fetchTotalFacilities } from "./fetch-total-facilities";

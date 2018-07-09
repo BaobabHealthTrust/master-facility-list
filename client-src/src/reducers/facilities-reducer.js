@@ -27,10 +27,11 @@ export default (
     facilitiesByOperationalStatus: [],
     facilitiesByTypeAndOwnership: [],
     facilitiesByTypeAndOwnershipKeys: [],
-    allFacilities: [],
+    totalFacilities: [],
     facilitiesWithOPD: [],
     facilitiesWithANC: [],
-    facilitiesWithHTC: []
+    facilitiesWithHTC: [],
+    facilitiesWithART: []
   },
   action
 ) => {
@@ -210,12 +211,16 @@ export default (
         facilitiesWithHTC: action.payload.data.response
       }
       break;
-    case 'FETCH_ALL_FACILITIES':
-      console.clear()
-      console.log('ddoeodeendnndendeudn')
+    case 'FETCH_FACILITIES_WITH_ART':
       return {
         ...state,
-        allFacilities: action.payload.data.response
+        facilitiesWithART: action.payload.data.response
+      }
+      break;
+    case 'FETCH_TOTAL_FACILITIES':
+      return {
+        ...state,
+        totalFacilities: action.payload.data
       }
       break;
     default:

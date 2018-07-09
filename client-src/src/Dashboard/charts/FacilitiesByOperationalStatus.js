@@ -6,6 +6,7 @@ import {
     Legend,
     Cell
 } from 'recharts';
+import randomcolor from 'randomcolor';
 
 class FacilitiesByOperationalStatus extends React.Component{
 
@@ -17,7 +18,7 @@ class FacilitiesByOperationalStatus extends React.Component{
                     data={data}
                     outerRadius={100}
                     fill="#8884d8">
-                    { data.map((entry, index) => <Cell fill={'#456723'} />) }
+                    { data.map((entry, index) => <Cell fill={'#443235'} />) }
                 </Pie>
                 <Legend verticalAlign="bottom" height={40} />
             </PieChart>

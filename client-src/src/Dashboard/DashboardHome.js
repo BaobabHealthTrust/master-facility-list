@@ -31,7 +31,7 @@ import {
     operationalStatuses,
     regulatoryStatuses,
     facilitiesWithService,
-    fetchAllFacilities,
+    fetchTotalFacilities,
     facilityTypeAndOwnership
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
@@ -39,10 +39,7 @@ import footerResizer from "../helpers/footerResize";
 import { Doughnut, Bar } from 'react-chartjs-2'
 
 import { 
-  TotalFacilities, 
-  FacilitiesWithANC, 
-  FacilitiesWithHTC, 
-  FacilitiesWithOPD 
+  GenericCard
 } from './charts/mini-cards';
 import '../App.css';
 
@@ -145,7 +142,12 @@ class DashboardHome extends React.Component<Props, State> {
         await this.props.fetchDashboardFacilityServices(
             map(this.state.dashboardServices, "id")
         );
-        await this.props.facilityTypeAndOwnership(this.state.districts);
+      await this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD');
+      await this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC');
+      await this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC');
+      await this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART');
+      await this.props.facilityTypeAndOwnership(this.state.districts);
+      await this.props.fetchTotalFacilities();
     }
 
     componentWillReceiveProps() {
@@ -157,12 +159,27 @@ class DashboardHome extends React.Component<Props, State> {
       return (
         <div className="container">
           <div className="row mt-6">
-
               <div className="col s12 m3">
                   <FacilitiesMap onClick={this.onClick}/>
               </div>
-
             <div className="col s12 m9">
+              <div className="row">
+                <div className="col s12 l3 col-5">
+                  <GenericCard count={this.props.totalFacilities.length} title="Total Facilities" icon="people"/>
+                </div>
+                <div className="col s12 l3 col-5">
+                  <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="people" />
+                </div>
+                <div className="col s12 l3 col-5">
+                  <GenericCard count={this.props.facilitiesWithHTC.length} title="With HTC" icon="people" />
+                </div>
+                <div className="col s12 l3 col-5">
+                  <GenericCard count={this.props.facilitiesWithOPD.length} title="With OPD" icon="people" />
+                </div>
+                <div className="col s12 l3 col-5">
+                  <GenericCard count={this.props.facilitiesWithART.length} title="With ART" icon="people" />
+                </div>
+              </div>
               <div className="row">
                 <div className="col s12 m6">
                   <div class="outer-recharts-surface">
@@ -222,7 +239,12 @@ const mapStateToProps = store => {
         dependancyIsLoading: store.dependancies.isLoading,
         dependancyIsNetworkError: store.dependancies.isNetworkError,
         facilitiesByTypeAndOwnership: store.facilities.facilitiesByTypeAndOwnership,
-        facilitiesByTypeAndOwnershipKeys: store.facilities.facilitiesByTypeAndOwnershipKeys
+        facilitiesByTypeAndOwnershipKeys: store.facilities.facilitiesByTypeAndOwnershipKeys,
+        facilitiesWithOPD: store.facilities.facilitiesWithOPD,
+        facilitiesWithANC: store.facilities.facilitiesWithANC,
+        facilitiesWithHTC: store.facilities.facilitiesWithHTC,
+        facilitiesWithART: store.facilities.facilitiesWithART,
+        totalFacilities: store.facilities.totalFacilities
     };
 };
 
@@ -238,7 +260,7 @@ export default connect(mapStateToProps, {
   fetchOperationalStatuses,
   fetchRegulatoryStatuses,
   facilitiesWithService,
-  fetchAllFacilities,
+  fetchTotalFacilities,
   facilityTypeAndOwnership
 })(DashboardHome);
 connect()
