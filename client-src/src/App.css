@@ -768,3 +768,8 @@ select.mfl-select {
     display: block;
     margin: auto;
 }
+
+.districts path:hover {
+  background: #0d47a1;
+  fill: blue;
+}
