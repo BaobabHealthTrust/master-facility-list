@@ -142,6 +142,7 @@ class DashboardHome extends React.Component<Props, State> {
         await this.props.fetchDashboardFacilityServices(
             map(this.state.dashboardServices, "id")
         );
+      
       await this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD');
       await this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC');
       await this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC');
@@ -157,7 +158,7 @@ class DashboardHome extends React.Component<Props, State> {
     render() {
 
       return (
-        <div className="container">
+        <div className="containe">
           <div className="row mt-6">
               <div className="col s12 m3">
                   <FacilitiesMap onClick={this.onClick}/>

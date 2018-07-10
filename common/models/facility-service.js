@@ -6,30 +6,32 @@ module.exports = function (Facilityservice) {
 
   Facilityservice.observe('before delete', async function deleteDependants(ctx) {
     const facilityService = await Facilityservice.findOne({ where: { id: ctx.where.id } })
-    const dependants = await server.models.Service.find({
-      where: { service_category_id: facilityService.service_id }
-    });
-    if (dependants.length > 0) {
-      const dependantIds = dependants.map(d => d.id)
-      await Facilityservice.destroyAll({
-        and: [
-          { facility_id: facilityService.facility_id },
-          { service_id: { inq: dependantIds } }
-        ]
-      })
-
-      const sLevelServices = await server.models.Service.find({
-        where: { service_category_id: { inq: dependantIds } }
+    if(facilityService){
+      const dependants = await server.models.Service.find({
+        where: { service_category_id: facilityService.service_id }
       });
-
-      if (sLevelServices.length > 0) {
-        const sLevelDependantIds = sLevelServices.map(d => d.id)
+      if (dependants.length > 0) {
+        const dependantIds = dependants.map(d => d.id)
         await Facilityservice.destroyAll({
           and: [
             { facility_id: facilityService.facility_id },
-            { service_id: { inq: sLevelDependantIds } }
+            { service_id: { inq: dependantIds } }
           ]
         })
+
+        const sLevelServices = await server.models.Service.find({
+          where: { service_category_id: { inq: dependantIds } }
+        });
+
+        if (sLevelServices.length > 0) {
+          const sLevelDependantIds = sLevelServices.map(d => d.id)
+          await Facilityservice.destroyAll({
+            and: [
+              { facility_id: facilityService.facility_id },
+              { service_id: { inq: sLevelDependantIds } }
+            ]
+          })
+        }
       }
     }
   })
