@@ -1,1 +1,25 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><title>React App</title><link href="/static/css/main.a5484e98.css" rel="stylesheet"></head><body><link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><title>Master Facility List</title><body><script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script>$(document).ready(function(){$(".button-collapse").sideNav()})</script><script type="text/javascript" src="/static/js/main.4dda55ef.js"></script></body></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><title>Master Facility List</title><link href="/static/css/main.aa2b66a9.css" rel="stylesheet"></head><body><link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/flexboxgrid/6.3.1/flexboxgrid.min.css"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><body><script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script>$(document).ready(function () {
+                // $('.select').material_select();
+                $('.button-collapse').sideNav();
+                $('.tooltipped').tooltip({ delay: 10 });
+                const documentHeight = $(document).innerHeight();
+                const contentHeight = $('.mfl-page-wrap').innerHeight();
+                const marginDiff = documentHeight - contentHeight;
+            });
+
+            $(window).resize((e) => {
+                function scrollBars() {
+                    var body = $('body')[0]
+                    return {
+                        vertical: body.scrollHeight > body.clientHeight,
+                        horizontal: body.scrollWidth > body.clientWidth
+                    }
+                }
+                setTimeout(() => {
+                    if (scrollBars().vertical) {
+                        document.querySelector('.page-footer').style.position = "relative";
+                    } else {
+                        document.querySelector('.page-footer').style.position = "absolute";
+                    }
+                }, 100);
+            })</script><script type="text/javascript" src="/static/js/main.7d413a80.js"></script></body></body></html>

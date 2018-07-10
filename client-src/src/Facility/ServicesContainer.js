@@ -1,31 +1,28 @@
 import React, { Component } from "react";
-import Card from "../common/MflCard";
+import { Col, Card } from 'react-materialize';
+import { connect } from 'react-redux';
 
-class ServicesContainer extends Component {
-    render() {
-        const topLevelServices = this.props.services.filter(service => {
-            return service.service.service_category_id === 0;
-        });
+class ServicesContainer extends React.Component<> {
 
-        return (
-            <div className="row">
-                {topLevelServices.length > 0 ? (
-                    topLevelServices.map(service => {
-                        return (
-                            <div className="col m4 s12">
-                                <Card
-                                    heading={service.service.service_name}
-                                    data={[]}
-                                />
-                            </div>
-                        );
-                    })
-                ) : (
-                    <h6>There are no Clinical Services for this Facility</h6>
-                )}
-            </div>
-        );
-    }
+  render() {
+    return (
+      <Col m={4} s={12}>
+        <Card title="hey there">
+          <ul>
+
+          </ul>
+        </Card>
+      </Col>
+    )
+  }
+
 }
 
-export default ServicesContainer;
+const mapStateToProps = state => {
+  return {
+    services: state.dependancies.services,
+    serviceTypes: state.dependancies.serviceTypes
+  }
+}
+
+export default connect(mapStateToProps)(ServicesContainer)

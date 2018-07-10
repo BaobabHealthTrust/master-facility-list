@@ -1,136 +1,99 @@
+//@Flow
 import React, { Component } from "react";
 import Card from "../common/MflCard";
 import { connect } from "react-redux";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
+import { fetchCurrentDetails, setCurrentDetails } from "../actions";
 import moment from "moment";
+import { BasicDetailsForm } from "./FacilityForms";
+import { CurrentFacility } from "../types/helper-types";
+import { ProgressBar } from 'react-materialize';
+class Summary extends Component<{ current: CurrentFacility }> {
 
-class Summary extends Component {
-    async componentDidMount() {
-        const id = this.props.match.params.id;
+  async componentDidMount() {
+    const id = this.props.match.params.id;
+    this.props.fetchCurrentDetails(id);
+  }
 
-        this.props.fetchCurrentDetails(id);
-    }
+  _renderHeadingSection = (title, icon, label) => {
+    return (
+      <React.Fragment>
+        <p className="mfl-summary-header">{title}</p>
+        <p className="mfl-summary-text">
+          <i class="material-icons mfl-icon left">{icon}</i>
+          {label}
+        </p>
+        <br />
+      </React.Fragment>
+    )
+  }
 
-    componentWillReceiveProps(newProps) {
-        const newId = newProps.match.params.id;
-        newProps.fetchCurrentDetails(newId);
-    }
-
-    render() {
-        const contactPersonData = this.props.current.contactPeople
-            ? [
-                  [
-                      "Fullname",
-                      this.props.current.contactPeople.contact_person_fullname
-                  ],
-                  [
-                      "email",
-                      this.props.current.contactPeople.contact_person_email
-                  ],
-                  [
-                      "phone",
-                      this.props.current.contactPeople.contact_person_phone
-                  ]
-              ]
-            : [];
-
-        const ownershipData =
-            this.props.current.owner &&
-            this.props.current.operationalStatus &&
-            this.props.current.regulatoryStatus
-                ? [
-                      ["owner", this.props.current.owner.facility_owner],
-                      [
-                          "operational Status",
-                          this.props.current.operationalStatus
-                              .facility_operational_status
-                      ],
-                      [
-                          "regulatory Status",
-                          this.props.current.regulatoryStatus
-                              .facility_regulatory_status
-                      ]
-                  ]
-                : [];
-
-        return (
-            <div className="container">
-                <div className="row z-depth-2">
+  render() {
+    const { owner, regulatoryStatus, facilityType, operationalStatus, district } = this.props.current;
+    const { facility_date_opened } = this.props.current;
+    return (
+      <div className="container">
+        <div>
+          <div className="row z-depth-2">
+            {
+              this.props.isLoading
+                ? <ProgressBar />
+                : (
+                  <div>
                     <div className="col m6 s12">
-                        <p className="mfl-summary-header">Common Name</p>
-
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">
-                                text_fields
-                            </i>
-                            {this.props.current.facility_name}
-                        </p>
-                        <br />
-                        <p className="mfl-summary-header">Facility Code</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">map</i>
-                            {this.props.current.district
-                                ? this.props.current.district.zone.zone_name
-                                : ""}
-                        </p>
+                      {this._renderHeadingSection('Common Name', 'text_fields', this.props.current.common_name)}
+                      {owner && this._renderHeadingSection('Owner', 'meeting_room', owner.facility_owner)}
+                      {
+                        regulatoryStatus && this._renderHeadingSection(
+                          'Regulatory Status',
+                          'visibility',
+                          regulatoryStatus.facility_regulatory_status
+                        )
+                      }
                     </div>
 
                     <div className="col m6 s12">
-                        <p className="mfl-summary-header">DATE OPENED</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">today</i>
-                            {moment(
-                                this.props.current.facility_date_opened
-                            ).format("MMMM Do YYYY")}
-                        </p>
-
-                        <br />
-
-                        <p className="mfl-summary-header">Facility Type</p>
-                        <p className="mfl-summary-text">
-                            <i class="material-icons mfl-icon left">
-                                local_hospital
-                            </i>
-                            {this.props.current.facilityType
-                                ? this.props.current.facilityType.facility_type
-                                : ""}
-                        </p>
+                      {
+                        this._renderHeadingSection(
+                          'Date Opened',
+                          'today',
+                          moment(facility_date_opened).format('MMMM DD YYYY')
+                        )
+                      }
+                      {
+                        facilityType &&
+                        this._renderHeadingSection(
+                          'Facility Type',
+                          'local_hospital',
+                          facilityType.facility_type
+                        )
+                      }
+                      {
+                        operationalStatus &&
+                        this._renderHeadingSection(
+                          'Operational Status',
+                          'warning',
+                          operationalStatus.facility_operational_status
+                        )
+                      }
                     </div>
-                </div>
-
-                <br />
-
-                <div className="row">
-                    <div className="col l6 m12 s12">
-                        <Card
-                            heading="contact person"
-                            icon="person"
-                            data={contactPersonData}
-                        />
-                    </div>
-
-                    <div className="col l6 m12 s12">
-                        <Card
-                            heading="ownership & regulation"
-                            icon="bookmark"
-                            data={ownershipData}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
+                  </div>
+                )
+            }
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-        facilities: state.facilities.list,
-        current: state.facilities.currentDetails
-    };
+  return {
+    current: state.facilities.currentDetails,
+    isLoading: state.facilities.isLoading
+  };
 };
 
 export default connect(mapStateToProps, {
-    setCurrentDetails,
-    fetchCurrentDetails
+  setCurrentDetails,
+  fetchCurrentDetails
 })(Summary);

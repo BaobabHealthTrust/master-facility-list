@@ -1,70 +1,95 @@
-import React, { Component } from "react";
-import setCurrentDetails from "../actions/set-current-details";
-import fetchCurrentDetails from "../actions/fetch-current-details";
+//@flow
+import React from "react";
+
+import {
+  fetchCurrentDetails,
+  fetchCurrentServices,
+  setCurrentDetails
+} from "../actions";
+
 import Container from "./ServicesContainer";
-import fetchCurrentServices from "../actions/fetch-current-services";
 import { connect } from "react-redux";
+import { Service, ServiceType } from "../types/model-types";
+import { Tab, Tabs } from 'react-materialize';
+import { Col, Card } from 'react-materialize';
 
-class FacilityServices extends Component {
-    async componentDidMount() {
-        const id = this.props.match.params.id;
+type Props = {
+  services: Array<{ service: Service }>,
+  serviceTypes: any,
+  allServices: Array<Service>
+}
 
-        if (this.props.facilities.length > 0) {
-            this.props.setCurrentDetails(this.props.facilities, id);
-        }
+class FacilityServices extends React.Component<Props> {
+  async componentDidMount() {
+    const id = this.props.match.params.id;
+    await this.props.fetchCurrentDetails(id);
+    await this.props.fetchCurrentServices(id);
+  }
 
-        await this.props.fetchCurrentDetails(id);
-        await this.props.fetchCurrentServices(id);
-    }
-
-    render() {
-        const clinicalServices = this.props.services.filter(service => {
-            return (
-                service.service.serviceType.service_type.toUpperCase() ===
-                "CLINICAL SERVICES"
-            );
-        });
-
-        console.log(clinicalServices);
-
-        return (
-            <div className="container">
-                <div className="nav-content">
-                    <ul className="tabs blue accent-1 mfl-tabs">
-                        <li className="tab">
-                            <a href="#clinical">Clinical</a>
-                        </li>
-                        <li className="tab">
-                            <a href="#test2">Community Health</a>
-                        </li>
-                        <li className="tab">
-                            <a href="#test3">Reproductive</a>
-                        </li>
-                        <li className="tab">
-                            <a href="#test4">Other Services</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <br />
-
-                <div id="clinical" class="col s12">
-                    <Container services={clinicalServices} />
-                </div>
-            </div>
-        );
-    }
+  render() {
+    // TODO: Fix odd issue when loading tabs
+    return (
+      <div className="container">
+        <Tabs className='tabs blue accent-1 mfl-tabs tabs-fixed-width'>
+          {
+            this.props.serviceTypes.map((type, index) => {
+              return (
+                <Tab title={type.service_type} active={index == 0}>
+                  {
+                    this.props.services && this.props.services.filter(service => (
+                      service.serviceType.id === type.id
+                    )
+                    ).map(tlService => {
+                      return (
+                        <Col m={4} s={12}>
+                          <Card title={tlService.service.service_name}>
+                            <ul>
+                              {
+                                tlService.children.map(slService => {
+                                  return (
+                                    <li>
+                                      <h6>{slService.service.service_name}</h6>
+                                      <ul>
+                                        {
+                                          slService.children.map(tlService => (
+                                            <li className='mt-4 ml-8'>
+                                              > {tlService.service.service_name}
+                                            </li>
+                                          ))
+                                        }
+                                      </ul>
+                                    </li>
+                                  )
+                                })
+                              }
+                            </ul>
+                          </Card>
+                        </Col>
+                      )
+                    })
+                  }
+                </Tab>
+              )
+            })
+          }
+        </Tabs>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = store => {
-    return {
-        facilities: store.facilities.list,
-        services: store.facilities.currentServices
-    };
+  return {
+    facilities: store.facilities.list,
+    services: store.facilities.currentServices.hierarchy,
+    serviceTypes: store.dependancies.serviceTypes,
+    allServices: store.facilities.services
+  };
 };
 
+// TODO: Services and others should go into reducer yake
 export default connect(mapStateToProps, {
-    setCurrentDetails,
-    fetchCurrentDetails,
-    fetchCurrentServices
+  setCurrentDetails,
+  fetchCurrentDetails,
+  fetchCurrentServices
 })(FacilityServices);

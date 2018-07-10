@@ -1,33 +1,55 @@
 {
-    "name": "client-src",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "axios": "^0.16.0",
-        "loopback-connector-mysql": "^5.2.0",
-        "react": "^16.0.0",
-        "react-dom": "^16.0.0",
-        "react-google-maps": "^9.2.2",
-        "react-router-dom": "^4.2.2",
-        "react-scripts": "1.0.14"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
-    },
-    "devDependencies": {
-        "flexboxgrid": "^6.3.1",
-        "js-file-download": "^0.4.1",
-        "lodash": "^4.17.4",
-        "moment": "^2.19.2",
-        "react-materialize": "^1.0.16",
-        "react-modal": "^3.1.10",
-        "react-redux": "^5.0.6",
-        "react-router-dom": "^4.2.2",
-        "recompose": "^0.26.0",
-        "redux": "^3.7.2",
-        "redux-promise": "^0.5.3"
-    }
+  "name": "client-src",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@devexpress/dx-react-core": "^1.3.0",
+    "@devexpress/dx-react-grid": "^1.3.0",
+    "@devexpress/dx-react-grid-material-ui": "^1.3.0",
+    "@material-ui/core": "^1.2.1",
+    "@material-ui/icons": "^1.1.0",
+    "axios": "^0.16.0",
+    "babel-polyfill": "^6.26.0",
+    "chart.js": "^2.7.2",
+    "d3-shape": "^1.2.0",
+    "email-validator": "^1.1.1",
+    "formik": "^0.11.11",
+    "loopback-connector-mysql": "^5.2.0",
+    "material-ui-pagination": "^1.1.6",
+    "prop-types": "^15.6.1",
+    "randomcolor": "^0.5.3",
+    "react": "^16.4.0",
+    "react-chartjs-2": "^2.7.2",
+    "react-confirm-alert": "^2.0.4",
+    "react-dom": "^16.0.0",
+    "react-google-maps": "^9.2.2",
+    "react-hot-loader": "^4.3.3",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.14",
+    "react-svg": "^4.0.17",
+    "recharts": "^1.0.0-beta.10",
+    "yup": "^0.24.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow"
+  },
+  "devDependencies": {
+    "flexboxgrid": "^6.3.1",
+    "flow-bin": "^0.64.0",
+    "js-file-download": "^0.4.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.2",
+    "react-data-grid": "^3.0.11",
+    "react-materialize": "^1.0.16",
+    "react-modal": "^3.1.10",
+    "react-redux": "^5.0.6",
+    "recompose": "^0.26.0",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3",
+    "victory": "^0.24.5"
+  }
 }

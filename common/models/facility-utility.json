@@ -13,6 +13,14 @@
     "utility_id": {
       "type": "number",
       "required": true
+    },
+    "client_id": {
+      "type": "number",
+      "required": false
+    },
+    "created_date": {
+      "type": "date",
+      "required": false
     }
   },
   "validations": [],
@@ -26,8 +34,32 @@
       "type": "belongsTo",
       "model": "Facility",
       "foreignKey": "facility_id"
+    },
+    "client": {
+      "type": "belongsTo",
+      "model": "Client",
+      "foreignKey": "client_id"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

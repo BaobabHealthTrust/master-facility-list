@@ -1,6 +1,5 @@
 import axios from 'axios';
 import settings from '../settings';
-
 export default function fetchCurrentDetails(id) {
     const END_POINT = `${settings.hostname}/api/`;
     const RESOURCE = `Facilities/${id}`;
@@ -13,6 +12,7 @@ export default function fetchCurrentDetails(id) {
             'contactPeople',
             'addresses',
             'locations',
+            'geolocations',
             { district: 'zone' }
         ]
     };

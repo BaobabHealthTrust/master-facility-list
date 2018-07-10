@@ -1,113 +1,165 @@
 {
-  "name": "Facility",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "facility_code": {
-      "type": "string",
-      "required": true
+    "name": "Facility",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "facility_name": {
-      "type": "string",
-      "required": true
+    "properties": {
+        "facility_code": {
+            "type": "string",
+            "required": false
+        },
+        "registration_number": {
+            "type": "number",
+            "required": false
+        },
+        "facility_name": {
+            "type": "string",
+            "required": true
+        },
+        "common_name": {
+            "type": "string"
+        },
+        "facility_date_opened": {
+            "type": "date"
+        },
+        "facility_type_id": {
+            "type": "number",
+            "required": true
+        },
+        "facility_owner_id": {
+            "type": "number",
+            "required": true
+        },
+        "facility_operational_status_id": {
+            "type": "number",
+            "required": true
+        },
+        "facility_regulatory_status_id": {
+            "type": "number",
+            "required": true
+        },
+        "district_id": {
+            "type": "number",
+            "required": true
+        },
+        "client_id": {
+            "type": "number",
+            "required": true
+        },
+        "archived_date": {
+            "type": "date",
+            "required": false
+        },
+        "published_date": {
+            "type": "date",
+            "required": false
+        }
     },
-    "common_name": {
-      "type": "string"
+    "validations": [],
+    "relations": {
+        "utilities": {
+            "type": "hasMany",
+            "model": "Utility",
+            "foreignKey": "facility_id",
+            "through": "FacilityUtility"
+        },
+        "facilityType": {
+            "type": "belongsTo",
+            "model": "FacilityType",
+            "foreignKey": "facility_type_id"
+        },
+        "addresses": {
+            "type": "hasOne",
+            "model": "Address",
+            "foreignKey": "facility_id"
+        },
+        "operationalStatus": {
+            "type": "belongsTo",
+            "model": "OperationalStatus",
+            "foreignKey": "facility_operational_status_id"
+        },
+        "services": {
+            "type": "hasMany",
+            "model": "Service",
+            "foreignKey": "facility_id",
+            "through": "FacilityService"
+        },
+        "owner": {
+            "type": "belongsTo",
+            "model": "Owner",
+            "foreignKey": "facility_owner_id"
+        },
+        "regulatoryStatus": {
+            "type": "belongsTo",
+            "model": "RegulatoryStatus",
+            "foreignKey": "facility_regulatory_status_id"
+        },
+        "contactPeople": {
+            "type": "hasOne",
+            "model": "ContactPeople",
+            "foreignKey": "facility_id"
+        },
+        "resources": {
+            "type": "hasMany",
+            "model": "Resource",
+            "foreignKey": "facility_id",
+            "through": "FacilityResource"
+        },
+        "locations": {
+            "type": "hasOne",
+            "model": "Location",
+            "foreignKey": "facility_id"
+        },
+        "geolocations": {
+            "type": "hasOne",
+            "model": "Geolocation",
+            "foreignKey": "facility_id",
+            "primaryKey": "id"
+        },
+        "district": {
+            "type": "belongsTo",
+            "model": "District",
+            "foreignKey": "district_id"
+        },
+        "client": {
+            "type": "belongsTo",
+            "model": "Client",
+            "foreignKey": "client_id"
+        }
     },
-    "facility_date_opened": {
-      "type": "date"
-    },
-    "facility_type_id": {
-      "type": "number",
-      "required": true
-    },
-    "facility_owner_id": {
-      "type": "number",
-      "required": true
-    },
-    "facility_operational_status_id": {
-      "type": "number",
-      "required": true
-    },
-    "facility_regulatory_status_id": {
-      "type": "number",
-      "required": true
-    },
-    "district_id": {
-      "type": "number",
-      "required": true
-    }
-  },
-  "validations": [],
-  "relations": {
-    "utilities": {
-      "type": "hasMany",
-      "model": "Utility",
-      "foreignKey": "facility_id",
-      "through": "FacilityUtility"
-    },
-    "facilityType": {
-      "type": "belongsTo",
-      "model": "FacilityType",
-      "foreignKey": "facility_type_id"
-    },
-    "addresses": {
-      "type": "hasOne",
-      "model": "Address",
-      "foreignKey": "facility_id"
-    },
-    "operationalStatus": {
-      "type": "belongsTo",
-      "model": "OperationalStatus",
-      "foreignKey": "facility_operational_status_id"
-    },
-    "services": {
-      "type": "hasMany",
-      "model": "Service",
-      "foreignKey": "facility_id",
-      "through": "FacilityService"
-    },
-    "owner": {
-      "type": "belongsTo",
-      "model": "Owner",
-      "foreignKey": "facility_owner_id"
-    },
-    "regulatoryStatus": {
-      "type": "belongsTo",
-      "model": "RegulatoryStatus",
-      "foreignKey": "facility_regulatory_status_id"
-    },
-    "contactPeople": {
-      "type": "hasOne",
-      "model": "ContactPeople",
-      "foreignKey": "facility_id"
-    },
-    "resources": {
-      "type": "hasMany",
-      "model": "Resource",
-      "foreignKey": "facility_id",
-      "through": "FacilityResource"
-    },
-    "locations": {
-      "type": "hasOne",
-      "model": "Location",
-      "foreignKey": "facility_id"
-    },
-    "geolocations": {
-      "type": "hasOne",
-      "model": "Geolocation",
-      "foreignKey": "facility_id",
-      "primaryKey": "id"
-    },
-    "district": {
-      "type": "belongsTo",
-      "model": "District",
-      "foreignKey": "district_id"
-    }
-  },
-  "acls": [],
-  "methods": {}
+    "acls": [
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "UPDATE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "DELETE",
+            "principalType": "ROLE",
+            "principalId": "admin",
+            "permission": "ALLOW"
+        }
+    ],
+    "methods": {}
 }

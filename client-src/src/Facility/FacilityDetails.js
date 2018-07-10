@@ -1,218 +1,274 @@
-import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+//@flow
+import React from "react";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 import Summary from "./Summary";
 import Location from "./FacilityLocation";
 import Resources from "./FacilityResources";
 import Utilities from "./FacilityUtilities";
 import Services from "./FacilityServices";
 import { connect } from "react-redux";
+import { Button } from 'react-materialize';
+import SecondaryMenu from "../common/SecondaryMenu";
+import footerResizer from "../helpers/footerResize";
+import MflDownload from "../common/MflDownload";
+import { ShowError, FetchAllDependancies, ProgressBar } from "../common";
+import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
+import settings from '../settings';
+import { postFormData } from '../actions'
+import { ButtonConfiguration } from '../types/helper-types';
+import { Facility } from '../types/model-types';
 
-class FacilityDetails extends Component {
-    constructor() {
-        super();
-        this.state = {
-            activePage: "summary"
-        };
+type Props = {
+  match: any,
+  current: any,
+  postFormData: Function,
+  response: Partial<Facility>
+};
+
+class FacilityDetails extends React.Component<Props> {
+
+  state = {
+    pushTo: null,
+    redirect: false
+  }
+
+  _handleArchive = async () => {
+    await this.props.postFormData(
+      { archived_date: new Date() },
+      "Facilities",
+      "PATCH",
+      "PATCH_BASIC_DETAILS",
+      "",
+      this.props.match.params.id
+    )
+    if (this.props.response) this.setState({ redirect: true })
+    else alert('Something went wrong')
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ pushTo: null });
+    // footerResizer();
+  }
+
+  buttonConfiguration: ButtonConfiguration = [
+    {
+      icon: 'delete',
+      action: () => this._handleArchive(),
+      color: 'red',
+      name: 'Delete Facility'
+    },
+    {
+      icon: 'edit',
+      action: () => this.setState({ pushTo: `${this.props.location.pathname}/edit` }),
+      color: 'green',
+      name: 'Edit Facility'
+    },
+    {
+      icon: 'file_download',
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download/${this.props.match.params.id}`
+      ),
+      color: 'blue',
+      name: 'Download Facility Details'
     }
+  ]
 
-    render() {
-        const id = this.props.match.params.id;
-        const summaryLink = `/facilities/${id}`;
-        const locationsLink = `/facilities/${id}/locations`;
-        const resourcesLink = `/facilities/${id}/resources`;
-        const utilitiesLink = `/facilities/${id}/utilities`;
-        const servicesLink = `/facilities/${id}/services`;
+  render() {
+    const pathArr: string[] = this.props.location.pathname.split('/');
+    const id = this.props.match.params.id;
+    const summaryLink = `/facilities/${id}/summary`;
+    const locationsLink = `/facilities/${id}/locations`;
+    const resourcesLink = `/facilities/${id}/resources`;
+    const utilitiesLink = `/facilities/${id}/utilities`;
+    const servicesLink = `/facilities/${id}/services`;
 
-        let badgeClass = "new badge";
+    const links = [
+      {
+        name: "summary",
+        displayName: "Summary".toUpperCase(),
+        redirect: summaryLink,
+        clickHandler: null
+      },
+      {
+        name: "contactsandlocations",
+        displayName: "Contacts and Locations".toUpperCase(),
+        redirect: locationsLink,
+        clickHandler: null
+      },
+      {
+        name: "resources",
+        displayName: "resources".toUpperCase(),
+        redirect: resourcesLink,
+        clickHandler: null
+      },
+      {
+        name: "utilities",
+        displayName: "utilities".toUpperCase(),
+        redirect: utilitiesLink,
+        clickHandler: null
+      },
+      {
+        name: "services",
+        displayName: "services".toUpperCase(),
+        redirect: servicesLink,
+        clickHandler: null
+      }
+    ];
 
-        if (this.props.current.operationalStatus) {
-            switch (this.props.current.operationalStatus
-                .facility_operational_status) {
-                case "Closed":
-                    badgeClass = "new badge red";
-                    break;
-                case "Functional":
-                    badgeClass = "new badge green";
-                    break;
-                case "Pending Operation (Under construction)":
-                    badgeClass = "new badge orange";
-                    break;
-                default:
-                    break;
+    let badgeClass = "new badge";
+
+    if (this.props.current.operationalStatus) {
+      switch (this.props.current.operationalStatus
+        .facility_operational_status) {
+        case "Closed":
+          badgeClass = "new badge red";
+          break;
+        case "Closed (Temporary)":
+          badgeClass = "new badge deep-orange";
+          break;
+        case "Functional":
+          badgeClass = "new badge green";
+          break;
+        case "Pending Operation (Under construction)":
+          badgeClass = "new badge orange";
+          break;
+        case "Pending Operation (Construction Complete)":
+          badgeClass = "new badge brown";
+          break;
+        default:
+          break;
+      }
+    }
+    return (
+      <div>
+        {this.state.pushTo && <Redirect to={this.state.pushTo} />}
+        {this.state.redirect && <Redirect to='/facilities' />}
+        <SecondaryMenu links={links} defaultActivePage={"summary"} />
+        <div className="container mfl-titles flex flex-row justify-between">
+          <div>
+            <h5>
+              {/* TODO: Fetch Current Data Here on your own */}
+              <FetchAllDependancies />
+              {this.props.current.facility_name}
+              {
+                this.props.current.operationalStatus && (
+                  <span
+                    style={{ float: 'none' }}
+                    id="badge"
+                    className={badgeClass}
+                    data-badge-caption={
+                      this.props.current.operationalStatus
+                        .facility_operational_status
+                    }
+                  />
+                )
+              }
+            </h5>
+            <h6>
+              {this.props.current.facility_code},&nbsp;
+              {this.props.current.district && this.props.current.district.district_name}
+            </h6>
+          </div>
+          <div className="mt-4">
+            {
+              (pathArr[pathArr.length - 1] != 'edit' && sessionStorage.getItem('token'))
+              && (
+                <MflDownload
+                  buttonConfiguration={this.buttonConfiguration}
+                  mainButtonConfiguration={{ color: 'teal', icon: 'more_horiz' }}
+                />
+              )
             }
-        }
+            {
+              (pathArr[pathArr.length - 1] != 'edit' && !sessionStorage.getItem('token')) && (
+                <Button
+                  className='mt-4 flex flex-row align-center'
+                  onClick={() => {
+                    window.open(`${settings.hostname}/api/facilities/download/${this.props.match.params.id}`)
+                  }}
+                >
+                  <i class="material-icons">file_download</i>
+                  <div>Download</div>
+                </Button>
+              )
+            }
+          </div>
+        </div>
+        {this.props.error.message == "Network Error" && <ShowError />}
+        {this.props.error.response && <ShowError message="This Resource does not exit" />}
+        {
+          this.props.isLoading
+            ? <ProgressBar />
+            : (
+              <Switch>
+                <Route
+                  exact
+                  path="/facilities/:id/summary"
+                  component={Summary}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/summary/edit"
+                  component={BasicDetailsForm}
+                />
 
-        return (
-            <div className="">
-                <nav>
-                    <div class="nav-wrapper blue accent-1">
-                        <ul class="left">
-                            <li
-                                className={
-                                    this.state.activePage === "summary"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={summaryLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "summary"
-                                        })
-                                    }
-                                >
-                                    SUMMARY
-                                </Link>
-                            </li>
+                <Route
+                  exact
+                  path="/facilities/:id/locations"
+                  component={Location}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/locations/edit"
+                  component={ContactsForm}
+                />
 
-                            <li
-                                className={
-                                    this.state.activePage ===
-                                    "contactsandlocation"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={locationsLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "contactsandlocation"
-                                        })
-                                    }
-                                >
-                                    CONTACTS AND LOCATION
-                                </Link>
-                            </li>
+                <Route
+                  exact
+                  path="/facilities/:id/resources"
+                  component={Resources}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/resources/edit"
+                  component={ResourcesForm}
+                />
 
-                            <li
-                                className={
-                                    this.state.activePage === "resources"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={resourcesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "resources"
-                                        })
-                                    }
-                                >
-                                    RESOURCES
-                                </Link>
-                            </li>
-                            <li
-                                className={
-                                    this.state.activePage === "utilities"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={utilitiesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "utilities"
-                                        })
-                                    }
-                                >
-                                    UTILITIES
-                                </Link>
-                            </li>
-                            <li
-                                className={
-                                    this.state.activePage === "services"
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                <Link
-                                    to={servicesLink}
-                                    onClick={e =>
-                                        this.setState({
-                                            activePage: "services"
-                                        })
-                                    }
-                                >
-                                    SERVICES
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <div className="container mfl-titles">
-                    <h5>
-                        {this.props.current.facility_name}
-                        {this.props.current.operationalStatus ? (
-                            <span
-                                id="badge"
-                                className={badgeClass}
-                                data-badge-caption={
-                                    this.props.current.operationalStatus
-                                        .facility_operational_status
-                                }
-                            />
-                        ) : (
-                            ""
-                        )}
-                    </h5>
-                    <h6>
-                        {this.props.current.facility_code},&nbsp;
-                        {this.props.current.district
-                            ? this.props.current.district.district_name
-                            : ""}
-                    </h6>
-                </div>
-                {this.props.isError ? (
-                    <blockquote>
-                        <h4>
-                            "Sorry, we cannot connect to the Server. Please
-                            check your Network"
-                        </h4>
-                    </blockquote>
-                ) : (
-                    <Switch>
-                        <Route
-                            exact
-                            path="/facilities/:id"
-                            component={Summary}
-                        />
+                <Route
+                  exact
+                  path="/facilities/:id/utilities"
+                  component={Utilities}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/utilities/edit"
+                  component={UtilitiesForm}
+                />
 
-                        <Route
-                            exact
-                            path="/facilities/:id/locations"
-                            component={Location}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/resources"
-                            component={Resources}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/utilities"
-                            component={Utilities}
-                        />
-                        <Route
-                            exact
-                            path="/facilities/:id/services"
-                            component={Services}
-                        />
-                    </Switch>
-                )}
-            </div>
-        );
-    }
+                <Route
+                  exact
+                  path="/facilities/:id/services"
+                  component={Services}
+                />
+                <Route
+                  exact
+                  path="/facilities/:id/services/edit"
+                  component={ServicesForm}
+                />
+              </Switch>
+            )}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-        current: state.facilities.currentDetails,
-        isError: state.facilities.isNetworkError
-    };
+  return {
+    current: state.facilities.currentDetails,
+    error: state.facilities.error,
+    response: state.facilities.patchResponse,
+    isLoading: state.facilities.isLoading,
+  };
 };
 
-export default connect(mapStateToProps, null)(FacilityDetails);
+export default connect(mapStateToProps, { postFormData })(FacilityDetails);
