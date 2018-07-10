@@ -1,5 +1,5 @@
 import axios from "axios";
-import settings from "../settings";
+import settings from '../settings';
 
 export default function fetchServicetypeInstances(value) {
     const END_POINT = `${settings.hostname}/api/`;

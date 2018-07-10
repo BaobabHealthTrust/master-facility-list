@@ -1,63 +1,141 @@
+//@flow
 import React from "react";
 import MflDownload from "../common/MflDownload";
 import Table from "../common/Table";
 import Pagination from "../common/Pagination";
+import GridTable from "../common/GridTable";
+import MflGrid from '../common/MflGrid';
 import { truncate } from "lodash";
 import moment from "moment";
+import { Facilities } from '../types/list-types';
+import { Link } from 'react-router-dom';
+import { ButtonConfiguration } from '../types/helper-types';
+import settings from '../settings';
+import { Card } from "react-materialize";
+import { Redirect } from 'react-router-dom';
 
-export default class FacilityList extends React.Component {
-    render() {
-        const tableHeaders = [
-            "CODE",
-            "NAME",
-            "COMMON NAME",
-            "OWNERSHIP",
-            "TYPE",
-            "STATUS",
-            "DISTRICT",
-            "DATE OPENED"
-        ];
+type Props = {
+  dataSource: Facilities,
+  toggleAdvancedSearch: Function,
+  toggleAddFacility: Function
+};
 
-        const tableRecords = this.props.dataSource
-            ? this.props.dataSource.map(facility => {
-                  return [
-                      facility.id,
-                      facility.facility_code,
-                      facility.facility_name.toUpperCase(),
-                      "Common Name".toUpperCase(),
-                      facility.owner.facility_owner.toUpperCase(),
-                      facility.facilityType.facility_type.toUpperCase(),
-                      truncate(
-                          facility.operationalStatus.facility_operational_status.toUpperCase(),
-                          { length: 12 }
-                      ),
-                      facility.district.district_name.toUpperCase(),
-                      moment(facility.facility_date_opened).format("MMM Do YY")
-                  ];
-              })
-            : [];
+export default class FacilityList extends React.Component<Props> {
 
-        return (
-            <div>
-                <MflDownload
-                    action={this.props.downloadAction}
-                    fileName="facilities"
-                />
-                <a
-                    class="btn-flat mfl-advanced-search left"
-                    onClick={e => this.props.toggleAdvancedSearch(e)}
-                >
-                    Advanced Search
-                </a>
-                <Table
-                    data={{
-                        headers: tableHeaders,
-                        records: tableRecords
-                    }}
-                />
+  state = {
+    redirectLink: null
+  }
 
-                <Pagination />
-            </div>
-        );
+  buttonConfiguration: ButtonConfiguration = [
+    {
+      icon: 'file_copy',
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {},
+          "format": "csv"
+        })
+      ),
+      color: 'blue',
+      name: 'Download CSV'
+    },
+    {
+      icon: 'grid_on',
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {},
+          "format": "excel"
+        })
+      ),
+      color: 'green',
+      name: 'Download Excel'
+    },
+    {
+      icon: 'picture_as_pdf',
+      action: () => window.open(
+        `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
+          "where": {},
+          "format": "pdf"
+        })
+      ),
+      color: 'red',
+      name: 'Download PDF'
     }
+  ]
+
+  redirect = facilityId => {
+    this.setState({
+      redirectLink: `/facilities/${facilityId}/summary`
+    })
+  }
+
+  render() {
+    const tableRecords = this.props.dataSource || []
+
+
+    const columns = [
+      { name: 'code', title: 'CODE' },
+      { name: 'name', title: 'NAME' },
+      { name: 'common', title: 'COMMON NAME' },
+      { name: 'ownership', title: 'OWNERSHIP' },
+      { name: 'type', title: 'TYPE' },
+      { name: 'status', title: 'STATUS' },
+      { name: 'district', title: 'DISTRICT' },
+      { name: 'dateOpened', title: 'DATE OPENED' },
+    ]
+
+    const defaultSorting = [{ columnName: 'name', direction: 'asc' }];
+
+    const defaultView = (
+      <div className="container">
+        <div className="flex flex-row w-full justify-between">
+          <div className="flex flex-row">
+            <div>
+              <Link
+                class="btn-flat"
+                to='/facilities/search'
+              >
+                <i class="material-icons left">search</i> Advanced Search
+            </Link>
+            </div>
+            <div>
+              {
+                // TODO: Only allowed for a token whose user ID is an admin
+                sessionStorage.getItem('token') && (
+                  <Link
+                    class="ml-4 waves-effect waves-light btn"
+                    to='/facilities/add'
+                  >
+                    <i class="material-icons left">add</i>Add NewFacility
+                </Link>
+                )
+              }
+            </div>
+          </div>
+          <div style={{ marginTop: -10 }}>
+            <MflDownload
+              buttonConfiguration={this.buttonConfiguration}
+              mainButtonConfiguration={{ color: 'teal', icon: 'file_download' }}
+            />
+          </div>
+        </div>
+
+        {/* <GridTable data={tableRecords} /> */}
+        <Card>
+          <MflGrid
+            rows={tableRecords}
+            columns={columns}
+            pageSize={10}
+            defaultSorting={defaultSorting}
+            rowSelected={facility => this.redirect(facility.id)}
+          />
+        </Card>
+      </div>
+    )
+
+    return (
+      <React.Fragment>
+        {this.state.redirectLink ? <Redirect to={this.state.redirectLink} /> : defaultView}
+      </React.Fragment>
+    );
+  }
 }

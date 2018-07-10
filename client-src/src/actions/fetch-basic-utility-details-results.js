@@ -1,5 +1,5 @@
 import axios from "axios";
-import settings from "../settings";
+import settings from '../settings';
 
 export default searchValues => {
     const END_POINT = `${settings.hostname}/api/`;
@@ -34,7 +34,7 @@ export default searchValues => {
 
     const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
     const request = axios.get(URL);
-    
+
     return {
         type: "FETCH_BASIC_UTILITY_RESULTS",
         payload: request

@@ -6,7 +6,14 @@ const fs = require("fs");
 const path = require("path");
 const mime = require("mime");
 
-module.exports = function(queriedDetails, res) {
+module.exports = function(facilities, callback) {
+  if (facilities == null) {
+    const error = new Error("Facilities can not be null.");
+    error.name = "ERROR";
+    error.status = 400;
+    callback(error);
+  }
+
 	const body = [
 		[
 			{text: "CODE", style: "tableHeader"},
@@ -19,129 +26,125 @@ module.exports = function(queriedDetails, res) {
 			{text: "DISTRICT", style: "tableHeader"},
 			{text: "DATE OPENED", style: "tableHeader"}
 		]
-	];
-	queriedDetails.forEach(details => {
-		const jsonDetails = details.toJSON();
+    ];
+
+	facilities.forEach(facility => {
+		let data = facility.toJSON();
 		body.push([
-			jsonDetails.facility_code,
-			jsonDetails.facility_name,
-			jsonDetails.facility_name,
-			jsonDetails.owner.facility_owner,
-			jsonDetails.facilityType.facility_type,
-			jsonDetails.operationalStatus.facility_operational_status,
-			jsonDetails.district.zone.zone_name,
-			jsonDetails.district.district_name,
-			moment(jsonDetails.facility_date_opened).format("MMM Do YY")
+			data.facility_code,
+			data.facility_name,
+			data.facility_name,
+			data.owner.facility_owner,
+			data.facilityType.facility_type,
+			data.operationalStatus.facility_operational_status,
+			data.district.zone.zone_name,
+			data.district.district_name,
+			moment(data.facility_date_opened).format("MMM Do YY")
 		]);
-	});
-	const fonts = {
-		Roboto: {
-			normal: "./node_modules/fontkit/Roboto-Regular.ttf",
-			bold: "./node_modules/fontkit/Roboto-Medium.ttf",
-			italics: "./node_modules/fontkit/Roboto-Italic.ttf",
-			bolditalics: "./node_modules/fontkit/Roboto-MediumItalic.ttf"
-		}
-	};
+    });
+
+  /** PDF file Fonts */
+  const fonts = {
+    Roboto: {
+      normal: "./fonts/Roboto-Regular.ttf",
+      bold: "./fonts/Roboto-Medium.ttf",
+      italics: "./fonts/Roboto-Italic.ttf",
+      bolditalics: "./fonts/Roboto-MediumItalic.ttf"
+    }
+  };
 
 	const currentDate = new Date();
-	const facilityListHeading = "    LIST OF HEALTH FACILITIES";
-	const printer = new PdfPrinter(fonts);
-	const docDefinition = {
-		footer: function(currentPage, pageCount) {
-			return {
-				margin: 10,
-				columns: [
-					{
-						style: "header",
-						margin: [10, 0, 0, 0],
-						columns: [
-							{
-								image: "./images/malawi.png",
-								width: 20
-							}
-						]
-					},
-					{
-						fontSize: 9,
-						text: [
-							{
-								text: +currentPage.toString()
-							}
-						],
-						alignment: "right"
-					}
-				]
-			};
-		},
-		content: [
-			{
-				style: "header",
-				margin: [10, 0, 0, 0],
-				columns: [
-					{
-						image: "./images/malawi.png",
-						width: 80
-					},
-					{
-						alignment: "center",
-						margin: [80, 30, 0, 0],
-						style: "tableExample",
-						table: {
-							body: [
-								[
-									{
-										border: [false, false, false, false],
-										text: "MASTER HEALTH FACILITY REGISTRY"
-									}
-								],
-								[
-									{
-										border: [false, false, false, false],
-										text: "LIST OF HEALTH FACILITIES"
-									}
-								]
-							]
-						}
-					}
-				]
-			},
-			{
-				text:
-					"Date downloaded: " +
-					moment(currentDate).format("MMM Do YYYY"),
-				alignment: "right"
-			},
+	const facilityListHeading = "LIST OF HEALTH FACILITIES";
+    const printer = new PdfPrinter(fonts);
 
-			{
-				margin: [-18, 0, 0, 8],
-				canvas: [
-					{
-						type: "line",
-						x1: 0,
-						y1: 10,
-						x2: 540,
-						y2: 10,
-						lineWidth: 3,
-						lineCap: "round"
-					}
-				]
-			},
-			{
-				margin: [-37, 0, 0, 0],
-				style: "tableExample",
-				table: {
-					headerRows: 1,
-					body
-				},
-				layout: {
-					fillColor: function(i, node) {
-						return i % 2 === 0 ? "#CCCCCC" : null;
-					}
-				}
-			}
-		]
+	const docDefinition = {
+      pageOrientation: 'landscape',
+      pageSize: 'A4',
+		  footer: function(currentPage, pageCount) {
+          return {
+              margin: [0, 6, 0, 0],
+              fontSize: 9,
+              text: [
+                  {
+                      text: currentPage.toString() + " of " + pageCount.toString()
+                  }
+              ],
+              alignment: "center"
+          };
+		  },
+		  content: [
+          {
+              image: "./images/malawi.png",
+              width: 90,
+              margin: [0, 20, 0, 20],
+              alignment: "center",
+          },
+          {
+              text: "MASTER HEALTH FACILITY REGISTRY",
+              bold: true,
+              margin: [0, 0, 0, 4],
+              alignment: "center",
+          },
+          {
+              text: "LIST OF HEALTH FACILITIES",
+              bold: true,
+              margin: [0, 0, 0, 20],
+              alignment: "center",
+          },
+          {
+            text:
+              "Date downloaded: " +
+              moment(currentDate).format("MMM Do YYYY"),
+              alignment: "right"
+          },
+          {
+            margin: [0, 0, 0, 8],
+            canvas: [
+              {
+                type: "line",
+                x1: 0,
+                y1: 10,
+                x2: 760,
+                y2: 10,
+                lineWidth: 1,
+                lineCap: "round"
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                width: '*',
+                text: ''
+              },
+              {
+                width: 'auto',
+                style: "tableExample",
+                fontSize: 10,
+                table: {
+                  headerRows: 1,
+                  body
+                },
+                layout: {
+                  fillColor: function(i, node) {
+                    return i % 2 === 0 ? "#CCCCCC" : null;
+                  }
+                }
+              },
+              {
+                width: '*',
+                text: ''
+              },
+            ]
+          }
+		  ]
 	};
-	const pdfDoc = printer.createPdfKitDocument(docDefinition);
-	const pdfFile = pdfDoc.pipe(fs.createWriteStream("facilities.pdf"));
-	pdfDoc.end();
+
+    try {
+        const pdfDoc = printer.createPdfKitDocument(docDefinition);
+        pdfDoc.end();
+        callback(null, pdfDoc);
+    } catch (error) {
+        callback(error);
+    }
 };

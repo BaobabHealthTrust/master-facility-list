@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicResourceDetailsResults from "../../actions/fetch-basic-resource-details-results";
+import { fetchBasicResourceDetailsResults, removeSearchValues } from "../../actions";
 
 class ResourceTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.typeResourceInstanceValues,
-                this.props.resources
+            this.props.searchValues.typeResourceInstanceValues,
+            this.props.resources
             )
             .map(entity => {
                 return (

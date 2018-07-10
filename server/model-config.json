@@ -1,126 +1,144 @@
 {
-    "_meta": {
-        "sources": [
-            "loopback/common/models",
-            "loopback/server/models",
-            "../common/models",
-            "./models"
-        ],
-        "mixins": [
-            "loopback/common/mixins",
-            "loopback/server/mixins",
-            "../common/mixins",
-            "./mixins"
-        ]
-    },
-    "User": {
-        "dataSource": "db"
-    },
-    "AccessToken": {
-        "dataSource": "db",
-        "public": false
-    },
-    "ACL": {
-        "dataSource": "db",
-        "public": false
-    },
-    "RoleMapping": {
-        "dataSource": "db",
-        "public": false,
-        "options": {
-            "strictObjectIDCoercion": true
-        }
-    },
-    "Role": {
-        "dataSource": "db",
-        "public": false
-    },
-    "Facility": {
-        "dataSource": "db",
-        "public": true
-    },
-    "FacilityType": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Address": {
-        "dataSource": "db",
-        "public": true
-    },
-    "OperationalStatus": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Utility": {
-        "dataSource": "db",
-        "public": true
-    },
-    "UtilityType": {
-        "dataSource": "db",
-        "public": true
-    },
-    "FacilityService": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Service": {
-        "dataSource": "db",
-        "public": true
-    },
-    "ServiceType": {
-        "dataSource": "db",
-        "public": true
-    },
-    "FacilityUtility": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Owner": {
-        "dataSource": "db",
-        "public": true
-    },
-    "RegulatoryStatus": {
-        "dataSource": "db",
-        "public": true
-    },
-    "ContactPeople": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Resource": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Location": {
-        "dataSource": "db",
-        "public": true
-    },
-    "District": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Zone": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Geolocation": {
-        "dataSource": "db",
-        "public": true
-    },
-    "FacilityResource": {
-        "dataSource": "db",
-        "public": true
-    },
-    "ResourceType": {
-        "dataSource": "db",
-        "public": true
-    },
-    "Feedback": {
-        "dataSource": "db",
-        "public": true
-    },
-    "FeedbackType": {
-        "dataSource": "db",
-        "public": true
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db",
+    "acls": [
+      {
+        "accessType": "READ",
+        "principalType": "ROLE",
+        "principalId": "admin",
+        "permission": "ALLOW"
+      },
+      {
+        "accessType": "WRITE",
+        "principalType": "ROLE",
+        "principalId": "admin",
+        "permission": "ALLOW"
+      }
+    ]
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
     }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Facility": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FacilityType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Address": {
+    "dataSource": "db",
+    "public": true
+  },
+  "OperationalStatus": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Utility": {
+    "dataSource": "db",
+    "public": true
+  },
+  "UtilityType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FacilityService": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Service": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ServiceType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FacilityUtility": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Owner": {
+    "dataSource": "db",
+    "public": true
+  },
+  "RegulatoryStatus": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ContactPeople": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Resource": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Location": {
+    "dataSource": "db",
+    "public": true
+  },
+  "District": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Zone": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Geolocation": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FacilityResource": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ResourceType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Feedback": {
+    "dataSource": "db",
+    "public": true
+  },
+  "FeedbackType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Client": {
+    "dataSource": "db",
+    "public": true
+  }
 }

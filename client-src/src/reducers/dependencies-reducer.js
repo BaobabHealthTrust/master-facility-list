@@ -1,118 +1,78 @@
 export default (
-    state = {
-        resourceTypes: [],
-        utilityTypes: [],
-        serviceTypes: [],
-        districts: [],
-        operationalStatuses: [],
-        facilityTypes: [],
-        facilityOwners: [],
-        regulatoryStatuses: [],
-        searchResourceTypes: [],
-        serviceInstance: []
-
-    },
-    action
+  state = {
+    resourceTypes: [],
+    utilityTypes: [],
+    serviceTypes: [],
+    districts: [],
+    operationalStatuses: [],
+    facilityTypes: [],
+    facilityOwners: [],
+    regulatoryStatuses: [],
+    searchResourceTypes: [],
+    serviceInstance: [],
+    isLoading: true,
+    isNetworkError: false
+  },
+  action
 ) => {
-    switch (action.type) {
-        case "FETCH_RESOURCE_TYPES":
-            return {
-                resourceTypes: action.payload.data,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_UTILITY_TYPES":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: action.payload.data,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_DISTRICTS":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: action.payload.data,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_OPERATIONAL_STATUSES":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: action.payload.data,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_FACILITY_TYPES":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: action.payload.data,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_FACILITY_OWNERS":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: action.payload.data,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_REGULATORY_STATUSES":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: action.payload.data,
-                serviceInstance: state.serviceInstance
-            };
-        case "FETCH_SERVICE_TYPES":
-            return {
-                resourceTypes: state.resourceTypes,
-                utilityTypes: state.utilityTypes,
-                serviceTypes: state.serviceTypes,
-                districts: state.districts,
-                operationalStatuses: state.operationalStatuses,
-                facilityTypes: state.facilityTypes,
-                facilityOwners: state.facilityOwners,
-                regulatoryStatuses: state.regulatoryStatuses,
-                serviceInstance: action.payload.data
-            };
+  if (action.error) {
+    return {
+      ...state,
+      isLoading: false,
+      isNetworkError: true
+    };
+  }
+  switch (action.type) {
+    case "FETCH_RESOURCE_TYPES":
+      return {
+        ...state,
+        resourceTypes: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_UTILITY_TYPES":
+      return {
+        ...state,
+        utilityTypes: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_DISTRICTS":
+      return {
+        ...state,
+        districts: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_OPERATIONAL_STATUSES":
+      return {
+        ...state,
+        operationalStatuses: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_FACILITY_TYPES":
+      return {
+        ...state,
+        facilityTypes: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_FACILITY_OWNERS":
+      return {
+        ...state,
+        facilityOwners: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_REGULATORY_STATUSES":
+      return {
+        ...state,
+        regulatoryStatuses: action.payload.data,
+        isLoading: false,
+      };
+    case "FETCH_SERVICE_TYPES":
+      return {
+        ...state,
+        serviceTypes: action.payload.data,
+        isLoading: false,
+      };
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 };

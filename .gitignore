@@ -1,5 +1,7 @@
 *.csv
 *.dat
+*.DS_Store
+*.env
 *.iml
 *.log
 *.out
@@ -9,12 +11,15 @@
 *.swo
 *.swp
 *.tgz
+*.vscode/
 *.xml
-*.env
-.DS_Store
+.cache
+.circleci/
+.env
 .idea
+.prettierrc
 .project
 .strong-pm
 coverage
-node_modules
+node_modules/
 npm-debug.log

@@ -1,232 +1,229 @@
-export default (
-    state = {
-        list: [],
-        currentDetails: {},
-        currentResources: [],
-        currentUtilities: [],
-        currentServices: [],
-        isNetworkError: false,
-        isLoading: true,
-        typeResourceInstances: [],
-        typeUtilityInstances: [],
-        typeServiceInstances: [],
-        resources: [],
-        utilities: [],
-        services: []
-    },
-    action
-) => {
-    if (action.error) {
-        return {
-            list: state.list,
-            currentDetails: state.currentDetails,
-            currentResources: state.currentResources,
-            currentServices: state.currentServices,
-            isNetworkError: true,
-            isLoading: false,
-            typeResourceInstances: state.typeResourceInstances,
-            typeUtilityInstances: state.typeUtilityInstances,
-            typeServiceInstances: state.typeServiceInstances,
-            resources: state.resources,
-            utilities: state.utilities,
-            services: state.services
-        };
-    }
-    switch (action.type) {
-        case "FETCH_FACILITIES":
-            return {
-                list: state.list.concat(action.payload.data),
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "SET_CURRENT_DETAILS":
-            return {
-                list: state.list,
-                currentDetails: action.payload[0],
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_FACILITY_DETAILS":
-            return {
-                list: state.list,
-                currentDetails: action.payload.data,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_CURRENT_RESOURCES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: action.payload.data,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_CURRENT_UTILITIES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: action.payload.data,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_CURRENT_SERVICES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: action.payload.data,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_RESOURCE_TYPE_INSTANCES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: action.payload.data,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_UTILITY_TYPE_INSTANCES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: action.payload.data,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
+import _ from 'lodash';
 
-        case "FETCH_SERVICE_TYPE_INSTANCES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: action.payload.data,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_RESOURCES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: action.payload.data,
-                utilities: state.utilities,
-                services: state.services
-            };
-        case "FETCH_UTILITIES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: action.payload.data,
-                services: state.services
-            };
-        case "FETCH_SERVICES":
-            return {
-                list: state.list,
-                currentDetails: state.currentDetails,
-                currentResources: state.currentResources,
-                currentUtilities: state.currentUtilities,
-                currentServices: state.currentServices,
-                isNetworkError: false,
-                isLoading: false,
-                typeResourceInstances: state.typeResourceInstances,
-                typeUtilityInstances: state.typeUtilityInstances,
-                typeServiceInstances: state.typeServiceInstances,
-                resources: state.resources,
-                utilities: state.utilities,
-                services: action.payload.data
-            };
-        default:
-            return state;
-    }
+export default (
+  state = {
+    list: [],
+    all: [],
+    currentDetails: {},
+    currentResources: {},
+    currentUtilities: [],
+    currentServices: [],
+    error: {},
+    isLoading: true,
+    typeResourceInstances: [],
+    typeUtilityInstances: [],
+    typeServiceInstances: [],
+    resources: [],
+    utilities: [],
+    services: [],
+    basicDetailsResponse: {},
+    contactDetailsResponse: {},
+    resourcesResponse: {},
+    utilitiesResponse: {},
+    servicesResponse: {},
+    deleteServiceResponse: {},
+    patchResponse: {},
+    facilitiesByRegulatoryStatus: [],
+    facilitiesByOperationalStatus: [],
+    facilitiesByTypeAndOwnership: [],
+    facilitiesByTypeAndOwnershipKeys: [],
+    totalFacilities: [],
+    facilitiesWithOPD: [],
+    facilitiesWithANC: [],
+    facilitiesWithHTC: [],
+    facilitiesWithART: []
+  },
+  action
+) => {
+  if (action.error) {
+    return {
+      ...state,
+      error: action.payload,
+      isLoading: false
+    };
+  }
+  switch (action.type) {
+    case "FETCH_FACILITIES":
+      return {
+        ...state,
+        list: action.payload.data,
+        isLoading: false
+      };
+    case "SET_CURRENT_DETAILS":
+      return {
+        ...state,
+        currentDetails: action.payload[0],
+        isLoading: false
+      };
+    case "FETCH_FACILITY_DETAILS":
+      return {
+        ...state,
+        currentDetails: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_CURRENT_RESOURCES":
+      return {
+        ...state,
+        currentResources: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_CURRENT_UTILITIES":
+      return {
+        ...state,
+        currentUtilities: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_CURRENT_SERVICES":
+      return {
+        ...state,
+        currentServices: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_RESOURCE_TYPE_INSTANCES":
+      return {
+        ...state,
+        typeResourceInstances: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_UTILITY_TYPE_INSTANCES":
+      return {
+        ...state,
+        typeUtilityInstances: action.payload.data,
+        isLoading: false
+      };
+
+    case "FETCH_SERVICE_TYPE_INSTANCES":
+      return {
+        ...state,
+        typeServiceInstances: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_RESOURCES":
+      return {
+        ...state,
+        resources: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_UTILITIES":
+      return {
+        ...state,
+        utilities: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_SERVICES":
+      return {
+        ...state,
+        services: action.payload.data,
+        isLoading: false
+      };
+    case "FETCH_ALL_FACILITIES":
+      return {
+        ...state,
+        all: action.payload.data,
+        isLoading: false
+      };
+    case "POST_FACILITY_BASIC_DETAILS":
+      return {
+        ...state,
+        basicDetailsResponse: action.payload.data,
+        isLoading: false
+      };
+    case "POST_FACILITY_CONTACT_DETAILS":
+      return {
+        ...state,
+        contactDetailsResponse: action.payload.data,
+        isLoading: false
+      }
+    case "POST_FACILITY_RESOURCES":
+      return {
+        ...state,
+        resourcesResponse: action.payload.data,
+        isLoading: false
+      }
+    case "POST_FACILITY_UTILITIES":
+      return {
+        ...state,
+        utilitiesResponse: action.payload.data,
+        isLoading: false
+      }
+    case "POST_FACILITY_SERVICE":
+      return {
+        ...state,
+        servicesResponse: action.payload.data,
+        isLoading: false
+      }
+    case "DELETE_FACILITY_SERVICE":
+      return {
+        ...state,
+        deleteServiceResponse: action.payload.data,
+        isLoading: false
+      }
+    case "PATCH_BASIC_DETAILS":
+      return {
+        ...state,
+        patchResponse: action.payload.data,
+        isLoading: false
+      }
+    case 'FETCH_FACILITIES_BY_REGULATORY_STATUSES':
+      return {
+        ...state,
+        facilitiesByRegulatoryStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_OPERATIONAL_STATUSES':
+      return {
+        ...state,
+        facilitiesByOperationalStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_TYPE_AND_OWNERSHIP':
+      
+      if(action.payload.data.response){
+        const snakeCased = action.payload.data.response.map(facilityByTypeAndOnwership => {
+          const _facilityByTypeAndOwnership = _.mapKeys(facilityByTypeAndOnwership, (key, value) => {
+            return _.snakeCase(value);
+          });
+          return _facilityByTypeAndOwnership;
+        });
+        return {
+          ...state,
+          facilitiesByTypeAndOwnership: snakeCased,
+          facilitiesByTypeAndOwnershipKeys: _.keys(snakeCased[0])
+        }
+      }
+      return {...state}
+      break;
+    case 'FETCH_FACILITIES_WITH_OPD':
+        return {
+          ...state,
+          facilitiesWithOPD: action.payload.data.response
+        }
+      break;
+    case 'FETCH_FACILITIES_WITH_ANC':
+      return {
+        ...state,
+        facilitiesWithANC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_WITH_HTC':
+      return {
+        ...state,
+        facilitiesWithHTC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_WITH_ART':
+      return {
+        ...state,
+        facilitiesWithART: action.payload.data.response
+      }
+      break;
+    case 'FETCH_TOTAL_FACILITIES':
+      return {
+        ...state,
+        totalFacilities: action.payload.data
+      }
+      break;
+    default:
+      return state;
+  }
 };

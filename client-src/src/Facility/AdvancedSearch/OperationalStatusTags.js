@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SearchTag from "./SearchTag";
-import removeSearchValues from "../../actions/remove-search-values";
-import fetchBasicDetailsResults from "../../actions/fetch-basic-details-results";
-
+import { fetchBasicDetailsResults, removeSearchValues } from "../../actions";
 class OperationalStatusTags extends Component {
     render() {
         return this.props
             .getObjectFromIds(
-                this.props.searchValues.operationalStatusValues,
-                this.props.operationalStatuses
+            this.props.searchValues.operationalStatusValues,
+            this.props.operationalStatuses
             )
             .map(entity => {
                 return (
