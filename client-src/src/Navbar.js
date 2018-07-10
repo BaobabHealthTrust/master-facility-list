@@ -42,7 +42,7 @@ class Navbar extends Component {
         <nav>
           <div className="nav-wrapper blue darken-4">
             <a href="" className="center hide-on-med-and-up">
-              Master Health Facility Register
+              Master Health Facility Registry
                         </a>
 
             <div className="left hide-on-med-and-down mfl-pl-10">
@@ -58,7 +58,7 @@ class Navbar extends Component {
             </a>
 
             <div className="left hide-on-med-and-down mfl-pl-2">
-              Master Health Facility Register
+              Master Health Facility Registry
                         </div>
 
             <form
@@ -87,7 +87,7 @@ class Navbar extends Component {
                   onClick={e => this.restoreSearch(e)}
                 >
                   close
-                                </i>
+                  </i>
               </div>
             </form>
             <Menu />

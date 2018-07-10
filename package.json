@@ -7,8 +7,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha",
-    "start": "node ."
+    "test": "NODE_ENV=testing mocha",
+    "start": "NODE_ENV=staging node ."
   },
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",
@@ -26,6 +26,7 @@
     "moment": "^2.19.2",
     "nodemon": "^1.17.4",
     "pdfmake": "^0.1.34",
+    "randomcolor": "^0.5.3",
     "react-data-grid": "^3.0.11",
     "react-materialize": "^2.0.6",
     "react-validate-form": "^1.0.6",

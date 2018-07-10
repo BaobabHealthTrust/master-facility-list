@@ -12,3 +12,5 @@ export { default as FormWizardTabHeading } from './FormWizardTabHeading'
 export { default as FinishedForm } from './FinishedForm'
 export { default as FeedbackForm } from './FeedbackForm'
 export { default as MflGrid } from './MflGrid'
+export { default as MflCardGeneric } from './MflCardGeneric'
+export { default as MFLGoogleMap } from './MFLGoogleMap';

@@ -3,13 +3,35 @@
 const should = require("chai").should();
 const server = require("../server/server");
 const request = require("supertest")(server);
-const helper = require("./helper");
-const data = require("../seeds/data");
+const dataSource = server.dataSources.db;
+
+const {
+  District,
+  Facility
+} = server.models;
+
+const helper = require('./helper');
+const data = require('./data');
 
 describe("List Facilities", () => {
-    it("Should allow anyone to View a List of Published Facilities", (done) => {
-        helper.get("/api/Facilities", 200 , (res) => {
+
+    before( async () => {
+        await helper.createAdmin(data.user);
+        await helper.create(data.district, District);
+        await helper.create(data.facility, Facility);
+    });
+
+    after(done => dataSource.automigrate(err => done(err)));
+
+    it("Should Allow anyone to View a List of Published Facilities", (done) => {
+        helper.get('/api/Facilities',200, res => {
             res.body.should.be.an('array');
+            res.body[0].facility_name.should.equal(data.facility.facility_name);
+
+            res.body[0].published_date.should.equal(
+                data.facility.published_date
+            );
+
             done();
         });
     });
