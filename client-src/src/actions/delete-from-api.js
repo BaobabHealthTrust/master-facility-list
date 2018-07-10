@@ -1,12 +1,11 @@
 import axios from "axios";
 import settings from "../settings";
-const token = sessionStorage.getItem('token');
 
-export default function deleteFromApi(id, resource, actionType) {
+export default async (id, resource, actionType) => {
   const END_POINT = `${settings.hostname}/api/`;
 
   const headers = {
-    Authorization: token
+    Authorization: await sessionStorage.getItem('token')
   };
 
   const url = `${END_POINT}${resource}/${id}`;

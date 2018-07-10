@@ -41,11 +41,8 @@ const seed = async () => {
     await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
     await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
     await facilitySeeder(facilityCount);
-    await console.log(`Created ${facilityCount} facilities`);
     await facilityDependantsMapper();
-    await console.log(`Created facilities dependants`);
     await facilityResourcesUtilitiesServicesMapper();
-    await console.log('seeding done');
     await dataSource.disconnect();
   } catch (error) {
     console.log(error);

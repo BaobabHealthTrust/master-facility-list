@@ -61,6 +61,12 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "createAdmin"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "archiveUser"
     }
   ],
   "methods": {}

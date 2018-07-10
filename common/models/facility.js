@@ -8,6 +8,19 @@ const generateFile = require("../../download_modules/pdf-one-facility-formatter"
 const _ = require("lodash");
 const moment = require("moment");
 
+const getDistrictsIDs = async (data=null) => {
+    if(data && data != []){
+        const districtsNames = await data.map( name => _.capitalize(name));
+        const districts = await server.models.District.find({
+            where: { district_name: { inq: districtsNames } }
+        });
+        if (districts){
+            return districts.map(district => district.id);
+        }
+    } 
+    return [];
+};
+
 module.exports = (Facility) => {
 
   Facility.observe('after save', async function generateFacilityCode(ctx) {
@@ -17,9 +30,7 @@ module.exports = (Facility) => {
       const district = await server.models.District.findOne({ where: { id: district_id } });
       if (ctx.instance.published_date && !ctx.instance.archived_date) {
         const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
-          facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
-            if (err) console.error(err);
-          })
+          
         })
       }
     }
@@ -289,7 +300,7 @@ module.exports = (Facility) => {
             cb(error);
         }
       } catch (error) {
-          console.log("Malu" + error);
+          console.log(error);
       }
   }
 
@@ -384,6 +395,131 @@ module.exports = (Facility) => {
     returns: [
       { arg: 'body', type: 'file', root: true },
       { arg: 'Content-Type', type: 'string', http: { target: 'header' } }
+    ]
+  });
+
+
+  Facility.regulatoryStatus = async (districts, cb) => {
+      const regulatoryStatuses = await server.models.RegulatoryStatus.find();
+      const IDs = await getDistrictsIDs(districts);
+
+      let facilities = null;
+      if (!IDs.length) {
+        facilities = await server.models.Facility.find();
+      } else{
+        facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+      }
+      return regulatoryStatuses.map(regulatoryStatus => ({
+        name: regulatoryStatus.facility_regulatory_status,
+        count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
+      }));
+  };
+
+  Facility.remoteMethod('regulatoryStatus', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/regulatorystatuses', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array'},
+    returns: [
+      { arg: 'response', type: 'array'}
+    ]
+  });
+
+  Facility.operationalStatus = async (districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+    
+    let facilities = null;
+    if (!IDs.length) {
+      facilities = await server.models.Facility.find();
+    } else{
+      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+    }
+
+    const operationalStatuses = await server.models.OperationalStatus.find();
+    return operationalStatuses.map(operationalStatus => ({
+      name: operationalStatus.facility_operational_status,
+      value: facilities.filter(facility => (facility.facility_operational_status_id == operationalStatus.id)).length
+    }));
+  };
+
+  Facility.remoteMethod('operationalStatus', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/operationalstatuses', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array' },
+    returns: [
+      { arg: 'response', type: 'array' }
+    ]
+  });
+
+
+  Facility.facilitiesByTypeAndOwnership = async (districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+
+    let facilities = null;
+    if (!IDs.length) {
+      facilities = await server.models.Facility.find();
+    } else {
+      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
+    }
+    const owners = await server.models.Owner.find();
+    const facilityTypes = await server.models.FacilityType.find();
+
+    const mapped  = [];
+    const data = [];
+
+    owners.forEach( owner => {
+        mapped.push({
+            ...owner,
+            types: facilityTypes
+        });
+    });
+
+    mapped.forEach(map => {
+        let obj = new Object;
+        obj.name = map.__data.facility_owner;
+        const types = map.types.map(e => {
+          _.merge(obj, {[e.facility_type]: facilities.filter(facility => (facility.facility_owner_id == map.__data.id && facility.facility_type_id == e.id)).length});
+        });
+        data.push(obj);
+    });
+
+    return data;
+  };
+
+  Facility.remoteMethod('facilitiesByTypeAndOwnership', {
+    description: "retrieves the aggragate data for facility types and ownership",
+    http: { path: '/aggregates/typeandownership', verb: 'get' },
+    accepts: { arg: 'districts', type: 'array' },
+    returns: [
+      { arg: 'response', type: 'array' }
+    ]
+  });
+
+  Facility.facilitiesByService = async (service_name, district_id, cb) => {
+    if (!service_name){
+      return [];
+    }
+    const serviceIds = await server.models.Service.find().filter(service => {
+      return _.lowerCase(service.service_name).includes(_.lowerCase(service_name));
+    }).map(service => service.id);
+    const facilityIds = await server.models.FacilityService.find().filter(facilityService => {
+      return serviceIds.includes(facilityService.service_id); 
+    }).map(facilityService => facilityService.facility_id);
+    const facilities = await server.models.Facility.find({where: {id: {inq: facilityIds}}});
+    if(district_id){
+      return [];
+    }
+    return facilities;
+  };
+
+  Facility.remoteMethod('facilitiesByService', {
+    description: "retrieves facilities given a specific service",
+    http: { path: '/facilitieswithservice', verb: 'get' },
+    accepts: [
+      { arg: 'service_name', type: 'string' },
+      { arg: 'district_id', type: 'number' }
+    ],
+    returns: [
+      { arg: 'response', type: 'array' }
     ]
   });
 

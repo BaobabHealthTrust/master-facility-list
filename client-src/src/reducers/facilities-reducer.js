@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default (
   state = {
     list: [],
@@ -20,7 +22,16 @@ export default (
     utilitiesResponse: {},
     servicesResponse: {},
     deleteServiceResponse: {},
-    patchResponse: {}
+    patchResponse: {},
+    facilitiesByRegulatoryStatus: [],
+    facilitiesByOperationalStatus: [],
+    facilitiesByTypeAndOwnership: [],
+    facilitiesByTypeAndOwnershipKeys: [],
+    totalFacilities: [],
+    facilitiesWithOPD: [],
+    facilitiesWithANC: [],
+    facilitiesWithHTC: [],
+    facilitiesWithART: []
   },
   action
 ) => {
@@ -153,6 +164,65 @@ export default (
         patchResponse: action.payload.data,
         isLoading: false
       }
+    case 'FETCH_FACILITIES_BY_REGULATORY_STATUSES':
+      return {
+        ...state,
+        facilitiesByRegulatoryStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_OPERATIONAL_STATUSES':
+      return {
+        ...state,
+        facilitiesByOperationalStatus: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_BY_TYPE_AND_OWNERSHIP':
+      
+      if(action.payload.data.response){
+        const snakeCased = action.payload.data.response.map(facilityByTypeAndOnwership => {
+          const _facilityByTypeAndOwnership = _.mapKeys(facilityByTypeAndOnwership, (key, value) => {
+            return _.snakeCase(value);
+          });
+          return _facilityByTypeAndOwnership;
+        });
+        return {
+          ...state,
+          facilitiesByTypeAndOwnership: snakeCased,
+          facilitiesByTypeAndOwnershipKeys: _.keys(snakeCased[0])
+        }
+      }
+      return {...state}
+      break;
+    case 'FETCH_FACILITIES_WITH_OPD':
+        return {
+          ...state,
+          facilitiesWithOPD: action.payload.data.response
+        }
+      break;
+    case 'FETCH_FACILITIES_WITH_ANC':
+      return {
+        ...state,
+        facilitiesWithANC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_WITH_HTC':
+      return {
+        ...state,
+        facilitiesWithHTC: action.payload.data.response
+      }
+      break;
+    case 'FETCH_FACILITIES_WITH_ART':
+      return {
+        ...state,
+        facilitiesWithART: action.payload.data.response
+      }
+      break;
+    case 'FETCH_TOTAL_FACILITIES':
+      return {
+        ...state,
+        totalFacilities: action.payload.data
+      }
+      break;
     default:
       return state;
   }

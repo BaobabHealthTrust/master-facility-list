@@ -40,5 +40,6 @@ module.exports = async (facilityCount) => {
     }
     facilities.push(facility);
   }
+  console.log(`Creating ${facilities.length} Facilities`);
   return await Facility.create(facilities);
 }
