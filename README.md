@@ -86,7 +86,7 @@ followed by running the migration., i.e `lb-migration migrate`.
 
 ```sh
 # install the migration tool
-npm i -g loopback-migration-tool
+sudo npm i -g loopback-migration-tool
 
 # run the migration
 lb-migration migrate
@@ -114,7 +114,7 @@ node .
 
 ## Step 9 frontend server settings
 
-Make sure to navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000` or whatever will be generated from your previous step. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
+In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000` or whatever will be generated from your previous step. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
 ```sh
 # navigate to frontend source directory.
 cd client-src/src
