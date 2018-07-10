@@ -6,7 +6,6 @@ This project is the first deliverable under the [Kuunika Data For Action](http:/
 
 # Dependancies
 
-* GNOME Terminal
 * NodeJS > v7.12
 * MySQL v5.5
 
@@ -66,13 +65,7 @@ If they are not passing, please check whether your environment has all the depen
 ## Step 4 database
 
 Create a schema in mysql database called `mflApi` <br />
-Modify the `.env.example` file and make sure it reflects your MySQL Database Settings. <br />
-Create a .env file with the contents of your .env.example file.
-
-```sh
-# Create a .env file
-mv .env.example .env
-```
+Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
 
 Change NODE environment. Set the environment to staging. This notifies loopback that you are in the staging environment. <br />
 ```sh
