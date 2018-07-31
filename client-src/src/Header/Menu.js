@@ -17,8 +17,9 @@ class Menu extends Component {
     );
   }
 
-  logout = () => {
-    sessionStorage.removeItem('token');
+  logout = async () => {
+    await sessionStorage.removeItem('token');
+    window.location.reload();
   }
 
   // TODO: Menu Active States should read from url
