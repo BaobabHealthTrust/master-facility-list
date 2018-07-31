@@ -26,7 +26,10 @@ module.exports = async (users) => {
 
         await role.principals.create(userRoleMapping);
 
-        await console.log("User, Role and RoleMapping successfully created");
+        const user = await User.find({where: {id: 1}})
+        // await console.log("Malu");
+
+        // await console.log("User, Role and RoleMapping successfully created");
     } catch (err) {
         console.error(err);
     }
