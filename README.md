@@ -107,15 +107,18 @@ node .
 
 ## Step 9 frontend server settings
 
-In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000`. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
+In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js`. Set the hostname in that file to the url of the backend server `192.168.12.252:3000`.
+
+Next, copy the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
+
 ```sh
 # navigate to frontend source directory.
 cd client-src/src
 
 # Modify settinds.example.js in the terminal or text editor
 
-# move the settings to settings.js file
-mv settings.example.js settings.js
+# copy the settings to settings.js file
+cp settings.example.js settings.js
 
 # navigate to frontend root directory
 cd ..
