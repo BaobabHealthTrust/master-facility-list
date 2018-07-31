@@ -57,7 +57,7 @@ class FacilityContactForm extends React.Component<Props> {
 
   schema = yup.object().shape({
     postalAddress: yup.string().min(5, "Postal Address is Too short").required(this.REQUIRED_MESSAGE),
-    physicalAddress: yup.string().min(7, "Too short").nullable(),
+    physicalAddress: yup.string().min(7, "Too short").nullable(true),
     contactName: yup.string().min(5, "Contact Name is Too short").required(this.REQUIRED_MESSAGE),
     contactEmail: yup.string().email("Invalid Email Format").required(this.REQUIRED_MESSAGE),
     contactPhoneNumber: yup.string()
@@ -67,7 +67,7 @@ class FacilityContactForm extends React.Component<Props> {
     catchmentArea: yup.string()
       .min(7, "Catchment Area is Too Short")
       .required(this.REQUIRED_MESSAGE),
-    catchmentPopulation: yup.number(this.INVALID_NUM_MESSAGE)
+    catchmentPopulation: yup.number(this.INVALID_NM_MESSAGE)
       .positive()
       .integer()
       .required(this.REQUIRED_MESSAGE),
@@ -80,7 +80,7 @@ class FacilityContactForm extends React.Component<Props> {
   _handleChange = async (values, { setSubmitting, setErros }) => {
     const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
     const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
-
+    
     await this.props.postFormData(
       { data: { ...values, client: 1 }, id: facilityId },
       "Facilities",
