@@ -107,18 +107,15 @@ node .
 
 ## Step 9 frontend server settings
 
-In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js`. Set the hostname in that file to the url of the backend server `192.168.12.252:3000`.
-
-Next, copy the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
-
 ```sh
 # navigate to frontend source directory.
 cd client-src/src
 
-# Modify settinds.example.js in the terminal or text editor
-
 # copy the settings to settings.js file
 cp settings.example.js settings.js
+
+# Modify settings.example.js in the terminal or text editor
+# Set the hostname in settings.js file to the url of the backend server `192.168.12.252:3000`.
 
 # navigate to frontend root directory
 cd ..
