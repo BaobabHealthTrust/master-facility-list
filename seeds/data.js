@@ -147,14 +147,14 @@ const zoneData = [{
 
 module.exports.zoneData = zoneData;
 
-module.exports.users = [{
+module.exports.users = {
   username: "mfladminuser",
   password: "admin",
   firstname: "CMED",
   lastname: "Malawi",
   email: "administrator@gmail.com"
-}
-];
+};
+
 const utilityTypes = [{
   utility_type: refs.UTILITY_TYPES.ENERGY_PROVIDER,
   description: "This is energy source"
