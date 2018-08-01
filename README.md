@@ -85,15 +85,13 @@ sudo npm i -g loopback-migration-tool
 lb-migration migrate
 ```
 
-## Step 5 Seeds
+## Step 5 User
 
-Run the fake data generation script to populate your database with fake data:
-
-#### `node seed.js [number of facilities]`
+Run `node seed.js` to generate an admin user.
 
 ```sh
-# create 234 fake facilities with fake data.
-node seed.js 234
+# create admin user.
+node seed.js
 ```
 
 ## Step 6 run backend server
@@ -107,7 +105,7 @@ node .
 
 ## Step 9 frontend server settings
 
-In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000` or whatever will be generated from your previous step. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
+In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000`. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
 ```sh
 # navigate to frontend source directory.
 cd client-src/src
