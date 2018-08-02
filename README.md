@@ -85,15 +85,13 @@ sudo npm i -g loopback-migration-tool
 lb-migration migrate
 ```
 
-## Step 5 Seeds
+## Step 5 User
 
-Run the fake data generation script to populate your database with fake data:
-
-#### `node seed.js [number of facilities]`
+Run `node seed.js` to generate an admin user.
 
 ```sh
-# create 234 fake facilities with fake data.
-node seed.js 234
+# create admin user.
+node seed.js
 ```
 
 ## Step 6 run backend server
