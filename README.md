@@ -96,14 +96,14 @@ node seed.js
 
 ## Step 6 run backend server
 
-Once the fake data has been successfully generated, you are now ready to start the backend server by running `node .`
+Once the admin user has been generated, you are now ready to start the backend server by running `node .`
 
 ```sh
 # run the master facility server
 node .
 ```
 
-## Step 9 frontend server settings
+## Step 7 frontend server settings
 
 ```sh
 # navigate to frontend source directory.
@@ -119,7 +119,7 @@ cp settings.example.js settings.js
 cd ..
 ```
 
-## Step 10 run frontend server
+## Step 8 run frontend server
 
 You are now ready to start the front end application as follows, `npm start` (while in `client-src` directory)
 ```sh
