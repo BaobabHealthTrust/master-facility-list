@@ -81,19 +81,21 @@ mysql> CREATE DATABASE mflApi;
 mysql> \q
 ```
 
-Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
-Change NODE environment. Set the environment to staging. This notifies loopback that you are in the staging environment. <br />
+Modify the `.env.example` file and make sure it reflects your MySQL Database Settings. <br />
+Create a `.env` file with the contents of your .env.example file.
+
+```sh
+# copy the .env.example to .env file
+cp .env.example .env
+```
+
+Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`
+followed by running the migration., i.e `lb-migration migrate`.
 
 ```sh
 # set node environment to staging
 export NODE_ENV=staging
-```
 
-
-Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`,
-followed by running the migration., i.e `lb-migration migrate`.
-
-```sh
 # install the migration tool
 sudo npm i -g loopback-migration-tool
 
