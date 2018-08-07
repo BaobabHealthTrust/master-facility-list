@@ -87,7 +87,7 @@ Create a `.env` file with the contents of your .env.example file.
 # copy the .env.example to .env file
 cp .env.example .env
 ```
-Modify the `.env.example` file and make sure it reflects your MySQL Database Settings. <br />
+Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
 Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`
 followed by running the migration., i.e `lb-migration migrate`.
 
