@@ -67,12 +67,8 @@ If they are not passing, please check whether your environment has all the depen
 Create a schema in mysql database called `mflApi` <br />
 Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
 
-Change NODE environment. Set the environment to staging. This notifies loopback that you are in the staging environment. <br />
-```sh
-# set node environment to staging
-export NODE_ENV=staging
-```
-
+Change NODE environment. Set the environment to staging, testing or production.
+This notifies loopback the environment you are running. In the `.env` file, set `NODE_ENV=staging`
 
 Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`,
 followed by running the migration., i.e `lb-migration migrate`.
