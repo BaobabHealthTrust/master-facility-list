@@ -14,7 +14,7 @@
 *.xml
 .cache
 .circleci/
-.env
+config/.env
 .idea
 .prettierrc
 .project
