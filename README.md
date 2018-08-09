@@ -6,8 +6,8 @@ This project is the first deliverable under the [Kuunika Data For Action](http:/
 
 # Dependancies
 
-* NodeJS > v7.12
-* MySQL v5.5
+* [NodeJS > v8.11.3](https://nodejs.org/en/download/ "node")
+* [MySQL v5.5](https://dev.mysql.com/downloads/mysql/ "mysql")
 
 # Setup
 
@@ -64,20 +64,38 @@ If they are not passing, please check whether your environment has all the depen
 
 ## Step 4 database
 
-Create a schema in mysql database called `mflApi` <br />
-Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
+Create a schema in mysql database called `mflApi`: <br />
 
-Change NODE environment. Set the environment to staging. This notifies loopback that you are in the staging environment. <br />
 ```sh
-# set node environment to staging
-export NODE_ENV=staging
+# connect to mysql database
+# replace 'user' with your mysql user name in the command bellow
+mysql -u user -p
+
+# enter the specified user password in the prompt
+
+# create the database
+mysql> CREATE DATABASE mflApi;
+
+
+# exist from mysql
+mysql> \q
 ```
 
+Create a `.env` file with the contents of your .env.example file.
 
-Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`,
+```sh
+# copy the .env.example to .env file
+cp .env.example .env
+```
+
+Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
+Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`
 followed by running the migration., i.e `lb-migration migrate`.
 
 ```sh
+# set node environment to staging
+export NODE_ENV=staging
+
 # install the migration tool
 sudo npm i -g loopback-migration-tool
 
@@ -96,30 +114,30 @@ node seed.js
 
 ## Step 6 run backend server
 
-Once the fake data has been successfully generated, you are now ready to start the backend server by running `node .`
+Once the admin user has been generated, you are now ready to start the backend server by running `node .`
 
 ```sh
 # run the master facility server
 node .
 ```
 
-## Step 9 frontend server settings
+## Step 7 frontend server settings
 
-In a new terminal window or tab, navigate to the `client-src/src` directory and modify `settings.example.js` to your preferences. If you want to run the front end locally, then set the hostname in that file to `localhost:3000`. If you would like the front-end to connect to a backend hosted remotely, you may set the url to that remote backend url. Next, move the settings into a `settings.js` file as follows, `mv settings.example.js settings.js`.
 ```sh
 # navigate to frontend source directory.
 cd client-src/src
 
-# Modify settinds.example.js in the terminal or text editor
+# copy the settings to settings.js file
+cp settings.example.js settings.js
 
-# move the settings to settings.js file
-mv settings.example.js settings.js
+# Modify settings.example.js in the terminal or text editor
+# Set the hostname in settings.js file to the url of the backend server `192.168.12.252:3000`.
 
 # navigate to frontend root directory
 cd ..
 ```
 
-## Step 10 run frontend server
+## Step 8 run frontend server
 
 You are now ready to start the front end application as follows, `npm start` (while in `client-src` directory)
 ```sh
