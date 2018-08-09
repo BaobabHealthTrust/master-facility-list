@@ -23,8 +23,7 @@ module.exports = async (data) => {
 
     await console.log("Admin user created successfully\n");
     await console.log(`username: ${user.username}`);
-    await console.log(`password: ${data.password}`);
-    await console.log(`\nChange the username and password on login`);
+    await console.log(`password: ${data.password}\n`);
   } catch (err) {
     console.error(err);
   }
