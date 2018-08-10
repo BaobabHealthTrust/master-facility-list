@@ -17,7 +17,7 @@ const getDistrictsIDs = async (data=null) => {
         if (districts){
             return districts.map(district => district.id);
         }
-    } 
+    }
     return [];
 };
 
@@ -30,7 +30,9 @@ module.exports = (Facility) => {
       const district = await server.models.District.findOne({ where: { id: district_id } });
       if (ctx.instance.published_date && !ctx.instance.archived_date) {
         const facility = await Facility.findOne({ where: { id: ctx.instance.id } }).then(facility => {
-          
+          facility.updateAttributes({ facility_code: `${district.district_code}${district_id}${id}` }, (err, instance) => {
+            if (err) console.error(err);
+          })
         })
       }
     }
@@ -426,7 +428,7 @@ module.exports = (Facility) => {
 
   Facility.operationalStatus = async (districts, cb) => {
     const IDs = await getDistrictsIDs(districts);
-    
+
     let facilities = null;
     if (!IDs.length) {
       facilities = await server.models.Facility.find();
@@ -502,7 +504,7 @@ module.exports = (Facility) => {
       return _.lowerCase(service.service_name).includes(_.lowerCase(service_name));
     }).map(service => service.id);
     const facilityIds = await server.models.FacilityService.find().filter(facilityService => {
-      return serviceIds.includes(facilityService.service_id); 
+      return serviceIds.includes(facilityService.service_id);
     }).map(facilityService => facilityService.facility_id);
     const facilities = await server.models.Facility.find({where: {id: {inq: facilityIds}}});
     if(district_id){
