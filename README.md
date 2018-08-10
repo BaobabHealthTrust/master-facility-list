@@ -88,7 +88,12 @@ Create a `.env` file with the contents of your .env.example file.
 cp .env.example .env
 ```
 
-Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
+Modify the `.env` file and make sure it reflects your MySQL Database Settings. 
+Furthermore, set the port  and the host of the server in the same file `.env` <br />
+
+Change NODE environment in the `.env`. Set the environment to staging, testing or production.
+This notifies loopback the environment you are running. In the `.env` file, set `NODE_ENV=staging`
+
 Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`
 followed by running the migration., i.e `lb-migration migrate`.
 
