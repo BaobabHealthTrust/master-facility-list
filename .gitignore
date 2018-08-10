@@ -13,7 +13,6 @@
 *.vscode/
 *.xml
 .cache
-.circleci/
 config/.env
 .idea
 .prettierrc
