@@ -523,4 +523,146 @@ module.exports = (Facility) => {
     ]
   });
 
+
+  // FHIR Compliant endpoints
+
+  const facilityData = async (facility) => {
+    const contactPerson = await server.models.ContactPeople.findOne({ where: { facility_id: facility.id } });
+    const geolocation = await server.models.Geolocation.findOne({ where: { facility_id: facility.id } });
+    const address = await server.models.Address.findOne({ where: { facility_id: facility.id } });
+    const operationalStatus = await server.models.OperationalStatus.findOne({ where: { id: facility.facility_operational_status_id } });
+
+    return {
+      contactPerson,
+      geolocation,
+      address,
+      operationalStatus
+    }
+  }
+
+  Facility.fhirAllLocations = async (cb) => {
+    const facilities = await server.models.Facility.find();
+    const fhirCompliantFacilities = facilities.map(async (facility) => {
+      const {contactPerson, geolocation, address, operationalStatus} = await facilityData(facility);
+      return {
+        resourceType: 'Location',
+        id: facility.id,
+        identifier: [
+          {
+            value: facility.facility_code
+          }
+        ],
+        status: 'active',
+        operationalStatus: {
+          display: operationalStatus.facility_operational_status,
+          user_selected: true
+        },
+        name: facility.facility_name,
+        alias: facility.common_name,
+        mode: 'instance',
+        telecom: [
+          {
+            "system": "phone",
+            "value": contactPerson.contact_person_phone
+          },
+          {
+            "system": "email",
+            "value": contactPerson.contact_person_email
+          }
+        ],
+        position: {
+          latitude: geolocation.latitude,
+          longitude: geolocation.longitude,
+        },
+        address: {
+          use: 'work',
+          type: 'both',
+          line: [
+            address.physical_address, 
+            address.postal_address, 
+            address.village
+          ]
+        },
+        endpoint: `/api/Facilities/fhir/location/${facility.id}`
+      }
+    });
+    return {
+      name: 'MHFR',
+      locations: await Promise.all(fhirCompliantFacilities)
+    }
+  };
+
+  Facility.remoteMethod('fhirAllLocations', {
+    description: "retrieves facilities in an FHIR compliant mannet",
+    http: {
+      path: '/fhir/location/_history',
+      verb: 'get'
+    },
+    returns: [{
+      arg: 'response',
+      type: 'object'
+    }]
+  });
+
+  Facility.fhirLocation = async (id, cb) => {
+    const facility = await server.models.Facility.findOne({where: {id}});
+    const { contactPerson, geolocation, address, operationalStatus } = await facilityData(facility);
+    return {
+      resourceType: 'Location',
+      id: facility.id,
+      identifier: [
+        {
+          value: facility.facility_code
+        }
+      ],
+      status: 'active',
+      operationalStatus: {
+        display: operationalStatus.facility_operational_status,
+        user_selected: true
+      },
+      name: facility.facility_name,
+      alias: facility.common_name,
+      mode: 'instance',
+      telecom: [
+        {
+          "system": "phone",
+          "value": contactPerson.contact_person_phone
+        },
+        {
+          "system": "email",
+          "value": contactPerson.contact_person_email
+        }
+      ],
+      position: {
+        latitude: geolocation.latitude,
+        longitude: geolocation.longitude,
+      },
+      address: {
+        use: 'work',
+        type: 'both',
+        line: [
+          address.physical_address,
+          address.postal_address,
+          address.village
+        ]
+      },
+      endpoint: `/api/Facilities/fhir/location/${facility.id}`
+    }
+  };
+
+  Facility.remoteMethod('fhirLocation', {
+    description: "retrieves facilities in an FHIR compliant mannet",
+    http: {
+      path: '/fhir/location/:id',
+      verb: 'get'
+    },
+    accepts: [
+      { arg: 'id', type: 'number' }
+    ],
+    returns: [{
+      arg: 'response',
+      type: 'object'
+    }]
+  });
+
 };
