@@ -103,23 +103,11 @@ class DashboardHome extends React.Component<Props, State> {
     const district = event.target.id;
 
     if (this.state.districts.includes(district)) {
-      const flag = this.state.districts.includes(district);
-      if (flag) {
-        const index = this.state.districts.indexOf(district);
-        if (index >= 0) {
-          await this.setState((prevState, props) => {
-            const districts = prevState.districts;
-            districts.splice(index, 1);
-            return { districts }
-          });
-        }
-      }
+      const districts = this.state.districts.filter(d => d != district);
+      await this.setState({districts});
     } else {
-      await this.setState((prevState, props) => {
-        const districts = prevState.districts;
-        districts.push(district);
-        return { districts }
-      });
+      const districts = [...this.state.districts, district];
+      await this.setState({districts});
     }
 
     this.props.regulatoryStatuses(this.state.districts);
@@ -158,7 +146,7 @@ class DashboardHome extends React.Component<Props, State> {
       <div>
         <div className="row mt-6">
           <div className="col s12 m3" style={{ position: 'sticky', top: 10 }}>
-            <FacilitiesMap onClick={this.onClick} districts={this.state.districts} />
+            <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
           </div>
           <div className="col s12 m9">
             <div className="row">
