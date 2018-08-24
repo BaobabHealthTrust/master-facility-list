@@ -6,7 +6,8 @@ import styles from 'styled-components';
 
 const DashboardIconContainer = styles.div`
   border-bottom: 1px solid black;
-  margin-top: -20px;
+  margin-top: -10px;
+  margin-botoom: 10px;
   display: flex;
   flex-direction: row;
   justify-content: center;
