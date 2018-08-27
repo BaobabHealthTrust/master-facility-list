@@ -99,6 +99,11 @@ class DashboardHome extends React.Component<Props, State> {
     this.props.regulatoryStatuses(this.state.districts);
     this.props.operationalStatuses(this.state.districts);
     this.props.facilityTypeAndOwnership(this.state.districts);
+    this.props.fetchTotalFacilities(this.state.districts);
+    this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD', this.state.districts);
+    this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC', this.state.districts);
+    this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC', this.state.districts);
+    this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART', this.state.districts);
   }
 
   onClick = async (event) => {
@@ -124,12 +129,7 @@ class DashboardHome extends React.Component<Props, State> {
       map(this.state.dashboardServices, "id")
     );
 
-    await this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD');
-    await this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC');
-    await this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC');
-    await this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART');
-    await this.props.facilityTypeAndOwnership(this.state.districts);
-    await this.props.fetchTotalFacilities();
+    await this.updateGraphs();
   }
 
   componentWillReceiveProps() {
@@ -166,7 +166,7 @@ class DashboardHome extends React.Component<Props, State> {
             </div>
             <div className="row">
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.totalFacilities.length} title="Total Facilities" icon="hospital" />
+                <GenericCard count={this.props.totalFacilities} title="Total Facilities" icon="hospital" />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="pregnant" />
