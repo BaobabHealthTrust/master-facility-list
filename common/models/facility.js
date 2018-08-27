@@ -496,20 +496,21 @@ module.exports = (Facility) => {
     ]
   });
 
-  Facility.facilitiesByService = async (service_name, district_id, cb) => {
-    if (!service_name){
-      return [];
-    }
+  Facility.facilitiesByService = async (service_name, districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+    if (!service_name) return [];
+
     const serviceIds = await server.models.Service.find().filter(service => {
       return _.lowerCase(service.service_name).includes(_.lowerCase(service_name));
     }).map(service => service.id);
+
     const facilityIds = await server.models.FacilityService.find().filter(facilityService => {
       return serviceIds.includes(facilityService.service_id);
     }).map(facilityService => facilityService.facility_id);
-    const facilities = await server.models.Facility.find({where: {id: {inq: facilityIds}}});
-    if(district_id){
-      return [];
-    }
+
+    const where =  { id: {inq: facilityIds}};
+    if (IDs.length) where.district_id = { inq: IDs }
+    const facilities = await server.models.Facility.find({where: where});
     return facilities;
   };
 
@@ -518,11 +519,28 @@ module.exports = (Facility) => {
     http: { path: '/facilitieswithservice', verb: 'get' },
     accepts: [
       { arg: 'service_name', type: 'string' },
-      { arg: 'district_id', type: 'number' }
+      { arg: 'districts', type: 'array' }
     ],
     returns: [
       { arg: 'response', type: 'array' }
     ]
+  });
+
+  Facility.totalFacilities = async (districts, cb) => {
+    const IDs = await getDistrictsIDs(districts);
+
+    const where =  {};
+    if (IDs.length) where.district_id = { inq: IDs }
+    const facilities = await Facility.find({where: where})
+    // used length beacause count is not working
+    return facilities.length;
+  };
+
+  Facility.remoteMethod('totalFacilities', {
+    description: "retrieves facilities based on district name",
+    http: { path: '/total', verb: 'get' },
+    accepts: [ { arg: 'districts', type: 'array' }],
+    returns: [ { arg: 'response', type: 'number' }]
   });
 
 };

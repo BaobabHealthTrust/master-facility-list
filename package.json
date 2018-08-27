@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "NODE_ENV=testing mocha",
-    "start": "NODE_ENV=staging node ."
+    "start": "NODE_ENV=staging nodemon ."
   },
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",
