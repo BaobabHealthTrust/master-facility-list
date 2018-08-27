@@ -149,6 +149,26 @@ class DashboardHome extends React.Component<Props, State> {
             <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
           </div>
           <div className="col s12 m9">
+            <div className='row'>
+              <div className='col s12'>
+                {
+                  this.state.districts.map(district => {
+                    return <div className="chip">
+                            {district}
+                            <i
+                              onClick={ async () => {
+                                const districts = this.state.districts.filter(d => d != district);
+                                await this.setState({districts});
+                                this.props.regulatoryStatuses(this.state.districts);
+                                this.props.operationalStatuses(this.state.districts);
+                                this.props.facilityTypeAndOwnership(this.state.districts);
+                              }}
+                              className="mfl-close material-icons" > close </i>
+                        </div>
+                  })
+                }
+              </div>
+            </div>
             <div className="row">
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.props.totalFacilities.length} title="Total Facilities" icon="hospital" />
