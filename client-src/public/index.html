@@ -38,7 +38,6 @@
         }
     </style>
 
-
 </head>
 
 <body id="body">
@@ -61,27 +60,26 @@
 
             $(document).tooltip();
 
-
             if ($('#back-to-top').length) {
-              var scrollTrigger = 100, // px
-                backToTop = function () {
-                  var scrollTop = $(window).scrollTop();
-                  if (scrollTop > scrollTrigger) {
-                    $('#back-to-top').addClass('show');
-                  } else {
-                    $('#back-to-top').removeClass('show');
-                  }
-                };
-              backToTop();
-              $(window).on('scroll', function () {
+                var scrollTrigger = 100, // px
+                    backToTop = function () {
+                        var scrollTop = $(window).scrollTop();
+                        if (scrollTop > scrollTrigger) {
+                            $('#back-to-top').addClass('show');
+                        } else {
+                            $('#back-to-top').removeClass('show');
+                        }
+                    };
                 backToTop();
-              });
-              $('#back-to-top').on('click', function (e) {
-                e.preventDefault();
-                $('html,body').animate({
-                  scrollTop: 0
-                }, 700);
-              });
+                $(window).on('scroll', function () {
+                    backToTop();
+                });
+                $('#back-to-top').on('click', function (e) {
+                    e.preventDefault();
+                    $('html,body').animate({
+                        scrollTop: 0
+                    }, 700);
+                });
             }
 
             const content = $('.content');
@@ -93,22 +91,18 @@
             content.css('min-height', height);
 
             win.on({
-              'resize': () => {content.css('min-height', height)},
-              'change': () => { content.css('min-height', height)},
-              'onload': () => { content.css('min-height', height) }
-            });
-
-            const map = $('.map');
-            const mapHeight = height - 100;
-
-            map.css('min-height', (mapHeight));
-            map.on({
-                'resize': () => { content.css('min-height', mapHeight) },
-                'change': () => { content.css('min-height', mapHeight) }
+                'resize': () => {
+                    content.css('min-height', height)
+                },
+                'change': () => {
+                    content.css('min-height', height)
+                },
+                'onload': () => {
+                    content.css('min-height', height)
+                }
             });
 
         });
-
     </script>
 </body>
 

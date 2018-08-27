@@ -1,40 +1,35 @@
+//@flow
 import React from 'react';
 import { MflCardGeneric } from '../../common';
-import randomcolor from 'randomcolor';
-
 import {
-    BarChart,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    Bar
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar
 } from 'recharts';
+import { defaultScheme } from '../../colors'
 
-import { curveCatmullRom } from 'd3-shape';
+export default ({ data, keys, width }) => {
 
-class FacilitiesByTypeAndOwnership extends React.Component{
-    render() {
-        const view = (
-            <React.Fragment>
-                <BarChart width={1100} height={300} data={this.props.data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    {this.props.keys.map(key => (
-                        <Bar dataKey={key} fill={randomcolor()} />
-                    ))}
-                </BarChart>
-            </React.Fragment>
-        )
-        return (
-            <MflCardGeneric heading="facilities by type and ownership" view={view}/>
-        );
+  const container = document.getElementById('typeOwnershipContainer');
 
-    }
+  const view = (
+    <React.Fragment>
+      <BarChart width={0.9 * width} height={300} data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        {keys.map((key, index) => (
+          <Bar dataKey={key} fill={defaultScheme[index]} />
+        ))}
+      </BarChart>
+    </React.Fragment>
+  )
+
+  return <MflCardGeneric heading="facilities by type and ownership" view={view} />
 }
-
-export default FacilitiesByTypeAndOwnership;
