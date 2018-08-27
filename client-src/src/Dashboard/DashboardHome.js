@@ -36,11 +36,7 @@ import {
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
 
-import { Doughnut, Bar } from 'react-chartjs-2'
-
-import {
-  GenericCard
-} from './charts/mini-cards';
+import { GenericCard } from './charts/mini-cards';
 import '../App.css';
 
 type Props = {
@@ -99,9 +95,14 @@ class DashboardHome extends React.Component<Props, State> {
     });
   }
 
+  updateGraphs = () => {
+    this.props.regulatoryStatuses(this.state.districts);
+    this.props.operationalStatuses(this.state.districts);
+    this.props.facilityTypeAndOwnership(this.state.districts);
+  }
+
   onClick = async (event) => {
     const district = event.target.id;
-
     if (this.state.districts.includes(district)) {
       const districts = this.state.districts.filter(d => d != district);
       await this.setState({districts});
@@ -109,21 +110,16 @@ class DashboardHome extends React.Component<Props, State> {
       const districts = [...this.state.districts, district];
       await this.setState({districts});
     }
-
-    this.props.regulatoryStatuses(this.state.districts);
-    this.props.operationalStatuses(this.state.districts);
-    this.props.facilityTypeAndOwnership(this.state.districts);
+    this.updateGraphs()
   }
 
   async componentDidMount() {
     window.addEventListener('resize', this.resizeDashBoard)
     this.resizeDashBoard();
     await this.props.fetchFacilities();
-    await this.props.fetchFacilityOwners();
     await this.props.fetchOperationalStatuses();
     await this.props.fetchRegulatoryStatuses();
-    await this.props.regulatoryStatuses(this.state.districts);
-    await this.props.operationalStatuses(this.state.districts);
+    await this.updateGraphs();
     await this.props.fetchDashboardFacilityServices(
       map(this.state.dashboardServices, "id")
     );
@@ -151,22 +147,21 @@ class DashboardHome extends React.Component<Props, State> {
           <div className="col s12 m9">
             <div className='row'>
               <div className='col s12'>
-                {
-                  this.state.districts.map(district => {
-                    return <div className="chip">
-                            {district}
-                            <i
-                              onClick={ async () => {
-                                const districts = this.state.districts.filter(d => d != district);
-                                await this.setState({districts});
-                                this.props.regulatoryStatuses(this.state.districts);
-                                this.props.operationalStatuses(this.state.districts);
-                                this.props.facilityTypeAndOwnership(this.state.districts);
-                              }}
-                              className="mfl-close material-icons" > close </i>
-                        </div>
-                  })
-                }
+                {this.state.districts.map(district => {
+                  return <div className="chip">
+                    {district}
+                    <i
+                      onClick={ async () => {
+                        const districts = this.state.districts.filter(d => d != district);
+                        await this.setState({districts});
+                        await this.updateGraphs();
+                      }}
+                      className="mfl-close material-icons"
+                    >
+                      close
+                    </i>
+                  </div>
+                })}
               </div>
             </div>
             <div className="row">
