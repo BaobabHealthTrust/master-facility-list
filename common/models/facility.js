@@ -403,14 +403,10 @@ module.exports = (Facility) => {
 
   Facility.regulatoryStatus = async (districts, cb) => {
       const regulatoryStatuses = await server.models.RegulatoryStatus.find();
-      const IDs = await getDistrictsIDs(districts);
+      const IDs = await getDistrictsIDs(districts)
+      const where = IDs.length ? { district_id: { inq: IDs } } : {}
+      const facilities = await Facility.find({ where })
 
-      let facilities = null;
-      if (!IDs.length) {
-        facilities = await server.models.Facility.find();
-      } else{
-        facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
-      }
       return regulatoryStatuses.map(regulatoryStatus => ({
         name: regulatoryStatus.facility_regulatory_status,
         count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
@@ -427,14 +423,9 @@ module.exports = (Facility) => {
   });
 
   Facility.operationalStatus = async (districts, cb) => {
-    const IDs = await getDistrictsIDs(districts);
-
-    let facilities = null;
-    if (!IDs.length) {
-      facilities = await server.models.Facility.find();
-    } else{
-      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
-    }
+    const IDs = await getDistrictsIDs(districts)
+    const where = IDs.length ? { district_id: { inq: IDs } } : {}
+    const facilities = await Facility.find({ where })
 
     const operationalStatuses = await server.models.OperationalStatus.find();
     return operationalStatuses.map(operationalStatus => ({
@@ -454,17 +445,11 @@ module.exports = (Facility) => {
 
 
   Facility.facilitiesByTypeAndOwnership = async (districts, cb) => {
-    const IDs = await getDistrictsIDs(districts);
-
-    let facilities = null;
-    if (!IDs.length) {
-      facilities = await server.models.Facility.find();
-    } else {
-      facilities = await server.models.Facility.find({ where: { district_id: { inq: IDs } } });
-    }
-    const owners = await server.models.Owner.find();
-    const facilityTypes = await server.models.FacilityType.find();
-
+    const IDs = await getDistrictsIDs(districts)
+    const where = IDs.length ? { district_id: { inq: IDs } } : {}
+    const facilities = await Facility.find({ where })
+    const owners = await server.models.Owner.find()
+    const facilityTypes = await server.models.FacilityType.find()
     const mapped  = [];
     const data = [];
 
@@ -497,22 +482,21 @@ module.exports = (Facility) => {
   });
 
   Facility.facilitiesByService = async (service_name, districts, cb) => {
-    const IDs = await getDistrictsIDs(districts);
     if (!service_name) return [];
-
+    const IDs = await getDistrictsIDs(districts);
     const serviceIds = await server.models.Service.find().filter(service => {
       return _.lowerCase(service.service_name).includes(_.lowerCase(service_name));
-    }).map(service => service.id);
+    }).map(service => service.id)
 
     const facilityIds = await server.models.FacilityService.find().filter(facilityService => {
-      return serviceIds.includes(facilityService.service_id);
-    }).map(facilityService => facilityService.facility_id);
+      return serviceIds.includes(facilityService.service_id)
+    }).map(facilityService => facilityService.facility_id)
 
-    const where =  { id: {inq: facilityIds}};
+    const where =  {id:{inq: facilityIds}}
     if (IDs.length) where.district_id = { inq: IDs }
-    const facilities = await server.models.Facility.find({where: where});
-    return facilities;
-  };
+    const facilities = await server.models.Facility.find({where})
+    return facilities
+  }
 
   Facility.remoteMethod('facilitiesByService', {
     description: "retrieves facilities given a specific service",
@@ -527,14 +511,11 @@ module.exports = (Facility) => {
   });
 
   Facility.totalFacilities = async (districts, cb) => {
-    const IDs = await getDistrictsIDs(districts);
-
-    const where =  {};
-    if (IDs.length) where.district_id = { inq: IDs }
-    const facilities = await Facility.find({where: where})
-    // used length beacause count is not working
-    return facilities.length;
-  };
+    const IDs = await getDistrictsIDs(districts)
+    const where = IDs.length ? {district_id: { inq: IDs }} : {}
+    const facilities = await Facility.find({where})
+    return facilities.length
+  }
 
   Facility.remoteMethod('totalFacilities', {
     description: "retrieves facilities based on district name",

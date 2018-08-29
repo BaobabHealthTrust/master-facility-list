@@ -21,3 +21,4 @@ config/.env
 coverage
 node_modules/
 npm-debug.log
+client-src/src/settings.js
