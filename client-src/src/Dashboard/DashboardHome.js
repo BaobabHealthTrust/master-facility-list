@@ -35,7 +35,7 @@ import {
   facilityTypeAndOwnership
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
-
+import DashboardSummary from "./dashboardSummary";
 import { GenericCard } from './charts/mini-cards';
 import '../App.css';
 
@@ -106,6 +106,13 @@ class DashboardHome extends React.Component<Props, State> {
     this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART', this.state.districts);
   }
 
+  closeTag = async (event) => {
+    const district = event.target.id
+    const districts = await this.state.districts.filter(d => d != district)
+    await this.setState({districts})
+    await this.updateGraphs()
+  }
+
   onClick = async (event) => {
     const district = event.target.id;
     if (this.state.districts.includes(district)) {
@@ -146,22 +153,8 @@ class DashboardHome extends React.Component<Props, State> {
           </div>
           <div className="col s12 m9">
             <div className='row'>
-              <div className='col s12'>
-                {this.state.districts.map(district => {
-                  return <div className="chip">
-                    {district}
-                    <i
-                      onClick={ async () => {
-                        const districts = this.state.districts.filter(d => d != district);
-                        await this.setState({districts});
-                        await this.updateGraphs();
-                      }}
-                      className="mfl-close material-icons"
-                    >
-                      close
-                    </i>
-                  </div>
-                })}
+              <div className='col s12' style={{ position: 'sticky', top: 10 }}>
+                <DashboardSummary  closeTag={this.closeTag} districts={this.state.districts}/>
               </div>
             </div>
             <div className="row">
@@ -198,6 +191,8 @@ class DashboardHome extends React.Component<Props, State> {
                   />
                 </div>
               </div>
+            </div>
+            <div className='row'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
                   <FacilitiesByTypeAndOwnership
@@ -208,7 +203,6 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-
           </div>
 
         </div>

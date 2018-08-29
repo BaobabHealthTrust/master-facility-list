@@ -5,14 +5,14 @@ import { ribbon, patient, hospital, bloodTest, pregnant } from '../../../images'
 import styles from 'styled-components';
 
 const DashboardIconContainer = styles.div`
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #666;
   margin-top: -10px;
-  margin-botoom: 10px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
 `
-const DashboardIconTitle = styles.p`font-size: 1em;`;
+const DashboardIconTitle = styles.p`font-size: 1.5em;`
 const DashboardIconCount = styles.p`font-size: 2.5em; font-weight: bold;`;
 const DashboardIconImg = styles.img`width: 70%;`
 
