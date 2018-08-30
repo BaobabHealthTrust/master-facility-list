@@ -441,8 +441,7 @@ module.exports = (Facility) => {
     returns: [
       { arg: 'response', type: 'array' }
     ]
-  });
-
+  })
 
   Facility.facilitiesByTypeAndOwnership = async (districts, cb) => {
     const IDs = await getDistrictsIDs(districts)
@@ -450,27 +449,19 @@ module.exports = (Facility) => {
     const facilities = await Facility.find({ where })
     const owners = await server.models.Owner.find()
     const facilityTypes = await server.models.FacilityType.find()
-    const mapped  = [];
-    const data = [];
 
-    owners.forEach( owner => {
-        mapped.push({
-            ...owner,
-            types: facilityTypes
-        });
-    });
+    const data = []
+    const mapped = owners.map(owner => ({...owner, types: facilityTypes}))
 
     mapped.forEach(map => {
-        let obj = new Object;
-        obj.name = map.__data.facility_owner;
-        const types = map.types.map(e => {
-          _.merge(obj, {[e.facility_type]: facilities.filter(facility => (facility.facility_owner_id == map.__data.id && facility.facility_type_id == e.id)).length});
-        });
-        data.push(obj);
-    });
-
-    return data;
-  };
+      let obj = {'name': map.__data.facility_owner}
+      map.types.map(e => {
+        _.merge(obj, {[e.facility_type]: facilities.filter(facility => (facility.facility_owner_id == map.__data.id && facility.facility_type_id == e.id)).length})
+      })
+      data.push(obj)
+    })
+    return data
+  }
 
   Facility.remoteMethod('facilitiesByTypeAndOwnership', {
     description: "retrieves the aggragate data for facility types and ownership",
