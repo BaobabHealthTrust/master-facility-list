@@ -532,16 +532,18 @@ module.exports = (Facility) => {
     const address = await server.models.Address.findOne({ where: { facility_id: facility.id } });
     const operationalStatus = await server.models.OperationalStatus.findOne({ where: { id: facility.facility_operational_status_id } });
 
-    return {
+    const data = {
       contactPerson,
       geolocation,
       address,
       operationalStatus
     }
+    return data;
   }
 
   Facility.fhirAllLocations = async (cb) => {
     const facilities = await server.models.Facility.find();
+    console.log(facilities);
     const fhirCompliantFacilities = facilities.map(async (facility) => {
       const {contactPerson, geolocation, address, operationalStatus} = await facilityData(facility);
       return {
@@ -563,11 +565,11 @@ module.exports = (Facility) => {
         telecom: [
           {
             "system": "phone",
-            "value": contactPerson.contact_person_phone
+            "value": contactPerson ? contactPerson.contact_person_phone : ''
           },
           {
             "system": "email",
-            "value": contactPerson.contact_person_email
+            "value": contactPerson ? contactPerson.contact_person_email : ''
           }
         ],
         position: {
@@ -578,14 +580,15 @@ module.exports = (Facility) => {
           use: 'work',
           type: 'both',
           line: [
-            address.physical_address, 
-            address.postal_address, 
-            address.village
+            address ? address.physical_address : '', 
+            address ? address.postal_address : '', 
+            address ? address.village : ''
           ]
         },
         endpoint: `/api/Facilities/fhir/location/${facility.id}`
       }
     });
+    // await Promise.all(fhirCompliantFacilities)
     return {
       name: 'MHFR',
       locations: await Promise.all(fhirCompliantFacilities)
