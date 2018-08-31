@@ -8,6 +8,10 @@ const generateFile = require("../../download_modules/pdf-one-facility-formatter"
 const _ = require("lodash");
 const moment = require("moment");
 
+const {
+  District
+} = server.models
+
 const getDistrictsIDs = async (data=null) => {
     if(data && data != []){
         const districtsNames = await data.map( name => _.capitalize(name));
@@ -240,14 +244,6 @@ module.exports = (Facility) => {
     returns: { arg: 'response', type: 'string' }
   });
 
-  /**
-   *
-   * Generate a pdf file
-   *
-   * @param {Facility ID} id
-   * @param {Loop back callback function} cb
-   *
-   */
   Facility.downloadFacility = async (id, cb) => {
       try {
         const error = new Error();
@@ -450,16 +446,19 @@ module.exports = (Facility) => {
     const owners = await server.models.Owner.find()
     const facilityTypes = await server.models.FacilityType.find()
 
-    const data = []
-    const mapped = owners.map(owner => ({...owner, types: facilityTypes}))
+    const ownersWithFacilityTypes = owners.map(owner => ({...owner, types: facilityTypes}))
 
-    mapped.forEach(map => {
-      let obj = {'name': map.__data.facility_owner}
-      map.types.map(e => {
-        _.merge(obj, {[e.facility_type]: facilities.filter(facility => (facility.facility_owner_id == map.__data.id && facility.facility_type_id == e.id)).length})
-      })
-      data.push(obj)
+    const data = ownersWithFacilityTypes.map( ownerWithFacilityTypes => {
+      const aggregates = ownerWithFacilityTypes.types.reduce((previousValue, currentValue) => {
+        const makeCount = facility => facility.facility_owner_id == ownerWithFacilityTypes.__data.id && facility.facility_type_id == currentValue.id
+        return {
+          ...previousValue,
+          [currentValue.facility_type]: facilities.filter(makeCount).length
+        }
+      }, {})
+      return {...aggregates, 'name': ownerWithFacilityTypes.__data.facility_owner}
     })
+
     return data
   }
 
