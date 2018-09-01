@@ -15,20 +15,22 @@ class FacilitiesByOperationalStatus extends React.Component {
     const data = this.props.data;
 
     const view = (
-      <PieChart width={this.props.width * 0.8} height={300} onMouseEnter={this.onPieEnter}>
+      <PieChart
+        width={this.props.width}
+        height={300}
+        onMouseEnter={this.onPieEnter}
+      >
         <Pie
           data={data}
           outerRadius={100}
           fill="#8884d8">
           {defaultScheme.map(color => <Cell fill={color} />)}
         </Pie>
-        <Legend verticalAlign="bottom" height={40} />
+        <Legend verticalAlign="top" height={40} />
       </PieChart>
     )
 
-    return (
-      <MflCardGeneric heading="Facilities by operational status" view={view} />
-    );
+    return <MflCardGeneric heading="Facilities by operational status" view={view} />
   }
 }
 
