@@ -17,6 +17,8 @@ import settings from '../settings';
 import { postFormData } from '../actions'
 import { ButtonConfiguration } from '../types/helper-types';
 import { Facility } from '../types/model-types';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
   match: any,
@@ -33,16 +35,38 @@ class FacilityDetails extends React.Component<Props> {
   }
 
   _handleArchive = async () => {
-    await this.props.postFormData(
-      { archived_date: new Date() },
-      "Facilities",
-      "PATCH",
-      "PATCH_BASIC_DETAILS",
-      "",
-      this.props.match.params.id
-    )
-    if (this.props.response) this.setState({ redirect: true })
-    else alert('Something went wrong')
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <Col m={6} s={12} style={{ minWidth: '400px' }}>
+            <Card
+              title='Confirm'
+              className='blu darken-4'
+              textClassName='white-tex'
+              actions={
+                [
+                  <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                  <Button className="btn-flat" onClick={async () => {
+                    await this.props.postFormData(
+                      { archived_date: new Date() },
+                      "Facilities",
+                      "PATCH",
+                      "PATCH_BASIC_DETAILS",
+                      "",
+                      this.props.match.params.id
+                    )
+                    if (this.props.response) this.setState({ redirect: true })
+                    else alert('Something went wrong')
+                    onClose();
+                  }}>Yes</Button>
+                ]
+              }>
+              Are you sure you want to delete this facility ?
+            </Card>
+          </Col>
+        )
+      }
+    })
   }
 
   componentWillReceiveProps() {
