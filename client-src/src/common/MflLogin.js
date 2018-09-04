@@ -33,9 +33,9 @@ class MflLogin extends Component<State, Props> {
     const userId = this.props.loginResponse.loginResponse.userId
 
     if (isLoginSuccess) {
+      await this.props.getUserDetails(userId, tokenId)
       await sessionStorage.setItem('token', tokenId)
-      await this.props.getUserDetails(tokenId, userId)
-      await sessionStorage.setItem('firstname', this.props.loginResponse.userDetails.firstname);
+      await sessionStorage.setItem('firstname', this.props.loginResponse.userDetails.firstname)
     }
   };
 

@@ -9,12 +9,6 @@ class Menu extends Component {
   state = {
     activePage: "home",
     isLoggenIn: true,
-    username: "Thandizo Msefula"
-  }
-
-  async componentDidMount() {
-    const username = await sessionStorage.getItem('firstname');
-    this.setState({ username });
   }
 
   logout = async (e) => {
@@ -35,18 +29,22 @@ class Menu extends Component {
     </li>
   )
 
-  renderLogout = () => (
-    <Dropdown style={{ marginTop: 65 }} trigger={
-      <li>
-        <a className="flex">
-          <Icon className="mr-2">account_circle</Icon>
-          {this.state.username}
-        </a>
-      </li>
-    }>
-      <NavItem onClick={this.logout}>Logout</NavItem>
-    </Dropdown>
-  )
+  renderLogout = () => {
+    const username = sessionStorage.getItem('firstname')
+    console.log(username)
+    return (
+      <Dropdown style={{ marginTop: 65 }} trigger={
+        <li>
+          <a className="flex">
+            <Icon className="mr-2">account_circle</Icon>
+            {username}
+          </a>
+        </li>
+      }>
+        <NavItem onClick={this.logout}>Logout</NavItem>
+      </Dropdown>
+    )
+  }
 
   isAdminUser = () => sessionStorage.getItem("token")
 
