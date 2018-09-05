@@ -13,6 +13,9 @@ import { renderOptions } from './helpers';
 import { Utility, FacilityResource, Facility, UtilityType, FacilityUtility }
   from '../../types/model-types';
 
+import { CardTitle, Table, Icon } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
+
 type Props = {
   response: any,
   utilityTypes: Array<UtilityType>,
@@ -74,7 +77,20 @@ class UtilitiesForm extends React.Component<Props> {
   }
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    if (this._validate(values)) {
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button className="btn-flat" onClick={async () => {
+                      if (this._validate(values)) {
       const id = await this._getFacilityId();
       const date = new Date()
       const data = values.utilities.map(util => {
@@ -97,6 +113,17 @@ class UtilitiesForm extends React.Component<Props> {
       if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true });
     } else {
       setSubmitting(false);
+    }
+                      onClose()
+                    }}>Yes</Button>
+                  ]
+                }>
+                Are you sure you want to save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
     }
   }
 
