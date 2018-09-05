@@ -8,6 +8,8 @@ import { Formik } from 'formik';
 import { postFormData } from '../../actions';
 import { Redirect } from 'react-router-dom';
 import yup from 'yup';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
   response: any,
@@ -84,20 +86,44 @@ class FacilityContactForm extends React.Component<Props> {
   })
 
   _handleChange = async (values, { setSubmitting, setErros }) => {
-    const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
-    const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button className="btn-flat" onClick={async () => {
+                      const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
+                      const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
 
-    await this.props.postFormData(
-      { data: { ...values, client: 1 }, id: facilityId },
-      "Facilities",
-      "POST",
-      "POST_FACILITY_CONTACT_DETAILS",
-      endpoiint,
-      ""
-    );
-    setSubmitting(false);
-    if (this.props.response.response && this.props.fromAdd) this.props.onNext();
-    if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
+                      await this.props.postFormData(
+                        { data: { ...values, client: 1 }, id: facilityId },
+                        "Facilities",
+                        "POST",
+                        "POST_FACILITY_CONTACT_DETAILS",
+                        endpoiint,
+                        ""
+                      );
+                      setSubmitting(false);
+                      if (this.props.response.response && this.props.fromAdd) this.props.onNext();
+                      if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
+                      onClose()
+                    }}>Yes</Button>
+                  ]
+                }>
+                Are you sure you want to save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
+    }
   }
 
   render() {

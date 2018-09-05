@@ -10,6 +10,8 @@ import yup from 'yup';
 import { renderOptions } from './helpers';
 import { Redirect } from 'react-router-dom';
 import { Resource, ResourceType, FacilityResource, Facility } from '../../types/model-types';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
   response: any,
@@ -67,27 +69,51 @@ class ResourcesForm extends React.Component<Props, {}> {
   //TODO: Add Loading states!
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    const id = await this._getFacilityId();
-    const date = new Date();
-    const data = this.props.resources.map(resource => {
-      return {
-        facility_id: id,
-        client_id: 1,
-        resource_id: resource.id,
-        quantity: Number(values[`resource_${resource.id}`]),
-        description: "",
-        created_date: date
-      }
-    })
-    await this.props.postFormData(
-      data,
-      "FacilityResources",
-      "POST",
-      "POST_FACILITY_RESOURCES",
-    );
-    setSubmitting(false);
-    if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
-    if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true })
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button className="btn-flat" onClick={async () => {
+                      const id = await this._getFacilityId();
+                      const date = new Date();
+                      const data = this.props.resources.map(resource => {
+                        return {
+                          facility_id: id,
+                          client_id: 1,
+                          resource_id: resource.id,
+                          quantity: Number(values[`resource_${resource.id}`]),
+                          description: "",
+                          created_date: date
+                        }
+                      })
+                      await this.props.postFormData(
+                        data,
+                        "FacilityResources",
+                        "POST",
+                        "POST_FACILITY_RESOURCES",
+                      );
+                      setSubmitting(false);
+                      if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
+                      if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true })
+                      onClose()
+                    }}>Yes</Button>
+                  ]
+                }>
+                Are you sure you want to save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
+    }
   }
 
   _filteredResources = (typeId) => {
