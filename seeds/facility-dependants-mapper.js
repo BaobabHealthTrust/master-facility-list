@@ -75,6 +75,5 @@ module.exports = async () => {
     await Address.create(addresses);
     await Location.create(locations);
     await Geolocation.create(geoLocations);
-
     return;
 }
