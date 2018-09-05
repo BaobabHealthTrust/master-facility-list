@@ -2,7 +2,13 @@
 const dependentModelFactory = require('./seeds/dependent-model-factory');
 const independentModelFactory = require('./seeds/independent-model-factory');
 const facilitySeeder = require('./seeds/facility-seeder');
+const userSeeder = require("./seeds/seed-user");
+const facilityDependantsMapper = require('./seeds/facility-dependants-mapper');
+const serviceModelSeeder = require('./seeds/service-model-seeder');
+const facilityResourcesUtilitiesServicesMapper = require('./seeds/facility-resources-utilities-services-mapper');
 const server = require("./server/server");
+const data = require('./seeds/data');
+const faker = require('faker');
 const dataSource = server.dataSources.db;
 const fs = require('fs');
 const csvtojson = require('csvtojson');
@@ -10,140 +16,127 @@ const _ = require('lodash');
 const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
 
-const getEntryId = async (model, key, value) => {
-    let id;
-    model.forEach(m => {
-        if(m[key] == value){
-            id = m['id'];
-        }
-    })
-    return id;
+const getEntityId = async (entities, key, value) => {
+    if(key && value){
+        entities.forEach(entity => {
+            if (entity[key] == value) {
+                return entity['id'];
+            }
+        })
+    }
+    const ids = entities.map(entity => entity['id']);
+    return faker.random.arrayElement(ids);
 }
 
 const formatFacility = async (facility, requiredModels) => {
-    const facilityTypeId = await getEntryId(requiredModels.facilityTypes, 'facility_type', facility['Facility Type']);
-    const facilityOwner = await getEntryId(requiredModels.owners, 'facility_owner', facility['Controlling Agency']);
-    const facilityOperationalStatus = await getEntryId(requiredModels.operationalStatuses, 'facility_operational_status', facility['Status']);
-    const facilityRegulatoryStatus = await getEntryId(requiredModels.regulatoryStatuses, 'facility_regulatory_status', facility['Regulatory Status']);
+    const facilityTypeId = await getEntityId(requiredModels.facilityTypes, 'facility_type', facility['Facility Type']);
+    const facilityOwnerId = await getEntityId(requiredModels.owners, 'facility_owner', facility['Facility Ownership']);
+    const districtId = await getEntityId(requiredModels.districts, 'district_name', facility['District']);
+    const regulatoryStatusId = await getEntityId(requiredModels.regulatoryStatuses, null, null);
+    const operationalStatusId = await getEntityId(requiredModels.operationalStatuses, null, null);
     return {
-        facility_name: facility['Facility Name'],
+        facility_name: facility['Facility Name'] ? facility['Facility Name'] : faker.name.findName(),
         facility_type_id: facilityTypeId,
-        facility_owner_id: facilityOwner,
-        facility_operational_status_id: facilityOperationalStatus,
-        facility_regulatory_status_id: facilityRegulatoryStatus,
-        client_id: 1,
-        district_id: 1,
+        facility_owner_id: facilityOwnerId,
+        common_name: faker.company.companyName(),
+        facility_code: facility['Facility Code'] ? facility['Facility Code'] : faker.random.number({min: 1000, max: 10000}),
+        client_id: faker.random.arrayElement(requiredModels.clientIds),
+        facility_operational_status_id: operationalStatusId,
+        facility_regulatory_status_id: regulatoryStatusId,
+        district_id: districtId,
+        date_opened: moment().format('YYYY-MM-DD'),
         published_date: moment().format('YYYY-MM-DD')
     }
 }
 
-const districtZoneMapping = async (facilites) => {
-    const districtZoneOriginal = facilites.map(facility => ({
-        zone: facility['Region'],
-        district: facility['District']
-    }))
-    // const 
-    return districtZoneOriginal;
+const populateIndependentModels = async(facilities) => {
+    const facilityTypes = _.uniq(facilities.map(facility => facility['Facility Type'])).map(facilityType => ({
+        facility_type: facilityType ? facilityType : faker.lorem.word()
+    }));
+    const owners = _.uniq(facilities.map(facility => facility['Facility Ownership'])).map(owner => ({
+        facility_owner: owner ? owner : faker.company.companyName()
+    }));
+
+    const districts = _.uniq(facilities.map(facility => facility['District'])).map(district => ({
+        district_name: district ? district : faker.address.state(),
+        zone_id: 1
+    }));
+
+    await independentModelFactory(server.models.FacilityType, facilityTypes);
+    await independentModelFactory(server.models.Owner, owners);
+    await independentModelFactory(server.models.District, districts);
+    await independentModelFactory(server.models.RegulatoryStatus, data.regulatoryStatuses);
+    await independentModelFactory(server.models.OperationalStatus, data.operationalStatuses);
+    await independentModelFactory(server.models.ResourceType, data.resourceTypes);
+    await independentModelFactory(server.models.UtilityType, data.utilityTypes);
+    await independentModelFactory(server.models.ServiceType, data.serviceTypes);   
 }
 
 const populate = async () => {
     try {
-        const facilityData = await fs.readFileSync('health-facilities.csv', 'utf8');
-
-        const facilities = _.uniqBy(
-            await csvtojson().fromString(facilityData), 
-            'Facility Name'
-        ).filter(facility => facility['Facility Type'] != 'Village Clinic');
-
-        const facilityTypes = _.uniq(facilities.map(facility => facility['Facility Type'])).map(facilityType => ({
-            facility_type: facilityType
-        }));
-        console.log(facilities.length);
-        const zones = _.uniq(facilities.map(facility => facility['Region'])).map(zone => ({
-            zone_name: zone
-        }));
-        const owners = _.uniq(facilities.map(facility => facility['Controlling Agency'])).map(owner => ({
-            facility_owner: owner
-        }));
-        const operationalStatuses = _.uniq(facilities.map(facility => facility['Status'])).map(operationalStatus => ({
-            facility_operational_status: operationalStatus
-        }));
-
-        const regulatoryStatuses = _.uniq(facilities.map(facility => facility['Regulatory Status'])).map(regulatoryStatus => ({
-            facility_regulatory_status: regulatoryStatus
-        }));
-
-        const facilitiesNameWithGeocodes = facilities.map(facility => ({
-            facilityName: facility['Facility Name'],
-            latitude: facility['Northings'],
-            longitude: facility['Eastings']
-        }));
-
-        const facilitesNameWithContacts = facilities.map(facility => ({
-            facilityName: facility['Facility Name'],
-            name: facility['Name'],
-            phone: facility['Phone'],
-            email: facility['Email'] == 'N/A' ? null : facility['Email']
-        }));
-        await independentModelFactory(server.models.FacilityType, facilityTypes);
-        await independentModelFactory(server.models.Zone, zones);
-        await independentModelFactory(server.models.Owner, owners);
-        await independentModelFactory(server.models.OperationalStatus, operationalStatuses);
-        await independentModelFactory(server.models.RegulatoryStatus, regulatoryStatuses);
 
         loadingSpinner.start(100, {
             clearChar: true
         });
 
-        const ft = await server.models.FacilityType.find();
-        const on = await server.models.Owner.find();
-        const op = await server.models.OperationalStatus.find();
-        const rg = await server.models.RegulatoryStatus.find();
+        const facilityData = await fs.readFileSync('health-facilities.csv', 'utf8');
+
+        const facilities = _.uniqBy(
+            await csvtojson().fromString(facilityData), 
+            'Facility Name'
+        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
+
+        const facilitiesNameWithGeocodes = facilities.map(facility => ({
+            facilityName: facility['Facility Name'],
+            latitude: facility['latitude'] ? facility['latitude'] : faker.address.longitude(),
+            longitude: facility['longitude'] ? facility['longitude'] : faker.address.latitude()
+        }));
+
+        await populateIndependentModels(facilities);
+        await userSeeder(data.users);
 
         const requiredModels = {
-            facilityTypes: ft,
-            owners: on,
-            operationalStatuses: op,
-            regulatoryStatuses: rg
+            facilityTypes: await server.models.FacilityType.find(),
+            owners: await server.models.Owner.find(),
+            districts: await server.models.District.find(),
+            operationalStatuses: await server.models.OperationalStatus.find(),
+            regulatoryStatuses: await server.models.RegulatoryStatus.find(),
+            clientIds: (await server.models.Client.find()).map(client => client['id'])
         };
 
         await server.models.Facility.deleteAll();
         const formattedFacilities = facilities.map(async (facility) => await formatFacility(facility, requiredModels));
+        console.log('Populating facilities');
         const savedFacilities = await server.models.Facility.create((await Promise.all(formattedFacilities)));
-
+        console.log('Facilities populated');
+        console.log('Populating facility dependants');
+        await facilityDependantsMapper();
         // map facilites and geolocation data
+        console.log('Populating facility geodata');
         const facilityGeocodeData = []
         await facilitiesNameWithGeocodes.forEach(facilityWithGeocodes => {
             savedFacilities.forEach(facility => {
                 if (facilityWithGeocodes['facilityName'] == facility['facility_name']){
+                    const {latitude, longitude} = facilityWithGeocodes;
                     facilityGeocodeData.push({
                         facility_id: facility.id,
-                        latitude: facilityWithGeocodes.latitude,
-                        longitude: facilityWithGeocodes.longitude
+                        latitude,
+                        longitude
                     })
                 }
             })
         });
         await independentModelFactory(server.models.Geolocation, facilityGeocodeData);
-
-        //map facilities and contact data
-        const facilityContactData = []
-        await facilitesNameWithContacts.forEach(facilityNameWithContact => {
-          savedFacilities.forEach(facility => {
-            if (facilityNameWithContact['facilityName'] == facility['facility_name'] && facilityNameWithContact['Name']) {
-              facilityContactData.push({
-                facility_id: facility.id,
-                contact_person_fullname: facilityNameWithContact.name,
-                contact_person_phone: facilityNameWithContact.phone,
-                contact_person_email: facilityNameWithContact.email
-              })
-            }
-          })
-        });
-        console.log(facilityContactData);
-        await independentModelFactory(server.models.ContactPeople, facilityContactData);
-        loadingSpinner.stop();
+        await console.log('Facility geodata loaded');
+        await console.log('Loading services, utilities and resources');
+        await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
+        await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
+        await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
+        await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
+        await facilityResourcesUtilitiesServicesMapper();
+        await console.log('Done populating the MFHR')
         await dataSource.disconnect();
+        loadingSpinner.stop();
     } catch (error) {
         console.log(error);
     }

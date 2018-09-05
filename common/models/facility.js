@@ -543,7 +543,6 @@ module.exports = (Facility) => {
 
   Facility.fhirAllLocations = async (cb) => {
     const facilities = await server.models.Facility.find();
-    console.log(facilities);
     const fhirCompliantFacilities = facilities.map(async (facility) => {
       const {contactPerson, geolocation, address, operationalStatus} = await facilityData(facility);
       return {
@@ -556,11 +555,11 @@ module.exports = (Facility) => {
         ],
         status: 'active',
         operationalStatus: {
-          display: operationalStatus.facility_operational_status,
+          display: operationalStatus ? operationalStatus.facility_operational_status : '',
           user_selected: true
         },
         name: facility.facility_name,
-        alias: facility.common_name,
+        alias: facility.common_name ? facility.common_name : '',
         mode: 'instance',
         telecom: [
           {
@@ -573,8 +572,8 @@ module.exports = (Facility) => {
           }
         ],
         position: {
-          latitude: geolocation.latitude,
-          longitude: geolocation.longitude,
+          latitude: geolocation.latitude ? geolocation.latitude : '',
+          longitude: geolocation.longitude ? geolocation.longitude : '',
         },
         address: {
           use: 'work',
