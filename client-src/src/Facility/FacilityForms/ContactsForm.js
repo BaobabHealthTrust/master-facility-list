@@ -69,6 +69,7 @@ class FacilityContactForm extends React.Component<Props> {
     contactPhoneNumber: yup.string()
       .min(8, this.PHONE_MIN_MESSAGE)
       .max(10, this.PHONE_MIN_MESSAGE)
+      .matches(/^[0]{1}?[1,8,9]{1}?[0-9]{6,8}$/im, 'Wrong number format')
       .required(this.REQUIRED_MESSAGE),
     catchmentArea: yup.string()
       .min(3, "Catchment Area is Too Short")
