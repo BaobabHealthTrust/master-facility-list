@@ -65,9 +65,9 @@ class Menu extends Component {
 
   // TODO: Menu Active States should read from url
   render() {
-    return (
+    if (!this.state.isLoggenIn) return <Redirect to="/" />
+    else return (
       <div>
-        {!this.state.isLoggenIn && <Redirect to="/" />}
         <ul id="nav-mobile" className="right mfl-pr-10 hide-on-med-and-down">
           {this.renderMenu()}
         </ul>
