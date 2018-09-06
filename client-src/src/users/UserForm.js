@@ -24,9 +24,14 @@ class UserForm extends React.Component {
     lastname: yup.string().min(6).required("last name is required"),
     username: yup.string().min(8).required("username is required"),
     email: yup.string().email("enter a valid email address").required("email is required"),
-    password: yup.string().min(5, "atleast 5 characters long").required("password is required"),
+
+    password: yup.string()
+      .min(8, "atleast 8 characters long")
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, 'Enter a strong password')
+      .required("password is required"),
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null])
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, 'Enter a strong password')
       .required('Password confirm is required')
   })
 
@@ -38,8 +43,8 @@ class UserForm extends React.Component {
       "POST_USER",
       "createAdmin",
     );
-    this.props.userCreated ? 
-      this.props.onUserCreationSuccess() : 
+    this.props.userCreated ?
+      this.props.onUserCreationSuccess() :
       this.props.onUserCreationError();
   }
 
@@ -65,8 +70,8 @@ class UserForm extends React.Component {
               actions={
                 <div class="">
                   <Button modal="close" flat waves="light">cancel</Button>
-                  <Button 
-                    waves="light" 
+                  <Button
+                    waves="light"
                     className="blue darken-2"
                     onClick={handleSubmit}>
                      Save User
@@ -136,8 +141,8 @@ class UserForm extends React.Component {
                   value={values.password}
                   onChange={handleChange}
                   error={errors.password}
-                  onBlur={handleBlur} 
-                  error={touched.password && errors.password} 
+                  onBlur={handleBlur}
+                  error={touched.password && errors.password}
                   name="password"
                   type="password"
                 />
