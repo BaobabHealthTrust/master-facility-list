@@ -38,7 +38,7 @@ module.exports = function(Client) {
 
       const Options = {
         min: 8,
-        max: 30,
+        max: 32,
         lowerCase: 1,
         upperCase: 1,
         numeric: 1,
@@ -48,18 +48,26 @@ module.exports = function(Client) {
 
       const {error} = Joi.validate(data.password, new PasswordComplexity(Options))
 
-      const client = await server.models.Client.create(data);
-      const role = (await server.models.Role.find({
-        where: {
-          name: 'admin'
-        }
-      }))[0];
-      const roleMap = {
-        principalType: server.models.RoleMapping.USER,
-        principalId: client.id
-      };
-      const map = await role.principals.create(roleMap);
-      return map;
+      if (error) {
+        const err = new Error();
+        err.name = error.name;
+        err.status = 400;
+        err.message = error.details[0].message;
+        cb(error);
+      }
+
+      // const client = await server.models.Client.create(data);
+      // const role = (await server.models.Role.find({
+      //   where: {
+      //     name: 'admin'
+      //   }
+      // }))[0];
+      // const roleMap = {
+      //   principalType: server.models.RoleMapping.USER,
+      //   principalId: client.id
+      // };
+      // const map = await role.principals.create(roleMap);
+      return data;//map;
     }
 
     Client.remoteMethod('createAdmin', {
