@@ -1,19 +1,32 @@
+//@flow
 import React from 'react';
 import { Card, Icon } from 'react-materialize';
+import { ribbon, patient, hospital, bloodTest, pregnant } from '../../../images';
+import styles from 'styled-components';
+
+const DashboardIconContainer = styles.div`
+  border-bottom: 1px solid #666;
+  margin-top: -10px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`
+const DashboardIconTitle = styles.p`font-size: 1.5em;`
+const DashboardIconCount = styles.p`font-size: 2.5em; font-weight: bold;`;
+const DashboardIconImg = styles.img`width: 70%;`
 
 export default (props) => {
-    return (
-        <Card>
-            <h1 style=
-                {{ borderBottom: '1px solid black', paddingBottom: '10px', marginBottom: '10px'}}
-                >
-                <Icon>{props.icon}</Icon>
-                <span style={{float: 'right'}}>{props.count}</span>
-            </h1>
-            <p 
-            style={{marginTop: 0, fontSize: '120%'}}>
-                {props.title}
-            </p>
-        </Card>
-    );
+  const iconMapper = {
+    pregnant, hospital, bloodTest, ribbon, patient
+  }
+  return (
+    <Card>
+      <DashboardIconContainer>
+        <DashboardIconImg src={iconMapper[props.icon]} />
+      </DashboardIconContainer>
+      <DashboardIconCount>{props.count}</DashboardIconCount>
+      <DashboardIconTitle>{props.title}</DashboardIconTitle>
+    </Card>
+  );
 }
