@@ -17,6 +17,7 @@ type Props = {
 };
 
 class MflLogin extends Component<State, Props> {
+
   state = {
     username: "",
     password: ""
@@ -37,7 +38,13 @@ class MflLogin extends Component<State, Props> {
       await sessionStorage.setItem('token', tokenId)
       await sessionStorage.setItem('firstname', this.props.loginResponse.userDetails.firstname)
     }
-  };
+
+  }
+
+  handlePasswordInput = e => {
+    if (e.which === 13) this.attemptLogin();
+    this.setState({ password: e.currentTarget.value })
+  }
 
   render() {
     if (sessionStorage.getItem('token')) { return <Redirect to='/' />; }
@@ -67,7 +74,7 @@ class MflLogin extends Component<State, Props> {
               <i className="material-icons">lock</i>
             </div>
             <input
-              onKeyUp={e => this.setState({ password: e.currentTarget.value })}
+              onKeyUp={this.handlePasswordInput}
               type="password"
               className="mfl-login-input"
               placeholder="Password"

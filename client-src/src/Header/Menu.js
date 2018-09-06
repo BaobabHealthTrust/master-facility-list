@@ -14,10 +14,14 @@ class Menu extends Component {
   logout = async (e) => {
     e.preventDefault()
     await sessionStorage.removeItem('token');
-    this.setState({ isLoggenIn: false })
+    window.location.assign('/');
   }
 
-  setClassName = (page: string) => this.state.activePage == page ? "active" : ""
+  setClassName = (page: string) => {
+    const windowLocation = window.location.href.split('/')[3]
+    const url = windowLocation || 'home'
+    return (this.state.activePage == page || url == page) ? "active" : ""
+  }
 
   navigateTo = (activePage: string) => this.setState({ activePage })
 
@@ -65,8 +69,7 @@ class Menu extends Component {
 
   // TODO: Menu Active States should read from url
   render() {
-    if (!this.state.isLoggenIn) return <Redirect to="/" />
-    else return (
+    return (
       <div>
         <ul id="nav-mobile" className="right mfl-pr-10 hide-on-med-and-down">
           {this.renderMenu()}

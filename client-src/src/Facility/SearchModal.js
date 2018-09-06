@@ -33,6 +33,26 @@ import DistrictTags from "./AdvancedSearch/DistrictTags";
 import ResourceTags from "./AdvancedSearch/ResourceTags";
 import UtilityTags from "./AdvancedSearch/UtilityTags";
 import ServiceTags from "./AdvancedSearch/ServiceTags";
+import styled from "styled-components";
+
+
+const DisplayButton = styled.div.attrs({ className: "btn" })`
+  width: 20%;
+`
+const CloseButton = styled.div.attrs({ className: "mfl-modal-close right cursor-pointer" })``
+const SearchResultsPanel = styled.div.attrs({
+  className: "mfl-search-feedback flex justify-between align-center w-full"
+}
+)``
+const ModalHeader = styled.div.attrs({ className: "mfl-bm-2 flex justify-between w-full" })``
+const ModalFooter = styled.div.attrs({ className: "modal-footer" })``
+const TagContainer = styled.div.attrs({ className: "advanced-search-tag-container" })``
+const ModalContent = styled.div.attrs({ className: "modal-content" })``
+const ModalContainer = styled.div.attrs({
+  className: "container mt-8",
+  id: "advanced-search",
+  ref: "advancedSearch"
+})``
 
 class SearchModal extends React.Component<{}> {
   state = {
@@ -72,231 +92,122 @@ class SearchModal extends React.Component<{}> {
     await this.setState({ redirect: true });
   }
 
+  getResultCount = results => results ? results.length : ""
+
+  renderDisplayButton = () => (
+    <DisplayButton onClick={this.getSearchResults}>
+      Get Search Results
+    </DisplayButton>
+  )
+
+  renderAdvancedLocation = () => (
+    <AdvancedLocation
+      districts={this.props.districts}
+      handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderAdvancedOwnershipRegulation = () => (
+    <AdvancedOwnershipRegulation
+      operationalStatuses={this.props.operationalStatuses}
+      facilityTypes={this.props.facilityTypes}
+      facilityOwners={this.props.facilityOwners}
+      regulatoryStatuses={this.props.regulatoryStatuses}
+      handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderAdvancedFacilityTypes = () => (
+    <AdvancedFacilityType
+      facilityTypes={this.props.facilityTypes}
+      handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderAdvancedResourceTypes = () => (
+    <AdvancedResourceType
+      resourceTypes={this.props.resourceTypes}
+      handleChange={e => this.handleSearchTypeResourceInstances(e)}
+      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderAdvancedUtilityTypes = () => (
+    <AdvancedUtilityType
+      utilityTypes={this.props.utilityTypes}
+      handleChange={e => this.handleSearchTypeUtilityInstances(e)}
+      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderAdvancedServices = () => (
+    <AdvancedServiceType
+      serviceTypes={this.props.serviceTypes}
+      handleChange={e => this.handleSearchTypeServiceInstances(e)}
+      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+    />
+  )
+
+  renderTab = (title: string, component: Function) => (
+    <Tab
+      title={title}
+      className="advanced-search-container"
+      active
+    >
+      {this.state.activeTab === title && component()}
+    </Tab>
+  )
+
+  renderTags = (TagComponent) => (
+    <TagComponent
+      getObjectFromIds={(ids, entities) => this.getObjectFromIds(ids, entities)}
+    />
+  )
+
   render() {
-    return <div className="container"><h6>Under Construction</h6></div>
+    return (
+      <ModalContainer>
+        {this.state.redirect && <Redirect to="/facilities" />}
+        <ModalContent>
+          <ModalHeader>
+            <div className="mfl-modal-header">Advanced Search</div>
+            <CloseButton onClick={() => this.setState({ redirect: true })}>
+              <i class="material-icons">close</i>
+            </CloseButton>
+          </ModalHeader>
+          <SearchResultsPanel>
+            <div>
+              <strong>{this.getResultCount(this.props.results)}</strong> Facilities Match Your Criteria
+            </div>
+            {this.getResultCount(this.props.results) != "" && this.renderDisplayButton()}
+          </SearchResultsPanel>
+          <Tabs
+            className="tab-demo z-depth-1 blue text-white"
+            onChange={(t, v) => this.setState({ activeTab: v.target.text })}
+          >
+            {this.renderTab("Location", this.renderAdvancedLocation)}
+            {this.renderTab("Ownership & Regulation", this.renderAdvancedOwnershipRegulation)}
+            {this.renderTab("Facility Type", this.renderAdvancedFacilityTypes)}
+            {this.renderTab("Resources", this.renderAdvancedResourceTypes)}
+            {this.renderTab("Utilities", this.renderAdvancedUtilityTypes)}
+            {this.renderTab("Services", this.renderAdvancedServices)}
+          </Tabs>
+        </ModalContent>
+        <ModalFooter>
+          <TagContainer>
+            {this.renderTags(DistrictTags)}
+            {this.renderTags(OperationalStatusTags)}
+            {this.renderTags(FacilityTypeTags)}
+            {this.renderTags(FacilityOwnerTags)}
+            {this.renderTags(RegulatoryStatusTags)}
+            {this.renderTags(ResourceTags)}
+            {this.renderTags(UtilityTags)}
+            {this.renderTags(ServiceTags)}
+          </TagContainer>
+        </ModalFooter>
+      </ModalContainer>
+    )
   }
-  // render() {
-  //   return (
-  //     <div
-  //       id="advanced-search"
-  //       ref="advancedSearch"
-  //       className="container mt-8"
-  //     >
-  //       {this.state.redirect && <Redirect to="/facilities" />}
-  //       <div class="modal-content">
-  //         <div className="mfl-bm-2">
-  //           <span className="mfl-modal-header">Advanced Search</span>
-  //           <span className="mfl-modal-close right cursor-pointer">
-  //             <a onClick={() => this.setState({ redirect: true })}>
-  //               <i class="material-icons">close</i>
-  //             </a>
-  //           </span>
-  //         </div>
-  //         <div className="mfl-search-feedback">
-  //           <span>
-  //             <strong>
-  //               {Array.isArray(this.props.results)
-  //                 ? this.props.results.length
-  //                 : ""}
-  //             </strong>{" "}
-  //             Facilities Match Your Criteria
-  //                       </span>
-  //           {Array.isArray(this.props.results) ? (
-  //             <span className="right">
-  //               <a
-  //                 className="btn mfl-get-results-btn"
-  //                 onClick={this.getSearchResults}
-  //               >
-  //                 Get Search Results
-  //                               </a>
-  //             </span>
-  //           ) : (
-  //               ""
-  //             )}
-  //         </div>
-
-  //         <Tabs
-  //           className="tab-demo z-depth-1 blue text-white"
-  //           onChange={(t, v) =>
-  //             this.setState({ activeTab: v.target.text })
-  //           }
-  //         >
-  //           <Tab
-  //             title="Location"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab === "Location" ? (
-  //               <AdvancedLocation
-  //                 districts={this.props.districts}
-  //                 handleChange={(e, type) =>
-  //                   this.handleAddSearchValue(e, type)
-  //                 }
-  //               />
-  //             ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-  //           <Tab
-  //             title="Ownership and Regulation"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab ===
-  //               "Ownership and Regulation" ? (
-  //                 <AdvancedOwnershipRegulation
-  //                   operationalStatuses={
-  //                     this.props.operationalStatuses
-  //                   }
-  //                   facilityTypes={this.props.facilityTypes}
-  //                   facilityOwners={this.props.facilityOwners}
-  //                   regulatoryStatuses={
-  //                     this.props.regulatoryStatuses
-  //                   }
-  //                   handleChange={(e, type) =>
-  //                     this.handleAddSearchValue(e, type)
-  //                   }
-  //                 />
-  //               ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-
-  //           <Tab
-  //             title="Facility Type"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab === "Facility Type" ? (
-  //               <AdvancedFacilityType
-  //                 facilityTypes={this.props.facilityTypes}
-  //                 handleChange={(e, type) =>
-  //                   this.handleAddSearchValue(e, type)
-  //                 }
-  //               />
-  //             ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-
-  //           <Tab
-  //             title="Resources"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab === "Resources" ? (
-  //               <AdvancedResourceType
-  //                 resourceTypes={this.props.resourceTypes}
-  //                 handleChange={e =>
-  //                   this.handleSearchTypeResourceInstances(
-  //                     e
-  //                   )
-  //                 }
-  //                 handleChangeAddSearchValue={(e, type) =>
-  //                   this.handleAddSearchValue(e, type)
-  //                 }
-  //               />
-  //             ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-  //           <Tab
-  //             title="Utilities"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab === "Utilities" ? (
-  //               <AdvancedUtilityType
-  //                 utilityTypes={this.props.utilityTypes}
-  //                 handleChange={e =>
-  //                   this.handleSearchTypeUtilityInstances(e)
-  //                 }
-  //                 handleChangeAddSearchValue={(e, type) =>
-  //                   this.handleAddSearchValue(e, type)
-  //                 }
-  //               />
-  //             ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-  //           <Tab
-  //             title="Services"
-  //             className="advanced-search-container"
-  //             active
-  //           >
-  //             {this.state.activeTab === "Services" ? (
-  //               <AdvancedServiceType
-  //                 serviceTypes={this.props.serviceTypes}
-  //                 handleChange={e =>
-  //                   this.handleSearchTypeServiceInstances(e)
-  //                 }
-  //                 handleChangeAddSearchValue={(e, type) =>
-  //                   this.handleAddSearchValue(e, type)
-  //                 }
-  //               />
-  //             ) : (
-  //                 ""
-  //               )}
-  //           </Tab>
-  //         </Tabs>
-  //       </div>
-  //       <div class="modal-footer">
-  //         <div className="advanced-search-tag-container">
-  //           {/* DISPLAY TAGS FOR DISTRICT VALUES */}
-  //           <DistrictTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-
-  //           {/* DISPLAY TAGS FOR OPERATIOANAL STATUS VALUES */}
-  //           <OperationalStatusTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //           {/* DISPLAY TAGS FOR FACILITY TYPE VALUES */}
-  //           <FacilityTypeTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //           {/* DISPLAY TAGS FOR FACILITY OWNER VALUES */}
-  //           <FacilityOwnerTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //           {/* {DISPLAY TAGS FOR REGULATORY STATUS VALUES} */}
-  //           <RegulatoryStatusTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //           {/* {DISPLAY TAGS FOR RESOURCE TYPE INSTANCES VALUES} */}
-  //           <ResourceTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //           {/* {DISPLAY TAGS FOR UTILITY TYPE INSTANCES VALUES} */}
-  //           <UtilityTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-
-  //           {/* {DISPLAY TAGS FOR SERVICE TYPE INSTANCES VALUES} */}
-  //           <ServiceTags
-  //             getObjectFromIds={(ids, entities) =>
-  //               this.getObjectFromIds(ids, entities)
-  //             }
-  //           />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 }
 
 const mapStateToProps = state => {
