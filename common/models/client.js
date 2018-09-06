@@ -56,18 +56,18 @@ module.exports = function(Client) {
         cb(error);
       }
 
-      // const client = await server.models.Client.create(data);
-      // const role = (await server.models.Role.find({
-      //   where: {
-      //     name: 'admin'
-      //   }
-      // }))[0];
-      // const roleMap = {
-      //   principalType: server.models.RoleMapping.USER,
-      //   principalId: client.id
-      // };
-      // const map = await role.principals.create(roleMap);
-      return data;//map;
+      const client = await server.models.Client.create(data);
+      const role = (await server.models.Role.find({
+        where: {
+          name: 'admin'
+        }
+      }))[0];
+      const roleMap = {
+        principalType: server.models.RoleMapping.USER,
+        principalId: client.id
+      };
+      const map = await role.principals.create(roleMap);
+      return map;
     }
 
     Client.remoteMethod('createAdmin', {
