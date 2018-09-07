@@ -4,6 +4,12 @@ import SearchTag from "./SearchTag";
 import { fetchAdvancedSearchResults, fetchBasicDetailsResults, removeSearchValues } from "../../actions";
 
 class DistrictTags extends Component {
+
+  removeSearchValues = async (id, actionType) => {
+    await this.props.removeSearchValues(id, actionType);
+    await this.props.fetchBasicDetailsResults(this.props.searchValues);
+  }
+
   render() {
     return this.props.getObjectFromIds(
       this.props.searchValues.districtValues,
@@ -14,13 +20,8 @@ class DistrictTags extends Component {
           <SearchTag
             name={entity.district_name}
             id={entity.id}
-            actionType={"REMOVE_DISTRICT_VALUES"}
-            removeSearchValues={async (id, actionType) => {
-              await this.props.removeSearchValues(id, actionType);
-              await this.props.fetchBasicDetailsResults(
-                this.props.searchValues
-              );
-            }}
+            actionType="REMOVE_DISTRICT_VALUES"
+            removeSearchValues={this.removeSearchValues}
           />
         );
       });

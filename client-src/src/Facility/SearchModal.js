@@ -54,6 +54,10 @@ const ModalContainer = styled.div.attrs({
   ref: "advancedSearch"
 })``
 
+const searchActions = {
+  ADD_DISTRICT_VALUES: "ADD_DISTRICT_VALUES"
+}
+
 class SearchModal extends React.Component<{}> {
   state = {
     activeTab: "Location",
@@ -92,7 +96,7 @@ class SearchModal extends React.Component<{}> {
     await this.setState({ redirect: true });
   }
 
-  getResultCount = results => results ? results.length : ""
+  getResultCount = results => results ? results.length : 0
 
   renderDisplayButton = () => (
     <DisplayButton onClick={this.getSearchResults}>
@@ -104,6 +108,7 @@ class SearchModal extends React.Component<{}> {
     <AdvancedLocation
       districts={this.props.districts}
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
+      action={searchActions.ADD_DISTRICT_VALUES}
     />
   )
 
@@ -179,7 +184,7 @@ class SearchModal extends React.Component<{}> {
             <div>
               <strong>{this.getResultCount(this.props.results)}</strong> Facilities Match Your Criteria
             </div>
-            {this.getResultCount(this.props.results) != "" && this.renderDisplayButton()}
+            {this.getResultCount(this.props.results) > 0 && this.renderDisplayButton()}
           </SearchResultsPanel>
           <Tabs
             className="tab-demo z-depth-1 blue text-white"
