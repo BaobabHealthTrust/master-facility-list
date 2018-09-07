@@ -11,6 +11,7 @@
     "axios": "^0.16.0",
     "babel-polyfill": "^6.26.0",
     "chart.js": "^2.7.2",
+    "chartist-plugin-legend": "^0.6.2",
     "d3-shape": "^1.2.0",
     "email-validator": "^1.1.1",
     "formik": "^0.11.11",
@@ -28,6 +29,7 @@
     "react-scripts": "1.0.14",
     "react-svg": "^4.0.17",
     "recharts": "^1.0.0-beta.10",
+    "styled-components": "^3.4.5",
     "yup": "^0.24.1"
   },
   "scripts": {
