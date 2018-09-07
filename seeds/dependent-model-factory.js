@@ -6,7 +6,7 @@ const dataSource = server.dataSources.db;
 const _ = require('lodash');
 
 module.exports = async (ParentModel, ChildModel, dependantData) => {
-    const { foreignKey, referenceName, schema } = dependantData.schema;
+    const { foreignKey, referenceName, schema } = dependantData;
     await ChildModel.deleteAll();
     const ids = await ParentModel.find(
         {where: {referenceName: {inq: schema.map(parent => parent.reference)}}}

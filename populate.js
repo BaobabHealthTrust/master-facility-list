@@ -75,7 +75,7 @@ const populateIndependentModels = async(facilities) => {
 const populate = async () => {
     try {
 
-        loadingSpinner.start(100, {
+        await loadingSpinner.start(100, {
             clearChar: true
         });
 
@@ -88,7 +88,7 @@ const populate = async () => {
 
         const facilitiesNameWithGeocodes = facilities.map(facility => ({
             facilityName: facility['Facility Name'],
-            latitude: facility['latitude'] ? facility['latitude'] : faker.address.longitude(),
+            latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
             longitude: facility['longitude'] ? facility['longitude'] : faker.address.latitude()
         }));
 
@@ -106,13 +106,13 @@ const populate = async () => {
 
         await server.models.Facility.deleteAll();
         const formattedFacilities = facilities.map(async (facility) => await formatFacility(facility, requiredModels));
-        console.log('Populating facilities');
+        await console.log('Populating facilities');
         const savedFacilities = await server.models.Facility.create((await Promise.all(formattedFacilities)));
-        console.log('Facilities populated');
-        console.log('Populating facility dependants');
+        await console.log('Facilities populated');
+        await console.log('Populating facility dependants');
         await facilityDependantsMapper();
         // map facilites and geolocation data
-        console.log('Populating facility geodata');
+        await console.log('Populating facility geodata');
         const facilityGeocodeData = []
         await facilitiesNameWithGeocodes.forEach(facilityWithGeocodes => {
             savedFacilities.forEach(facility => {
@@ -136,7 +136,7 @@ const populate = async () => {
         await facilityResourcesUtilitiesServicesMapper();
         await console.log('Done populating the MFHR')
         await dataSource.disconnect();
-        loadingSpinner.stop();
+        await loadingSpinner.stop();
     } catch (error) {
         console.log(error);
     }
