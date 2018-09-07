@@ -16,6 +16,7 @@ import { Redirect } from 'react-router-dom';
 
 type Props = {
   dataSource: Facilities,
+  title: string,
   toggleAdvancedSearch: Function,
   toggleAddFacility: Function
 };
@@ -127,6 +128,7 @@ export default class FacilityList extends React.Component<Props> {
             pageSize={10}
             defaultSorting={defaultSorting}
             rowSelected={facility => this.redirect(facility.id)}
+            title={this.props.title}
           />
         </Card>
       </div>
