@@ -1,5 +1,13 @@
- "use strict";
-require('dotenv').config();
+"use strict";
+
+const path = require('path');
+const env = require('dotenv');
+
+const ENV_PATH = path.join(__dirname, '..', '/config/.env');
+const config = env.config({path: ENV_PATH});
+if (config.error) {
+  throw config.error;
+}
 
 let db_url = "mysql://";
 	db_url += process.env.MYSQL_USER;

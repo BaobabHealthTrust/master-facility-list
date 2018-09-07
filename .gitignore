@@ -13,7 +13,7 @@
 *.vscode/
 *.xml
 .cache
-.env
+config/.env
 .idea
 .prettierrc
 .project
@@ -21,3 +21,4 @@
 coverage
 node_modules/
 npm-debug.log
+client-src/src/settings.js

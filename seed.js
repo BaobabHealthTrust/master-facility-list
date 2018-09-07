@@ -25,22 +25,22 @@ const seed = async () => {
     // }
 
     await userSeeder(data.users);
-    // await independentModelFactory(server.models.Owner, data.owners);
-    // await independentModelFactory(server.models.FeedbackType, data.feedbackTypes);
-    // await independentModelFactory(server.models.FacilityType, data.facilityTypes);
-    // await independentModelFactory(server.models.RegulatoryStatus, data.regulatoryStatuses);
-    // await independentModelFactory(server.models.OperationalStatus, data.operationalStatuses);
-    // await independentModelFactory(server.models.Zone, data.zoneData);
-    // await independentModelFactory(server.models.ResourceType, data.resourceTypes);
-    // await independentModelFactory(server.models.UtilityType, data.utilityTypes);
-    // await independentModelFactory(server.models.ServiceType, data.serviceTypes);
-    // await dependentModelFactory(server.models.Zone, server.models.District, data.districts);
+    await independentModelFactory(server.models.Owner, data.owners);
+    await independentModelFactory(server.models.FeedbackType, data.feedbackTypes);
+    await independentModelFactory(server.models.FacilityType, data.facilityTypes);
+    await independentModelFactory(server.models.RegulatoryStatus, data.regulatoryStatuses);
+    await independentModelFactory(server.models.OperationalStatus, data.operationalStatuses);
+    await independentModelFactory(server.models.Zone, data.zoneData);
+    await independentModelFactory(server.models.ResourceType, data.resourceTypes);
+    await independentModelFactory(server.models.UtilityType, data.utilityTypes);
+    await independentModelFactory(server.models.ServiceType, data.serviceTypes);
+    await dependentModelFactory(server.models.Zone, server.models.District, data.districts);
 
-    // await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
-    // await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
-    // await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
-    // await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
-    // await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
+    await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
+    await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
+    await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
+    await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
+    await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
     // await facilitySeeder(facilityCount);
     // await facilityDependantsMapper();
     // await facilityResourcesUtilitiesServicesMapper();

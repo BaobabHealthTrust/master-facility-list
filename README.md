@@ -6,8 +6,8 @@ This project is the first deliverable under the [Kuunika Data For Action](http:/
 
 # Dependancies
 
-* NodeJS > v7.12
-* MySQL v5.5
+* [NodeJS > v8.11.3](https://nodejs.org/en/download/ "node")
+* [MySQL v5.5](https://dev.mysql.com/downloads/mysql/ "mysql")
 
 # Setup
 
@@ -64,20 +64,43 @@ If they are not passing, please check whether your environment has all the depen
 
 ## Step 4 database
 
-Create a schema in mysql database called `mflApi` <br />
-Modify the `.env` file and make sure it reflects your MySQL Database Settings. <br />
+Create a schema in mysql database called `mflApi`: <br />
 
-Change NODE environment. Set the environment to staging. This notifies loopback that you are in the staging environment. <br />
 ```sh
-# set node environment to staging
-export NODE_ENV=staging
+# connect to mysql database
+# replace 'user' with your mysql user name in the command bellow
+mysql -u user -p
+
+# enter the specified user password in the prompt
+
+# create the database
+mysql> CREATE DATABASE mflApi;
+
+
+# exist from mysql
+mysql> \q
 ```
 
+Create a `.env` file with the contents of your .env.example file.
 
-Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`,
+```sh
+# copy the .env.example to .env file
+cp .env.example .env
+```
+
+Modify the `.env` file and make sure it reflects your MySQL Database Settings. 
+Furthermore, set the port  and the host of the server in the same file `.env` <br />
+
+Change NODE environment in the `.env`. Set the environment to staging, testing or production.
+This notifies loopback the environment you are running. In the `.env` file, set `NODE_ENV=staging`
+
+Run the database migration by install a loopback-migration-tool, i.e `npm i -g loopback-migration-tool`
 followed by running the migration., i.e `lb-migration migrate`.
 
 ```sh
+# set node environment to staging
+export NODE_ENV=staging
+
 # install the migration tool
 sudo npm i -g loopback-migration-tool
 
