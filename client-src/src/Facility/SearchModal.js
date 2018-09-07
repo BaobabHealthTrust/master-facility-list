@@ -25,13 +25,6 @@ import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
-import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
-import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
-import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTags";
-import ResourceTags from "./AdvancedSearch/ResourceTags";
-import UtilityTags from "./AdvancedSearch/UtilityTags";
-import ServiceTags from "./AdvancedSearch/ServiceTags";
 import styled from "styled-components";
 
 
@@ -137,15 +130,16 @@ class SearchModal extends React.Component<{}> {
     this.props.fetchServiceTypeInstances(e.target.value);
   }
 
-  getSearchResults = async () => {
-    await this.props.fetchAdvancedSearchResults(this.props.results);
+  closeModal = async () => {
+    await this.props.removeResultsValues();
+    await this.props.removeSearchValues(0, "REMOVE_ALL_SEARCH_VALUES");
     await this.setState({ redirect: true });
   }
 
   getResultCount = results => results ? results.length : 0
 
   renderDisplayButton = () => (
-    <DisplayButton onClick={this.getSearchResults}>
+    <DisplayButton onClick={() => this.setState({ redirect: true })}>
       Get Search Results
     </DisplayButton>
   )
@@ -241,7 +235,7 @@ class SearchModal extends React.Component<{}> {
         <ModalContent>
           <ModalHeader>
             <div className="mfl-modal-header">Advanced Search</div>
-            <CloseButton onClick={() => this.setState({ redirect: true })}>
+            <CloseButton onClick={this.closeModal}>
               <i class="material-icons">close</i>
             </CloseButton>
           </ModalHeader>
@@ -258,9 +252,9 @@ class SearchModal extends React.Component<{}> {
             {this.renderTab("Location", this.renderAdvancedLocation)}
             {this.renderTab("Ownership & Regulation", this.renderAdvancedOwnershipRegulation)}
             {this.renderTab("Facility Type", this.renderAdvancedFacilityTypes)}
-            {this.renderTab("Resources", this.renderAdvancedResourceTypes)}
+            {/* {this.renderTab("Resources", this.renderAdvancedResourceTypes)}
             {this.renderTab("Utilities", this.renderAdvancedUtilityTypes)}
-            {this.renderTab("Services", this.renderAdvancedServices)}
+            {this.renderTab("Services", this.renderAdvancedServices)} */}
           </Tabs>
         </ModalContent>
         <ModalFooter>
