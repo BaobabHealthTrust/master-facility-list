@@ -29,7 +29,6 @@ import FacilityTypeTags from "./AdvancedSearch/FacilityTypeTags";
 import FacilityOwnerTags from "./AdvancedSearch/FacilityOwnerTags";
 import OperationalStatusTags from "./AdvancedSearch/OperationalStatusTags";
 import RegulatoryStatusTags from "./AdvancedSearch/RegulatoryStatusTags";
-import DistrictTags from "./AdvancedSearch/DistrictTags";
 import ResourceTags from "./AdvancedSearch/ResourceTags";
 import UtilityTags from "./AdvancedSearch/UtilityTags";
 import ServiceTags from "./AdvancedSearch/ServiceTags";
@@ -58,15 +57,62 @@ const searchActions = {
   ADD_DISTRICT_VALUES: "ADD_DISTRICT_VALUES"
 }
 
+const tagValueMapper = [
+  [
+    "districtValues",
+    "districts",
+    "district_name",
+    "REMOVE_DISTRICT_VALUES"
+  ],
+  [
+    "operationalStatusValues",
+    "operationalStatuses",
+    "facility_operational_status",
+    "REMOVE_OPERATIONAL_STATUS_VALUES"
+  ],
+  [
+    "facilityTypeValues",
+    "facilityTypes",
+    "facility_type",
+    "REMOVE_FACILITY_TYPE_VALUES"
+  ],
+  [
+    "facilityOwnerValues",
+    "facilityOwners",
+    "facility_owner",
+    "REMOVE_FACILITY_OWNER_VALUES"
+  ],
+  [
+    "regulatoryStatusValues",
+    "regulatoryStatuses",
+    "facility_regulatory_status",
+    "REMOVE_REGULATORY_STATUS_VALUES"
+  ],
+  [
+    "typeResourceInstanceValues",
+    "resources",
+    "resource_name",
+    "REMOVE_RESOURCE_TYPE_INSTANCES"
+  ],
+  [
+    "typeUtilityInstanceValues",
+    "utilities",
+    "utility_name",
+    "REMOVE_UTILITY_TYPE_INSTANCES"
+  ],
+  [
+    "typeServiceInstanceValues",
+    "services",
+    "service_name",
+    "REMOVE_SERVICE_TYPE_INSTANCES"
+  ]
+]
+
 class SearchModal extends React.Component<{}> {
   state = {
     activeTab: "Location",
     redirect: false
   };
-
-  getObjectFromIds(ids, entities) {
-    return entities.filter(entity => ids.includes(entity.id.toString()));
-  }
 
   handleAddSearchValue = async (e, type) => {
     await this.props.addSearchValues(e, type);
@@ -163,11 +209,30 @@ class SearchModal extends React.Component<{}> {
     </Tab>
   )
 
-  renderTags = (TagComponent) => (
-    <TagComponent
-      getObjectFromIds={(ids, entities) => this.getObjectFromIds(ids, entities)}
-    />
-  )
+  removeSearchValues = async (id, actionType) => {
+    await this.props.removeSearchValues(id, actionType);
+    await this.props.fetchBasicDetailsResults(this.props.searchValues);
+  }
+
+  renderTags = (valueEntity, entity, entityName, actionType) => {
+
+    const ids = this.props.searchValues[valueEntity]
+    const entities = this.props[entity]
+
+    const models = entities.filter(entity => ids.includes(entity.id.toString()));
+
+    return models.map(model => {
+      const modelName = model[entityName]
+      return (
+        <SearchTag
+          name={modelName}
+          id={model.id}
+          actionType={actionType}
+          removeSearchValues={this.removeSearchValues}
+        />
+      )
+    })
+  }
 
   render() {
     return (
@@ -200,14 +265,7 @@ class SearchModal extends React.Component<{}> {
         </ModalContent>
         <ModalFooter>
           <TagContainer>
-            {this.renderTags(DistrictTags)}
-            {this.renderTags(OperationalStatusTags)}
-            {this.renderTags(FacilityTypeTags)}
-            {this.renderTags(FacilityOwnerTags)}
-            {this.renderTags(RegulatoryStatusTags)}
-            {this.renderTags(ResourceTags)}
-            {this.renderTags(UtilityTags)}
-            {this.renderTags(ServiceTags)}
+            {tagValueMapper.map(tagValues => this.renderTags(...tagValues))}
           </TagContainer>
         </ModalFooter>
       </ModalContainer>
