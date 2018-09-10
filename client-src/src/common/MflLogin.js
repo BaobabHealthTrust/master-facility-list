@@ -18,48 +18,44 @@ type Props = {
 
 class MflLogin extends Component<State, Props> {
   state = {
-    username: null,
-    password: null
+    username: "",
+    password: ""
   };
 
   attemptLogin = async () => {
-    await this.props.checkCredentials(
-      this.state.username,
-      this.state.password
-    );
 
-    const isLoginSuccess = await !this.props.loginResponse.isLoginFailed;
+    const { username, password } = this.state
+    await this.props.checkCredentials(username, password)
+
+    const isLoginSuccess = await !this.props.loginResponse.isLoginFailed
+
+    const tokenId = this.props.loginResponse.loginResponse.id
+    const userId = this.props.loginResponse.loginResponse.userId
 
     if (isLoginSuccess) {
-      await sessionStorage.setItem('token', this.props.loginResponse.loginResponse.id);
-      await sessionStorage.setItem('id', this.props.loginResponse.loginResponse.userId);
-      await this.props.getUserDetails(
-        this.props.loginResponse.loginResponse.userId,
-        this.props.loginResponse.loginResponse.id
-      );
+      await sessionStorage.setItem('token', tokenId)
+      await this.props.getUserDetails(tokenId, userId)
+      await sessionStorage.setItem('firstname', this.props.loginResponse.userDetails.firstname);
     }
   };
 
   render() {
     if (sessionStorage.getItem('token')) { return <Redirect to='/' />; }
-
     return (
       <div className="container mfl-container">
         <div className="mfl-login-container blue darken-4">
           <h4 className="white-text">Login Here</h4>
           {
-            this.props.loginResponse.isLoginFailed && < h6 className = "text-red" > Wrong Login Credentials < /h6>}
+            this.props.loginResponse.isLoginFailed
+            && <h6 className="text-white">Wrong Login Credentials</h6>
+          }
           <div className="mfl-tm-5" />
           <div className="mfl-login-input-container">
             <div className="mfl-login-icon grey lighten-2 grey-text">
               <i className="material-icons">perm_identity</i>
             </div>
             <input
-              onKeyUp={e =>
-                this.setState({
-                  username: e.currentTarget.value
-                })
-              }
+              onKeyUp={e => this.setState({ username: e.currentTarget.value })}
               type="text"
               className="mfl-login-input"
               placeholder="Username"
@@ -71,33 +67,24 @@ class MflLogin extends Component<State, Props> {
               <i className="material-icons">lock</i>
             </div>
             <input
-              onKeyUp={e =>
-                this.setState({
-                  password: e.currentTarget.value
-                })
-              }
+              onKeyUp={e => this.setState({ password: e.currentTarget.value })}
               type="password"
               className="mfl-login-input"
               placeholder="Password"
             />
           </div>
           <div className="mfl-tm-5" />
-          <a
-            onClick={this.attemptLogin}
-            className="btn-large blue accent-1"
-          >Login</a>
+          <a onClick={this.attemptLogin} className="btn-large blue accent-1">
+            Login
+          </a>
         </div>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    loginResponse: state.authReducer
-  };
+  return { loginResponse: state.authReducer }
 };
 
-export default connect(mapStateToProps, { checkCredentials, getUserDetails })(
-  MflLogin
-);
+export default connect(mapStateToProps, { checkCredentials, getUserDetails })(MflLogin);
