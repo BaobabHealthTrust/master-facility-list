@@ -28,6 +28,54 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     ))
   }
 
+  onClick = async (onClose, values, setSubmitting, e) => {
+      let data = {
+        registration_number: values.registrationNumber,
+        facility_name: values.facilityName,
+        common_name: values.commonName,
+        facility_date_opened: values.dateOpened,
+        facility_type_id: values.facilityType,
+        facility_owner_id: values.facilityOwner,
+        facility_operational_status_id: values.operationalStatus,
+        facility_regulatory_status_id: values.regulatoryStatus,
+        district_id: values.district,
+        client_id: 1,
+      }
+
+      if (!this.props.fromAdd) {
+        data = {
+          ...data,
+          published_date: values.publishedDate
+        }
+      }
+
+      setSubmitting(true)
+      const id = this.props.fromAdd ? null : this.props.match.params.id
+      const method = this.props.fromAdd ? "POST" : "PUT"
+      await this.props.postFormData(
+        data,
+        "Facilities",
+        method,
+        "POST_FACILITY_BASIC_DETAILS",
+        "",
+        id
+      );
+      setSubmitting(false);
+
+      if (this.props.response.id && this.props.fromAdd) {
+        this.props.submitFacility(this.props.response)
+        this.props.onNext();
+      }
+
+      if (this.props.response.id && !this.props.fromAdd) {
+        this.setState({
+          cancelForm: true
+        })
+      }
+
+      onClose()
+    }
+
   initalValues = {
     facilityName: this.props.fromAdd ? "" : this.props.currentFacility.facility_name,
     commonName: this.props.fromAdd ? "" : this.props.currentFacility.common_name,
@@ -83,51 +131,12 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                 actions={
                   [
                     <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
-                    <Button className="btn-flat" onClick={async () => {
-                      let data = {
-                        registration_number: values.registrationNumber,
-                        facility_name: values.facilityName,
-                        common_name: values.commonName,
-                        facility_date_opened: values.dateOpened,
-                        facility_type_id: values.facilityType,
-                        facility_owner_id: values.facilityOwner,
-                        facility_operational_status_id: values.operationalStatus,
-                        facility_regulatory_status_id: values.regulatoryStatus,
-                        district_id: values.district,
-                        client_id: 1,
-                      }
-
-                      if (!this.props.fromAdd) {
-                        data = {
-                          ...data,
-                          published_date: values.publishedDate
-                        }
-                      }
-
-                      setSubmitting(true)
-                      const id = this.props.fromAdd ? null : this.props.match.params.id
-                      const method = this.props.fromAdd ? "POST" : "PUT"
-                      await this.props.postFormData(
-                        data,
-                        "Facilities",
-                        method,
-                        "POST_FACILITY_BASIC_DETAILS",
-                        "",
-                        id
-                      );
-                      setSubmitting(false);
-                      if (this.props.response.id && this.props.fromAdd) {
-                        this.props.submitFacility(this.props.response)
-                        this.props.onNext();
-                      }
-                      //TODO: Show success or error message for all forms
-                      if (this.props.response.id && !this.props.fromAdd) {
-                        this.setState({
-                          cancelForm: true
-                        })
-                      }
-                      onClose()
-                    }}>Yes</Button>
+                    <Button
+                      className="btn-flat"
+                      onClick={this.onClick.bind(this, onClose, values, setSubmitting)}
+                    >
+                    Yes
+                    </Button>
                   ]
                 }>
                 Are you sure you want save these changes?
