@@ -65,7 +65,11 @@ class FacilitiesHome extends React.Component<Props, State> {
           {
             this.props.isLoading
               ? <ProgressBar />
-              : <FacilityList dataSource={this.getDataSource()} title={this.getFacilityListTitle()} />
+              : <FacilityList
+                  dataSource={this.getDataSource()}
+                  title={this.getFacilityListTitle()}
+                  filter={this.props.filteredResults}
+                />
           }
         </div>
 

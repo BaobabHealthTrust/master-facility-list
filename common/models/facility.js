@@ -320,16 +320,19 @@ module.exports = (Facility) => {
    */
   Facility.downloadFacilities = async (json, cb) => {
     try {
-      const data = JSON.parse(json);
-      if (!data.hasOwnProperty('format') || !data.hasOwnProperty('format')) {
+      const { where, format } = JSON.parse(json);
+
+      if (!format) {
         const error = new Error("Invalid post format.");
         error.name = "ERROR";
         error.status = 400;
         cb(error);
       }
 
+      console.log("log: ", where);
+
       const facilities = await Facility.find({
-        where: data.where,
+        where,
         include: [
           "locations",
           "contactPeople",
@@ -347,7 +350,7 @@ module.exports = (Facility) => {
         }
 
         let contentType = null;
-        switch (data.format) {
+        switch (format) {
           case 'csv':
             contentType = "text/csv";
             break;
@@ -363,15 +366,15 @@ module.exports = (Facility) => {
         cb(null, stream, contentType);
       }
 
-      if (data.format == "pdf") {
+      if (format == "pdf") {
         generatePdfFile(facilities, callback);
       }
 
-      if (data.format == "excel") {
+      if (format == "excel") {
         generateExcelFile(facilities, callback);
       }
 
-      if (data.format == "csv") {
+      if (format == "csv") {
         generateCsvFile(facilities, callback);
       }
 
