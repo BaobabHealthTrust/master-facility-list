@@ -34,6 +34,20 @@ class FacilityDetails extends React.Component<Props> {
     redirect: false
   }
 
+  onClick = async (onClose, e) => {
+    await this.props.postFormData(
+      { archived_date: new Date() },
+      "Facilities",
+      "PATCH",
+      "PATCH_BASIC_DETAILS",
+      "",
+      this.props.match.params.id
+    )
+    if (this.props.response) this.setState({redirect: true})
+    else alert('Something went wrong')
+    onClose();
+  }
+
   _handleArchive = async () => {
     confirmAlert({
       customUI: ({ onClose }) => {
@@ -46,19 +60,7 @@ class FacilityDetails extends React.Component<Props> {
               actions={
                 [
                   <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
-                  <Button className="btn-flat" onClick={async () => {
-                    await this.props.postFormData(
-                      { archived_date: new Date() },
-                      "Facilities",
-                      "PATCH",
-                      "PATCH_BASIC_DETAILS",
-                      "",
-                      this.props.match.params.id
-                    )
-                    if (this.props.response) this.setState({ redirect: true })
-                    else alert('Something went wrong')
-                    onClose();
-                  }}>Yes</Button>
+                  <Button className="btn-flat" onClick={this.onClick.bind(this, onClose)}>Yes</Button>
                 ]
               }>
               Are you sure you want to delete this facility ?
