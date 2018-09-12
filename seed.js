@@ -16,7 +16,7 @@ const serviceModelSeeder = require('./seeds/service-model-seeder');
 const seed = async () => {
   try {
 
-    // const facilityCount = 0; process.argv[2];
+    const facilityCount = process.argv[2];
 
     // if (!facilityCount) {
     //   console.error(' Please specify the number of facilities to be generated');
