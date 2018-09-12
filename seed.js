@@ -19,10 +19,17 @@ const seed = async () => {
 
     const facilityCount = process.argv[2];
 
-    // if (!facilityCount) {
-    //   console.error(' Please specify the number of facilities to be generated');
-    //   process.exit(1);
-    // }
+    const NODE_ENV = process.env.NODE_ENV
+
+    if(!NODE_ENV) {
+      console.log('Please specify a node environmnet variable');
+      process.exit(1)
+    }
+
+    if (!facilityCount && NODE_ENV.toLowerCase() !== 'production') {
+      console.error(' Please specify the number of facilities to be generated');
+      process.exit(1);
+    }
 
     await userSeeder(data.users);
     await independentModelFactory(server.models.Owner, data.owners);
@@ -41,9 +48,13 @@ const seed = async () => {
     await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
     await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
     await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
-    // await facilitySeeder(facilityCount);
-    // await facilityDependantsMapper();
-    // await facilityResourcesUtilitiesServicesMapper();
+
+    if (NODE_ENV !== 'production'){
+      await facilitySeeder(facilityCount);
+      await facilityDependantsMapper();
+      await facilityResourcesUtilitiesServicesMapper();
+    }
+
     await dataSource.disconnect();
   } catch (error) {
     console.log(error);
