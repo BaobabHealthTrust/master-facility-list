@@ -10,6 +10,8 @@ import yup from 'yup';
 import { renderOptions } from './helpers';
 import { Redirect } from 'react-router-dom';
 import { Resource, ResourceType, FacilityResource, Facility } from '../../types/model-types';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
   response: any,
@@ -21,7 +23,8 @@ type Props = {
   currentResources: Array<FacilityResource>
 }
 
-class ResourcesForm extends React.Component<Props, {}> {
+class ResourcesForm extends React.Component<Props> {
+
   state = {
     cancelForm: false
   }
@@ -67,6 +70,40 @@ class ResourcesForm extends React.Component<Props, {}> {
   //TODO: Add Loading states!
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button
+                      className="btn-flat"
+                      onClick={this._onClickHandle.bind(this,onClose, values, setSubmitting)}
+                    >
+                      Yes
+                    </Button>
+                  ]
+                }>
+                Are you sure you want to save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
+    }
+  }
+
+  _filteredResources = (typeId) => {
+    return this.props.resources.filter(r => r.resource_type_id === typeId);
+  }
+
+  _onClickHandle = async (onClose, values, setSubmitting, e) => {
     const id = await this._getFacilityId();
     const date = new Date();
     const data = this.props.resources.map(resource => {
@@ -88,35 +125,34 @@ class ResourcesForm extends React.Component<Props, {}> {
     setSubmitting(false);
     if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
     if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true })
-  }
-
-  _filteredResources = (typeId) => {
-    return this.props.resources.filter(r => r.resource_type_id === typeId);
+    onClose()
   }
 
   render() {
     return (
       <div className="container">
-        <div className="mfl-tm-2" />
-        <Formik
-          validate={this.validate}
-          initialValues={this._getInitialValues()}
-          onSubmit={this._handleSubmit}
-          render={({
-            values,
-            errors,
-            touched,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-          }) => (
+        {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
+        {
+          (this.state.cancelForm && !this.props.fromAdd) &&
+          <Redirect to={`/facilities/${this.props.match.params.id}/resources`} />
+        }
+
+        <div className="mfl-tm-2">
+          <Formik
+            validate={this.validate}
+            initialValues={this._getInitialValues()}
+            onSubmit={this._handleSubmit}
+            render={({
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+            }) => (
               <div>
-                {(this.state.cancelForm && this.props.fromAdd) && <Redirect to='/facilities' />}
-                {
-                  (this.state.cancelForm && !this.props.fromAdd) &&
-                  <Redirect to={`/facilities/${this.props.match.params.id}/resources`} />
-                }
+
                 <Row>
                   {
                     this.props.resourceTypes.map(type => {
@@ -139,15 +175,20 @@ class ResourcesForm extends React.Component<Props, {}> {
                     })
                   }
                 </Row>
+
                 <FormWizardNavigation
                   saveButton={this.props.fromAdd ? 'Next' : 'Save'}
                   handleSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
                   handleCancel={() => this.setState({ cancelForm: true })}
                 />
+
               </div>
             )}
+
         />
+        </div>
+
       </div>
     )
   }
