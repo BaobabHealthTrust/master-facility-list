@@ -77,54 +77,7 @@ class UtilitiesForm extends React.Component<Props> {
   }
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    if(!this.props.fromAdd){
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <Col m={6} s={12} style={{ minWidth: '400px' }}>
-              <Card
-                title='Confirm'
-                className='blu darken-4'
-                textClassName='white-tex'
-                actions={
-                  [
-                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
-                    <Button className="btn-flat" onClick={async () => {
-                      if (this._validate(values)) {
-      const id = await this._getFacilityId();
-      const date = new Date()
-      const data = values.utilities.map(util => {
-        return {
-          facility_id: id,
-          utility_id: util,
-          client_id: 1,
-          created_date: date
-        }
-      })
-      await this.props.postFormData(
-        data,
-        "FacilityUtilities",
-        "POST",
-        "POST_FACILITY_UTILITIES",
-      );
-      setSubmitting(false);
-      await console.log(this.props.response);
-      if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
-      if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true });
-    } else {
-      setSubmitting(false);
-    }
-                      onClose()
-                    }}>Yes</Button>
-                  ]
-                }>
-                Are you sure you want to save these changes?
-              </Card>
-            </Col>
-          )
-        }
-      })
-    }
+    alert('yes')
   }
 
   _handleChange = (id) => {
