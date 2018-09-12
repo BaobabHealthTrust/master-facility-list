@@ -8,6 +8,8 @@ import { Formik } from 'formik';
 import { postFormData } from '../../actions';
 import { Redirect } from 'react-router-dom';
 import yup from 'yup';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
   response: any,
@@ -62,16 +64,17 @@ class FacilityContactForm extends React.Component<Props> {
       .required(this.REQUIRED_MESSAGE),
     physicalAddress: yup
       .string()
-      .min(5, "Physical address is Too short")
+      .min(3, "Physical address is Too short")
       .required(this.REQUIRED_MESSAGE),
-    contactName: yup.string().min(5, "Contact Name is Too short").required(this.REQUIRED_MESSAGE),
+    contactName: yup.string().min(3, "Contact Name is Too short").required(this.REQUIRED_MESSAGE),
     contactEmail: yup.string().email("Invalid Email Format").required(this.REQUIRED_MESSAGE),
     contactPhoneNumber: yup.string()
-      .min(7, this.PHONE_MIN_MESSAGE)
+      .min(8, this.PHONE_MIN_MESSAGE)
       .max(10, this.PHONE_MIN_MESSAGE)
+      .matches(/^[0]{1}?[1,2,8,9]{1}?[0-9]{6,8}$/im, 'Wrong number format')
       .required(this.REQUIRED_MESSAGE),
     catchmentArea: yup.string()
-      .min(7, "Catchment Area is Too Short")
+      .min(3, "Catchment Area is Too Short")
       .required(this.REQUIRED_MESSAGE),
     catchmentPopulation: yup.number(this.INVALID_NM_MESSAGE)
       .positive()
@@ -83,7 +86,7 @@ class FacilityContactForm extends React.Component<Props> {
     latitude: yup.number(this.INVALID_NUM_MESSAGE).negative().required(this.REQUIRED_MESSAGE)
   })
 
-  _handleChange = async (values, { setSubmitting, setErros }) => {
+  _onClick = async (onClose, values, setSubmitting, setErros, e) => {
     const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
     const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
 
@@ -95,9 +98,40 @@ class FacilityContactForm extends React.Component<Props> {
       endpoiint,
       ""
     );
+
     setSubmitting(false);
     if (this.props.response.response && this.props.fromAdd) this.props.onNext();
     if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
+    onClose()
+  }
+
+  _handleChange = async (values, { setSubmitting, setErros }) => {
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button className="btn-flat"
+                      onClick={this._onClick.bind(this, onClose, values, setSubmitting, setErros)}
+                    >
+                      Yes
+                    </Button>
+                  ]
+                }>
+                Are you sure you want to save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
+    }
   }
 
   render() {

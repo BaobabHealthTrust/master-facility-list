@@ -778,7 +778,7 @@ select.mfl-select {
 }
 
 svg #districts path:hover{
-  fill: #0D47A1;
+  fill: rgb(60, 116, 199);
 }
 
 #svg{

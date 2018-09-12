@@ -7,6 +7,9 @@ import { BasicDetailsFormProps } from '../../types/helper-types';
 import { Formik } from 'formik';
 import { postFormData, fetchCurrentDetails } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
+
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
 
@@ -24,6 +27,54 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
       </option>
     ))
   }
+
+  onClick = async (onClose, values, setSubmitting, e) => {
+      let data = {
+        registration_number: values.registrationNumber,
+        facility_name: values.facilityName,
+        common_name: values.commonName,
+        facility_date_opened: values.dateOpened,
+        facility_type_id: values.facilityType,
+        facility_owner_id: values.facilityOwner,
+        facility_operational_status_id: values.operationalStatus,
+        facility_regulatory_status_id: values.regulatoryStatus,
+        district_id: values.district,
+        client_id: 1,
+      }
+
+      if (!this.props.fromAdd) {
+        data = {
+          ...data,
+          published_date: values.publishedDate
+        }
+      }
+
+      setSubmitting(true)
+      const id = this.props.fromAdd ? null : this.props.match.params.id
+      const method = this.props.fromAdd ? "POST" : "PUT"
+      await this.props.postFormData(
+        data,
+        "Facilities",
+        method,
+        "POST_FACILITY_BASIC_DETAILS",
+        "",
+        id
+      );
+      setSubmitting(false);
+
+      if (this.props.response.id && this.props.fromAdd) {
+        this.props.submitFacility(this.props.response)
+        this.props.onNext();
+      }
+
+      if (this.props.response.id && !this.props.fromAdd) {
+        this.setState({
+          cancelForm: true
+        })
+      }
+
+      onClose()
+    }
 
   initalValues = {
     facilityName: this.props.fromAdd ? "" : this.props.currentFacility.facility_name,
@@ -57,8 +108,8 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   // TODO: Update this validation to YUP
   validate = values => {
     let errors = {};
-    if (values.facilityName.length < 5) errors.facilityName = "Invalid Facility Name"
-    if (values.commonName.length < 5) errors.commonName = "Invalid Common Name"
+    if (values.facilityName.length < 3) errors.facilityName = "Invalid Facility Name"
+    if (values.commonName.length < 3) errors.commonName = "Invalid Common Name"
     if (!/^\d+$/i.test(values.registrationNumber))
       errors.registrationNumber = "Invalid Registration Number Format"
     if (values.registrationNumber.length < 8)
@@ -68,45 +119,32 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   }
 
   handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    let data = {
-      registration_number: values.registrationNumber,
-      facility_name: values.facilityName,
-      common_name: values.commonName,
-      facility_date_opened: values.dateOpened,
-      facility_type_id: values.facilityType,
-      facility_owner_id: values.facilityOwner,
-      facility_operational_status_id: values.operationalStatus,
-      facility_regulatory_status_id: values.regulatoryStatus,
-      district_id: values.district,
-      client_id: 1,
-    }
-
-    if (!this.props.fromAdd) {
-      data = {
-        ...data,
-        published_date: values.publishedDate
-      }
-    }
-
-    setSubmitting(true)
-    const id = this.props.fromAdd ? null : this.props.match.params.id
-    const method = this.props.fromAdd ? "POST" : "PUT"
-    await this.props.postFormData(
-      data,
-      "Facilities",
-      method,
-      "POST_FACILITY_BASIC_DETAILS",
-      "",
-      id
-    );
-    setSubmitting(false);
-    if (this.props.response.id && this.props.fromAdd) {
-      this.props.submitFacility(this.props.response)
-      this.props.onNext();
-    }
-    //TODO: Show success or error message for all forms
-    if (this.props.response.id && !this.props.fromAdd) {
-      this.setState({ cancelForm: true })
+    if(!this.props.fromAdd){
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <Col m={6} s={12} style={{ minWidth: '400px' }}>
+              <Card
+                title='Confirm'
+                className='blu darken-4'
+                textClassName='white-tex'
+                actions={
+                  [
+                    <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
+                    <Button
+                      className="btn-flat"
+                      onClick={this.onClick.bind(this, onClose, values, setSubmitting)}
+                    >
+                    Yes
+                    </Button>
+                  ]
+                }>
+                Are you sure you want save these changes?
+              </Card>
+            </Col>
+          )
+        }
+      })
     }
   }
 
