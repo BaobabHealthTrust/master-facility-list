@@ -3,12 +3,21 @@
     "base": "PersistedModel",
     "idInjection": true,
     "options": {
-        "validateUpsert": true
+        "validateUpsert": true,
+        "strictObjectIDCoercion": true
     },
     "properties": {
         "facility_code": {
             "type": "string",
             "required": false
+        },
+        "facility_code_dhis2": {
+          "type": "string",
+          "required": false
+        },
+        "facility_code_openlmis": {
+          "type": "string",
+          "required": false
         },
         "registration_number": {
             "type": "number",
