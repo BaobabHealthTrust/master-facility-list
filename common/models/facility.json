@@ -3,7 +3,8 @@
     "base": "PersistedModel",
     "idInjection": true,
     "options": {
-        "validateUpsert": true
+        "validateUpsert": true,
+        "strictObjectIDCoercion": true
     },
     "properties": {
         "facility_code": {
