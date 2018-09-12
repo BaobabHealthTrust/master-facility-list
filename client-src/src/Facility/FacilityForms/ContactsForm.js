@@ -64,16 +64,17 @@ class FacilityContactForm extends React.Component<Props> {
       .required(this.REQUIRED_MESSAGE),
     physicalAddress: yup
       .string()
-      .min(5, "Physical address is Too short")
+      .min(3, "Physical address is Too short")
       .required(this.REQUIRED_MESSAGE),
-    contactName: yup.string().min(5, "Contact Name is Too short").required(this.REQUIRED_MESSAGE),
+    contactName: yup.string().min(3, "Contact Name is Too short").required(this.REQUIRED_MESSAGE),
     contactEmail: yup.string().email("Invalid Email Format").required(this.REQUIRED_MESSAGE),
     contactPhoneNumber: yup.string()
-      .min(7, this.PHONE_MIN_MESSAGE)
+      .min(8, this.PHONE_MIN_MESSAGE)
       .max(10, this.PHONE_MIN_MESSAGE)
+      .matches(/^[0]{1}?[1,2,8,9]{1}?[0-9]{6,8}$/im, 'Wrong number format')
       .required(this.REQUIRED_MESSAGE),
     catchmentArea: yup.string()
-      .min(7, "Catchment Area is Too Short")
+      .min(3, "Catchment Area is Too Short")
       .required(this.REQUIRED_MESSAGE),
     catchmentPopulation: yup.number(this.INVALID_NM_MESSAGE)
       .positive()

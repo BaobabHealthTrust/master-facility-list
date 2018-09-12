@@ -108,8 +108,8 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   // TODO: Update this validation to YUP
   validate = values => {
     let errors = {};
-    if (values.facilityName.length < 5) errors.facilityName = "Invalid Facility Name"
-    if (values.commonName.length < 5) errors.commonName = "Invalid Common Name"
+    if (values.facilityName.length < 3) errors.facilityName = "Invalid Facility Name"
+    if (values.commonName.length < 3) errors.commonName = "Invalid Common Name"
     if (!/^\d+$/i.test(values.registrationNumber))
       errors.registrationNumber = "Invalid Registration Number Format"
     if (values.registrationNumber.length < 8)
