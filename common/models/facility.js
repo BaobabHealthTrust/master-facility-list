@@ -563,7 +563,6 @@ module.exports = (Facility) => {
         endpoint: `/api/Facilities/fhir/location/${facility.id}`
       }
     });
-    // await Promise.all(fhirCompliantFacilities)
     return {
       name: 'MHFR',
       locations: await Promise.all(fhirCompliantFacilities)
