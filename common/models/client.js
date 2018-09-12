@@ -1,4 +1,6 @@
 const server = require("../../server/server");
+const Joi = require('joi');
+const PasswordComplexity = require('joi-password-complexity');
 
 "use strict";
 
@@ -33,14 +35,39 @@ module.exports = function(Client) {
     // TODO: remote hook to only get null users
 
     Client.createAdmin = async (data, cb) => {
-        const client = await server.models.Client.create(data);
-        const role = (await server.models.Role.find({where: {name: 'admin'}}))[0];
-        const roleMap = {
-            principalType: server.models.RoleMapping.USER,
-            principalId: client.id
-        };
-        const map = await role.principals.create(roleMap);
-        return map;
+
+      const Options = {
+        min: 8,
+        max: 32,
+        lowerCase: 1,
+        upperCase: 1,
+        numeric: 1,
+        symbol: 1,
+        requirementCount: 2,
+      }
+
+      const {error} = Joi.validate(data.password, new PasswordComplexity(Options))
+
+      if (error) {
+        const err = new Error();
+        err.name = error.name;
+        err.status = 400;
+        err.message = error.details[0].message;
+        cb(error);
+      }
+
+      const client = await server.models.Client.create(data);
+      const role = (await server.models.Role.find({
+        where: {
+          name: 'admin'
+        }
+      }))[0];
+      const roleMap = {
+        principalType: server.models.RoleMapping.USER,
+        principalId: client.id
+      };
+      const map = await role.principals.create(roleMap);
+      return map;
     }
 
     Client.remoteMethod('createAdmin', {

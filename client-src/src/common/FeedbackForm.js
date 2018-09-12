@@ -25,11 +25,10 @@ class FeedbackForm extends React.Component{
     }
 
     schema = yup.object().shape({
-        name: yup.string(),
-        message: yup.string().required('this is required'),
-        email: yup.string().email().required("email address is required"),
+        name: yup.min(3).string(),
+        message: yup.string().min(3).required('this is required'),
+        email: yup.string().min(3).email().required("email address is required"),
         feedbackType: yup.number().required()
-
     })
 
     showToastMessage = message => {
@@ -43,13 +42,13 @@ class FeedbackForm extends React.Component{
     _handleChange = async (values, { setSubmitting, setErros, resetForm }) => {
         setSubmitting(true)
         await this.props.postFormData(
-            { data: 
-                {   ...values, 
-                    type_id: values.feedbackType 
+            { data:
+                {   ...values,
+                    type_id: values.feedbackType
                 }
-            }, 
-            'Feedbacks', 
-            'POST', 
+            },
+            'Feedbacks',
+            'POST',
             'POST_FEEDBACK',
             'feedback'
         );
@@ -79,7 +78,7 @@ class FeedbackForm extends React.Component{
                             <Card className="mfl-tm-2">
                                 <h5>Feedback Form</h5>
                                 <Row>
-                                    <Input 
+                                    <Input
                                         s={6}
                                         placeholder="Enter name"
                                         labelClassName="mfl-max-width"
@@ -117,8 +116,8 @@ class FeedbackForm extends React.Component{
                                             </option>
                                         ))}
                                     </Input>
-                                   
-                                    <Input 
+
+                                    <Input
                                         s={12}
                                         placeholder="Message"
                                         labelClassName="mfl-max-width"
@@ -140,7 +139,7 @@ class FeedbackForm extends React.Component{
                             </Card>
                         )}
                 />
-                
+
             </React.Fragment>
         );
     }
