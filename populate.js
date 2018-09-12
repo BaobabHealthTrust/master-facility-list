@@ -39,7 +39,6 @@ const formatFacility = async (facility, requiredModels) => {
         facility_type_id: facilityTypeId,
         facility_owner_id: facilityOwnerId,
         common_name: faker.company.companyName(),
-        facility_code: facility['Facility Code'] ? facility['Facility Code'] : faker.random.number({min: 1000, max: 10000}),
         client_id: faker.random.arrayElement(requiredModels.clientIds),
         facility_operational_status_id: operationalStatusId,
         facility_regulatory_status_id: regulatoryStatusId,
@@ -84,7 +83,7 @@ const populate = async () => {
         const uniqueFacilities = _.uniqBy(
             await csvtojson().fromString(facilityData), 
             'Facility Name'
-        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
+        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic')).slice(0,10);
 
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],

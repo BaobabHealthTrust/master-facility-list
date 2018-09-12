@@ -7,6 +7,8 @@ const generateExcelFile = require("../../download_modules/excel-formatter");
 const generateFile = require("../../download_modules/pdf-one-facility-formatter");
 const _ = require("lodash");
 const moment = require("moment");
+const fhirCompliantFacility = require('./fhir-compliant-facility');
+const fhirCompliantFacilities = require('./fhir-compliant-facilities');
 
 const {
   District
@@ -501,72 +503,9 @@ module.exports = (Facility) => {
   });
 
   // FHIR Compliant endpoints
-
-  const facilityData = async (facility) => {
-    const contactPerson = await server.models.ContactPeople.findOne({ where: { facility_id: facility.id } });
-    const geolocation = await server.models.Geolocation.findOne({ where: { facility_id: facility.id } });
-    const address = await server.models.Address.findOne({ where: { facility_id: facility.id } });
-    const operationalStatus = await server.models.OperationalStatus.findOne({ where: { id: facility.facility_operational_status_id } });
-
-    const data = {
-      contactPerson,
-      geolocation,
-      address,
-      operationalStatus
-    }
-    return data;
-  }
-
+  
   Facility.fhirAllLocations = async (cb) => {
-    const facilities = await server.models.Facility.find();
-    const fhirCompliantFacilities = facilities.map(async (facility) => {
-      const {contactPerson, geolocation, address, operationalStatus} = await facilityData(facility);
-      return {
-        resourceType: 'Location',
-        id: facility.id,
-        identifier: [
-          {
-            value: facility.facility_code
-          }
-        ],
-        status: 'active',
-        operationalStatus: {
-          display: operationalStatus ? operationalStatus.facility_operational_status : '',
-          user_selected: true
-        },
-        name: facility.facility_name,
-        alias: facility.common_name ? facility.common_name : '',
-        mode: 'instance',
-        telecom: [
-          {
-            "system": "phone",
-            "value": contactPerson ? contactPerson.contact_person_phone : ''
-          },
-          {
-            "system": "email",
-            "value": contactPerson ? contactPerson.contact_person_email : ''
-          }
-        ],
-        position: {
-          latitude: geolocation.latitude ? geolocation.latitude : '',
-          longitude: geolocation.longitude ? geolocation.longitude : '',
-        },
-        address: {
-          use: 'work',
-          type: 'both',
-          line: [
-            address ? address.physical_address : '', 
-            address ? address.postal_address : '', 
-            address ? address.village : ''
-          ]
-        },
-        endpoint: `/api/Facilities/fhir/location/${facility.id}`
-      }
-    });
-    return {
-      name: 'MHFR',
-      locations: await Promise.all(fhirCompliantFacilities)
-    }
+    return fhirCompliantFacilities();
   };
 
   Facility.remoteMethod('fhirAllLocations', {
@@ -582,49 +521,7 @@ module.exports = (Facility) => {
   });
 
   Facility.fhirLocation = async (id, cb) => {
-    const facility = await server.models.Facility.findOne({where: {id}});
-    const { contactPerson, geolocation, address, operationalStatus } = await facilityData(facility);
-    return {
-      resourceType: 'Location',
-      id: facility.id,
-      identifier: [
-        {
-          value: facility.facility_code
-        }
-      ],
-      status: 'active',
-      operationalStatus: {
-        display: operationalStatus.facility_operational_status,
-        user_selected: true
-      },
-      name: facility.facility_name,
-      alias: facility.common_name,
-      mode: 'instance',
-      telecom: [
-        {
-          "system": "phone",
-          "value": contactPerson.contact_person_phone
-        },
-        {
-          "system": "email",
-          "value": contactPerson.contact_person_email
-        }
-      ],
-      position: {
-        latitude: geolocation.latitude,
-        longitude: geolocation.longitude,
-      },
-      address: {
-        use: 'work',
-        type: 'both',
-        line: [
-          address.physical_address,
-          address.postal_address,
-          address.village
-        ]
-      },
-      endpoint: `/api/Facilities/fhir/location/${facility.id}`
-    }
+    return fhirCompliantFacility(id);
   };
 
   Facility.remoteMethod('fhirLocation', {
