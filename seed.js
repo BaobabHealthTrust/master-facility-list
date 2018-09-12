@@ -13,6 +13,7 @@ const userSeeder = require("./seeds/seed-user");
 const serviceModelSeeder = require('./seeds/service-model-seeder');
 
 
+
 const seed = async () => {
   try {
 
