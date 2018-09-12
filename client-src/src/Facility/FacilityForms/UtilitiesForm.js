@@ -13,6 +13,9 @@ import { renderOptions } from './helpers';
 import { Utility, FacilityResource, Facility, UtilityType, FacilityUtility }
   from '../../types/model-types';
 
+import { CardTitle, Table, Icon } from 'react-materialize';
+import { confirmAlert } from 'react-confirm-alert';
+
 type Props = {
   response: any,
   utilityTypes: Array<UtilityType>,
@@ -74,30 +77,7 @@ class UtilitiesForm extends React.Component<Props> {
   }
 
   _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    if (this._validate(values)) {
-      const id = await this._getFacilityId();
-      const date = new Date()
-      const data = values.utilities.map(util => {
-        return {
-          facility_id: id,
-          utility_id: util,
-          client_id: 1,
-          created_date: date
-        }
-      })
-      await this.props.postFormData(
-        data,
-        "FacilityUtilities",
-        "POST",
-        "POST_FACILITY_UTILITIES",
-      );
-      setSubmitting(false);
-      await console.log(this.props.response);
-      if (this.props.response.length > 0 && this.props.fromAdd) this.props.onNext();
-      if (this.props.response.length > 0 && !this.props.fromAdd) this.setState({ cancelForm: true });
-    } else {
-      setSubmitting(false);
-    }
+    alert('yes')
   }
 
   _handleChange = (id) => {
