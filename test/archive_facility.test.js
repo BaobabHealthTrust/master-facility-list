@@ -14,7 +14,7 @@ const data = require("./data");
 const helper = require('./helper');
 const facility = data.facility;
 
-describe("Archive Client Test", function() {
+describe("Archive Facility Test", function() {
 
     before(async () => {
         await helper.createAdmin(data.user);
