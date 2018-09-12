@@ -81,18 +81,18 @@ const populate = async () => {
 
         const facilityData = await fs.readFileSync('health-facilities.csv', 'utf8');
 
-        const facilities = _.uniqBy(
+        const uniqueFacilities = _.uniqBy(
             await csvtojson().fromString(facilityData), 
             'Facility Name'
-        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic')).slice(0,10);
+        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
 
-        const facilitiesNameWithGeocodes = facilities.map(facility => ({
+        const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
             latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
             longitude: facility['longitude'] ? facility['longitude'] : faker.address.latitude()
         }));
 
-        await populateIndependentModels(facilities);
+        await populateIndependentModels(uniqueFacilities);
         await userSeeder(data.users);
 
         const requiredModels = {
@@ -105,7 +105,7 @@ const populate = async () => {
         };
 
         await server.models.Facility.deleteAll();
-        const formattedFacilities = facilities.map(async (facility) => await formatFacility(facility, requiredModels));
+        const formattedFacilities = uniqueFacilities.map(async (facility) => await formatFacility(facility, requiredModels));
         await console.log('Populating facilities');
         const savedFacilities = await server.models.Facility.create((await Promise.all(formattedFacilities)));
         await console.log('Facilities populated');
@@ -113,19 +113,19 @@ const populate = async () => {
         await facilityDependantsMapper();
         // map facilites and geolocation data
         await console.log('Populating facility geodata');
-        const facilityGeocodeData = []
-        await facilitiesNameWithGeocodes.forEach(facilityWithGeocodes => {
-            savedFacilities.forEach(facility => {
-                if (facilityWithGeocodes['facilityName'] == facility['facility_name']){
-                    const {latitude, longitude} = facilityWithGeocodes;
-                    facilityGeocodeData.push({
+        const facilityGeocodeDataRaw = await facilitiesNameWithGeocodes.map(facilityWithGeocodes => {
+            return savedFacilities.map(facility => {
+                if (facilityWithGeocodes['facilityName'] == facility['facility_name']) {
+                    const { latitude, longitude } = facilityWithGeocodes;
+                    return {
                         facility_id: facility.id,
                         latitude,
                         longitude
-                    })
+                    }
                 }
             })
         });
+        const facilityGeocodeData = _.flatten(facilityGeocodeDataRaw).filter(fgd => fgd);
         await independentModelFactory(server.models.Geolocation, facilityGeocodeData);
         await console.log('Facility geodata loaded');
         await console.log('Loading services, utilities and resources');
