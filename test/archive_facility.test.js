@@ -54,7 +54,7 @@ describe("Archive Client Test", function() {
     helper.create(data.facility, Facility);
     const callback = function(error, facility) {
       if (error) done(error);
-      if (facility) {
+      if (facility.length) {
         const url = `/api/Facilities/${facility[0].id}`;
         const date = {
           archived_date: "2017-10-25T13:27:53.703Z"
@@ -63,7 +63,7 @@ describe("Archive Client Test", function() {
           res.body.error.message.should.equal('Authorization Required');
           done();
         });
-      }
+      } else done()
     };
 
     Facility.find({

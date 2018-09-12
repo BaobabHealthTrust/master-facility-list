@@ -1,12 +1,13 @@
 "use strict";
 
-
 const server = require("../server/server");
 const dataSource = server.dataSources.db;
 const _ = require('lodash');
 
 module.exports = async (ParentModel, ChildModel, dependantData) => {
-    const { foreignKey, referenceName, schema } = dependantData.schema;
+    const foreignKey = dependantData.foreignKey;
+    const referenceName = dependantData.referenceName;
+    const schema = dependantData.schema;
     await ChildModel.deleteAll();
     const ids = await ParentModel.find(
         {where: {referenceName: {inq: schema.map(parent => parent.reference)}}}
