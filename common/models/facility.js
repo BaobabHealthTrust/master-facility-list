@@ -7,6 +7,8 @@ const generateExcelFile = require("../../download_modules/excel-formatter");
 const generateFile = require("../../download_modules/pdf-one-facility-formatter");
 const _ = require("lodash");
 const moment = require("moment");
+const fhirCompliantFacility = require('./fhir-compliant-facility');
+const fhirCompliantFacilities = require('./fhir-compliant-facilities');
 
 const {
   District
@@ -502,6 +504,43 @@ module.exports = (Facility) => {
     returns: [
       { arg: 'response', type: 'array' }
     ]
+  });
+
+  // FHIR Compliant endpoints
+  
+  Facility.fhirAllLocations = async (cb) => {
+    return fhirCompliantFacilities();
+  };
+
+  Facility.remoteMethod('fhirAllLocations', {
+    description: "retrieves facilities in an FHIR compliant mannet",
+    http: {
+      path: '/fhir/location/_history',
+      verb: 'get'
+    },
+    returns: [{
+      arg: 'response',
+      type: 'object'
+    }]
+  });
+
+  Facility.fhirLocation = async (id, cb) => {
+    return fhirCompliantFacility(id);
+  };
+
+  Facility.remoteMethod('fhirLocation', {
+    description: "retrieves facilities in an FHIR compliant mannet",
+    http: {
+      path: '/fhir/location/:id',
+      verb: 'get'
+    },
+    accepts: [
+      { arg: 'id', type: 'number' }
+    ],
+    returns: [{
+      arg: 'response',
+      type: 'object'
+    }]
   });
 
   Facility.totalFacilities = async (districts, cb) => {
