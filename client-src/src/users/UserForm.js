@@ -19,6 +19,8 @@ class UserForm extends React.Component {
     email: this.getUser() ? this.getUser().email : "",
   }
 
+  passwordValidationMessage = 'Weak password, The password must be a combination of numbers, letters, and special characters'
+
   schema = yup.object().shape({
     firstname: yup.string().min(6).required("First name is required"),
     lastname: yup.string().min(6).required("last name is required"),
@@ -27,11 +29,11 @@ class UserForm extends React.Component {
 
     password: yup.string()
       .min(8, "atleast 8 characters long")
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, 'Enter a strong password')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, this.passwordValidationMessage)
       .required("password is required"),
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null])
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, 'Enter a strong password')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, this.passwordValidationMessage)
       .required('Password confirm is required')
   })
 
