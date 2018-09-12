@@ -27,6 +27,10 @@ const getDistrictsIDs = async (data=null) => {
 
 module.exports = (Facility) => {
 
+  Facility.validatesUniquenessOf('facility_code');
+  Facility.validatesUniquenessOf('facility_code_dhis2');
+  Facility.validatesUniquenessOf('facility_code_openlmis');
+
   Facility.observe('after save', async function generateFacilityCode(ctx) {
     if (ctx.instance) {
       const district_id = _.padStart(ctx.instance.district_id, 2, '0');
