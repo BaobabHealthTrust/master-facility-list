@@ -83,7 +83,7 @@ const populate = async () => {
         const uniqueFacilities = _.uniqBy(
             await csvtojson().fromString(facilityData), 
             'Facility Name'
-        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic')).slice(0,10);
+        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
 
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
