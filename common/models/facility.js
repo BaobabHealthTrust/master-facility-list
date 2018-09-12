@@ -27,7 +27,7 @@ const getDistrictsIDs = async (data=null) => {
 
 module.exports = (Facility) => {
 
-  Facility.validatesUniquenessOf('facility_code');
+  // Facility.validatesUniquenessOf('facility_code');
   Facility.validatesUniquenessOf('facility_code_dhis2');
   Facility.validatesUniquenessOf('facility_code_openlmis');
 
