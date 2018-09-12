@@ -85,6 +85,25 @@ class FacilityContactForm extends React.Component<Props> {
     latitude: yup.number(this.INVALID_NUM_MESSAGE).negative().required(this.REQUIRED_MESSAGE)
   })
 
+  _onClick = async (onClose, values, setSubmitting, setErros, e) => {
+    const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
+    const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
+
+    await this.props.postFormData(
+      { data: { ...values, client: 1 }, id: facilityId },
+      "Facilities",
+      "POST",
+      "POST_FACILITY_CONTACT_DETAILS",
+      endpoiint,
+      ""
+    );
+
+    setSubmitting(false);
+    if (this.props.response.response && this.props.fromAdd) this.props.onNext();
+    if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
+    onClose()
+  }
+
   _handleChange = async (values, { setSubmitting, setErros }) => {
     if(!this.props.fromAdd){
       confirmAlert({
@@ -98,23 +117,11 @@ class FacilityContactForm extends React.Component<Props> {
                 actions={
                   [
                     <Button onClick={onClose} className="mfl-rm-2 btn-flat">No</Button>,
-                    <Button className="btn-flat" onClick={async () => {
-                      const endpoiint = this.props.fromAdd ? "contactDetails" : "updateContactDetails"
-                      const facilityId = this.props.fromAdd ? (this.props.facility.id || 1) : Number(this.props.match.params.id)
-
-                      await this.props.postFormData(
-                        { data: { ...values, client: 1 }, id: facilityId },
-                        "Facilities",
-                        "POST",
-                        "POST_FACILITY_CONTACT_DETAILS",
-                        endpoiint,
-                        ""
-                      );
-                      setSubmitting(false);
-                      if (this.props.response.response && this.props.fromAdd) this.props.onNext();
-                      if (this.props.response.response && !this.props.fromAdd) this.setState({ cancelForm: true });
-                      onClose()
-                    }}>Yes</Button>
+                    <Button className="btn-flat"
+                      onClick={this._onClick.bind(this, onClose, values, setSubmitting, setErros)}
+                    >
+                      Yes
+                    </Button>
                   ]
                 }>
                 Are you sure you want to save these changes?
