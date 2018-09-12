@@ -35,7 +35,7 @@ import {
   facilityTypeAndOwnership
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
-
+import DashboardSummary from "./dashboardSummary";
 import { GenericCard } from './charts/mini-cards';
 import '../App.css';
 
@@ -99,6 +99,18 @@ class DashboardHome extends React.Component<Props, State> {
     this.props.regulatoryStatuses(this.state.districts);
     this.props.operationalStatuses(this.state.districts);
     this.props.facilityTypeAndOwnership(this.state.districts);
+    this.props.fetchTotalFacilities(this.state.districts);
+    this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD', this.state.districts);
+    this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC', this.state.districts);
+    this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC', this.state.districts);
+    this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART', this.state.districts);
+  }
+
+  closeTag = async (event) => {
+    const district = event.target.id
+    const districts = await this.state.districts.filter(d => d != district)
+    await this.setState({districts})
+    await this.updateGraphs()
   }
 
   onClick = async (event) => {
@@ -124,12 +136,7 @@ class DashboardHome extends React.Component<Props, State> {
       map(this.state.dashboardServices, "id")
     );
 
-    await this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD');
-    await this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC');
-    await this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC');
-    await this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART');
-    await this.props.facilityTypeAndOwnership(this.state.districts);
-    await this.props.fetchTotalFacilities();
+    await this.updateGraphs();
   }
 
   componentWillReceiveProps() {
@@ -146,27 +153,13 @@ class DashboardHome extends React.Component<Props, State> {
           </div>
           <div className="col s12 m9">
             <div className='row'>
-              <div className='col s12'>
-                {this.state.districts.map(district => {
-                  return <div className="chip">
-                    {district}
-                    <i
-                      onClick={ async () => {
-                        const districts = this.state.districts.filter(d => d != district);
-                        await this.setState({districts});
-                        await this.updateGraphs();
-                      }}
-                      className="mfl-close material-icons"
-                    >
-                      close
-                    </i>
-                  </div>
-                })}
+              <div className='col s12' style={{ position: 'sticky', top: 10 }}>
+                <DashboardSummary  closeTag={this.closeTag} districts={this.state.districts}/>
               </div>
             </div>
             <div className="row">
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.totalFacilities.length} title="Total Facilities" icon="hospital" />
+                <GenericCard count={this.props.totalFacilities} title="Total Facilities" icon="hospital" />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="pregnant" />
@@ -198,6 +191,8 @@ class DashboardHome extends React.Component<Props, State> {
                   />
                 </div>
               </div>
+            </div>
+            <div className='row'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
                   <FacilitiesByTypeAndOwnership
@@ -208,7 +203,6 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-
           </div>
 
         </div>

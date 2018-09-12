@@ -10,7 +10,7 @@ export default ({ heading, view }) => {
       <div className="mfl-card-title  bg-blue">
         {heading}
       </div>
-      <div className="mfl-p-2 mfl-bm-5">
+      <div className="mfl-p-2 mfl-bm-1">
         {view}
       </div>
     </CardContainer>

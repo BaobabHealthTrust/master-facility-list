@@ -27,7 +27,7 @@ export default (
     facilitiesByOperationalStatus: [],
     facilitiesByTypeAndOwnership: [],
     facilitiesByTypeAndOwnershipKeys: [],
-    totalFacilities: [],
+    totalFacilities: 0,
     facilitiesWithOPD: [],
     facilitiesWithANC: [],
     facilitiesWithHTC: [],
@@ -177,7 +177,7 @@ export default (
       }
       break;
     case 'FETCH_FACILITIES_BY_TYPE_AND_OWNERSHIP':
-      
+
       if(action.payload.data.response){
         const snakeCased = action.payload.data.response.map(facilityByTypeAndOnwership => {
           const _facilityByTypeAndOwnership = _.mapKeys(facilityByTypeAndOnwership, (key, value) => {
@@ -220,7 +220,7 @@ export default (
     case 'FETCH_TOTAL_FACILITIES':
       return {
         ...state,
-        totalFacilities: action.payload.data
+        totalFacilities: action.payload.data.response
       }
       break;
     default:
