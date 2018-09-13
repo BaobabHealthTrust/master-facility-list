@@ -17,21 +17,44 @@ const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
 
 const getEntityId = async (entities, key, value) => {
-    if(key && value){
-        entities.forEach(entity => {
-            if (entity[key] == value) {
-                return entity['id'];
-            }
-        })
+    return faker.random.arrayElement(entities.map(entity => entity.id));
+}
+
+const getFacilityTypeId = async (facilityTypes, facilityTypeName) => {
+    if (facilityTypeName) {
+        const facilityType = facilityTypes.filter(facilityType => facilityType.facility_type == facilityTypeName)[0];
+        if (facilityType) {
+            return facilityType.id;
+        }
     }
-    const ids = entities.map(entity => entity['id']);
-    return faker.random.arrayElement(ids);
+    return faker.random.arrayElement(facilityTypes.map(facilityType => facilityType.id));
+}
+
+const getFacilityOwnerId = async (facilityOwners, facilityOwnerName) => {
+    if(facilityOwnerName){
+        const facilityOwner = facilityOwners.filter(facilityOwner => facilityOwner.facility_owner == facilityOwnerName)[0];
+        if(facilityOwner){
+            return facilityOwner.id;
+        }
+    }
+    return faker.random.arrayElement(facilityOwners.map(facilityOwner => facilityOwner.id));
+}
+
+const getDistrictId = async (districts, districtName) => {
+    if(districtName){
+        const district = districts.filter(district => district.district_name == districtName)[0];
+        if(district){
+            return district.id;
+        }
+    }
+    return faker.random.arrayElement(districts.map(district => district.id));
 }
 
 const formatFacility = async (facility, requiredModels) => {
-    const facilityTypeId = await getEntityId(requiredModels.facilityTypes, 'facility_type', facility['Facility Type']);
-    const facilityOwnerId = await getEntityId(requiredModels.owners, 'facility_owner', facility['Facility Ownership']);
-    const districtId = await getEntityId(requiredModels.districts, 'district_name', facility['District']);
+    const facilityTypeId = await getFacilityTypeId(requiredModels.facilityTypes, facility['Facility Type']);
+    const facilityOwnerId = await getFacilityOwnerId(requiredModels.owners, facility['Facility Ownership']);
+    const districtId = await getDistrictId(requiredModels.districts, facility['District']);
+    // const districtId = await getEntityId(requiredModels.districts, 'district_name', facility['District']);
     const regulatoryStatusId = await getEntityId(requiredModels.regulatoryStatuses, null, null);
     const operationalStatusId = await getEntityId(requiredModels.operationalStatuses, null, null);
     return {
@@ -84,7 +107,6 @@ const populate = async () => {
             await csvtojson().fromString(facilityData), 
             'Facility Name'
         ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
-
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
             latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
@@ -102,15 +124,15 @@ const populate = async () => {
             regulatoryStatuses: await server.models.RegulatoryStatus.find(),
             clientIds: (await server.models.Client.find()).map(client => client['id'])
         };
-
         await server.models.Facility.deleteAll();
         const formattedFacilities = uniqueFacilities.map(async (facility) => await formatFacility(facility, requiredModels));
         await console.log('Populating facilities');
         const savedFacilities = await server.models.Facility.create((await Promise.all(formattedFacilities)));
         await console.log('Facilities populated');
         await console.log('Populating facility dependants');
+
         await facilityDependantsMapper();
-        // map facilites and geolocation data
+
         await console.log('Populating facility geodata');
         const facilityGeocodeDataRaw = await facilitiesNameWithGeocodes.map(facilityWithGeocodes => {
             return savedFacilities.map(facility => {
@@ -127,12 +149,13 @@ const populate = async () => {
         const facilityGeocodeData = _.flatten(facilityGeocodeDataRaw).filter(fgd => fgd);
         await independentModelFactory(server.models.Geolocation, facilityGeocodeData);
         await console.log('Facility geodata loaded');
-        await console.log('Loading services, utilities and resources');
-        await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
-        await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
-        await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
-        await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
-        await facilityResourcesUtilitiesServicesMapper();
+        // await console.log('Loading services, utilities and resources');
+        // await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
+        // await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
+        // await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
+
+        // await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
+        // await facilityResourcesUtilitiesServicesMapper();
         await console.log('Done populating the MFHR')
         await dataSource.disconnect();
         await loadingSpinner.stop();
