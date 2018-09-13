@@ -16,6 +16,7 @@ import { Redirect } from 'react-router-dom';
 
 type Props = {
   dataSource: Facilities,
+  title: string,
   toggleAdvancedSearch: Function,
   toggleAddFacility: Function
 };
@@ -26,12 +27,26 @@ export default class FacilityList extends React.Component<Props> {
     redirectLink: null
   }
 
+  getWhereClause = () => {
+
+    if (this.props.filter.length) {
+      return {
+        id: {
+          inq: this.props.filter
+        }
+      }
+    }
+
+    return {}
+
+  }
+
   buttonConfiguration: ButtonConfiguration = [
     {
       icon: 'file_copy',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {},
+          "where": this.getWhereClause(),
           "format": "csv"
         })
       ),
@@ -42,7 +57,7 @@ export default class FacilityList extends React.Component<Props> {
       icon: 'grid_on',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {},
+          "where": this.getWhereClause(),
           "format": "excel"
         })
       ),
@@ -53,7 +68,7 @@ export default class FacilityList extends React.Component<Props> {
       icon: 'picture_as_pdf',
       action: () => window.open(
         `${settings.hostname}/api/facilities/download?data=` + JSON.stringify({
-          "where": {},
+          "where": this.getWhereClause(),
           "format": "pdf"
         })
       ),
@@ -127,6 +142,7 @@ export default class FacilityList extends React.Component<Props> {
             pageSize={10}
             defaultSorting={defaultSorting}
             rowSelected={facility => this.redirect(facility.id)}
+            title={this.props.title}
           />
         </Card>
       </div>
