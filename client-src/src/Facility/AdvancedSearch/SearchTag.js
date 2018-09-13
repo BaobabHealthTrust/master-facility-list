@@ -1,24 +1,22 @@
+//@flow
 import React from "react";
 
-class SearchTag extends React.Component {
-    render() {
-        return (
-            <div className="chip">
-                {this.props.name}
-                <i
-                    onClick={id => {
-                        this.props.removeSearchValues(
-                            this.props.id,
-                            this.props.actionType
-                        );
-                    }}
-                    className="mfl-close material-icons"
-                >
-                    close
-                </i>
-            </div>
-        );
-    }
+type Props = {
+  id: number,
+  actionType: string,
+  name: string,
+  removeSearchValues: Function
 }
 
-export default SearchTag;
+export default (props: Props) => {
+  const { id, actionType, name, removeSearchValues } = props
+  return (
+    <div className="chip">
+      {name}
+      <i
+        onClick={() => removeSearchValues(id, actionType)}
+        className="mfl-close material-icons"
+      >close</i>
+    </div>
+  )
+}

@@ -36,8 +36,8 @@ import {
 } from "../actions";
 import footerResizer from "../helpers/footerResize";
 import DashboardSummary from "./dashboardSummary";
-import { GenericCard } from './charts/mini-cards';
-import '../App.css';
+import { GenericCard } from "./charts/mini-cards";
+import styled from "styled-components";
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -65,6 +65,18 @@ type State = {
   dashboardServices: Array<{ id: number, displayName: string, icon: string }>,
   districts: Array<String>
 };
+
+const MapContainer = styled.div.attrs({ className: "col s12 m3" })`
+  position: sticky;
+  top: 10px;
+`
+
+const WelcomeCardContainer = styled.div.attrs({ className: "row" })`
+  position: sticky;
+  top: -50px;
+  z-index: 100;
+  background: white;
+`
 
 // TODO: Codes for All Dependancies
 
@@ -109,7 +121,7 @@ class DashboardHome extends React.Component<Props, State> {
   closeTag = async (event) => {
     const district = event.target.id
     const districts = await this.state.districts.filter(d => d != district)
-    await this.setState({districts})
+    await this.setState({ districts })
     await this.updateGraphs()
   }
 
@@ -117,10 +129,10 @@ class DashboardHome extends React.Component<Props, State> {
     const district = event.target.id;
     if (this.state.districts.includes(district)) {
       const districts = this.state.districts.filter(d => d != district);
-      await this.setState({districts});
+      await this.setState({ districts });
     } else {
       const districts = [...this.state.districts, district];
-      await this.setState({districts});
+      await this.setState({ districts });
     }
     this.updateGraphs()
   }
@@ -148,21 +160,21 @@ class DashboardHome extends React.Component<Props, State> {
     return (
       <div>
         <div className="row mt-6">
-          <div className="col s12 m3" style={{ position: 'sticky', top: 10 }}>
+          <MapContainer>
             <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
-          </div>
+          </MapContainer>
           <div className="col s12 m9">
-            <div className='row'>
-              <div className='col s12' style={{ position: 'sticky', top: 10 }}>
-                <DashboardSummary  closeTag={this.closeTag} districts={this.state.districts}/>
+            <WelcomeCardContainer>
+              <div className="col s12">
+                <DashboardSummary closeTag={this.closeTag} districts={this.state.districts} />
               </div>
-            </div>
+            </WelcomeCardContainer>
             <div className="row">
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.props.totalFacilities} title="Total Facilities" icon="hospital" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="pregnant" />
+                <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="maternity" />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.props.facilitiesWithHTC.length} title="With HTC" icon="bloodTest" />

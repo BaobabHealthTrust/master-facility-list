@@ -9,21 +9,19 @@ class Menu extends Component {
   state = {
     activePage: "home",
     isLoggenIn: true,
-    username: "Thandizo Msefula"
-  }
-
-  async componentDidMount() {
-    const username = await sessionStorage.getItem('firstname');
-    this.setState({ username });
   }
 
   logout = async (e) => {
     e.preventDefault()
     await sessionStorage.removeItem('token');
-    this.setState({ isLoggenIn: false })
+    window.location.assign('/');
   }
 
-  setClassName = (page: string) => this.state.activePage == page ? "active" : ""
+  setClassName = (page: string) => {
+    const windowLocation = window.location.href.split('/')[3]
+    const url = windowLocation || 'home'
+    return (this.state.activePage == page || url == page) ? "active" : ""
+  }
 
   navigateTo = (activePage: string) => this.setState({ activePage })
 
@@ -35,18 +33,22 @@ class Menu extends Component {
     </li>
   )
 
-  renderLogout = () => (
-    <Dropdown style={{ marginTop: 65 }} trigger={
-      <li>
-        <a className="flex">
-          <Icon className="mr-2">account_circle</Icon>
-          {this.state.username}
-        </a>
-      </li>
-    }>
-      <NavItem onClick={this.logout}>Logout</NavItem>
-    </Dropdown>
-  )
+  renderLogout = () => {
+    const username = sessionStorage.getItem('firstname')
+    console.log(username)
+    return (
+      <Dropdown style={{ marginTop: 65 }} trigger={
+        <li>
+          <a className="flex">
+            <Icon className="mr-2">account_circle</Icon>
+            {username}
+          </a>
+        </li>
+      }>
+        <NavItem onClick={this.logout}>Logout</NavItem>
+      </Dropdown>
+    )
+  }
 
   isAdminUser = () => sessionStorage.getItem("token")
 
@@ -69,7 +71,6 @@ class Menu extends Component {
   render() {
     return (
       <div>
-        {!this.state.isLoggenIn && <Redirect to="/" />}
         <ul id="nav-mobile" className="right mfl-pr-10 hide-on-med-and-down">
           {this.renderMenu()}
         </ul>

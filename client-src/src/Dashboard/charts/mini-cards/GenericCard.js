@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
 import { Card, Icon } from 'react-materialize';
-import { ribbon, patient, hospital, bloodTest, pregnant } from '../../../images';
+import { ribbon, patient, hospital, bloodTest, maternity } from '../../../images';
 import styles from 'styled-components';
 
 const DashboardIconContainer = styles.div`
@@ -18,7 +18,7 @@ const DashboardIconImg = styles.img`width: 70%;`
 
 export default (props) => {
   const iconMapper = {
-    pregnant, hospital, bloodTest, ribbon, patient
+    maternity, hospital, bloodTest, ribbon, patient
   }
   return (
     <Card>
