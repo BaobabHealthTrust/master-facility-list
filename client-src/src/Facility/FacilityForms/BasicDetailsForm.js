@@ -94,9 +94,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     facilityOwner: this.props.fromAdd
       ? this.props.facilityOwners[0].id
       : this.props.currentFacility.facility_owner_id,
-    dateOpened: this.props.fromAdd
-      ? "1975-01-01"
-      : this.props.currentFacility.facility_date_opened.slice(0, 10),
+    dateOpened: "1975-01-01",
     registrationNumber: this.props.fromAdd
       ? 0
       : (this.props.currentFacility.registration_number || 0),

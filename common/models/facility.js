@@ -10,9 +10,7 @@ const moment = require("moment");
 const fhirCompliantFacility = require('./fhir-compliant-facility');
 const fhirCompliantFacilities = require('./fhir-compliant-facilities');
 
-const {
-  District
-} = server.models
+const { District } = server.models
 
 const getDistrictsIDs = async (data=null) => {
     if(data && data != []){
@@ -510,7 +508,7 @@ module.exports = (Facility) => {
   });
 
   // FHIR Compliant endpoints
-  
+
   Facility.fhirAllLocations = async (cb) => {
     return fhirCompliantFacilities();
   };
