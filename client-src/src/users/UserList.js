@@ -7,9 +7,9 @@ import { MflGrid } from '../common/index';
 import '../App.css';
 import './UserStyles.css';
 
-import { 
-    Grid, 
-    Table, 
+import {
+    Grid,
+    Table,
     TableHeaderRow,
     PagingPanel,
     TableFilterRow,
@@ -42,7 +42,7 @@ class UsersList extends React.Component{
         const defaultSorting = [{ columnName: 'firstname', direction: 'asc' }];
 
         return (
-            <Card className="user-list">
+            <Card className="user-list pt-8" >
                 <MflGrid
                     rows={this.props.users}
                     columns={columns}
@@ -57,7 +57,7 @@ class UsersList extends React.Component{
     }
 }
 const mapStateToProps = state => {
-    return { 
+    return {
         users: state.users.users
     }
 }
