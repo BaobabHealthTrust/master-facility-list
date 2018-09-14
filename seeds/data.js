@@ -381,6 +381,8 @@ const districtZoneMapping = {
   ]
 };
 
+module.exports.districtZoneMapping = districtZoneMapping;
+
 module.exports.districts = {
   foreignKey: "zone_id",
   referenceName: "zone_name",
