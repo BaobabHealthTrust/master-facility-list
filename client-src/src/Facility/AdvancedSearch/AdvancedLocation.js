@@ -1,28 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 
-class AdvancedLocation extends Component {
-    render() {
-        let options = <option>Select District</option>;
-        if (this.props.districts.length > 0) {
-            options = this.props.districts.map(d => (
-                <option key={d.id} value={d.id}>{d.district_name}</option>
-            ));
-        }
+export default ({ districts, handleChange, action }) => {
+  let options = <option>Select District</option>
 
-        return (
-            <div className="container mfl-tm-5">
-                <select
-                    className="browser-default"
-                    onChange={e =>
-                        this.props.handleChange(e, "ADD_DISTRICT_VALUES")
-                    }
-                >
-                    <option value="0">-- Select District --</option>
-                    {options}
-                </select>
-            </div>
-        );
-    }
+  if (districts.length) {
+    options = districts
+      .map(d => <option key={d.id} value={d.id}>{d.district_name}</option>)
+  }
+
+  return (
+    <div className="container mfl-tm-5">
+      <select
+        className="browser-default"
+        onChange={e => handleChange(e, action)}
+      >
+        <option value="0">-- Select District --</option>
+        {options}
+      </select>
+    </div>
+  );
 }
-
-export default AdvancedLocation;
