@@ -24,7 +24,7 @@ class FacilitiesByOperationalStatus extends React.Component {
           data={data}
           outerRadius={100}
           fill="#8884d8">
-          {defaultScheme.map(color => <Cell fill={color} />)}
+          {defaultScheme.filter((_, i) => i > 3).map(color => <Cell fill={color} />)}
         </Pie>
         <Legend verticalAlign="top" height={40} />
       </PieChart>

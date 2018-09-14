@@ -21,11 +21,11 @@ class FacilitiesByLicensingStatus extends React.Component {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="count" fill={defaultScheme[0]} />
+        <Bar dataKey="count" fill={defaultScheme[this.props.colorIndex]} />
       </BarChart>
     )
     return (
-      <MflCardGeneric heading="facilities by licensing status" view={view} />
+      <MflCardGeneric heading={this.props.title} view={view} />
     );
   }
 }
