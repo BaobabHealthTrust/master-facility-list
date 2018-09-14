@@ -102,16 +102,22 @@ export default class FacilityList extends React.Component<Props> {
 
     const defaultView = (
       <div className="container">
-        <div className="flex flex-row w-full justify-between">
+        <div className="flex flex-row w-full justify-between pt-8">
           <div className="flex flex-row">
+
             <div>
               <Link
-                class="btn-flat"
+                className="phone-position btn-flat"
                 to='/facilities/search'
               >
-                <i class="material-icons left">search</i> Advanced Search
-            </Link>
+                <i className="material-icons left">search</i>
+                <span>
+                  <span>Advanced </span>
+                  Search
+                </span>
+              </Link>
             </div>
+
             <div>
               {
                 // TODO: Only allowed for a token whose user ID is an admin
@@ -126,7 +132,7 @@ export default class FacilityList extends React.Component<Props> {
               }
             </div>
           </div>
-          <div style={{ marginTop: -10 }}>
+          <div className='hide-element' style={{ marginTop: -10 }}>
             <MflDownload
               buttonConfiguration={this.buttonConfiguration}
               mainButtonConfiguration={{ color: 'teal', icon: 'file_download' }}
@@ -135,7 +141,7 @@ export default class FacilityList extends React.Component<Props> {
         </div>
 
         {/* <GridTable data={tableRecords} /> */}
-        <Card>
+        <Card className='facilities-table-mobile-margin'>
           <MflGrid
             rows={tableRecords}
             columns={columns}
