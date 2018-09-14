@@ -817,6 +817,10 @@ svg #districts path:hover{
     visibility: hidden;
     display: none;
   }
+
+  .container {
+    padding: 10px;
+  }
 }
 
 @media (max-width: 493px) {
