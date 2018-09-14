@@ -811,3 +811,29 @@ svg #districts path:hover{
         width: 20% !important;
     }
 }
+
+@media (max-width: 480px) {
+  .hide-facilities-table-title, .phone-position span {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media (max-width: 493px) {
+  .phone-position span span{
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-element, .hide-download-button {
+    visibility: hidden;
+    display: none;
+  }
+
+  .facilities-table-mobile-margin{
+    margin: 20px;
+  }
+
+}
