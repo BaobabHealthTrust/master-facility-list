@@ -42,7 +42,7 @@ class UsersList extends React.Component{
         const defaultSorting = [{ columnName: 'firstname', direction: 'asc' }];
 
         return (
-            <Card className="user-list pt-8" >
+            < Card className = "user-list pt-8" >
                 <MflGrid
                     rows={this.props.users}
                     columns={columns}

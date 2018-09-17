@@ -837,4 +837,10 @@ svg #districts path:hover{
   .mfl-login-container{
     width: 100% !important;
   }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
 }

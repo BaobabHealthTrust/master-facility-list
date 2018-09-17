@@ -68,7 +68,10 @@ class UserForm extends React.Component {
         }) => (
             <Modal
               header={this.props.title}
-              trigger={<Button floating large waves='light' className="blue mfl-fl-right" icon="add" />}
+              trigger = { < Button floating large waves = 'light'
+                className = "hide-on-small-only blue mfl-fl-right"
+                icon = "add" / >
+              }
               actions={
                 <div class="">
                   <Button modal="close" flat waves="light">cancel</Button>
