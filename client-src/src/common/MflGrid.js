@@ -39,7 +39,7 @@ class MflGrid extends React.Component {
 
     return (
       <React.Fragment>
-        <Title className='hide-facilities-table-title'>
+        <Title className='hide-on-small-only'>
           {this.props.title}
         </Title>
         <Grid

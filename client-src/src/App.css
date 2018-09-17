@@ -831,45 +831,10 @@ svg #districts path:hover{
     }
 }
 
-@media (max-width: 480px) {
-  .hide-facilities-table-title, .phone-position span {
-    visibility: hidden;
-    display: none;
-  }
-
-  .container {
-    padding: 10px;
-  }
-
-  .mfl-login-input-container,
-  .mfl-login-input,
-  .mfl-login-container{
-    width: 100% !important;
-    position: relative !important;
-  }
-}
-
-@media (max-width: 493px) {
-  .phone-position span span{
-    visibility: hidden;
-    display: none;
-  }
-}
-
 @media (max-width: 768px) {
-  .hide-element, .hide-download-button {
-    visibility: hidden;
-    display: none;
-  }
-
-  .facilities-table-mobile-margin{
-    margin: 20px;
-  }
-
   .mfl-login-input-container,
   .mfl-login-input,
   .mfl-login-container{
     width: 100% !important;
   }
-
 }
