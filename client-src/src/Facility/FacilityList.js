@@ -112,18 +112,18 @@ export default class FacilityList extends React.Component<Props> {
               >
                 <i className="material-icons left">search</i>
                 <span>
-                  <span className='hide-on-small-only'>Advanced </span>
+                  <span >Advanced </span>
                   Search
                 </span>
               </Link>
             </div>
 
-            <div>
+            <div className='hide-on-small-only'>
               {
                 // TODO: Only allowed for a token whose user ID is an admin
                 sessionStorage.getItem('token') && (
                   <Link
-                    class="ml-4 waves-effect waves-light btn"
+                    className="ml-4 waves-effect waves-light btn"
                     to='/facilities/add'
                   >
                     <i class="material-icons left">add</i>Add NewFacility
@@ -132,7 +132,7 @@ export default class FacilityList extends React.Component<Props> {
               }
             </div>
           </div>
-          <div className='hide-on-small-only' style={{ marginTop: -10 }}>
+          <div className='hide-on-med-and-down' style={{ marginTop: -10 }}>
             <MflDownload
               buttonConfiguration={this.buttonConfiguration}
               mainButtonConfiguration={{ color: 'teal', icon: 'file_download' }}

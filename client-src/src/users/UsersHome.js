@@ -1,6 +1,6 @@
 import React from 'react';
 import footerResizer from "../helpers/footerResize";
-import { Row, Col, Button, Icon, Input, Modal, Card } from 'react-materialize';
+import { Icon} from 'react-materialize';
 import { UserList, ViewUser, UserForm } from './index';
 import '../App.css';
 
