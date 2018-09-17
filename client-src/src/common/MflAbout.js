@@ -17,7 +17,7 @@ const CardImage = styled.div`
     background-image: url(${props.image});
     background-position: center;
     background-size: contain;
-    background-repeat: none;
+    background-repeat: no-repeat;
   `}
 `
 
@@ -28,8 +28,6 @@ class MflAbout extends Component {
   }
 
   render() {
-    const image = "https://www.myjobo.com/public/uploads/1523978871336466B9-FCFE-4FB9-A1CF-812D85A97450.png";
-    const lin = "https://scontent-jnb1-1.xx.fbcdn.net/v/t1.0-1/11665455_1066531170077971_205320784678689341_n.jpg?_nc_cat=0&oh=5fe44d55b6cd2496cd562cd7256c0f5c&oe=5C282ED1";
     return (
       <div>
         <Banner title="About the Master Health Facility Registry of Malawi" />
@@ -71,7 +69,7 @@ class MflAbout extends Component {
               <div className="row">
                 <div className="col m3 s12">
                   <Card
-                    header={<CardImage image={image} />}>
+                    header={<CardImage image={baobab} />}>
                     <h5>Baobab Health Trust</h5>
                   </Card>
                 </div>
