@@ -136,7 +136,7 @@ class FeedbackForm extends React.Component {
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <Button disabled={Object.keys(errors).length || !Object.keys(touched).length} className="blue" waves='light' onClick={handleSubmit}>
+                                            <Button className="blue" waves='light' onClick={handleSubmit}>
                                                 {isSubmitting ? 'sending...' : 'send feedback'}
                                             </Button>
                                         </Col>
