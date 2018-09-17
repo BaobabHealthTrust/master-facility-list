@@ -8,9 +8,7 @@ import '../App.css';
 
 class UserForm extends React.Component {
 
-  getUser = () => {
-    return this.props.user;
-  }
+  getUser = () => this.props.user
 
   initialValues = {
     firstname: this.getUser() ? this.getUser().firstname : "",
@@ -50,6 +48,14 @@ class UserForm extends React.Component {
       this.props.onUserCreationError();
   }
 
+  renderTriggerButton = () =>  (
+    <Button
+      floating large waves = 'light'
+      className = "hide-on-small-only blue mfl-fl-right"
+      icon = "add"
+    />
+  )
+
   render() {
     return (
       <Formik
@@ -68,10 +74,7 @@ class UserForm extends React.Component {
         }) => (
             <Modal
               header={this.props.title}
-              trigger = { < Button floating large waves = 'light'
-                className = "hide-on-small-only blue mfl-fl-right"
-                icon = "add" / >
-              }
+              trigger = {this.renderTriggerButton()}
               actions={
                 <div class="">
                   <Button modal="close" flat waves="light">cancel</Button>
@@ -80,7 +83,7 @@ class UserForm extends React.Component {
                     className="blue darken-2"
                     onClick={handleSubmit}>
                      Save User
-                    </Button>
+                  </Button>
                 </div>
               }
               modalOptions={
