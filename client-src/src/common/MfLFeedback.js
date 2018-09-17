@@ -30,12 +30,12 @@ class MflFeedback extends Component {
               <Heading>Useful Links</Heading>
               <ul className="mfl-abm">
                 <li className="black-text text-lighten-2">
-                  <span className="mfl-about-icon"><i className="material-icons">phone</i></span>
-                  <a className="mfl-about-text" href="http://health.gov.mw">Download guidelines</a>
+                  <span className="mfl-about-icon"><i className="material-icons">file_download</i></span>
+                  <a className="mfl-about-text" href="http://www.health.gov.mw/" target="_blank">Download guidelines</a>
                 </li>
                 <li className="black-text text-lighten-2">
                   <span className="mfl-about-icon"><i className="material-icons">insert_link</i></span>
-                  <a className="mfl-about-text" href="http://health.gov.mw">About Ministry of Health</a>
+                  <a className="mfl-about-text" href="http://www.health.gov.mw/" target="_blank">About Ministry of Health</a>
                 </li>
               </ul>
               <TopMargin />
