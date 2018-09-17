@@ -107,12 +107,12 @@ export default class FacilityList extends React.Component<Props> {
 
             <div>
               <Link
-                className="phone-position btn-flat"
+                className="btn-flat"
                 to='/facilities/search'
               >
                 <i className="material-icons left">search</i>
                 <span>
-                  <span>Advanced </span>
+                  <span className='hide-on-small-only'>Advanced </span>
                   Search
                 </span>
               </Link>
@@ -132,7 +132,7 @@ export default class FacilityList extends React.Component<Props> {
               }
             </div>
           </div>
-          <div className='hide-element' style={{ marginTop: -10 }}>
+          <div className='hide-on-small-only' style={{ marginTop: -10 }}>
             <MflDownload
               buttonConfiguration={this.buttonConfiguration}
               mainButtonConfiguration={{ color: 'teal', icon: 'file_download' }}
@@ -141,7 +141,7 @@ export default class FacilityList extends React.Component<Props> {
         </div>
 
         {/* <GridTable data={tableRecords} /> */}
-        <Card className='facilities-table-mobile-margin'>
+        <Card>
           <MflGrid
             rows={tableRecords}
             columns={columns}
