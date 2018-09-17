@@ -3,7 +3,13 @@ import Card from "../common/MflCard";
 import banner from "../banner.png";
 import footerResizer from "../helpers/footerResize";
 import { FeedbackForm } from './index';
+import { Banner } from '../common'
+import styled from 'styled-components'
 
+const Heading = styled.div.attrs({ className: "text-3xl text-blue font-bold mb-8" })``
+const TopMargin = styled.div`
+  margin: 40px 0px;
+`
 class MflFeedback extends Component {
   // TODO: show loading state upon sending user feedback
   componentDidMount() {
@@ -12,36 +18,31 @@ class MflFeedback extends Component {
   render() {
     return (
       <div>
-        <div className="container mfl-dash-container mfl-ref">
-          <img src={banner} className="mfl-abs mfl-banner-img" />
-          <div className="mfl-abs mfl-parallax"><h3>Get in Touch With Us</h3></div>
-        </div>
+        <Banner title="Get in Touch With Us" />
+        <TopMargin />
         <div className="container mfl-modal-container">
           <div className="row">
-            <div className="col s12 m12 l12">
-              <h4 className="mfl-contact white-text">Getting in Touch</h4>
-            </div>
-          </div>
-          <div className="row mfl-tm-10">
             <div className="col m8 s12">
+              <Heading>Feedback Form</Heading>
               <FeedbackForm />
             </div>
             <div className="col m4 s12">
-              <h5 className="mfl-contact">Contacts</h5>
+              <Heading>Useful Links</Heading>
               <ul className="mfl-abm">
                 <li className="black-text text-lighten-2">
-                  <span className="mfl-about-icon"><i className="material-icons">phone</i></span>
-                  <a className="mfl-about-text" href="http://health.gov.mw">Download guidelines</a>
+                  <span className="mfl-about-icon"><i className="material-icons">file_download</i></span>
+                  <a className="mfl-about-text" href="http://www.health.gov.mw/" target="_blank">Download guidelines</a>
                 </li>
                 <li className="black-text text-lighten-2">
                   <span className="mfl-about-icon"><i className="material-icons">insert_link</i></span>
-                  <a className="mfl-about-text" href="http://health.gov.mw">About Ministry of Health</a>
+                  <a className="mfl-about-text" href="http://www.health.gov.mw/" target="_blank">About Ministry of Health</a>
                 </li>
               </ul>
-              <h5 className="mfl-contact">Instructions to Provide Feedback</h5>
-              <p>
-                Please give us your feedback on the experience you have using this system. 
-                We will be glad to assist on any problems you may be having. 
+              <TopMargin />
+              <Heading>Instructions</Heading>
+              <p className="text-xl">
+                Please give us your feedback on the experience you have using this system.
+                We will be glad to assist on any problems you may be having.
                 Comments and recommendations for future improvements are also welcome
               </p>
             </div>

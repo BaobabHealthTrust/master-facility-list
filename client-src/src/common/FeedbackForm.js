@@ -6,23 +6,24 @@ import { fetchFeedbackTypes, postFormData } from '../actions';
 import yup from 'yup';
 import { Formik } from 'formik';
 import { Z_DEFAULT_STRATEGY } from 'zlib';
+import { kids, baobab, lighthouse, lin, moh } from '../images'
 
 class FeedbackForm extends React.Component {
 
-    state = {
-        delay: 3000
-    }
+  state = {
+    delay: 3000
+  }
 
-    componentWillMount() {
-        this.props.fetchFeedbackTypes();
-    }
+  componentWillMount() {
+    this.props.fetchFeedbackTypes();
+  }
 
-    initialValues = {
-        name: '',
-        message: '',
-        email: '',
-        feedbackType: ''
-    }
+  initialValues = {
+    name: '',
+    message: '',
+    email: '',
+    feedbackType: ''
+  }
 
     schema = yup.object().shape({
         name: yup.string().min(3),
@@ -31,13 +32,13 @@ class FeedbackForm extends React.Component {
         feedbackType: yup.number().required()
     })
 
-    showToastMessage = message => {
-        window.Materialize.toast(message, this.state.delay);
-    }
+  showToastMessage = message => {
+    window.Materialize.toast(message, this.state.delay);
+  }
 
-    notifyFeedbackSent = () => {
-        this.showToastMessage('Feedback sent successfully!');
-    }
+  notifyFeedbackSent = () => {
+    this.showToastMessage('Feedback sent successfully!');
+  }
 
     handleSubmit = async (values, {resetForm, setSubmitting}) => {
         setSubmitting(true)
@@ -150,12 +151,12 @@ class FeedbackForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    feedbackTypes: state.feedback.feedbackTypes,
-    feedbackSubmitted: state.feedback.feedbackSubmitted
+  feedbackTypes: state.feedback.feedbackTypes,
+  feedbackSubmitted: state.feedback.feedbackSubmitted
 })
 
 const mapDispatchToProps = {
-    fetchFeedbackTypes,
-    postFormData
+  fetchFeedbackTypes,
+  postFormData
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FeedbackForm);
