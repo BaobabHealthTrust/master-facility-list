@@ -21,16 +21,8 @@ class App extends Component {
 
   checkWindowWidith = () => (window.innerWidth <= 480) ? this.setState({widthFlag: true}) : this.setState({widthFlag: false})
 
-  isRouteVisible = () => {
-    const route = <Route
-      exact path = '/facilities/add'
-      component = { AddFacilityHome}
-    />
+  isRouteVisible = () => !this.state.widthFlag && sessionStorage.getItem('token')
 
-    if (!this.state.widthFlag && sessionStorage.getItem('token')) {
-      return route
-    }
-  }
   componentDidMount() {
     window.addEventListener('resize', this.checkWindowWidith)
     this.checkWindowWidith()
@@ -48,7 +40,12 @@ class App extends Component {
             path="/facilities"
             component={FacilitiesHome}
           />
-          {this.isRouteVisible()}
+          {this.isRouteVisible() && (
+            <Route
+              exact path = '/facilities/add'
+              component = { AddFacilityHome}
+            />
+          )}
           <Route
             exact
             path='/facilities/search'
