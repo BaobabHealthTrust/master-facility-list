@@ -24,20 +24,6 @@ class FeedbackForm extends React.Component {
         feedbackType: ''
     }
 
-    validate = values => {
-        let errors = {};
-        if (values.name.length < 3) errors.name = "Invalid name"
-        if (values.message.length < 3) errors.message = "Invalid message"
-        // if (values.commonName.length < 3) errors.commonName = "Invalid Common Name"
-        // if (!/^\d+$/i.test(values.registrationNumber))
-        //     errors.registrationNumber = "Invalid Registration Number Format"
-        // if (values.registrationNumber.length < 8)
-        //     errors.registrationNumber = "Invalid Registration Number Length"
-
-        return errors
-    }
-
-
     schema = yup.object().shape({
         name: yup.string().min(3),
         message: yup.string().min(3).required('this is required'),
@@ -53,7 +39,7 @@ class FeedbackForm extends React.Component {
         this.showToastMessage('Feedback sent successfully!');
     }
 
-    _handleChange = async (values, { setSubmitting, setErros, resetForm }) => {
+    handleSubmit = async (values, {resetForm, setSubmitting}) => {
         setSubmitting(true)
         await this.props.postFormData(
             {
@@ -69,8 +55,9 @@ class FeedbackForm extends React.Component {
             'feedback'
         );
         if (this.props.feedbackSubmitted) {
+            setSubmitting(false)
             this.notifyFeedbackSent();
-            resetForm();
+            resetForm(this.initialValues);
         }
     }
 
@@ -80,7 +67,7 @@ class FeedbackForm extends React.Component {
                 <div className="mfl-tm-2" />
                 <Formik
                     initialValues={this.initalValues}
-                    validate={this.validate}
+                    validationSchema={this.schema}
                     onSubmit={this.handleSubmit}
                     render={({
                         values,
@@ -92,34 +79,69 @@ class FeedbackForm extends React.Component {
                         isSubmitting,
                         setFieldValue
                     }) => (
-                            <div>
-                                <Row>
-                                    <Input
-                                        s={12}
-                                        value={values.name}
-                                        name="name"
-                                        labelClassName="mfl-max-width"
-                                        placeholder="Enter Facility Name"
-                                        label="Enter Facility Name"
-                                        error={touched.name && errors.name}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <Input
-                                        s={12}
-                                        value={values.message}
-                                        name="message"
-                                        placeholder="Enter Facility Common Name"
-                                        labelClassName="mfl-max-width"
-                                        label="Enter Facility Common Name"
-                                        error={touched.message && errors.message}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-
-                                </Row>
-                                
-                            </div>
+                            <Card>
+                                <div>
+                                    <Row>
+                                        <Input
+                                            s={12}
+                                            value={values.name}
+                                            name="name"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your name"
+                                            error={touched.name && errors.name}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <Input
+                                            s={12}
+                                            value={values.email}
+                                            name="email"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your email address *"
+                                            error={touched.email && errors.email}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            type="email"
+                                        />
+                                        <Input
+                                            s={12}
+                                            type='select'
+                                            name="feedbackType"
+                                            value={values.feedbackType}
+                                            onChange={(e) => setFieldValue('feedbackType', e.target.value)}
+                                            error={errors.feedbackType}
+                                        >
+                                            <option value="">Select Feedback Type *</option>
+                                            {this.props.feedbackTypes.map(feedbackType => (
+                                                <option
+                                                    key={feedbackType.id}
+                                                    value={feedbackType.id}
+                                                >
+                                                    {feedbackType.feedback_type}
+                                                </option>
+                                            ))}
+                                        </Input>
+                                        <Input
+                                            s={12}
+                                            value={values.message}
+                                            name="message"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your messaged here *"
+                                            error={touched.message && errors.message}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            type="textarea"
+                                        />
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Button disabled={Object.keys(errors).length || !Object.keys(touched).length} className="blue" waves='light' onClick={handleSubmit}>
+                                                {isSubmitting ? 'sending...' : 'send feedback'}
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Card>
                         )}
                 />
             </div >
