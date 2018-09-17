@@ -19,7 +19,7 @@ import {
 } from "../types/model-types";
 
 import { map, uniq, isEmpty, intersection } from "lodash";
-
+import { kids } from "../images";
 import {
   fetchFacilityOwners,
   fetchFacilityTypes,
@@ -34,6 +34,7 @@ import {
   fetchTotalFacilities,
   facilityTypeAndOwnership
 } from "../actions";
+import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
 import DashboardSummary from "./dashboardSummary";
 import { GenericCard } from "./charts/mini-cards";
@@ -77,6 +78,13 @@ const WelcomeCardContainer = styled.div.attrs({ className: "row" })`
   z-index: 100;
   background: white;
 `
+const CallToAction = styled.div.attrs({ className: "w-full p-8 mb-8" })`
+  background: rgba(43,43,104, 1);
+  background-image: url(${kids});
+  background-blend-mode: overlay;
+  background-position-y: center;
+  color: white;
+`
 
 // TODO: Codes for All Dependancies
 
@@ -107,15 +115,39 @@ class DashboardHome extends React.Component<Props, State> {
     });
   }
 
+  facilityDistrictFilter = (facility) => {
+    if (this.state.districts.length == 0) return true
+    return this.state.districts.includes(facility.district)
+  }
+
+  facilitiesOfType = (facilityType: string) => {
+    const data = this.props.allFacilities.data
+    return data
+      ? data.filter(facility => facility.type == facilityType)
+        .filter(this.facilityDistrictFilter).length
+      : 0
+  }
+
+  ownershipBarData = () => {
+    const data = this.props.allFacilities.data
+    if (data) {
+      return this.props.owners.map(owner => {
+        return {
+          name: owner.facility_owner,
+          count: data.filter(facility => facility.ownership == owner.facility_owner)
+            .filter(this.facilityDistrictFilter).length
+        }
+      })
+    }
+    return []
+  }
+
+
   updateGraphs = () => {
     this.props.regulatoryStatuses(this.state.districts);
     this.props.operationalStatuses(this.state.districts);
     this.props.facilityTypeAndOwnership(this.state.districts);
     this.props.fetchTotalFacilities(this.state.districts);
-    this.props.facilitiesWithService('Injectable', 'FETCH_FACILITIES_WITH_OPD', this.state.districts);
-    this.props.facilitiesWithService('Treatment of severe diarrhoea (IV Fluids)', 'FETCH_FACILITIES_WITH_ANC', this.state.districts);
-    this.props.facilitiesWithService('Vitamin A supplementation in infants and children 6-59 months', 'FETCH_FACILITIES_WITH_HTC', this.state.districts);
-    this.props.facilitiesWithService('Rapid Diagnostic Test (MRDT) ', 'FETCH_FACILITIES_WITH_ART', this.state.districts);
   }
 
   closeTag = async (event) => {
@@ -143,6 +175,7 @@ class DashboardHome extends React.Component<Props, State> {
     await this.props.fetchFacilities();
     await this.props.fetchOperationalStatuses();
     await this.props.fetchRegulatoryStatuses();
+    await this.props.fetchFacilityOwners();
     await this.updateGraphs();
     await this.props.fetchDashboardFacilityServices(
       map(this.state.dashboardServices, "id")
@@ -177,22 +210,30 @@ class DashboardHome extends React.Component<Props, State> {
                 <GenericCard count={this.props.totalFacilities} title="Total Facilities" icon="hospital" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.facilitiesWithANC.length} title="With ANC" icon="maternity" />
+                <GenericCard count={this.facilitiesOfType('District Hospital')} title="Dist Hospitals" icon="district" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.facilitiesWithHTC.length} title="With HTC" icon="bloodTest" />
+                <GenericCard count={this.facilitiesOfType('Hospital')} title="Hospitals" icon="normal_hospital" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.facilitiesWithOPD.length} title="With OPD" icon="patient" />
+                <GenericCard count={this.facilitiesOfType('Clinic')} title="Clinics" icon="clinic" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.facilitiesWithART.length} title="With ART" icon="ribbon" />
+                <GenericCard count={this.facilitiesOfType('Health Center')} title="Health Centers" icon="tent" />
               </div>
             </div>
             <div className="row hide-on-small-only">
+              <div className="col m12">
+                <CallToAction>
+                  <Button>Go to Advanced Search</Button>
+                  <span className="ml-4 text-2xl">For a more detailed analysis of Facilities</span>
+                </CallToAction>
+              </div>
               <div className="col s12 m6" id="regulatoryStatusContainer">
                 <div class="outer-recharts-surface">
                   <FacilitiesByLicensingStatus
+                    title="Facilities By License Status"
+                    colorIndex={0}
                     data={this.props.facilitiesByRegulatoryStatus}
                     width={this.state.regulatoryStatusContainerWidth}
                   />
@@ -210,16 +251,16 @@ class DashboardHome extends React.Component<Props, State> {
             <div className='row hide-on-small-only'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
-                  <FacilitiesByTypeAndOwnership
-                    data={this.props.facilitiesByTypeAndOwnership}
-                    keys={this.props.facilitiesByTypeAndOwnershipKeys}
+                  <FacilitiesByLicensingStatus
+                    title="Facilities By Ownership"
+                    colorIndex={2}
+                    data={this.ownershipBarData()}
                     width={this.state.typeOwnershipContainerWidth}
                   />
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     );
