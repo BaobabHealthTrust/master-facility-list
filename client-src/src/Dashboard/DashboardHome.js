@@ -160,8 +160,11 @@ class DashboardHome extends React.Component<Props, State> {
     return (
       <div>
         <div className="row mt-6">
-          <MapContainer>
-            <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
+          <MapContainer className='hide-on-small-only'>
+            <FacilitiesMap
+              onClick={this.onClick}
+              districts={this.state.districts}
+              height={600} />
           </MapContainer>
           <div className="col s12 m9">
             <WelcomeCardContainer>
@@ -186,7 +189,7 @@ class DashboardHome extends React.Component<Props, State> {
                 <GenericCard count={this.props.facilitiesWithART.length} title="With ART" icon="ribbon" />
               </div>
             </div>
-            <div className="row">
+            <div className="row hide-on-small-only">
               <div className="col s12 m6" id="regulatoryStatusContainer">
                 <div class="outer-recharts-surface">
                   <FacilitiesByLicensingStatus
@@ -204,7 +207,7 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className='row'>
+            <div className='row hide-on-small-only'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
                   <FacilitiesByTypeAndOwnership
