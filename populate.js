@@ -16,22 +16,47 @@ const _ = require('lodash');
 const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
 
+
+//TODO: implement the factory pattern on this
 const getEntityId = async (entities, key, value) => {
-    if(key && value){
-        entities.forEach(entity => {
-            if (entity[key] == value) {
-                return entity['id'];
-            }
-        })
+    return faker.random.arrayElement(entities.map(entity => entity.id));
+}
+
+const getFacilityTypeId = async (facilityTypes, facilityTypeName) => {
+    if (facilityTypeName) {
+        const facilityType = facilityTypes.filter(facilityType => facilityType.facility_type == facilityTypeName)[0];
+        if (facilityType) {
+            return facilityType.id;
+        }
     }
-    const ids = entities.map(entity => entity['id']);
-    return faker.random.arrayElement(ids);
+    return faker.random.arrayElement(facilityTypes.map(facilityType => facilityType.id));
+}
+
+const getFacilityOwnerId = async (facilityOwners, facilityOwnerName) => {
+    if(facilityOwnerName){
+        const facilityOwner = facilityOwners.filter(facilityOwner => facilityOwner.facility_owner == facilityOwnerName)[0];
+        if(facilityOwner){
+            return facilityOwner.id;
+        }
+    }
+    return faker.random.arrayElement(facilityOwners.map(facilityOwner => facilityOwner.id));
+}
+
+const getDistrictId = async (districts, districtName) => {
+    if(districtName){
+        const district = districts.filter(district => district.district_name == districtName)[0];
+        if(district){
+            return district.id;
+        }
+    }
+    return faker.random.arrayElement(districts.map(district => district.id));
 }
 
 const formatFacility = async (facility, requiredModels) => {
-    const facilityTypeId = await getEntityId(requiredModels.facilityTypes, 'facility_type', facility['Facility Type']);
-    const facilityOwnerId = await getEntityId(requiredModels.owners, 'facility_owner', facility['Facility Ownership']);
-    const districtId = await getEntityId(requiredModels.districts, 'district_name', facility['District']);
+    const facilityTypeId = await getFacilityTypeId(requiredModels.facilityTypes, facility['Facility Type']);
+    const facilityOwnerId = await getFacilityOwnerId(requiredModels.owners, facility['Facility Ownership']);
+    const districtId = await getDistrictId(requiredModels.districts, facility['District']);
+
     const regulatoryStatusId = await getEntityId(requiredModels.regulatoryStatuses, null, null);
     const operationalStatusId = await getEntityId(requiredModels.operationalStatuses, null, null);
     return {
@@ -56,6 +81,7 @@ const populateIndependentModels = async(facilities) => {
         facility_owner: owner ? owner : faker.company.companyName()
     }));
 
+    
     const districts = _.uniq(facilities.map(facility => facility['District'])).map(district => ({
         district_name: district ? district : faker.address.state(),
         zone_id: 1
@@ -71,6 +97,59 @@ const populateIndependentModels = async(facilities) => {
     await independentModelFactory(server.models.ServiceType, data.serviceTypes);   
 }
 
+const mapDistrictsToZones = async() => {
+    const organisationUnits = (JSON.parse(await fs.readFileSync('dhis2-organisation-units.json', 'utf8')))
+        .organisationUnits
+        .filter(organisationUnit => organisationUnit.name != 'Central Hospital');
+    await server.models.Zone.deleteAll();
+    const zones = await server.models.Zone.create(organisationUnits.map(organisationUnit => ({
+      zone_name: organisationUnit.name
+    })));
+    const mhfrDistricts = await server.models.District.find();
+    const dhis2DistrictsPlusZones = _.uniqBy(_.flatten(organisationUnits.map(organisationUnit => {
+      return organisationUnit.children.map(child => {
+        const districtNameSegemented = child.name.split('-')
+        const districtName = districtNameSegemented.length > 1 ? districtNameSegemented.slice(0, -1).join(' ') : districtNameSegemented[0];
+        return {
+            district_name: districtName,
+            zone_name: organisationUnit.name
+        };
+      })
+    })), 'district_name');
+
+    const mhfrDistrictsWithZoneIds = _.flatten(mhfrDistricts.map(mhfrDistrict => {
+        return dhis2DistrictsPlusZones.map(dhi2DistrictPlusZone => {
+            if (dhi2DistrictPlusZone.district_name == mhfrDistrict.district_name) {
+                return {
+                    id: mhfrDistrict.id,
+                    zone_id: zones.filter(zone => zone.zone_name == dhi2DistrictPlusZone.zone_name)[0].id
+                }
+            }
+        })
+    })).filter(mhfrDistrictWithZoneId => mhfrDistrictWithZoneId);
+
+    const districtZoneMapping = data.districtZoneMapping;
+    const districtCodes = _.flatten((Object.keys(districtZoneMapping)).map(key => {
+        return districtZoneMapping[key];
+    }));
+
+    for(const mhfrDistrictWithZoneId of mhfrDistrictsWithZoneIds){
+        const district = await server.models.District.findOne({ where: { id: mhfrDistrictWithZoneId.id } });
+        const districtCode = districtCodes
+            .filter(districtCode => 
+                _.trim(_.lowerCase(district.district_name)) == _.trim(_.lowerCase(districtCode.district_name))
+            )[0].district_code || '';
+        if(district){
+            await district.updateAttributes({
+                zone_id: mhfrDistrictWithZoneId.zone_id,
+                district_code: districtCode
+            });
+            await district.save();
+        }
+    }
+    await console.log('Mapped Districts to Zones successfully');
+}
+
 const populate = async () => {
     try {
 
@@ -84,7 +163,6 @@ const populate = async () => {
             await csvtojson().fromString(facilityData), 
             'Facility Name'
         ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
-
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
             latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
@@ -92,6 +170,9 @@ const populate = async () => {
         }));
 
         await populateIndependentModels(uniqueFacilities);
+
+        await mapDistrictsToZones();
+
         await userSeeder(data.users);
 
         const requiredModels = {
@@ -102,7 +183,6 @@ const populate = async () => {
             regulatoryStatuses: await server.models.RegulatoryStatus.find(),
             clientIds: (await server.models.Client.find()).map(client => client['id'])
         };
-
         await server.models.Facility.deleteAll();
         const formattedFacilities = uniqueFacilities.map(async (facility) => await formatFacility(facility, requiredModels));
         await console.log('Populating facilities');
@@ -110,7 +190,6 @@ const populate = async () => {
         await console.log('Facilities populated');
         await console.log('Populating facility dependants');
         await facilityDependantsMapper();
-        // map facilites and geolocation data
         await console.log('Populating facility geodata');
         const facilityGeocodeDataRaw = await facilitiesNameWithGeocodes.map(facilityWithGeocodes => {
             return savedFacilities.map(facility => {
@@ -127,13 +206,7 @@ const populate = async () => {
         const facilityGeocodeData = _.flatten(facilityGeocodeDataRaw).filter(fgd => fgd);
         await independentModelFactory(server.models.Geolocation, facilityGeocodeData);
         await console.log('Facility geodata loaded');
-        await console.log('Loading services, utilities and resources');
-        await dependentModelFactory(server.models.ResourceType, server.models.Resource, data.resources);
-        await dependentModelFactory(server.models.UtilityType, server.models.Utility, data.utilities);
-        await dependentModelFactory(server.models.ServiceType, server.models.Service, data.services);
-        await serviceModelSeeder(server.models.ServiceType, server.models.Service, data.services);
-        await facilityResourcesUtilitiesServicesMapper();
-        await console.log('Done populating the MFHR')
+        await console.log('Done populating the MFHR');
         await dataSource.disconnect();
         await loadingSpinner.stop();
     } catch (error) {

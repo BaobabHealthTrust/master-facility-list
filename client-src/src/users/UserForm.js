@@ -54,7 +54,6 @@ class UserForm extends React.Component {
     return (
       <Formik
         initialValues={this.initialValues}
-        validate={this.validate}
         validationSchema={this.schema}
         onSubmit={this._handleChange}
         render={({
@@ -87,77 +86,71 @@ class UserForm extends React.Component {
               }
             >
               <Row>
-              {/* TODO: mark required fields with asterisks */}
                 <Input
                   s={6}
-                  placeholder="Enter User First Name"
-                  labelClassName="mfl-max-width"
                   value={values.firstname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.firstname && errors.firstname}
                   name="firstname"
+                  labelClassName="mfl-max-width"
+                  label="Enter your firstname"
+                  error={touched.firstname && errors.firstname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <Input
                   s={6}
-                  placeholder="Enter User Last Name"
-                  labelClassName="mfl-max-width"
                   value={values.lastname}
-                  onChange={handleChange}
-                  error="bddbbd d   d"
-                  // error={errors.lastname}
-                  onBlur={handleBlur}
-                  error={touched.lastname && errors.lastname}
                   name="lastname"
+                  labelClassName="mfl-max-width"
+                  label="Enter your lastname"
+                  error={touched.lastname && errors.lastname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
               </Row>
               <Row>
                 <Input
                   s={6}
-                  placeholder="Enter Username"
-                  labelClassName="mfl-max-width"
                   value={values.username}
-                  onChange={handleChange}
-                  error={errors.username}
-                  onBlur={handleBlur}
-                  error={touched.username && errors.username}
                   name="username"
+                  labelClassName="mfl-max-width"
+                  label="Enter your username"
+                  error={touched.username && errors.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <Input
                   s={6}
-                  placeholder="Enter Email"
-                  labelClassName="mfl-max-width"
                   value={values.email}
-                  onChange={handleChange}
-                  error={errors.email}
-                  onBlur={handleBlur}
-                  error={touched.email && errors.email}
                   name="email"
+                  labelClassName="mfl-max-width"
+                  label="Enter your email"
+                  error={touched.email && errors.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
               </Row>
+
               <Row>
                 <Input
                   s={6}
-                  placeholder="Enter Password"
-                  labelClassName="mfl-max-width"
                   value={values.password}
-                  onChange={handleChange}
-                  error={errors.password}
-                  onBlur={handleBlur}
-                  error={touched.password && errors.password}
                   name="password"
+                  labelClassName="mfl-max-width"
+                  label="Enter password"
+                  error={touched.password && errors.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   type="password"
                 />
                 <Input
                   s={6}
-                  placeholder="Confirm Password"
-                  labelClassName="mfl-max-width"
                   value={values.confirmPassword}
-                  onChange={handleChange}
-                  error={errors.confirmPassword}
-                  onBlur={handleBlur}
-                  error={touched.confirmPassword && errors.confirmPassword}
                   name="confirmPassword"
+                  labelClassName="mfl-max-width"
+                  label="Confirm your password"
+                  error={touched.confirmPassword && errors.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   type="password"
                 />
               </Row>

@@ -25,12 +25,12 @@ class FeedbackForm extends React.Component {
     feedbackType: ''
   }
 
-  schema = yup.object().shape({
-    name: yup.string().min(3),
-    message: yup.string().min(3).required('this is required'),
-    email: yup.string().min(3).email().required("email address is required"),
-    feedbackType: yup.number().required()
-  })
+    schema = yup.object().shape({
+        name: yup.string().min(3),
+        message: yup.string().min(3).required('this is required'),
+        email: yup.string().min(3).email().required("email address is required"),
+        feedbackType: yup.number().required()
+    })
 
   showToastMessage = message => {
     window.Materialize.toast(message, this.state.delay);
@@ -40,112 +40,114 @@ class FeedbackForm extends React.Component {
     this.showToastMessage('Feedback sent successfully!');
   }
 
-  _handleChange = async (values, { setSubmitting, setErros, resetForm }) => {
-    setSubmitting(true)
-    await this.props.postFormData(
-      {
-        data:
-        {
-          ...values,
-          type_id: values.feedbackType
+    handleSubmit = async (values, {resetForm, setSubmitting}) => {
+        setSubmitting(true)
+        await this.props.postFormData(
+            {
+                data:
+                    {
+                        ...values,
+                        type_id: values.feedbackType
+                    }
+            },
+            'Feedbacks',
+            'POST',
+            'POST_FEEDBACK',
+            'feedback'
+        );
+        if (this.props.feedbackSubmitted) {
+            setSubmitting(false)
+            this.notifyFeedbackSent();
+            resetForm(this.initialValues);
         }
-      },
-      'Feedbacks',
-      'POST',
-      'POST_FEEDBACK',
-      'feedback'
-    );
-    if (this.props.feedbackSubmitted) {
-      this.notifyFeedbackSent();
-      resetForm();
     }
-  }
 
-  render() {
-    return (
-      <React.Fragment>
-        <Formik
-          initialValues={this.initialValues}
-          validate={this.validate}
-          validationSchema={this.schema}
-          onSubmit={this._handleChange}
-          render={({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            setFieldValue
-          }) => (
-              <Card className="mfl-tm-2">
-                <h5>Feedback Form</h5>
-                <Row>
-                  <Input
-                    s={6}
-                    placeholder="Enter name"
-                    labelClassName="mfl-max-width"
-                    value={values.name}
-                    onChange={handleChange}
-                    error={errors.name}
-                    name="name"
-                  />
-                  <Input
-                    s={6}
-                    placeholder="Enter email"
-                    labelClassName="mfl-max-width"
-                    value={values.email}
-                    onChange={handleChange}
-                    error={errors.email}
-                    name="email"
-                    type="email"
-                  />
-                  {errors.name}
-                  <Input
-                    s={12}
-                    type='select'
-                    name="feedbackType"
-                    placeholder="Please select feedback type"
-                    value={values.feedbackType}
-                    onChange={(e) => setFieldValue('feedbackType', e.target.value)}
-                    error={errors.feedbackType}
-                  >
-                    {this.props.feedbackTypes.map(feedbackType => (
-                      <option
-                        key={feedbackType.id}
-                        value={feedbackType.id}
-                      >
-                        {feedbackType.feedback_type}
-                      </option>
-                    ))}
-                  </Input>
-
-                  <Input
-                    s={12}
-                    placeholder="Message"
-                    labelClassName="mfl-max-width"
-                    value={values.message}
-                    onChange={handleChange}
-                    error={errors.message}
-                    name="message"
-                    type="textarea"
-                  />
-
-                </Row>
-                <Row>
-                  <Col>
-                    <Button className="blue" waves='light' onClick={handleSubmit}>
-                      {isSubmitting ? 'sending...' : 'send feedback'}
-                    </Button>
-                  </Col>
-                </Row>
-              </Card>
-            )}
-        />
-
-      </React.Fragment>
-    );
-  }
+    render() {
+        return (
+            <div className="container">
+                <div className="mfl-tm-2" />
+                <Formik
+                    initialValues={this.initalValues}
+                    validationSchema={this.schema}
+                    onSubmit={this.handleSubmit}
+                    render={({
+                        values,
+                        errors,
+                        touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        isSubmitting,
+                        setFieldValue
+                    }) => (
+                            <Card>
+                                <div>
+                                    <Row>
+                                        <Input
+                                            s={12}
+                                            value={values.name}
+                                            name="name"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your name"
+                                            error={touched.name && errors.name}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <Input
+                                            s={12}
+                                            value={values.email}
+                                            name="email"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your email address *"
+                                            error={touched.email && errors.email}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            type="email"
+                                        />
+                                        <Input
+                                            s={12}
+                                            type='select'
+                                            name="feedbackType"
+                                            value={values.feedbackType}
+                                            onChange={(e) => setFieldValue('feedbackType', e.target.value)}
+                                            error={errors.feedbackType}
+                                        >
+                                            <option value="">Select Feedback Type *</option>
+                                            {this.props.feedbackTypes.map(feedbackType => (
+                                                <option
+                                                    key={feedbackType.id}
+                                                    value={feedbackType.id}
+                                                >
+                                                    {feedbackType.feedback_type}
+                                                </option>
+                                            ))}
+                                        </Input>
+                                        <Input
+                                            s={12}
+                                            value={values.message}
+                                            name="message"
+                                            labelClassName="mfl-max-width"
+                                            label="Enter your messaged here *"
+                                            error={touched.message && errors.message}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            type="textarea"
+                                        />
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Button className="blue" waves='light' onClick={handleSubmit}>
+                                                {isSubmitting ? 'sending...' : 'send feedback'}
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Card>
+                        )}
+                />
+            </div >
+        );
+    }
 }
 
 const mapStateToProps = state => ({
