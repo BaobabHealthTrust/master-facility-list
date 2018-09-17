@@ -1,29 +1,24 @@
 import React, { Component } from "react";
 import { Card, CardTitle } from "react-materialize";
-import kuunika from "../kuunika.png";
-import moh from "../moh.jpg";
-import banner from "../banner.png";
-import baobab from "../logos/baobab.jpg";
-import lin from "../logos/lin.png";
-import lighthouse from "../logos/lighthouse.jpg";
 import footerResizer from "../helpers/footerResize";
 import '../App.css';
-import styled from 'styled-components';
-import { kids } from '../images'
+import styled, { css } from 'styled-components';
+import { kids, baobab, kuunika, lin, moh } from '../images'
+import { Banner } from '../common'
 
-const Banner = styled.div`
-  background: rgba(0,0,0,.6);
-  background-image: url(${kids});
-  color: white;
-  background-blend-mode: darken;
-  padding: 6rem 2rem;
-`
-const Title = styled.div.attrs({ className: "text-center text-white text-4xl" })`
-  text-shadow: 1px 0px #666;
-`
 const Heading = styled.div.attrs({ className: "text-3xl text-blue font-bold mb-8" })``
 const TopMargin = styled.div`
   margin: 40px 0px;
+`
+const CardImage = styled.div`
+  width: 100%;
+  height: 200px;
+  ${props => props.image && css`
+    background-image: url(${props.image});
+    background-position: center;
+    background-size: contain;
+    background-repeat: none;
+  `}
 `
 
 class MflAbout extends Component {
@@ -34,11 +29,10 @@ class MflAbout extends Component {
 
   render() {
     const image = "https://www.myjobo.com/public/uploads/1523978871336466B9-FCFE-4FB9-A1CF-812D85A97450.png";
+    const lin = "https://scontent-jnb1-1.xx.fbcdn.net/v/t1.0-1/11665455_1066531170077971_205320784678689341_n.jpg?_nc_cat=0&oh=5fe44d55b6cd2496cd562cd7256c0f5c&oe=5C282ED1";
     return (
       <div>
-        <Banner>
-          <Title>About the Master Health Facility Registry of Malawi</Title>
-        </Banner>
+        <Banner title="About the Master Health Facility Registry of Malawi" />
         <TopMargin />
         <div className="container mfl-modal-container">
           <div className="row">
@@ -51,13 +45,6 @@ class MflAbout extends Component {
                 <br />
                 <p>As a Web Service the MHFL provides an Application Programmable Interface (API) which allows other software systems to directly query the central MHFR and update their own lists. This function is a foundation for the Interoperability of Health Information Systems in Malawi.</p>
               </div>
-              <TopMargin />
-              <Heading>Implementing Partners</Heading>
-              <Card className='small'
-                header={<CardTitle image='img/sample-1.jpg'>Card Title</CardTitle>}
-                actions={[<a href='#'>This is a Link</a>]}>
-                I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.
-              </Card>
             </div>
             <div className="col m4 s12">
               <Heading>Related Links</Heading>
@@ -75,6 +62,38 @@ class MflAbout extends Component {
                   <a className="mfl-about-text" href="http://health.gov.mw">About Ministry of Health</a>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col m12">
+              <TopMargin />
+              <Heading>Implementing Partners</Heading>
+              <div className="row">
+                <div className="col m3 s12">
+                  <Card
+                    header={<CardImage image={image} />}>
+                    <h5>Baobab Health Trust</h5>
+                  </Card>
+                </div>
+                <div className="col m3 s12">
+                  <Card
+                    header={<CardImage image={lin} />}>
+                    <h5>Luke International</h5>
+                  </Card>
+                </div>
+                <div className="col m3 s12">
+                  <Card
+                    header={<CardImage image={kuunika} />}>
+                    <h5>Kuunika</h5>
+                  </Card>
+                </div>
+                <div className="col m3 s12">
+                  <Card
+                    header={<CardImage image={moh} />}>
+                    <h5>Ministry of Health</h5>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </div>
