@@ -76,7 +76,6 @@ class FeedbackForm extends React.Component{
                         setFieldValue
                     }) => (
                             <Card className="mfl-tm-2">
-                                <h5>Feedback Form</h5>
                                 <Row>
                                     <Input
                                         s={6}
