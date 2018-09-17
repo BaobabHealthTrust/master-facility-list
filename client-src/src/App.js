@@ -14,7 +14,30 @@ import { AddFacilityHome } from "./Facility/AddFacility";
 import SearchModal from "./Facility/SearchModal";
 
 class App extends Component {
+
+  state = {
+    widthFlag: false
+  }
+
+  checkWindowWidith = () => (window.innerWidth <= 480) ? this.setState({widthFlag: true}) : this.setState({widthFlag: false})
+
+  isRouteVisible = () => {
+    const route = <Route
+      exact path = '/facilities/add'
+      component = { AddFacilityHome}
+    />
+
+    if (!this.state.widthFlag && sessionStorage.getItem('token')) {
+      return route
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.checkWindowWidith)
+    this.checkWindowWidith()
+  }
+
   render() {
+
     return (
       <div className="mfl-page-wrap">
         <Navbar />
@@ -25,15 +48,7 @@ class App extends Component {
             path="/facilities"
             component={FacilitiesHome}
           />
-          {
-            sessionStorage.getItem('token') && (
-              <Route
-                exact
-                path='/facilities/add'
-                component={AddFacilityHome}
-              />
-            )
-          }
+          {this.isRouteVisible()}
           <Route
             exact
             path='/facilities/search'
