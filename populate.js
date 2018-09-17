@@ -15,7 +15,6 @@ const csvtojson = require('csvtojson');
 const _ = require('lodash');
 const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
-const axios = require('axios');
 
 const getEntityId = async (entities, key, value) => {
     return faker.random.arrayElement(entities.map(entity => entity.id));
