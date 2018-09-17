@@ -16,6 +16,8 @@ const _ = require('lodash');
 const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
 
+
+//TODO: implement the factory pattern on this
 const getEntityId = async (entities, key, value) => {
     return faker.random.arrayElement(entities.map(entity => entity.id));
 }
@@ -54,6 +56,7 @@ const formatFacility = async (facility, requiredModels) => {
     const facilityTypeId = await getFacilityTypeId(requiredModels.facilityTypes, facility['Facility Type']);
     const facilityOwnerId = await getFacilityOwnerId(requiredModels.owners, facility['Facility Ownership']);
     const districtId = await getDistrictId(requiredModels.districts, facility['District']);
+
     const regulatoryStatusId = await getEntityId(requiredModels.regulatoryStatuses, null, null);
     const operationalStatusId = await getEntityId(requiredModels.operationalStatuses, null, null);
     return {
