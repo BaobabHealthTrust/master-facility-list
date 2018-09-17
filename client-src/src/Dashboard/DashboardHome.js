@@ -67,7 +67,10 @@ type State = {
   districts: Array<String>
 };
 
-const MapContainer = styled.div.attrs({ className: "col s12 m3" })`
+const MapContainer = styled.div.attrs({
+  className: "col s12 m3 hide-on-small-only"
+})
+`
   position: sticky;
   top: 10px;
 `
@@ -193,7 +196,7 @@ class DashboardHome extends React.Component<Props, State> {
     return (
       <div>
         <div className="row mt-6">
-          <MapContainer className='hide-on-small-only'>
+          <MapContainer>
             <FacilitiesMap
               onClick={this.onClick}
               districts={this.state.districts}
