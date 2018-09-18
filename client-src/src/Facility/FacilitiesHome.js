@@ -10,7 +10,7 @@ import {
 import SecondaryMenu from "../common/SecondaryMenu";
 import FacilityList from "./FacilityList";
 import footerResizer from "../helpers/footerResize";
-import { ProgressBar, ShowError, FetchAllDependancies, FacilityFilters } from '../common'
+import { ProgressBar, ShowError, FacilityFilters } from '../common'
 import { Facilities } from '../types/list-types'
 import { Route, Switch } from 'react-router-dom';
 
@@ -55,7 +55,6 @@ class FacilitiesHome extends React.Component<Props, State> {
     const isLoadingOrError = this.props.isLoading || this.props.isError
     return (
       <div>
-        <FetchAllDependancies />
         <div className="container mfl-container">
           <br />
           {/* Show Progress Bar */}
@@ -66,10 +65,10 @@ class FacilitiesHome extends React.Component<Props, State> {
             this.props.isLoading
               ? <ProgressBar />
               : <FacilityList
-                  dataSource={this.getDataSource()}
-                  title={this.getFacilityListTitle()}
-                  filter={this.props.filteredResults}
-                />
+                dataSource={this.getDataSource()}
+                title={this.getFacilityListTitle()}
+                filter={this.props.filteredResults}
+              />
           }
         </div>
 
@@ -80,7 +79,7 @@ class FacilitiesHome extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    facilities: state.facilities.list.data,
+    facilities: state.facilities.all.data,
     error: state.facilities.error,
     isLoading: state.facilities.isLoading,
     download: state.downloads.data,
