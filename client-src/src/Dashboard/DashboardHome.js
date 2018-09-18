@@ -16,7 +16,6 @@ import {
   RegulatoryStatus,
   FacilityType
 } from "../types/model-types";
-import { FetchAllDependancies } from "../common"
 import { kids } from "../images";
 import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
@@ -175,13 +174,13 @@ class DashboardHome extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <FetchAllDependancies />
         <div className="row mt-6">
           <MapContainer>
             <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
           </MapContainer>
           <div className="col s12 m9">
             <WelcomeCardContainer>
+              {this.props.dependancyIsLoading && <p>Loading!</p>}
               <div className="col s12">
                 <DashboardSummary closeTag={this.closeTag} districts={this.state.districts} />
               </div>
