@@ -102,7 +102,7 @@ export default class FacilityList extends React.Component<Props> {
 
     const defaultView = (
       <div className="container">
-        <div className="flex flex-row w-full justify-between pt-8">
+        <div className="flex flex-row w-full justify-between">
           <div className="flex flex-row">
 
             <div>
