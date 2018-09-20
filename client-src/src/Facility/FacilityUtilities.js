@@ -4,11 +4,18 @@ import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurre
 import { connect } from "react-redux";
 import { UtilitiesForm } from "./FacilityForms";
 import { uniq, chunk, map, pull } from "lodash";
-
+import { Loader } from "../common";
 class FacilityUtilities extends Component {
 
   state = {
-    isEditUtilities: false
+    isEditUtilities: false,
+    loading: true
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isLoading) this.setState({
+      loading: false
+    })
   };
 
   submitEditUtilityData = async () => {
@@ -91,40 +98,46 @@ class FacilityUtilities extends Component {
 
     return (
       <div className="container">
-        {!this.state.isEditUtilities ? (
-          <div>
-            {cards.map(card => {
-              return (
-                <div className="row">
-                  {card.map(type => {
-                    const data = this.props.utilities
-                      .filter(
-                        util =>
-                          util.utility.utility_type_id ===
-                          type.id
-                      )
-                      .map(util => [util.utility.utility_name]);
-                    return (
-                      <div className="col m4 s12">
-                        <Card
-                          heading={type.utility_type}
-                          data={data}
-                          icon={this.getResourceTypeIcon(
-                            type.utility_type
-                          )}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>) : (<UtilitiesForm
-            submitUtilityData={this.submitEditUtilityData}
-            isEditUtilities={this.state.isEditUtilities}
-            currentUtilities={this.props.utilities}
-            handleCancel={this.handleCancel}
-          />)}
+        {
+          this.state.loading
+          ? <Loader />
+          :(<div>
+          {!this.state.isEditUtilities ? (
+            <div>
+              {cards.map(card => {
+                return (
+                  <div className="row">
+                    {card.map(type => {
+                      const data = this.props.utilities
+                        .filter(
+                          util =>
+                            util.utility.utility_type_id ===
+                            type.id
+                        )
+                        .map(util => [util.utility.utility_name]);
+                      return (
+                        <div className="col m4 s12">
+                          <Card
+                            heading={type.utility_type}
+                            data={data}
+                            icon={this.getResourceTypeIcon(
+                              type.utility_type
+                            )}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>) : (<UtilitiesForm
+              submitUtilityData={this.submitEditUtilityData}
+              isEditUtilities={this.state.isEditUtilities}
+              currentUtilities={this.props.utilities}
+              handleCancel={this.handleCancel}
+            />)}
+          </div>)
+        }
       </div>
     );
   }
@@ -138,6 +151,7 @@ const mapStateToProps = state => {
     utilityTypes: state.dependancies.utilityTypes,
     postResponse: state.postResponse,
     formValues: state.formValues,
+    isLoading: state.facilities.isLoading,
   };
 };
 

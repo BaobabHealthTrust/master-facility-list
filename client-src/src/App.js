@@ -15,12 +15,14 @@ import SearchModal from "./Facility/SearchModal";
 import { FetchAllDependancies } from "./common";
 import { connect } from "react-redux";
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Loader } from './common'
+
 class App extends Component {
   render() {
     return (
       <React.Fragment>
         <FetchAllDependancies />
-        {this.props.loading && <p>Loading</p>}
+        {this.props.loading && (<Loader />)}
         {
           !this.props.loading && (
             <Router>
