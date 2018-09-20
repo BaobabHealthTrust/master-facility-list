@@ -12,7 +12,8 @@ export default (state = initialState, action) => {
       if(action.payload.data){
         return {
           ...state,
-          users: action.payload.data
+          users: action.payload.data,
+          isLoading: false
         };
       }
       return state;
@@ -22,7 +23,8 @@ export default (state = initialState, action) => {
       if (action.payload.data) {
         return {
           ...state,
-          userAccessTokens: action.payload.data
+          userAccessTokens: action.payload.data,
+          isLoading: false
         };
       }
       return state;
@@ -31,24 +33,28 @@ export default (state = initialState, action) => {
     console.log(action.payload);
       return {
         ...state,
-        userCreated: action.payload.data ? true : false
+        userCreated: action.payload.data ? true : false,
+        isLoading: false
       };
     break
     case "UPDATE_USER":
       return {
         ...state,
-        userUpdated: action.payload.data ? true : false
+        userUpdated: action.payload.data ? true : false,
+        isLoading: false
       };
     break
     case "CHANGE_USER_PASSWORD":
       return {
         ...state,
-        passwordChanged: action.payload.data ? true : false
+        passwordChanged: action.payload.data ? true : false,
+        isLoading: false
       };
       break
     case 'ARCHIVE_USER':
       return {
-        ...state
+        ...state,
+        isLoading: false
       }
       break;
     default:
