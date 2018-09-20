@@ -15,6 +15,7 @@ const csvtojson = require('csvtojson');
 const _ = require('lodash');
 const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
+const argv = require('yargs').argv
 
 
 //TODO: implement the factory pattern on this
@@ -97,7 +98,7 @@ const populateIndependentModels = async(facilities) => {
     await independentModelFactory(server.models.ServiceType, data.serviceTypes);   
 }
 
-const mapDistrictsToZones = async() => {
+const mapDistrictsToZones = async () => {
     const organisationUnits = (JSON.parse(await fs.readFileSync('dhis2-organisation-units.json', 'utf8')))
         .organisationUnits
         .filter(organisationUnit => organisationUnit.name != 'Central Hospital');
@@ -150,25 +151,32 @@ const mapDistrictsToZones = async() => {
     await console.log('Mapped Districts to Zones successfully');
 }
 
-const populate = async () => {
+const loadFromFile = async() => {
+    const facilityData = await fs.readFileSync('health-facilities.csv', 'utf8');
+    const facilities = _.uniqBy(
+      await csvtojson().fromString(facilityData),
+      'Facility Name'
+    ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));  
+    return facilities;
+}
+
+const populate = async (facilities) => {
     try {
 
         await loadingSpinner.start(100, {
             clearChar: true
         });
 
-        const facilityData = await fs.readFileSync('health-facilities.csv', 'utf8');
-
-        const uniqueFacilities = _.uniqBy(
-            await csvtojson().fromString(facilityData), 
-            'Facility Name'
-        ).filter(facility => (facility['Facility Name'] && facility['Facility Type'] != 'Village Clinic'));
+        const uniqueFacilities = await facilities;
+        
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
             latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
             longitude: facility['longitude'] ? facility['longitude'] : faker.address.latitude()
         }));
 
+        // process.exit(0);
+        
         await populateIndependentModels(uniqueFacilities);
 
         await mapDistrictsToZones();
@@ -213,4 +221,9 @@ const populate = async () => {
         console.log(error);
     }
 }
-populate();
+
+module.exports = populate
+
+if (process.env.NODE_ENV != 'testing') { 
+    populate(loadFromFile());
+}
