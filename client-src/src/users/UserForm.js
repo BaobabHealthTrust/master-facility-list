@@ -8,9 +8,7 @@ import '../App.css';
 
 class UserForm extends React.Component {
 
-  getUser = () => {
-    return this.props.user;
-  }
+  getUser = () => this.props.user
 
   initialValues = {
     firstname: this.getUser() ? this.getUser().firstname : "",
@@ -50,10 +48,19 @@ class UserForm extends React.Component {
       this.props.onUserCreationError();
   }
 
+  renderTriggerButton = () =>  (
+    <Button
+      floating large waves = 'light'
+      className = "hide-on-small-only blue mfl-fl-right"
+      icon = "add"
+    />
+  )
+
   render() {
     return (
       <Formik
         initialValues={this.initialValues}
+        validate={this.validate}
         validationSchema={this.schema}
         onSubmit={this._handleChange}
         render={({
@@ -67,7 +74,7 @@ class UserForm extends React.Component {
         }) => (
             <Modal
               header={this.props.title}
-              trigger={<Button floating large waves='light' className="blue mfl-fl-right" icon="add" />}
+              trigger = {this.renderTriggerButton()}
               actions={
                 <div class="">
                   <Button modal="close" flat waves="light">cancel</Button>
@@ -76,7 +83,7 @@ class UserForm extends React.Component {
                     className="blue darken-2"
                     onClick={handleSubmit}>
                      Save User
-                    </Button>
+                  </Button>
                 </div>
               }
               modalOptions={
@@ -86,71 +93,77 @@ class UserForm extends React.Component {
               }
             >
               <Row>
+              {/* TODO: mark required fields with asterisks */}
                 <Input
                   s={6}
+                  placeholder="Enter User First Name"
+                  labelClassName="mfl-max-width"
                   value={values.firstname}
-                  name="firstname"
-                  labelClassName="mfl-max-width"
-                  label="Enter your firstname"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   error={touched.firstname && errors.firstname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  name="firstname"
                 />
                 <Input
                   s={6}
+                  placeholder="Enter User Last Name"
+                  labelClassName="mfl-max-width"
                   value={values.lastname}
-                  name="lastname"
-                  labelClassName="mfl-max-width"
-                  label="Enter your lastname"
+                  onChange={handleChange}
+                  error="bddbbd d   d"
+                  // error={errors.lastname}
+                  onBlur={handleBlur}
                   error={touched.lastname && errors.lastname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  name="lastname"
                 />
               </Row>
               <Row>
                 <Input
                   s={6}
+                  placeholder="Enter Username"
+                  labelClassName="mfl-max-width"
                   value={values.username}
-                  name="username"
-                  labelClassName="mfl-max-width"
-                  label="Enter your username"
-                  error={touched.username && errors.username}
                   onChange={handleChange}
+                  error={errors.username}
                   onBlur={handleBlur}
+                  error={touched.username && errors.username}
+                  name="username"
                 />
                 <Input
                   s={6}
-                  value={values.email}
-                  name="email"
+                  placeholder="Enter Email"
                   labelClassName="mfl-max-width"
-                  label="Enter your email"
-                  error={touched.email && errors.email}
+                  value={values.email}
                   onChange={handleChange}
+                  error={errors.email}
                   onBlur={handleBlur}
+                  error={touched.email && errors.email}
+                  name="email"
                 />
               </Row>
-
               <Row>
                 <Input
                   s={6}
-                  value={values.password}
-                  name="password"
+                  placeholder="Enter Password"
                   labelClassName="mfl-max-width"
-                  label="Enter password"
-                  error={touched.password && errors.password}
+                  value={values.password}
                   onChange={handleChange}
+                  error={errors.password}
                   onBlur={handleBlur}
+                  error={touched.password && errors.password}
+                  name="password"
                   type="password"
                 />
                 <Input
                   s={6}
-                  value={values.confirmPassword}
-                  name="confirmPassword"
+                  placeholder="Confirm Password"
                   labelClassName="mfl-max-width"
-                  label="Confirm your password"
-                  error={touched.confirmPassword && errors.confirmPassword}
+                  value={values.confirmPassword}
                   onChange={handleChange}
+                  error={errors.confirmPassword}
                   onBlur={handleBlur}
+                  error={touched.confirmPassword && errors.confirmPassword}
+                  name="confirmPassword"
                   type="password"
                 />
               </Row>

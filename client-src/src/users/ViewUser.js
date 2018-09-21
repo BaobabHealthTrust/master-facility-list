@@ -101,6 +101,7 @@ class ViewUser extends React.Component {
         this.showDeleteButton()
 
       ]}>
+      <div className='mb-2'></div>
       <Table>
         <tbody>
           <tr>

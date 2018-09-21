@@ -50,7 +50,10 @@ type State = {
   districts: Array<String>
 };
 
-const MapContainer = styled.div.attrs({ className: "col s12 m3" })`
+const MapContainer = styled.div.attrs({
+  className: "col s12 m3 hide-on-small-only"
+})
+`
   position: sticky;
   top: 10px;
 `
@@ -176,7 +179,10 @@ class DashboardHome extends React.Component<Props, State> {
       <React.Fragment>
         <div className="row mt-6">
           <MapContainer>
-            <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
+            <FacilitiesMap
+              onClick={this.onClick}
+              districts={this.state.districts}
+              height={600} />
           </MapContainer>
           <div className="col s12 m9">
             <WelcomeCardContainer>
@@ -202,7 +208,7 @@ class DashboardHome extends React.Component<Props, State> {
                 <GenericCard count={this.facilitiesOfType('Health Center')} title="Health Centers" icon="tent" />
               </div>
             </div>
-            <div className="row">
+            <div className="row hide-on-small-only">
               <div className="col m12">
                 <CallToAction>
                   <Button>Go to Advanced Search</Button>
@@ -228,7 +234,7 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className='row'>
+            <div className='row hide-on-small-only'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
                   <BarChart

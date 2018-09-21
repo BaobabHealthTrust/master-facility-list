@@ -41,16 +41,18 @@ class Navbar extends Component {
       <div className="header">
         <nav>
           <div className="nav-wrapper blue darken-4">
-            <a href="" className="center hide-on-med-and-up">
+            <a href="/" className="center hide-on-med-and-up">
               Master Health Facility Registry
-                        </a>
+            </a>
 
             <div className="left hide-on-med-and-down mfl-pl-10">
-              <img src={logo} alt="logo" width="60" />
+              <a href="/">
+                <img src={logo} alt="logo" width="60" />
+              </a>
             </div>
 
             <a
-              href=""
+              href="/"
               data-activates="mobile-demo"
               className="button-collapse"
             >
@@ -58,8 +60,10 @@ class Navbar extends Component {
             </a>
 
             <div className="left hide-on-med-and-down mfl-pl-2">
-              Master Health Facility Registry
-                        </div>
+              <a href="/">
+                Master Health Facility Registry
+              </a>
+            </div>
 
             <form
               className="left hide-on-small-only mfl-normal-search"
