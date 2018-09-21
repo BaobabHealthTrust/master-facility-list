@@ -1,6 +1,6 @@
 //@flow
 export { default as ShowError } from './ShowError'
-export { default as ProgressBar } from './ProgressBar'
+export { default as Loader } from './Loader'
 export { default as FetchAllDependancies } from './FetchAllDependancies'
 export { default as SecondaryMenu } from './SecondaryMenu'
 export { default as AddEntityHeading } from './AddEntityHeading'
