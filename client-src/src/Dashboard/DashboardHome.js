@@ -1,9 +1,8 @@
 import React from "react";
 
 import {
-  FacilitiesByTypeAndOwnership,
-  FacilitiesByLicensingStatus,
-  FacilitiesByOperationalStatus,
+  BarChart,
+  PieChart,
   FacilitiesMap
 } from "./charts";
 
@@ -17,23 +16,7 @@ import {
   RegulatoryStatus,
   FacilityType
 } from "../types/model-types";
-
-import { map, uniq, isEmpty, intersection } from "lodash";
 import { kids } from "../images";
-import {
-  fetchFacilityOwners,
-  fetchFacilityTypes,
-  fetchOperationalStatuses,
-  fetchRegulatoryStatuses,
-  fetchServices,
-  fetchFacilities,
-  fetchDashboardFacilityServices,
-  operationalStatuses,
-  regulatoryStatuses,
-  facilitiesWithService,
-  fetchTotalFacilities,
-  facilityTypeAndOwnership
-} from "../actions";
 import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
 import DashboardSummary from "./dashboardSummary";
@@ -128,13 +111,13 @@ class DashboardHome extends React.Component<Props, State> {
       : 0
   }
 
-  ownershipBarData = () => {
+  generateBarChartData = (comparisonModel, comparisonField, facilityField) => {
     const data = this.props.allFacilities.data
     if (data) {
-      return this.props.owners.map(owner => {
+      return this.props[comparisonModel].map(model => {
         return {
-          name: owner.facility_owner,
-          count: data.filter(facility => facility.ownership == owner.facility_owner)
+          name: model[comparisonField],
+          count: data.filter(facility => facility[facilityField] == model[comparisonField])
             .filter(this.facilityDistrictFilter).length
         }
       })
@@ -142,13 +125,23 @@ class DashboardHome extends React.Component<Props, State> {
     return []
   }
 
-
-  updateGraphs = () => {
-    this.props.regulatoryStatuses(this.state.districts);
-    this.props.operationalStatuses(this.state.districts);
-    this.props.facilityTypeAndOwnership(this.state.districts);
-    this.props.fetchTotalFacilities(this.state.districts);
+  ownershipBarData = () => this.generateBarChartData('owners', 'facility_owner', 'ownership')
+  regulatoryBarData = () => this.generateBarChartData('regulatoryStatuses', 'facility_regulatory_status', 'regulatoryStatus')
+  operationalBarData = () => {
+    const data = this.generateBarChartData('operationalStatuses', 'facility_operational_status', 'status')
+    return data.map(d => {
+      return {
+        name: d.name,
+        value: d.count
+      }
+    })
   }
+
+  totalFacilities = () => (
+    this.props.allFacilities.data
+      ? this.props.allFacilities.data.filter(this.facilityDistrictFilter).length
+      : 0
+  )
 
   closeTag = async (event) => {
     const district = event.target.id
@@ -166,22 +159,11 @@ class DashboardHome extends React.Component<Props, State> {
       const districts = [...this.state.districts, district];
       await this.setState({ districts });
     }
-    this.updateGraphs()
   }
 
   async componentDidMount() {
     window.addEventListener('resize', this.resizeDashBoard)
     this.resizeDashBoard();
-    await this.props.fetchFacilities();
-    await this.props.fetchOperationalStatuses();
-    await this.props.fetchRegulatoryStatuses();
-    await this.props.fetchFacilityOwners();
-    await this.updateGraphs();
-    await this.props.fetchDashboardFacilityServices(
-      map(this.state.dashboardServices, "id")
-    );
-
-    await this.updateGraphs();
   }
 
   componentWillReceiveProps() {
@@ -191,20 +173,21 @@ class DashboardHome extends React.Component<Props, State> {
   render() {
 
     return (
-      <div>
+      <React.Fragment>
         <div className="row mt-6">
           <MapContainer>
             <FacilitiesMap onClick={this.onClick} districts={this.state.districts} height={600} />
           </MapContainer>
           <div className="col s12 m9">
             <WelcomeCardContainer>
+              {this.props.dependancyIsLoading && <p>Loading!</p>}
               <div className="col s12">
                 <DashboardSummary closeTag={this.closeTag} districts={this.state.districts} />
               </div>
             </WelcomeCardContainer>
             <div className="row">
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.props.totalFacilities} title="Total Facilities" icon="hospital" />
+                <GenericCard count={this.totalFacilities()} title="Total Facilities" icon="hospital" />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.facilitiesOfType('District Hospital')} title="Dist Hospitals" icon="district" />
@@ -228,18 +211,18 @@ class DashboardHome extends React.Component<Props, State> {
               </div>
               <div className="col s12 m6" id="regulatoryStatusContainer">
                 <div class="outer-recharts-surface">
-                  <FacilitiesByLicensingStatus
+                  <BarChart
                     title="Facilities By License Status"
                     colorIndex={0}
-                    data={this.props.facilitiesByRegulatoryStatus}
+                    data={this.regulatoryBarData()}
                     width={this.state.regulatoryStatusContainerWidth}
                   />
                 </div>
               </div>
               <div className="col s12 m6" id="operationalStatusContainer">
                 <div className="outer-recharts-surface">
-                  <FacilitiesByOperationalStatus
-                    data={this.props.facilitiesByOperationalStatus}
+                  <PieChart
+                    data={this.operationalBarData()}
                     width={this.state.operationalStatusContainerWidth}
                   />
                 </div>
@@ -248,7 +231,7 @@ class DashboardHome extends React.Component<Props, State> {
             <div className='row'>
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
-                  <FacilitiesByLicensingStatus
+                  <BarChart
                     title="Facilities By Ownership"
                     colorIndex={2}
                     data={this.ownershipBarData()}
@@ -259,7 +242,7 @@ class DashboardHome extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 
@@ -267,55 +250,14 @@ class DashboardHome extends React.Component<Props, State> {
 
 const mapStateToProps = store => {
   return {
-    facilityServices: store.dashboardStatistics.facilityServices,
-    services: store.dependancies.services,
-    facilitiesByRegulatoryStatus: store.facilities.facilitiesByRegulatoryStatus,
-    facilitiesByOperationalStatus: store.facilities.facilitiesByOperationalStatus,
     allFacilities: store.facilities.all,
     owners: store.dependancies.facilityOwners,
-    facilityTypes: store.dependancies.facilityTypes,
     operationalStatuses: store.dependancies.operationalStatuses,
     regulatoryStatuses: store.dependancies.regulatoryStatuses,
-    isSearchValuesEmpty: isEmpty(
-      map({
-        districtValues: store.advancedSearchValues.districtValues,
-        operationalStatusValues:
-          store.advancedSearchValues.operationalStatusValues,
-        facilityTypeValues:
-          store.advancedSearchValues.facilityTypeValues,
-        facilityOwnerValues:
-          store.advancedSearchValues.facilityOwnerValues,
-        regulatoryStatusValues:
-          store.advancedSearchValues.regulatoryStatusValues
-      }).filter(arr => arr.length > 0)
-    ),
-    results:
-      store.searchResults.advancedSearchFacilities.basicDetailsFacilities,
     dependancyIsLoading: store.dependancies.isLoading,
     dependancyIsNetworkError: store.dependancies.isNetworkError,
-    facilitiesByTypeAndOwnership: store.facilities.facilitiesByTypeAndOwnership,
-    facilitiesByTypeAndOwnershipKeys: store.facilities.facilitiesByTypeAndOwnershipKeys,
-    facilitiesWithOPD: store.facilities.facilitiesWithOPD,
-    facilitiesWithANC: store.facilities.facilitiesWithANC,
-    facilitiesWithHTC: store.facilities.facilitiesWithHTC,
-    facilitiesWithART: store.facilities.facilitiesWithART,
-    totalFacilities: store.facilities.totalFacilities
+    facilityTypes: store.dependancies.facilityTypes,
   };
 };
 
-export default connect(mapStateToProps, {
-  fetchDashboardFacilityServices,
-  fetchServices,
-  regulatoryStatuses,
-  operationalStatuses,
-  fetchFacilities,
-  fetchServices,
-  fetchFacilityTypes,
-  fetchFacilityOwners,
-  fetchOperationalStatuses,
-  fetchRegulatoryStatuses,
-  facilitiesWithService,
-  fetchTotalFacilities,
-  facilityTypeAndOwnership
-})(DashboardHome);
-connect()
+export default connect(mapStateToProps, {})(DashboardHome);

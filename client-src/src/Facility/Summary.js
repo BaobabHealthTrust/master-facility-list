@@ -4,14 +4,22 @@ import Card from "../common/MflCard";
 import { connect } from "react-redux";
 import { fetchCurrentDetails, setCurrentDetails } from "../actions";
 import moment from "moment";
-import { BasicDetailsForm } from "./FacilityForms";
 import { CurrentFacility } from "../types/helper-types";
-import { ProgressBar } from 'react-materialize';
+import { Loader } from '../common';
+
 class Summary extends Component<{ current: CurrentFacility }> {
+
+  state = {
+    loading: true
+  };
 
   async componentDidMount() {
     const id = this.props.match.params.id;
     this.props.fetchCurrentDetails(id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.isLoading) this.setState({ loading: false})
   }
 
   _renderHeadingSection = (title, icon, label) => {
@@ -35,8 +43,8 @@ class Summary extends Component<{ current: CurrentFacility }> {
         <div>
           <div className="row z-depth-2">
             {
-              this.props.isLoading
-                ? <ProgressBar />
+              this.state.loading
+                ? <Loader />
                 : (
                   <div>
                     <div className="col m6 s12">
