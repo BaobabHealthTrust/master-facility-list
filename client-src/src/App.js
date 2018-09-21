@@ -18,7 +18,22 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Loader } from './common'
 
 class App extends Component {
+
+  state = {
+    widthFlag: false
+  }
+
+  checkWindowWidith = () => (window.innerWidth <= 480) ? this.setState({widthFlag: true}) : this.setState({widthFlag: false})
+
+  isRouteVisible = () => !this.state.widthFlag && sessionStorage.getItem('token')
+
+  componentDidMount() {
+    window.addEventListener('resize', this.checkWindowWidith)
+    this.checkWindowWidith()
+  }
+
   render() {
+
     return (
       <React.Fragment>
         <FetchAllDependancies />
@@ -27,56 +42,53 @@ class App extends Component {
           !this.props.loading && (
             <Router>
               <div className="mfl-page-wrap">
-                <Navbar />
-                <div className="content">
-                  <Switch>
-                    <Route
-                      exact
-                      path="/facilities"
-                      component={FacilitiesHome}
-                    />
-                    {
-                      sessionStorage.getItem('token') && (
-                        <Route
-                          exact
-                          path='/facilities/add'
-                          component={AddFacilityHome}
-                        />
-                      )
-                    }
-                    <Route
-                      exact
-                      path='/facilities/search'
-                      component={SearchModal}
-                    />
-                    <Route path="/facilities/:id/:sections" component={FacilityDetails} />
-                    <Route
-                      exact
-                      path="/"
-                      component={Dashboard}
-                    />
-                    <Route
-                      exact
-                      path="/about"
-                      component={MflAbout}
-                    />
-                    <Route
-                      exact
-                      path="/feedback"
-                      component={MfLFeedback}
-                    />
-                    <Route
-                      exact
-                      path="/login"
-                      component={MflLogin}
-                    />
-                    <Route
-                      exact
-                      path="/users"
-                      component={UsersHome}
-                    />
-                  </Switch>
-                </div>
+              <Navbar />
+              <div className="content">
+              <Switch>
+                <Route
+                  exact
+                  path="/facilities"
+                  component={FacilitiesHome}
+                />
+                {this.isRouteVisible() && (
+                  <Route
+                    exact path = '/facilities/add'
+                    component = { AddFacilityHome}
+                  />
+                )}
+                <Route
+                  exact
+                  path='/facilities/search'
+                  component={SearchModal}
+                />
+                <Route path="/facilities/:id/:sections" component={FacilityDetails} />
+                <Route
+                  exact
+                  path="/"
+                  component={Dashboard}
+                />
+                <Route
+                  exact
+                  path="/about"
+                  component={MflAbout}
+                />
+                <Route
+                  exact
+                  path="/feedback"
+                  component={MfLFeedback}
+                />
+                <Route
+                  exact
+                  path="/login"
+                  component={MflLogin}
+                />
+                <Route
+                  exact
+                  path="/users"
+                  component={UsersHome}
+                />
+              </Switch>
+              </div>
                 <Footer />
               </div >
             </Router>

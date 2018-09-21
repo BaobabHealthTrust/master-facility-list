@@ -521,6 +521,7 @@ select.mfl-select {
     color: rgb(71, 71, 71) !important;
     font-size: 18px !important;
     box-shadow: none !important;
+    position: relative !important;
 }
 
 .mfl-login-input:focus {
@@ -534,6 +535,7 @@ select.mfl-select {
     border: 1px solid #54617a;
     height: 53px;
     border-radius: 5px;
+    position: relative !important;
 }
 
 .mfl-login-icon {
@@ -806,8 +808,39 @@ svg #districts path:hover{
     background: rgba(0, 0, 0, 0.8) !important;
 }
 
+.mfl-about-text {
+  font-size:100%;
+  line-height:1.5;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.mfl-feedback-img {
+  background: url('banner.png');
+  height: 100%;
+  width: 100%;
+  padding: 100px 40px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
 @media only screen and (min-width: 993px) {
     .col-5{
         width: 20% !important;
     }
+}
+
+@media (max-width: 768px) {
+  .mfl-login-input-container,
+  .mfl-login-input,
+  .mfl-login-container{
+    width: 100% !important;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
 }
