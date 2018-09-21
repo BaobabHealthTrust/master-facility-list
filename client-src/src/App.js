@@ -12,6 +12,10 @@ import MfLFeedback from "./common/MfLFeedback";
 import { UsersHome } from './users';
 import { AddFacilityHome } from "./Facility/AddFacility";
 import SearchModal from "./Facility/SearchModal";
+import { FetchAllDependancies } from "./common";
+import { connect } from "react-redux";
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Loader } from './common'
 
 class App extends Component {
 
@@ -31,58 +35,75 @@ class App extends Component {
   render() {
 
     return (
-      <div className="mfl-page-wrap">
-        <Navbar />
-        <div className="content">
-        <Switch>
-          <Route
-            exact
-            path="/facilities"
-            component={FacilitiesHome}
-          />
-          {this.isRouteVisible() && (
-            <Route
-              exact path = '/facilities/add'
-              component = { AddFacilityHome}
-            />
-          )}
-          <Route
-            exact
-            path='/facilities/search'
-            component={SearchModal}
-          />
-          <Route path="/facilities/:id/:sections" component={FacilityDetails} />
-          <Route
-            exact
-            path="/"
-            component={Dashboard}
-          />
-          <Route
-            exact
-            path="/about"
-            component={MflAbout}
-          />
-          <Route
-            exact
-            path="/feedback"
-            component={MfLFeedback}
-          />
-          <Route
-            exact
-            path="/login"
-            component={MflLogin}
-          />
-          <Route
-            exact
-            path="/users"
-            component={UsersHome}
-          />
-        </Switch>
-        </div>
-        <Footer />
-      </div >
+      <React.Fragment>
+        <FetchAllDependancies />
+        {this.props.loading && (<Loader />)}
+        {
+          !this.props.loading && (
+            <Router>
+              <div className="mfl-page-wrap">
+              <Navbar />
+              <div className="content">
+              <Switch>
+                <Route
+                  exact
+                  path="/facilities"
+                  component={FacilitiesHome}
+                />
+                {this.isRouteVisible() && (
+                  <Route
+                    exact path = '/facilities/add'
+                    component = { AddFacilityHome}
+                  />
+                )}
+                <Route
+                  exact
+                  path='/facilities/search'
+                  component={SearchModal}
+                />
+                <Route path="/facilities/:id/:sections" component={FacilityDetails} />
+                <Route
+                  exact
+                  path="/"
+                  component={Dashboard}
+                />
+                <Route
+                  exact
+                  path="/about"
+                  component={MflAbout}
+                />
+                <Route
+                  exact
+                  path="/feedback"
+                  component={MfLFeedback}
+                />
+                <Route
+                  exact
+                  path="/login"
+                  component={MflLogin}
+                />
+                <Route
+                  exact
+                  path="/users"
+                  component={UsersHome}
+                />
+              </Switch>
+              </div>
+                <Footer />
+              </div >
+            </Router>
+          )
+        }
+      </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapStateToProps = store => {
+  return {
+    loading: store.dependancies.isLoading,
+    networkError: store.dependancies.isNetworkError,
+  };
+};
+
+export default connect(mapStateToProps, {})(App);

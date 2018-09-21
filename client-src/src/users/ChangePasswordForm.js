@@ -11,11 +11,17 @@ class ChangePasswordForm extends React.Component {
     state = {
         delay: 3000
     }
+    
+    passwordValidationMessage = 'Weak password, The password must be a combination of numbers, letters, and special characters'
 
     schema = yup.object().shape({
-        password: yup.string().min(5).required(),
+        password: yup.string()
+            .min(5)
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, this.passwordValidationMessage)
+            .required(),
         confirmPassword: yup.string()
             .oneOf([yup.ref('password'), null])
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm, this.passwordValidationMessage)
             .required('Password confirm is required')
     })
 
@@ -70,7 +76,8 @@ class ChangePasswordForm extends React.Component {
                     touched,
                     handleChange,
                     handleSubmit,
-                    isSubmitting
+                    isSubmitting,
+                    handleBlur
                 }) => (
                         <Modal
                             header="Change Password"
@@ -94,23 +101,25 @@ class ChangePasswordForm extends React.Component {
                         >
                             <Row>
                                 <Input
-                                    s={12}
-                                    placeholder="Enter New Password"
-                                    labelClassName="mfl-max-width"
+                                    s={6}
                                     value={values.password}
-                                    onChange={handleChange}
-                                    error={errors.password}
                                     name="password"
+                                    labelClassName="mfl-max-width"
+                                    label="Enter password"
+                                    error={touched.password && errors.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     type="password"
                                 />
                                 <Input
-                                    s={12}
-                                    placeholder="Confirm New Password"
-                                    labelClassName="mfl-max-width"
+                                    s={6}
                                     value={values.confirmPassword}
-                                    onChange={handleChange}
-                                    error={errors.confirmPassword}
                                     name="confirmPassword"
+                                    labelClassName="mfl-max-width"
+                                    label="Confirm your password"
+                                    error={touched.confirmPassword && errors.confirmPassword}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     type="password"
                                 />
                             </Row>

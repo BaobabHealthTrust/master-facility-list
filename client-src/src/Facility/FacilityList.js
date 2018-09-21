@@ -28,17 +28,8 @@ export default class FacilityList extends React.Component<Props> {
   }
 
   getWhereClause = () => {
-
-    if (this.props.filter.length) {
-      return {
-        id: {
-          inq: this.props.filter
-        }
-      }
-    }
-
-    return {}
-
+    const { filter } = this.props
+    return (filter.length) ? { id: { inq: filter}}: {}
   }
 
   buttonConfiguration: ButtonConfiguration = [
