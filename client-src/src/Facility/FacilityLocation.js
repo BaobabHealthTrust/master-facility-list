@@ -1,16 +1,25 @@
 //@flow
 import React, { Component } from "react";
 import Card from "../common/MflCard";
+import { Loader } from "../common";
 import { fetchCurrentDetails, setCurrentDetails } from "../actions";
 import { connect } from "react-redux";
 import MFLGoogleMap from "../common/MFLGoogleMap";
 
 class FacilityLocation extends Component<State> {
 
+  state = {
+    loading: true
+  };
+
   componentDidMount() {
     const id = this.props.match.params.id;
     this.props.fetchCurrentDetails(id);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isLoading) this.setState({ loading: false })
+  };
 
   render() {
     const locationData = this.props.current.locations
@@ -46,7 +55,10 @@ class FacilityLocation extends Component<State> {
       { lat: -13.9626121, lng: 33.7741195 };
 
     return <div className="container">
-        <div>
+      {
+        this.state.loading
+        ? <Loader />
+        : (<div>
           <div className="row">
             <div className="col m6 s12">
               <div className="z-depth-2">
@@ -69,14 +81,16 @@ class FacilityLocation extends Component<State> {
               </div>
             </div>
           </div>
-        </div>
-      </div>;
+        </div>)
+      }
+    </div>;
   }
 }
 
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
+    isLoading: state.facilities.isLoading,
   };
 };
 

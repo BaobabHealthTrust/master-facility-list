@@ -59,7 +59,8 @@ class EditUserModal extends React.Component {
                     touched,
                     handleChange,
                     handleSubmit,
-                    isSubmitting
+                    isSubmitting,
+                    handleBlur
                 }) => (
                         <Modal
                             header="Edit administrator user"
@@ -85,44 +86,48 @@ class EditUserModal extends React.Component {
                                 }
                             }
                         >
+                        <Row>
+                            <Input
+                                s={6}
+                                value={values.firstname}
+                                name="firstname"
+                                labelClassName="mfl-max-width"
+                                label="Enter your firstname"
+                                error={touched.firstname && errors.firstname}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <Input
+                                s={6}
+                                value={values.lastname}
+                                name="lastname"
+                                labelClassName="mfl-max-width"
+                                label="Enter your lastname"
+                                error={touched.lastname && errors.lastname}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </Row>
                             <Row>
                                 <Input
                                     s={6}
-                                    placeholder="Enter User First Name"
-                                    labelClassName="mfl-max-width"
-                                    value={values.firstname}
-                                    onChange={handleChange}
-                                    error={errors.firstname}
-                                    name="firstname"
-                                />
-                                <Input
-                                    s={6}
-                                    placeholder="Enter User Last Name"
-                                    labelClassName="mfl-max-width"
-                                    value={values.lastname}
-                                    onChange={handleChange}
-                                    error={errors.lastname}
-                                    name="lastname"
-                                />
-                            </Row>
-                            <Row>
-                                <Input
-                                    s={6}
-                                    placeholder="Enter Username"
-                                    labelClassName="mfl-max-width"
                                     value={values.username}
-                                    onChange={handleChange}
-                                    error={errors.username}
                                     name="username"
+                                    labelClassName="mfl-max-width"
+                                    label="Enter your username"
+                                    error={touched.username && errors.username}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                                 <Input
                                     s={6}
-                                    placeholder="Enter Email"
-                                    labelClassName="mfl-max-width"
                                     value={values.email}
-                                    onChange={handleChange}
-                                    error={errors.email}
                                     name="email"
+                                    labelClassName="mfl-max-width"
+                                    label="Enter your email"
+                                    error={touched.email && errors.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                             </Row>
                         </Modal>
