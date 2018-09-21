@@ -199,13 +199,13 @@ class DashboardHome extends React.Component<Props, State> {
                 <GenericCard count={this.facilitiesOfType('District Hospital')} title="Dist Hospitals" icon="district" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('Hospital')} title="Hospitals" icon="normal_hospital" />
+                <GenericCard count={this.facilitiesOfType('Central Hospital')} title="Central Hospitals" icon="normal_hospital" />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard count={this.facilitiesOfType('Clinic')} title="Clinics" icon="clinic" />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('Health Center')} title="Health Centers" icon="tent" />
+                <GenericCard count={this.facilitiesOfType('Health Centre')} title="Health Centres" icon="tent" />
               </div>
             </div>
             <div className="row hide-on-small-only">
