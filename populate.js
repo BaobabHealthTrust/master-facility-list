@@ -17,7 +17,6 @@ const loadingSpinner = require('loading-spinner');
 const moment = require('moment');
 const argv = require('yargs').argv
 
-
 //TODO: implement the factory pattern on this
 const getEntityId = async (entities, key, value) => {
     return faker.random.arrayElement(entities.map(entity => entity.id));
@@ -168,7 +167,7 @@ const populate = async (facilities) => {
         });
 
         const uniqueFacilities = await facilities;
-        
+
         const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
             facilityName: facility['Facility Name'],
             latitude: facility['latitude'] ? facility['latitude'] :  faker.address.longitude(),
