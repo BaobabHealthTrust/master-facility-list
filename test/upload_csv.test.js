@@ -9,7 +9,14 @@ const dataSource = app.dataSources.db;
 
 describe('CSV Upload', () => {
 
+    after('done', () => {
+        setTimeout(() => {
+            process.exit(0)
+        }, 2000);
+    })
+
     it('should populate facilities accurately', async () => {
+        assert.equal(1,1);
         const csv = [
             {
                 'District': 'Chitipa',
@@ -54,9 +61,11 @@ describe('CSV Upload', () => {
         await assert.equal(facility.owner.facility_owner, 'NGO')
         await assert.equal(facility.geolocations.latitude, -9.94361)
         await assert.equal(facility.geolocations.longitude, 33.39795)
-        
+
         await assert.equal(2, facilities.length);
         
-        await dataSource.disconnect();
+        dataSource.once('connected', () => {
+            dataSource.disconnect();
+        })
     });
 });
