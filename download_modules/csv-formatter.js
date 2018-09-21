@@ -13,7 +13,7 @@ const fields = [
     "STATUS",
     "ZONE",
     "DISTRICT",
-    "DATE OPENED"
+    "DATE OPENED",
 ];
 
 /**
@@ -23,7 +23,6 @@ const fields = [
 const processFacility = facility => {
     const data = facility.toJSON();
     const date = moment(data.facility_date_opened).format("MMM Do YY");
-
     return {
         CODE: data.facility_code,
         NAME: data.facility_name,
