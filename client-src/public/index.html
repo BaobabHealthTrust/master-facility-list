@@ -91,7 +91,8 @@
             win.on({
               'resize': () => content.css('min-height', height),
               'change': () => content.css('min-height', height),
-              'onload': () => content.css('min-height', height)
+              'load': () => content.css('min-height', height),
+              'reload': () => content.css('min-height', height)
             });
 
         });

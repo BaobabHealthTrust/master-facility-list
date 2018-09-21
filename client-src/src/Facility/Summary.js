@@ -27,7 +27,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
       <React.Fragment>
         <p className="mfl-summary-header">{title}</p>
         <p className="mfl-summary-text">
-          <i class="material-icons mfl-icon left">{icon}</i>
+          <i className="material-icons mfl-icon left">{icon}</i>
           {label}
         </p>
         <br />

@@ -204,7 +204,7 @@ class FacilityDetails extends React.Component<Props> {
               {this.props.current.district && this.props.current.district.district_name}
             </h6>
           </div>
-          <div className="mt-4">
+          <div className="mt-4" className='hide-on-med-and-down'>
             {
               (pathArr[pathArr.length - 1] != 'edit' && sessionStorage.getItem('token'))
               && (
