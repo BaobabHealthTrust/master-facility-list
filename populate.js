@@ -88,6 +88,7 @@ const populateIndependentModels = async(facilities) => {
     }));
 
     await independentModelFactory(server.models.FacilityType, facilityTypes);
+    await independentModelFactory(server.models.FeedbackType, data.feedbackTypes);
     await independentModelFactory(server.models.Owner, owners);
     await independentModelFactory(server.models.District, districts);
     await independentModelFactory(server.models.RegulatoryStatus, data.regulatoryStatuses);
@@ -216,6 +217,7 @@ const populate = async (facilities) => {
         await console.log('Done populating the MFHR');
         await dataSource.disconnect();
         await loadingSpinner.stop();
+        return;
     } catch (error) {
         console.log(error);
     }
