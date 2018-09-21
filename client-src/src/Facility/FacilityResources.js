@@ -5,6 +5,7 @@ import { fetchCurrentDetails, fetchCurrentResources, fetchResourceTypes, setCurr
 import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 import { Resource, Facility, ResourceType } from "../types/model-types";
+import { MflAlert } from "../common"
 
 type Props = {
   resources: Array<Resource>,
@@ -14,8 +15,14 @@ type Props = {
 class FacilityResources extends Component<Props> {
 
   state = {
-    isEditResources: false
-  };
+    isEditResources: false,
+    error: {}
+  }
+
+  componentWillReceiveProps() {
+    const { error } = this.props
+    this.setState({ error })
+  }
 
   async componentDidMount() {
     const id = this.props.match.params.id;
@@ -54,6 +61,11 @@ class FacilityResources extends Component<Props> {
 
     return (
       <div className="container">
+        {(cards.length == 0) ? (
+          <MflAlert
+            message={'Resources are not available for this facility'}
+            />):""
+        }
         {cards.map(card => {
           return (
             <div className="row">
@@ -93,6 +105,7 @@ const mapStateToProps = state => {
     resources: state.facilities.currentResources.data,
     facilities: state.facilities.list,
     isLoading: state.facilities.isLoading,
+    error: state.facilities.error,
     resourceTypes: state.dependancies.resourceTypes
   };
 };

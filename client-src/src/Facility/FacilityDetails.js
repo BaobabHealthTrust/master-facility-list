@@ -9,7 +9,6 @@ import Services from "./FacilityServices";
 import { connect } from "react-redux";
 import { Button } from 'react-materialize';
 import SecondaryMenu from "../common/SecondaryMenu";
-import footerResizer from "../helpers/footerResize";
 import MflDownload from "../common/MflDownload";
 import { ShowError, FetchAllDependancies, ProgressBar } from "../common";
 import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
@@ -17,7 +16,7 @@ import settings from '../settings';
 import { postFormData } from '../actions'
 import { ButtonConfiguration } from '../types/helper-types';
 import { Facility } from '../types/model-types';
-import { Card, CardTitle, Table, Icon, Col } from 'react-materialize';
+import { Card, Col } from 'react-materialize';
 import { confirmAlert } from 'react-confirm-alert';
 
 type Props = {
@@ -73,7 +72,6 @@ class FacilityDetails extends React.Component<Props> {
 
   componentWillReceiveProps() {
     this.setState({ pushTo: null });
-    // footerResizer();
   }
 
   buttonConfiguration: ButtonConfiguration = [
@@ -222,6 +220,7 @@ class FacilityDetails extends React.Component<Props> {
         </div>
         {this.props.error.message == "Network Error" && <ShowError />}
         {this.props.error.response && <ShowError message="This Resource does not exit" />}
+
         {
           this.props.isLoading
             ? <ProgressBar />

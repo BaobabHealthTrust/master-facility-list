@@ -9,9 +9,18 @@ import { CurrentFacility } from "../types/helper-types";
 import { ProgressBar } from 'react-materialize';
 class Summary extends Component<{ current: CurrentFacility }> {
 
+  state = {
+    error: {}
+  }
+
   async componentDidMount() {
     const id = this.props.match.params.id;
     this.props.fetchCurrentDetails(id);
+  }
+
+  componentWillReceiveProps(){
+    const { error } = this.props
+    this.setState({ error })
   }
 
   _renderHeadingSection = (title, icon, label) => {
@@ -89,7 +98,8 @@ class Summary extends Component<{ current: CurrentFacility }> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isLoading: state.facilities.isLoading
+    isLoading: state.facilities.isLoading,
+    error: state.facilities.error
   };
 };
 

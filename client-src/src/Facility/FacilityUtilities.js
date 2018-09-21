@@ -4,6 +4,7 @@ import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurre
 import { connect } from "react-redux";
 import { UtilitiesForm } from "./FacilityForms";
 import { uniq, chunk, map, pull } from "lodash";
+import { MflAlert } from "../common"
 
 class FacilityUtilities extends Component {
 
@@ -93,6 +94,11 @@ class FacilityUtilities extends Component {
       <div className="container">
         {!this.state.isEditUtilities ? (
           <div>
+            {(cards.length == 0) ? (
+              <MflAlert
+                message={'Utilities are not available for this facility'}
+                />):""
+            }
             {cards.map(card => {
               return (
                 <div className="row">
