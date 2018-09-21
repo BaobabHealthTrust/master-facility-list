@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { Service, ServiceType } from "../types/model-types";
 import { Tab, Tabs } from 'react-materialize';
 import { Col, Card } from 'react-materialize';
+import { MflAlert } from "../common"
 
 type Props = {
   services: Array<{ service: Service }>,
@@ -30,11 +31,18 @@ class FacilityServices extends React.Component<Props> {
     // TODO: Fix odd issue when loading tabs
     return (
       <div className="container">
+        {(this.props.allServices.length == 0) ? (
+          <MflAlert
+            message={'Services are not available for this facility'}
+            />):""
+        }
         <Tabs className='tabs blue accent-1 mfl-tabs tabs-fixed-width'>
           {
+
             this.props.serviceTypes.map((type, index) => {
               return (
                 <Tab title={type.service_type} active={index == 0}>
+
                   {
                     this.props.services && this.props.services.filter(service => (
                       service.serviceType.id === type.id

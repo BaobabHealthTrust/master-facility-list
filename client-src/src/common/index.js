@@ -13,3 +13,4 @@ export { default as MflGrid } from './MflGrid'
 export { default as Banner } from './Banner'
 export { default as MflCardGeneric } from './MflCardGeneric'
 export { default as MFLGoogleMap } from './MFLGoogleMap';
+export { default as MflAlert } from './MflAlert';
