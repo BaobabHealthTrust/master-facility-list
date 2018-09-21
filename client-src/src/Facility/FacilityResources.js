@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { uniq, chunk } from "lodash";
 import { Resource, Facility, ResourceType } from "../types/model-types";
 import { MflAlert } from "../common"
+import { Loader } from "../common";
 
 type Props = {
   resources: Array<Resource>,
@@ -16,13 +17,15 @@ class FacilityResources extends Component<Props> {
 
   state = {
     isEditResources: false,
-    error: {}
+    error: {},
+    loading: true
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isLoading) this.setState({loading: false})
     const { error } = this.props
     this.setState({ error })
-  }
+  };
 
   async componentDidMount() {
     const id = this.props.match.params.id;
@@ -66,35 +69,41 @@ class FacilityResources extends Component<Props> {
             message={'Resources are not available for this facility'}
             />):""
         }
-        {cards.map(card => {
-          return (
-            <div className="row">
-              {card.map(type => {
-                const data = this.props.resources
-                  .filter(
-                    res =>
-                      res.resource.resource_type_id ===
-                      type.id
-                  )
-                  .map(res => [
-                    res.resource.resource_name,
-                    String(res.quantity)
-                  ]);
-                return (
-                  <div className="col m4 s12">
-                    <Card
-                      heading={type.resource_type}
-                      data={data}
-                      icon={this.getResourceTypeIcon(
-                        type.resource_type
-                      )}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+        {
+          this.state.loading
+          ? <Loader />
+          : (<div>
+          {cards.map(card => {
+            return (
+              <div className="row">
+                {card.map(type => {
+                  const data = this.props.resources
+                    .filter(
+                      res =>
+                        res.resource.resource_type_id ===
+                        type.id
+                    )
+                    .map(res => [
+                      res.resource.resource_name,
+                      String(res.quantity)
+                    ]);
+                  return (
+                    <div className="col m4 s12">
+                      <Card
+                        heading={type.resource_type}
+                        data={data}
+                        icon={this.getResourceTypeIcon(
+                          type.resource_type
+                        )}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+          </div>)
+        }
       </div>
     );
   }

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { Button } from 'react-materialize';
 import SecondaryMenu from "../common/SecondaryMenu";
 import MflDownload from "../common/MflDownload";
-import { ShowError, FetchAllDependancies, ProgressBar } from "../common";
+import { ShowError, FetchAllDependancies, Loader } from "../common";
 import { BasicDetailsForm, ContactsForm, ServicesForm, ResourcesForm, UtilitiesForm } from "./FacilityForms";
 import settings from '../settings';
 import { postFormData } from '../actions'
@@ -30,7 +30,17 @@ class FacilityDetails extends React.Component<Props> {
 
   state = {
     pushTo: null,
-    redirect: false
+    redirect: false,
+    loading: false,
+    results: 0
+  }
+
+  componentDidMount(){
+    const { current } = this.props
+    const results = current ? current.length : 0
+    if (results > 0 && (this.state.results - results != 0)) {
+      this.setState({ loading: false, results})
+    }
   }
 
   onClick = async (onClose, e) => {
@@ -222,8 +232,8 @@ class FacilityDetails extends React.Component<Props> {
         {this.props.error.response && <ShowError message="This Resource does not exit" />}
 
         {
-          this.props.isLoading
-            ? <ProgressBar />
+          this.state.loading
+            ? <Loader />
             : (
               <Switch>
                 <Route

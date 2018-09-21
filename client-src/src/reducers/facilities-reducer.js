@@ -167,13 +167,15 @@ export default (
     case 'FETCH_FACILITIES_BY_REGULATORY_STATUSES':
       return {
         ...state,
-        facilitiesByRegulatoryStatus: action.payload.data.response
+        facilitiesByRegulatoryStatus: action.payload.data.response,
+        isLoading: false
       }
       break;
     case 'FETCH_FACILITIES_BY_OPERATIONAL_STATUSES':
       return {
         ...state,
-        facilitiesByOperationalStatus: action.payload.data.response
+        facilitiesByOperationalStatus: action.payload.data.response,
+        isLoading: false
       }
       break;
     case 'FETCH_FACILITIES_BY_TYPE_AND_OWNERSHIP':
@@ -188,7 +190,8 @@ export default (
         return {
           ...state,
           facilitiesByTypeAndOwnership: snakeCased,
-          facilitiesByTypeAndOwnershipKeys: _.keys(snakeCased[0])
+          facilitiesByTypeAndOwnershipKeys: _.keys(snakeCased[0]),
+          isLoading: false
         }
       }
       return {...state}
@@ -196,31 +199,36 @@ export default (
     case 'FETCH_FACILITIES_WITH_OPD':
         return {
           ...state,
-          facilitiesWithOPD: action.payload.data.response
+          facilitiesWithOPD: action.payload.data.response,
+          isLoading: false
         }
       break;
     case 'FETCH_FACILITIES_WITH_ANC':
       return {
         ...state,
-        facilitiesWithANC: action.payload.data.response
+        facilitiesWithANC: action.payload.data.response,
+        isLoading: false
       }
       break;
     case 'FETCH_FACILITIES_WITH_HTC':
       return {
         ...state,
-        facilitiesWithHTC: action.payload.data.response
+        facilitiesWithHTC: action.payload.data.response,
+        isLoading: false
       }
       break;
     case 'FETCH_FACILITIES_WITH_ART':
       return {
         ...state,
-        facilitiesWithART: action.payload.data.response
+        facilitiesWithART: action.payload.data.response,
+        isLoading: false
       }
       break;
     case 'FETCH_TOTAL_FACILITIES':
       return {
         ...state,
-        totalFacilities: action.payload.data.response
+        totalFacilities: action.payload.data.response,
+        isLoading: false
       }
       break;
     default:
