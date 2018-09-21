@@ -6,6 +6,9 @@ module.exports = function (Facilityutility) {
       where: { facility_id: id },
       order: 'created_date DESC'
     });
+
+    if (!utility) return []
+
     const filteredUtilities = await Facilityutility.find({
       where: { and: [{ facility_id: id }, { created_date: utility.created_date }] },
       include: 'utility'

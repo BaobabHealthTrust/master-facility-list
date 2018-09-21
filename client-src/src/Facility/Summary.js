@@ -10,6 +10,7 @@ import { Loader } from '../common';
 class Summary extends Component<{ current: CurrentFacility }> {
 
   state = {
+    error: {},
     loading: true
   };
 
@@ -19,6 +20,9 @@ class Summary extends Component<{ current: CurrentFacility }> {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { error } = this.props
+    this.setState({ error })
+
     if(!nextProps.isLoading) this.setState({ loading: false})
   }
 
@@ -97,7 +101,8 @@ class Summary extends Component<{ current: CurrentFacility }> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isLoading: state.facilities.isLoading
+    isLoading: state.facilities.isLoading,
+    error: state.facilities.error
   };
 };
 
