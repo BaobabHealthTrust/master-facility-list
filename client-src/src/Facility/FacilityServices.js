@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { Service, ServiceType } from "../types/model-types";
 import { Tab, Tabs } from 'react-materialize';
 import { Col, Card } from 'react-materialize';
+import { MflAlert } from "../common"
 import { Loader } from "../common";
 
 
@@ -43,6 +44,11 @@ class FacilityServices extends React.Component<Props> {
   render() {
     return (
       <div className="container">
+        {(this.props.allServices.length == 0) ? (
+          <MflAlert
+            message={'Services are not available for this facility'}
+            />):""
+        }
         {
           this.state.loading
           ? <Loader / >

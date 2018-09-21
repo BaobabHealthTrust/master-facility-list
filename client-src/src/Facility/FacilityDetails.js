@@ -82,7 +82,6 @@ class FacilityDetails extends React.Component<Props> {
 
   componentWillReceiveProps() {
     this.setState({ pushTo: null });
-    // footerResizer();
   }
 
   buttonConfiguration: ButtonConfiguration = [
@@ -231,6 +230,7 @@ class FacilityDetails extends React.Component<Props> {
         </div>
         {this.props.error.message == "Network Error" && <ShowError />}
         {this.props.error.response && <ShowError message="This Resource does not exit" />}
+
         {
           this.state.loading
             ? <Loader />

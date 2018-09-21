@@ -4,7 +4,9 @@ import { fetchCurrentDetails, fetchCurrentUtilities, fetchUtilityTypes, setCurre
 import { connect } from "react-redux";
 import { UtilitiesForm } from "./FacilityForms";
 import { uniq, chunk, map, pull } from "lodash";
+import { MflAlert } from "../common"
 import { Loader } from "../common";
+
 class FacilityUtilities extends Component {
 
   state = {
@@ -98,6 +100,11 @@ class FacilityUtilities extends Component {
 
     return (
       <div className="container">
+        {(cards.length == 0) ? (
+          <MflAlert
+            message={'Utilities are not available for this facility'}
+            />):""
+        }
         {
           this.state.loading
           ? <Loader />

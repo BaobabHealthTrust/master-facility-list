@@ -6,6 +6,9 @@ module.exports = function (Facilityresource) {
       where: { facility_id: id },
       order: 'created_date DESC'
     });
+
+    if(!resource) return []
+
     const filteredResources = await Facilityresource.find({
       where: { and: [{ facility_id: id }, { created_date: resource.created_date }] },
       include: 'resource'
