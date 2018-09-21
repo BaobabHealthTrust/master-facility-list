@@ -348,7 +348,6 @@ module.exports = (Facility) => {
           { district: "zone" }
         ]
       }).catch(err => cb(err));
-
       const callback = (err, stream) => {
         if (err) {
           return cb(err);
