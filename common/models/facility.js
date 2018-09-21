@@ -12,17 +12,17 @@ const fhirCompliantFacilities = require('./fhir-compliant-facilities');
 
 const { District } = server.models
 
-const getDistrictsIDs = async (data=null) => {
-    if(data && data != []){
-        const districtsNames = await data.map( name => _.capitalize(name));
-        const districts = await server.models.District.find({
-            where: { district_name: { inq: districtsNames } }
-        });
-        if (districts){
-            return districts.map(district => district.id);
-        }
+const getDistrictsIDs = async (data = null) => {
+  if (data && data != []) {
+    const districtsNames = await data.map(name => _.capitalize(name));
+    const districts = await server.models.District.find({
+      where: { district_name: { inq: districtsNames } }
+    });
+    if (districts) {
+      return districts.map(district => district.id);
     }
-    return [];
+  }
+  return [];
 };
 
 module.exports = (Facility) => {
@@ -197,6 +197,7 @@ module.exports = (Facility) => {
         ownership: formattedFacility.owner.facility_owner,
         type: formattedFacility.facilityType.facility_type,
         status: formattedFacility.operationalStatus.facility_operational_status,
+        regulatoryStatus: formattedFacility.regulatoryStatus.facility_regulatory_status,
         district: formattedFacility.district.district_name,
         dateOpened: moment(facility.facility_date_opened).format("MMM Do YY"),
         string: `${facility.facility_name}${facility.facility_code}${facility.common_name}`
@@ -249,61 +250,61 @@ module.exports = (Facility) => {
   });
 
   Facility.downloadFacility = async (id, cb) => {
-      try {
-        const error = new Error();
-        error.name = "ERROR";
-        error.status = 400;
+    try {
+      const error = new Error();
+      error.name = "ERROR";
+      error.status = 400;
 
-        const facility = await Facility.findOne({
-            where: {id},
-            include: [
-                "locations",
-                "contactPeople",
-                "regulatoryStatus",
-                "operationalStatus",
-                "owner",
-                "facilityType",
-                "addresses",
-                { district: "zone" },
-            ],
-            limit: 1
+      const facility = await Facility.findOne({
+        where: { id },
+        include: [
+          "locations",
+          "contactPeople",
+          "regulatoryStatus",
+          "operationalStatus",
+          "owner",
+          "facilityType",
+          "addresses",
+          { district: "zone" },
+        ],
+        limit: 1
+      }).catch(err => cb(err));
+
+      if (facility) {
+        const utilities = await server.models.FacilityUtility.find({
+          where: { facility_id: id },
+          include: { utility: "utilityType" }
         }).catch(err => cb(err));
 
-        if (facility) {
-          const utilities = await server.models.FacilityUtility.find({
-              where: { facility_id: id },
-              include: { utility: "utilityType" }
-          }).catch(err => cb(err));
+        const resources = await server.models.FacilityResource.find({
+          where: { facility_id: id },
+          include: { resource: "resourceType" }
+        }).catch(err => cb(err));
 
-          const resources = await server.models.FacilityResource.find({
-              where: { facility_id: id },
-              include: { resource: "resourceType" }
-          }).catch(err => cb(err));
+        const services = await server.models.FacilityService.find({
+          where: { facility_id: id },
+          include: { service: ["serviceType", "category"] }
+        }).catch(err => cb(err));
 
-          const services = await server.models.FacilityService.find({
-              where: { facility_id: id },
-              include: { service: ["serviceType", "category"] }
-          }).catch(err => cb(err));
-
-          await generateFile(
-              facility.toJSON(),
-              utilities.map(data => data.toJSON()),
-              resources.map(data => data.toJSON()),
-              services.map(data => data.toJSON()),
-              (err, stream) => {
-                  if (err) {
-                      return cb(err);
-                  }
-                  cb(null, stream, 'application/pdf');
-              }
-          );
-        } else {
-            error.message = "Invalid facility ID.";
-            cb(error);
-        }
-      } catch (error) {
-          console.log(error);
+        await generateFile(
+          facility.toJSON(),
+          utilities.map(data => data.toJSON()),
+          resources.map(data => data.toJSON()),
+          services.map(data => data.toJSON()),
+          (err, stream) => {
+            if (err) {
+              return cb(err);
+            }
+            cb(null, stream, 'application/pdf');
+          }
+        );
+      } else {
+        error.message = "Invalid facility ID.";
+        cb(error);
       }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /** Register download  remote method */
@@ -394,8 +395,8 @@ module.exports = (Facility) => {
   /** Register download  remote method */
   Facility.remoteMethod('downloadFacilities', {
     description: "All facilities download",
-    accepts: {arg: "data", type: "string"},
-    http: {path: '/download', verb: 'get'},
+    accepts: { arg: "data", type: "string" },
+    http: { path: '/download', verb: 'get' },
     returns: [
       { arg: 'body', type: 'file', root: true },
       { arg: 'Content-Type', type: 'string', http: { target: 'header' } }
@@ -404,23 +405,23 @@ module.exports = (Facility) => {
 
 
   Facility.regulatoryStatus = async (districts, cb) => {
-      const regulatoryStatuses = await server.models.RegulatoryStatus.find();
-      const IDs = await getDistrictsIDs(districts)
-      const where = IDs.length ? { district_id: { inq: IDs } } : {}
-      const facilities = await Facility.find({ where })
+    const regulatoryStatuses = await server.models.RegulatoryStatus.find();
+    const IDs = await getDistrictsIDs(districts)
+    const where = IDs.length ? { district_id: { inq: IDs } } : {}
+    const facilities = await Facility.find({ where })
 
-      return regulatoryStatuses.map(regulatoryStatus => ({
-        name: regulatoryStatus.facility_regulatory_status,
-        count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
-      }));
+    return regulatoryStatuses.map(regulatoryStatus => ({
+      name: regulatoryStatus.facility_regulatory_status,
+      count: facilities.filter(facility => (facility.facility_regulatory_status_id == regulatoryStatus.id)).length
+    }));
   };
 
   Facility.remoteMethod('regulatoryStatus', {
     description: "retrieves the aggragate data for facility types and ownership",
     http: { path: '/aggregates/regulatorystatuses', verb: 'get' },
-    accepts: { arg: 'districts', type: 'array'},
+    accepts: { arg: 'districts', type: 'array' },
     returns: [
-      { arg: 'response', type: 'array'}
+      { arg: 'response', type: 'array' }
     ]
   });
 
@@ -452,9 +453,9 @@ module.exports = (Facility) => {
     const owners = await server.models.Owner.find()
     const facilityTypes = await server.models.FacilityType.find()
 
-    const ownersWithFacilityTypes = owners.map(owner => ({...owner, types: facilityTypes}))
+    const ownersWithFacilityTypes = owners.map(owner => ({ ...owner, types: facilityTypes }))
 
-    const data = ownersWithFacilityTypes.map( ownerWithFacilityTypes => {
+    const data = ownersWithFacilityTypes.map(ownerWithFacilityTypes => {
       const aggregates = ownerWithFacilityTypes.types.reduce((previousValue, currentValue) => {
         const makeCount = facility => facility.facility_owner_id == ownerWithFacilityTypes.__data.id && facility.facility_type_id == currentValue.id
         return {
@@ -462,7 +463,7 @@ module.exports = (Facility) => {
           [currentValue.facility_type]: facilities.filter(makeCount).length
         }
       }, {})
-      return {...aggregates, 'name': ownerWithFacilityTypes.__data.facility_owner}
+      return { ...aggregates, 'name': ownerWithFacilityTypes.__data.facility_owner }
     })
 
     return data
@@ -488,9 +489,9 @@ module.exports = (Facility) => {
       return serviceIds.includes(facilityService.service_id)
     }).map(facilityService => facilityService.facility_id)
 
-    const where =  {id:{inq: facilityIds}}
+    const where = { id: { inq: facilityIds } }
     if (IDs.length) where.district_id = { inq: IDs }
-    const facilities = await server.models.Facility.find({where})
+    const facilities = await server.models.Facility.find({ where })
     return facilities
   }
 
@@ -545,16 +546,16 @@ module.exports = (Facility) => {
 
   Facility.totalFacilities = async (districts, cb) => {
     const IDs = await getDistrictsIDs(districts)
-    const where = IDs.length ? {district_id: { inq: IDs }} : {}
-    const facilities = await Facility.find({where})
+    const where = IDs.length ? { district_id: { inq: IDs } } : {}
+    const facilities = await Facility.find({ where })
     return facilities.length
   }
 
   Facility.remoteMethod('totalFacilities', {
     description: "retrieves facilities based on district name",
     http: { path: '/total', verb: 'get' },
-    accepts: [ { arg: 'districts', type: 'array' }],
-    returns: [ { arg: 'response', type: 'number' }]
+    accepts: [{ arg: 'districts', type: 'array' }],
+    returns: [{ arg: 'response', type: 'number' }]
   });
 
 };

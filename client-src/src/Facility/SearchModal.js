@@ -104,10 +104,20 @@ const tagValueMapper = [
 class SearchModal extends React.Component<{}> {
   state = {
     activeTab: "Location",
-    redirect: false
+    loading: false,
+    redirect: false,
+    results: 0
   };
 
+  componentWillReceiveProps(nextProps) {
+    const results = nextProps.results ? nextProps.results.length : 0
+    if (results > 0 && (this.state.results - results != 0)) {
+      this.setState({ loading: false, results })
+    }
+  }
+
   handleAddSearchValue = async (e, type) => {
+    this.setState({ loading: true })
     await this.props.addSearchValues(e, type);
     await this.props.fetchBasicResourceDetailsResults(this.props.searchValues);
     await this.props.fetchBasicUtilityDetailsResults(this.props.searchValues);
@@ -116,6 +126,7 @@ class SearchModal extends React.Component<{}> {
   }
 
   handleRemoveResults = async () => {
+    this.setState({ loading: true })
     await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
     await this.props.removeResultsValues();
   }
@@ -241,9 +252,16 @@ class SearchModal extends React.Component<{}> {
           </ModalHeader>
           <SearchResultsPanel>
             <div>
-              <strong>{this.getResultCount(this.props.results)}</strong> Facilities Match Your Criteria
+              {this.state.loading && <p>Loading Results</p>}
+              {
+                !this.state.loading && (
+                  <span>
+                    <strong>{this.getResultCount(this.props.results)}</strong> Facilities Match Your Criteria
+                  </span>
+                )
+              }
             </div>
-            {this.getResultCount(this.props.results) > 0 && this.renderDisplayButton()}
+            {(this.getResultCount(this.props.results) > 0 && !this.state.loading) && this.renderDisplayButton()}
           </SearchResultsPanel>
           <Tabs
             className="tab-demo z-depth-1 blue text-white"
@@ -270,6 +288,7 @@ class SearchModal extends React.Component<{}> {
 const mapStateToProps = state => {
   return {
     searchResults: state.searchResults.advancedSearchResults,
+    isLoading: state.searchResults.isLoading,
     searchValues: state.advancedSearchValues,
     districts: state.dependancies.districts,
     facilityTypes: state.dependancies.facilityTypes,
