@@ -79,8 +79,8 @@ export default class UsersHome extends React.Component {
             <UserList onUserSelected={this.onUserSelected} />
           </Col>
           <Col s={5}>
-            <ViewUser 
-              user={this.state.user} 
+            <ViewUser
+              user={this.state.user}
               onUserArchived={this.onUserArchived}
               onUserUpdateSuccess={this.onUserUpdateSuccess}
               onUserUpdateError={this.onUserUpdateError}

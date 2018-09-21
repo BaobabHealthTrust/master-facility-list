@@ -21,7 +21,7 @@ class ViewUser extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   showToastMessage = message => {
     window.Materialize.toast(message, this.state.delay);
   }
@@ -44,8 +44,8 @@ class ViewUser extends React.Component {
         return (
           <Col m={6} s={12} style={{ minWidth: '400px' }}>
             <Card
-              title='Confirm' 
-              className='blu darken-4' 
+              title='Confirm'
+              className='blu darken-4'
               textClassName='white-tex'
               actions={
                 [
@@ -92,7 +92,7 @@ class ViewUser extends React.Component {
     <Card
       title="User Details"
       actions={[
-        <EditUserModal 
+        <EditUserModal
           user={this.props.user}
           onUserUpdateSuccess={this.props.onUserUpdateSuccess}
           onUserUpdateError={this.props.onUserUpdateError}

@@ -1,18 +1,10 @@
 //@flow
 import React from "react";
 import { connect } from "react-redux";
-import SearchModal from "./SearchModal";
-import { AddFacilityHome } from "./AddFacility";
-import {
-  hideSearchContainer,
-  downloadFacilities,
-} from "../actions";
-import SecondaryMenu from "../common/SecondaryMenu";
+import { downloadFacilities } from "../actions";
 import FacilityList from "./FacilityList";
-import footerResizer from "../helpers/footerResize";
-import { ProgressBar, ShowError, FetchAllDependancies, FacilityFilters } from '../common'
+import { Loader } from '../common'
 import { Facilities } from '../types/list-types'
-import { Route, Switch } from 'react-router-dom';
 
 type Props = {
   isLoading: boolean,
@@ -29,9 +21,15 @@ type State = {
 }
 
 class FacilitiesHome extends React.Component<Props, State> {
+
   state = {
     isAdvancedSearch: false,
-    isShowSearchResults: false
+    isShowSearchResults: false,
+    loading: true
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isLoading) this.setState({ loading: false })
   };
 
   fetchFilteredFacilities = (ids) => this.props.facilities.filter(facility => {
@@ -55,21 +53,20 @@ class FacilitiesHome extends React.Component<Props, State> {
     const isLoadingOrError = this.props.isLoading || this.props.isError
     return (
       <div>
-        <FetchAllDependancies />
         <div className="container mfl-container">
           <br />
           {/* Show Progress Bar */}
-          {this.props.error.message == "Network Error" && <ProgressBar />}
+          {this.props.error.message == "Network Error" && <Loader />}
 
           {/* Show Error Message */}
           {
-            this.props.isLoading
-              ? <ProgressBar />
+            this.state.isLoading
+              ? <Loader />
               : <FacilityList
-                  dataSource={this.getDataSource()}
-                  title={this.getFacilityListTitle()}
-                  filter={this.props.filteredResults}
-                />
+                dataSource={this.getDataSource()}
+                title={this.getFacilityListTitle()}
+                filter={this.props.filteredResults}
+              />
           }
         </div>
 
@@ -80,15 +77,12 @@ class FacilitiesHome extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    facilities: state.facilities.list.data,
+    facilities: state.facilities.all.data,
     error: state.facilities.error,
     isLoading: state.facilities.isLoading,
     download: state.downloads.data,
-    filteredResults:
-      state.searchResults.advancedSearchFacilities.basicDetailsFacilities
+    filteredResults: state.searchResults.advancedSearchFacilities.basicDetailsFacilities
   };
 };
 
-export default connect(mapStateToProps, {
-  downloadFacilities,
-})(FacilitiesHome);
+export default connect(mapStateToProps, {downloadFacilities,})(FacilitiesHome);
