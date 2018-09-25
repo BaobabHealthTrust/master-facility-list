@@ -150,7 +150,6 @@ class DashboardHome extends React.Component<Props, State> {
     const district = event.target.id
     const districts = await this.state.districts.filter(d => d != district)
     await this.setState({ districts })
-    await this.updateGraphs()
   }
 
   onClick = async (event) => {
