@@ -92,7 +92,7 @@ export default class FacilityList extends React.Component<Props> {
     const defaultSorting = [{ columnName: 'name', direction: 'asc' }];
 
     const defaultView = (
-      <div className="container">
+      <div className="container facility-container">
         <div className="flex flex-row w-full justify-between">
           <div className="flex flex-row">
 
