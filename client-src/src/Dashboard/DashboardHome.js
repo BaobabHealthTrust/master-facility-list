@@ -22,6 +22,7 @@ import footerResizer from "../helpers/footerResize";
 import DashboardSummary from "./dashboardSummary";
 import { GenericCard } from "./charts/mini-cards";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -210,7 +211,11 @@ class DashboardHome extends React.Component<Props, State> {
             <div className="row hide-on-small-only">
               <div className="col m12">
                 <CallToAction>
-                  <Button>Go to Advanced Search</Button>
+                  <Link to = '/facilities/search' >
+                    <Button>
+                        Go to Advanced Search
+                    </Button>
+                  </Link>
                   <span className="ml-4 text-2xl">For a more detailed analysis of Facilities</span>
                 </CallToAction>
               </div>
