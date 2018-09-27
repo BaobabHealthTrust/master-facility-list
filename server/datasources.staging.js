@@ -18,7 +18,7 @@ let db_url = "mysql://";
 
 module.exports = {
 	db: {
-		name: "mysql",
+		name: "db",
 		host: process.env.MYSQL_HOST,
 		port: 3306,
 		url: db_url,
