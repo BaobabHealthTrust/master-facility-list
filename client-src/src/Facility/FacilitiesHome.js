@@ -25,12 +25,18 @@ class FacilitiesHome extends React.Component<Props, State> {
   state = {
     isAdvancedSearch: false,
     isShowSearchResults: false,
-    loading: true
+    loading: true,
+    containerHeight: 0
   };
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.isLoading) this.setState({ loading: false })
   };
+
+  componentDidMount() {
+    const containerHeight = window.innerHeight - 128
+    this.setState({containerHeight})
+  }
 
   fetchFilteredFacilities = (ids) => this.props.facilities.filter(facility => {
     return ids.includes(facility.id)
@@ -53,7 +59,7 @@ class FacilitiesHome extends React.Component<Props, State> {
     const isLoadingOrError = this.props.isLoading || this.props.isError
     return (
       <div>
-        <div className="container mfl-container">
+        <div className="container mfl-container" style={{minHeight: this.state.containerHeight}}>
           <br />
           {/* Show Progress Bar */}
           {this.props.error.message == "Network Error" && <Loader />}

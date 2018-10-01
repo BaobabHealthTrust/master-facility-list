@@ -52,7 +52,7 @@ class Navbar extends Component {
             </div>
 
             <a
-              href="/"
+              href=""
               data-activates="mobile-demo"
               className="button-collapse"
             >

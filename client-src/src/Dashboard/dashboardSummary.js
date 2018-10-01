@@ -24,7 +24,7 @@ export default (props) => {
   const content = (
     <h5>
       Welcome to the <strong> Master Health Facility Register of Malawi</strong>.
-      You may Select any of the districts to your left to filter the charts below.
+      <span className='hide-on-small-only'>You may Select any of the districts to your left to filter the charts below.</span>
     </h5>
   )
 
