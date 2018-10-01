@@ -32,7 +32,8 @@ class FacilityDetails extends React.Component<Props> {
     pushTo: null,
     redirect: false,
     loading: false,
-    results: 0
+    results: 0,
+    containerHeight: 0
   }
 
   componentDidMount(){
@@ -41,6 +42,9 @@ class FacilityDetails extends React.Component<Props> {
     if (results > 0 && (this.state.results - results != 0)) {
       this.setState({ loading: false, results})
     }
+
+    const containerHeight = window.innerHeight - 128
+    this.setState({containerHeight})
   }
 
   onClick = async (onClose, e) => {
@@ -174,11 +178,11 @@ class FacilityDetails extends React.Component<Props> {
       }
     }
     return (
-      <div>
+      <div style={{minHeight: this.state.containerHeight}}>
         {this.state.pushTo && <Redirect to={this.state.pushTo} />}
         {this.state.redirect && <Redirect to='/facilities' />}
         <SecondaryMenu links={links} defaultActivePage={"summary"} />
-        <div className="container mfl-titles flex flex-row justify-between">
+        <div className="container mfl-titles flex flex-row justify-between" >
           <div>
             <h5>
               {/* TODO: Fetch Current Data Here on your own */}
