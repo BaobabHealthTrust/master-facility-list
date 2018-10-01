@@ -60,7 +60,7 @@ class FacilityLocation extends Component<State> {
         ? <Loader />
         : (<div>
           <div className="row">
-            <div className="col m6 s12">
+            <div className = "col m6 s12 mb-8" >
               <div className="z-depth-2">
                   <MFLGoogleMap
                       position = {position}
