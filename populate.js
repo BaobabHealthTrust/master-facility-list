@@ -214,7 +214,10 @@ const mapDistrictsToZones = async () => {
 };
 
 const loadFromFile = async () => {
-  const facilityData = await fs.readFileSync("health-facilities.csv", "utf8");
+  const facilityData = await fs.readFileSync(
+    "health-facilities-v2.csv",
+    "utf8"
+  );
   const facilities = _.uniqBy(
     await csvtojson().fromString(facilityData),
     "Facility Name"
