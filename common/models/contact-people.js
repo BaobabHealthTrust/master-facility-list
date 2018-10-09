@@ -1,5 +1,3 @@
-'use strict';
+"use strict";
 
-module.exports = function(Contactpeople) {
-
-};
+module.exports = function(Contactpeople) {};
