@@ -1,10 +1,6 @@
 import React from "react";
 
-import {
-  BarChart,
-  PieChart,
-  FacilitiesMap
-} from "./charts";
+import { BarChart, PieChart, FacilitiesMap } from "./charts";
 
 import { connect } from "react-redux";
 
@@ -22,7 +18,7 @@ import footerResizer from "../helpers/footerResize";
 import DashboardSummary from "./dashboardSummary";
 import { GenericCard } from "./charts/mini-cards";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -53,107 +49,124 @@ type State = {
 
 const MapContainer = styled.div.attrs({
   className: "col s12 m3 hide-on-small-only"
-})
-`
+})`
   position: sticky;
   top: 10px;
-`
+`;
 
 const WelcomeCardContainer = styled.div.attrs({ className: "row" })`
   position: sticky;
   top: -50px;
   z-index: 100;
   background: white;
-`
+`;
 const CallToAction = styled.div.attrs({ className: "w-full p-8 mb-8" })`
-  background: rgba(43,43,104, 1);
+  background: rgba(43, 43, 104, 1);
   background-image: url(${kids});
   background-blend-mode: overlay;
   background-position-y: center;
   color: white;
-`
+`;
 
 // TODO: Codes for All Dependancies
 
 class DashboardHome extends React.Component<Props, State> {
-
   state = {
     districts: [],
-    name: '',
+    name: "",
     typeOwnershipContainerWidth: 0,
     regulatoryStatusContainerWidth: 0,
     operationalStatusContainerWidth: 0
   };
 
-  calculateContainerWidth = (selector) => {
+  calculateContainerWidth = selector => {
     const container = document.getElementById(selector);
     const containerWidth = container ? container.clientWidth : 1000;
     return containerWidth;
-  }
+  };
 
   resizeDashBoard = () => {
-    const typeOwnershipContainerWidth = this.calculateContainerWidth('typeOwnershipContainer');
-    const regulatoryStatusContainerWidth = this.calculateContainerWidth('regulatoryStatusContainer');
-    const operationalStatusContainerWidth = this.calculateContainerWidth('operationalStatusContainer');
+    const typeOwnershipContainerWidth = this.calculateContainerWidth(
+      "typeOwnershipContainer"
+    );
+    const regulatoryStatusContainerWidth = this.calculateContainerWidth(
+      "regulatoryStatusContainer"
+    );
+    const operationalStatusContainerWidth = this.calculateContainerWidth(
+      "operationalStatusContainer"
+    );
     this.setState({
       typeOwnershipContainerWidth,
       regulatoryStatusContainerWidth,
       operationalStatusContainerWidth
     });
-  }
+  };
 
-  facilityDistrictFilter = (facility) => {
-    if (this.state.districts.length == 0) return true
-    return this.state.districts.includes(facility.district)
-  }
+  facilityDistrictFilter = facility => {
+    if (this.state.districts.length == 0) return true;
+    return this.state.districts.includes(facility.district);
+  };
 
   facilitiesOfType = (facilityType: string) => {
-    const data = this.props.allFacilities.data
+    const data = this.props.allFacilities.data;
     return data
-      ? data.filter(facility => facility.type == facilityType)
-        .filter(this.facilityDistrictFilter).length
-      : 0
-  }
+      ? data
+          .filter(facility => facility.type == facilityType)
+          .filter(this.facilityDistrictFilter).length
+      : 0;
+  };
 
   generateBarChartData = (comparisonModel, comparisonField, facilityField) => {
-    const data = this.props.allFacilities.data
+    const data = this.props.allFacilities.data;
     if (data) {
       return this.props[comparisonModel].map(model => {
         return {
           name: model[comparisonField],
-          count: data.filter(facility => facility[facilityField] == model[comparisonField])
+          count: data
+            .filter(
+              facility => facility[facilityField] == model[comparisonField]
+            )
             .filter(this.facilityDistrictFilter).length
-        }
-      })
+        };
+      });
     }
-    return []
-  }
+    return [];
+  };
 
-  ownershipBarData = () => this.generateBarChartData('owners', 'facility_owner', 'ownership')
-  regulatoryBarData = () => this.generateBarChartData('regulatoryStatuses', 'facility_regulatory_status', 'regulatoryStatus')
+  ownershipBarData = () =>
+    this.generateBarChartData("owners", "facility_owner", "ownership");
+  regulatoryBarData = () =>
+    this.generateBarChartData(
+      "regulatoryStatuses",
+      "facility_regulatory_status",
+      "regulatoryStatus"
+    );
   operationalBarData = () => {
-    const data = this.generateBarChartData('operationalStatuses', 'facility_operational_status', 'status')
+    const data = this.generateBarChartData(
+      "operationalStatuses",
+      "facility_operational_status",
+      "status"
+    );
     return data.map(d => {
       return {
         name: d.name,
         value: d.count
-      }
-    })
-  }
+      };
+    });
+  };
 
-  totalFacilities = () => (
+  totalFacilities = () =>
     this.props.allFacilities.data
       ? this.props.allFacilities.data.filter(this.facilityDistrictFilter).length
-      : 0
-  )
+      : 0;
 
-  closeTag = async (event) => {
-    const district = event.target.id
-    const districts = await this.state.districts.filter(d => d != district)
-    await this.setState({ districts })
-  }
+  closeTag = async event => {
+    const district = event.target.id;
+    const districts = await this.state.districts.filter(d => d != district);
+    await this.setState({ districts });
+  };
 
-  onClick = async (event) => {
+  onClick = async event => {
     const district = event.target.id;
     if (this.state.districts.includes(district)) {
       const districts = this.state.districts.filter(d => d != district);
@@ -162,10 +175,10 @@ class DashboardHome extends React.Component<Props, State> {
       const districts = [...this.state.districts, district];
       await this.setState({ districts });
     }
-  }
+  };
 
   async componentDidMount() {
-    window.addEventListener('resize', this.resizeDashBoard)
+    window.addEventListener("resize", this.resizeDashBoard);
     this.resizeDashBoard();
   }
 
@@ -174,7 +187,6 @@ class DashboardHome extends React.Component<Props, State> {
   }
 
   render() {
-
     return (
       <React.Fragment>
         <div className="row mt-6">
@@ -182,41 +194,65 @@ class DashboardHome extends React.Component<Props, State> {
             <FacilitiesMap
               onClick={this.onClick}
               districts={this.state.districts}
-              height={600} />
+              height={600}
+            />
           </MapContainer>
           <div className="col s12 m9">
             <WelcomeCardContainer>
               {this.props.dependancyIsLoading && <p>Loading!</p>}
               <div className="col s12">
-                <DashboardSummary closeTag={this.closeTag} districts={this.state.districts} />
+                <DashboardSummary
+                  closeTag={this.closeTag}
+                  districts={this.state.districts}
+                />
               </div>
             </WelcomeCardContainer>
             <div className="row">
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.totalFacilities()} title="Total Facilities" icon="hospital" />
+                <GenericCard
+                  count={this.totalFacilities()}
+                  title="Total Facilities"
+                  icon="hospital"
+                />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('District Hospital')} title="Dist Hospitals" icon="district" />
+                <GenericCard
+                  count={this.facilitiesOfType("District Hospital")}
+                  title="Dist Hospitals"
+                  icon="district"
+                />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('Central Hospital')} title="Central Hospitals" icon="normal_hospital" />
+                <GenericCard
+                  count={this.facilitiesOfType("Central Hospital")}
+                  title="Central Hospitals"
+                  icon="normal_hospital"
+                />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('Clinic')} title="Clinics" icon="clinic" />
+                <GenericCard
+                  count={this.facilitiesOfType("Health Post")}
+                  title="Health Posts"
+                  icon="clinic"
+                />
               </div>
               <div className="col s12 l3 col-5">
-                <GenericCard count={this.facilitiesOfType('Health Centre')} title="Health Centres" icon="tent" />
+                <GenericCard
+                  count={this.facilitiesOfType("Health Centre")}
+                  title="Health Centres"
+                  icon="tent"
+                />
               </div>
             </div>
             <div className="row hide-on-small-only">
               <div className="col m12">
                 <CallToAction>
-                  <Link to = '/facilities/search' >
-                    <Button>
-                        Go to Advanced Search
-                    </Button>
+                  <Link to="/facilities/search">
+                    <Button>Go to Advanced Search</Button>
                   </Link>
-                  <span className="ml-4 text-2xl">For a more detailed analysis of Facilities</span>
+                  <span className="ml-4 text-2xl">
+                    For a more detailed analysis of Facilities
+                  </span>
                 </CallToAction>
               </div>
               <div className="col s12 m6" id="regulatoryStatusContainer">
@@ -238,7 +274,7 @@ class DashboardHome extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className='row hide-on-small-only'>
+            <div className="row hide-on-small-only">
               <div class="col s12" id="typeOwnershipContainer">
                 <div class="outer-recharts-surface">
                   <BarChart
@@ -255,7 +291,6 @@ class DashboardHome extends React.Component<Props, State> {
       </React.Fragment>
     );
   }
-
 }
 
 const mapStateToProps = store => {
@@ -266,8 +301,11 @@ const mapStateToProps = store => {
     regulatoryStatuses: store.dependancies.regulatoryStatuses,
     dependancyIsLoading: store.dependancies.isLoading,
     dependancyIsNetworkError: store.dependancies.isNetworkError,
-    facilityTypes: store.dependancies.facilityTypes,
+    facilityTypes: store.dependancies.facilityTypes
   };
 };
 
-export default connect(mapStateToProps, {})(DashboardHome);
+export default connect(
+  mapStateToProps,
+  {}
+)(DashboardHome);
