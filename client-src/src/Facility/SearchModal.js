@@ -106,8 +106,14 @@ class SearchModal extends React.Component<{}> {
     activeTab: "Location",
     loading: false,
     redirect: false,
-    results: 0
+    results: 0,
+    containerHeight: 0
   };
+
+  componentDidMount() {
+    const containerHeight = window.innerHeight - 157
+    this.setState({ containerHeight })
+  }
 
   componentWillReceiveProps(nextProps) {
     const results = nextProps.results ? nextProps.results.length : 0
@@ -241,7 +247,7 @@ class SearchModal extends React.Component<{}> {
 
   render() {
     return (
-      <ModalContainer>
+      <ModalContainer style={{ minHeight: this.state.containerHeight }}>
         {this.state.redirect && <Redirect to="/facilities" />}
         <ModalContent>
           <ModalHeader>
