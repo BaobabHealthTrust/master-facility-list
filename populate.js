@@ -97,7 +97,7 @@ const formatFacility = async (facility, requiredModels) => {
     facility_operational_status_id: operationalStatusId,
     facility_regulatory_status_id: regulatoryStatusId,
     district_id: districtId,
-    date_opened: moment().format("YYYY-MM-DD"),
+    facility_date_opened: new Date("1970-01-01"),
     published_date: moment().format("YYYY-MM-DD")
   };
 };
