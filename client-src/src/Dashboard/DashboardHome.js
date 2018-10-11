@@ -226,21 +226,21 @@ class DashboardHome extends React.Component<Props, State> {
                 <GenericCard
                   count={this.facilitiesOfType("Health Centre")}
                   title="Health Centres"
-                  icon="tent"
+                  icon="normal_hospital"
                 />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard
                   count={this.facilitiesOfType("Dispensary")}
                   title="Dispensaries"
-                  icon="normal_hospital"
+                  icon="clinic"
                 />
               </div>
               <div className="col s12 l3 col-5">
                 <GenericCard
                   count={this.facilitiesOfType("Health Post")}
                   title="Health Posts"
-                  icon="clinic"
+                  icon="tent"
                 />
               </div>
             </div>
