@@ -133,8 +133,25 @@ class DashboardHome extends React.Component<Props, State> {
     return [];
   };
 
-  ownershipBarData = () =>
-    this.generateBarChartData("owners", "facility_owner", "ownership");
+  ownershipBarData = () => {
+    const data = this.generateBarChartData(
+      "owners",
+      "facility_owner",
+      "ownership"
+    );
+    const requiredOwners = [
+      "Christian Health Association of Malawi (CHAM)",
+      "Government/public",
+      "Private for profit"
+    ];
+    const mainOwnerShips = data.filter(d => requiredOwners.includes(d.name));
+    const otherOwnershipsCount = data
+      .filter(d => !requiredOwners.includes(d.name))
+      .reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.count;
+      }, 0);
+    return [...mainOwnerShips, { name: "Other", count: otherOwnershipsCount }];
+  };
   regulatoryBarData = () =>
     this.generateBarChartData(
       "regulatoryStatuses",
