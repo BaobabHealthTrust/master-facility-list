@@ -1,11 +1,7 @@
 "use strict";
-const dependentModelFactory = require("./seeds/dependent-model-factory");
 const independentModelFactory = require("./seeds/independent-model-factory");
-const facilitySeeder = require("./seeds/facility-seeder");
 const userSeeder = require("./seeds/seed-user");
 const facilityDependantsMapper = require("./seeds/facility-dependants-mapper");
-const serviceModelSeeder = require("./seeds/service-model-seeder");
-const facilityResourcesUtilitiesServicesMapper = require("./seeds/facility-resources-utilities-services-mapper");
 const server = require("./server/server");
 const data = require("./seeds/data");
 const faker = require("faker");
@@ -15,7 +11,6 @@ const csvtojson = require("csvtojson");
 const _ = require("lodash");
 const loadingSpinner = require("loading-spinner");
 const moment = require("moment");
-const argv = require("yargs").argv;
 
 //TODO: implement the factory pattern on this
 const getEntityId = async (entities, key, value) => {
