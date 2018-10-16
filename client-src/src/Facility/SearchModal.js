@@ -162,10 +162,7 @@ class SearchModal extends React.Component<{}> {
     </DisplayButton>
   );
 
-  renderTabLoader = tab => {
-    if (this.state.loading) return () => <Loader />;
-    else return tab;
-  };
+  renderTabLoader = tab => (this.state.loading ? () => <Loader /> : tab);
 
   renderAdvancedLocation = () => (
     <AdvancedLocation
