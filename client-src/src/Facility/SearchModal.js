@@ -3,7 +3,7 @@ import React from "react";
 import { Tabs, Tab } from "react-materialize";
 import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
 import { connect } from "react-redux";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import {
   addSearchValues,
   fetchAdvancedSearchResults,
@@ -25,38 +25,39 @@ import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
 import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
 import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
 import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import styled from "styled-components";
+import { Loader } from "../common";
 
+import styled from "styled-components";
 
 const DisplayButton = styled.div.attrs({ className: "btn" })`
   width: 20%;
-`
-const CloseButton = styled.div.attrs({ className: "mfl-modal-close right cursor-pointer" })``
+`;
+const CloseButton = styled.div.attrs({
+  className: "mfl-modal-close right cursor-pointer"
+})``;
 const SearchResultsPanel = styled.div.attrs({
   className: "mfl-search-feedback flex justify-between align-center w-full"
-}
-)``
-const ModalHeader = styled.div.attrs({ className: "mfl-bm-2 flex justify-between w-full" })``
-const ModalFooter = styled.div.attrs({ className: "modal-footer" })``
-const TagContainer = styled.div.attrs({ className: "advanced-search-tag-container" })``
-const ModalContent = styled.div.attrs({ className: "modal-content" })``
+})``;
+const ModalHeader = styled.div.attrs({
+  className: "mfl-bm-2 flex justify-between w-full"
+})``;
+const ModalFooter = styled.div.attrs({ className: "modal-footer" })``;
+const TagContainer = styled.div.attrs({
+  className: "advanced-search-tag-container"
+})``;
+const ModalContent = styled.div.attrs({ className: "modal-content" })``;
 const ModalContainer = styled.div.attrs({
   className: "container mt-8",
   id: "advanced-search",
   ref: "advancedSearch"
-})``
+})``;
 
 const searchActions = {
   ADD_DISTRICT_VALUES: "ADD_DISTRICT_VALUES"
-}
+};
 
 const tagValueMapper = [
-  [
-    "districtValues",
-    "districts",
-    "district_name",
-    "REMOVE_DISTRICT_VALUES"
-  ],
+  ["districtValues", "districts", "district_name", "REMOVE_DISTRICT_VALUES"],
   [
     "operationalStatusValues",
     "operationalStatuses",
@@ -99,7 +100,7 @@ const tagValueMapper = [
     "service_name",
     "REMOVE_SERVICE_TYPE_INSTANCES"
   ]
-]
+];
 
 class SearchModal extends React.Component<{}> {
   state = {
@@ -111,55 +112,60 @@ class SearchModal extends React.Component<{}> {
   };
 
   componentDidMount() {
-    const containerHeight = window.innerHeight - 157
-    this.setState({ containerHeight })
+    const containerHeight = window.innerHeight - 157;
+    this.setState({ containerHeight });
   }
 
   componentWillReceiveProps(nextProps) {
-    const results = nextProps.results ? nextProps.results.length : 0
-    if (results > 0 && (this.state.results - results != 0)) {
-      this.setState({ loading: false, results })
+    const results = nextProps.results ? nextProps.results.length : 0;
+    if (results > 0 && this.state.results - results != 0) {
+      this.setState({ loading: false, results });
     }
   }
 
   handleAddSearchValue = async (e, type) => {
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     await this.props.addSearchValues(e, type);
     await this.props.fetchBasicResourceDetailsResults(this.props.searchValues);
     await this.props.fetchBasicUtilityDetailsResults(this.props.searchValues);
     await this.props.fetchBasicServiceDetailsResults(this.props.searchValues);
     await this.props.fetchBasicDetailsResults(this.props.searchValues);
-  }
+  };
 
   handleRemoveResults = async () => {
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
     await this.props.removeResultsValues();
-  }
+  };
 
-  handleSearchTypeResourceInstances = (e) => {
+  handleSearchTypeResourceInstances = e => {
     this.props.fetchResourceTypeInstances(e.target.value);
-  }
-  handleSearchTypeUtilityInstances = (e) => {
+  };
+  handleSearchTypeUtilityInstances = e => {
     this.props.fetchUtilityTypeInstances(e.target.value);
-  }
-  handleSearchTypeServiceInstances = (e) => {
+  };
+  handleSearchTypeServiceInstances = e => {
     this.props.fetchServiceTypeInstances(e.target.value);
-  }
+  };
 
   closeModal = async () => {
     await this.props.removeResultsValues();
     await this.props.removeSearchValues(0, "REMOVE_ALL_SEARCH_VALUES");
     await this.setState({ redirect: true });
-  }
+  };
 
-  getResultCount = results => results ? results.length : 0
+  getResultCount = results => (results ? results.length : 0);
 
   renderDisplayButton = () => (
     <DisplayButton onClick={() => this.setState({ redirect: true })}>
       Get Search Results
     </DisplayButton>
-  )
+  );
+
+  renderTabLoader = tab => {
+    if (this.state.loading) return () => <Loader />;
+    else return tab;
+  };
 
   renderAdvancedLocation = () => (
     <AdvancedLocation
@@ -167,7 +173,7 @@ class SearchModal extends React.Component<{}> {
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
       action={searchActions.ADD_DISTRICT_VALUES}
     />
-  )
+  );
 
   renderAdvancedOwnershipRegulation = () => (
     <AdvancedOwnershipRegulation
@@ -177,63 +183,66 @@ class SearchModal extends React.Component<{}> {
       regulatoryStatuses={this.props.regulatoryStatuses}
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
     />
-  )
+  );
 
   renderAdvancedFacilityTypes = () => (
     <AdvancedFacilityType
       facilityTypes={this.props.facilityTypes}
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
     />
-  )
+  );
 
   renderAdvancedResourceTypes = () => (
     <AdvancedResourceType
       resourceTypes={this.props.resourceTypes}
       handleChange={e => this.handleSearchTypeResourceInstances(e)}
-      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+      handleChangeAddSearchValue={(e, type) =>
+        this.handleAddSearchValue(e, type)
+      }
     />
-  )
+  );
 
   renderAdvancedUtilityTypes = () => (
     <AdvancedUtilityType
       utilityTypes={this.props.utilityTypes}
       handleChange={e => this.handleSearchTypeUtilityInstances(e)}
-      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+      handleChangeAddSearchValue={(e, type) =>
+        this.handleAddSearchValue(e, type)
+      }
     />
-  )
+  );
 
   renderAdvancedServices = () => (
     <AdvancedServiceType
       serviceTypes={this.props.serviceTypes}
       handleChange={e => this.handleSearchTypeServiceInstances(e)}
-      handleChangeAddSearchValue={(e, type) => this.handleAddSearchValue(e, type)}
+      handleChangeAddSearchValue={(e, type) =>
+        this.handleAddSearchValue(e, type)
+      }
     />
-  )
+  );
 
   renderTab = (title: string, component: Function) => (
-    <Tab
-      title={title}
-      className="advanced-search-container"
-      active
-    >
+    <Tab title={title} className="advanced-search-container" active>
       {this.state.activeTab === title && component()}
     </Tab>
-  )
+  );
 
   removeSearchValues = async (id, actionType) => {
     await this.props.removeSearchValues(id, actionType);
     await this.props.fetchBasicDetailsResults(this.props.searchValues);
-  }
+  };
 
   renderTags = (valueEntity, entity, entityName, actionType) => {
+    const ids = this.props.searchValues[valueEntity];
+    const entities = this.props[entity];
 
-    const ids = this.props.searchValues[valueEntity]
-    const entities = this.props[entity]
-
-    const models = entities.filter(entity => ids.includes(entity.id.toString()));
+    const models = entities.filter(entity =>
+      ids.includes(entity.id.toString())
+    );
 
     return models.map(model => {
-      const modelName = model[entityName]
+      const modelName = model[entityName];
       return (
         <SearchTag
           name={modelName}
@@ -241,9 +250,9 @@ class SearchModal extends React.Component<{}> {
           actionType={actionType}
           removeSearchValues={this.removeSearchValues}
         />
-      )
-    })
-  }
+      );
+    });
+  };
 
   render() {
     return (
@@ -259,35 +268,47 @@ class SearchModal extends React.Component<{}> {
           <SearchResultsPanel>
             <div>
               {this.state.loading && <p>Loading Results</p>}
-              {
-                !this.state.loading && (
-                  <span>
-                    <strong>{this.getResultCount(this.props.results)}</strong> Facilities Match Your Criteria
-                  </span>
-                )
-              }
+              {!this.state.loading && (
+                <span>
+                  <strong>{this.getResultCount(this.props.results)}</strong>{" "}
+                  Facilities Match Your Criteria
+                </span>
+              )}
             </div>
-            {(this.getResultCount(this.props.results) > 0 && !this.state.loading) && this.renderDisplayButton()}
+            {this.getResultCount(this.props.results) > 0 &&
+              !this.state.loading &&
+              this.renderDisplayButton()}
           </SearchResultsPanel>
           <Tabs
             className="tab-demo z-depth-1 blue text-white"
             onChange={(t, v) => this.setState({ activeTab: v.target.text })}
           >
-            {this.renderTab("Location", this.renderAdvancedLocation)}
-            {this.renderTab("Ownership & Regulation", this.renderAdvancedOwnershipRegulation)}
-            {this.renderTab("Facility Type", this.renderAdvancedFacilityTypes)}
+            {this.renderTab(
+              "Location",
+              this.renderTabLoader(this.renderAdvancedLocation)
+            )}
+            {this.renderTab(
+              "Ownership & Regulation",
+              this.renderTabLoader(this.renderAdvancedOwnershipRegulation)
+            )}
+            {this.renderTab(
+              "Facility Type",
+              this.renderTabLoader(this.renderAdvancedFacilityTypes)
+            )}
             {/* {this.renderTab("Resources", this.renderAdvancedResourceTypes)}
             {this.renderTab("Utilities", this.renderAdvancedUtilityTypes)}
             {this.renderTab("Services", this.renderAdvancedServices)} */}
           </Tabs>
         </ModalContent>
         <ModalFooter>
-          <TagContainer>
-            {tagValueMapper.map(tagValues => this.renderTags(...tagValues))}
-          </TagContainer>
+          {!this.state.loading && (
+            <TagContainer>
+              {tagValueMapper.map(tagValues => this.renderTags(...tagValues))}
+            </TagContainer>
+          )}
         </ModalFooter>
       </ModalContainer>
-    )
+    );
   }
 }
 
@@ -327,16 +348,19 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {
-  addSearchValues,
-  removeSearchValues,
-  fetchBasicDetailsResults,
-  fetchAdvancedSearchResults,
-  fetchResourceTypeInstances,
-  fetchUtilityTypeInstances,
-  fetchServiceTypeInstances,
-  fetchBasicResourceDetailsResults,
-  fetchBasicUtilityDetailsResults,
-  fetchBasicServiceDetailsResults,
-  removeResultsValues
-})(SearchModal);
+export default connect(
+  mapStateToProps,
+  {
+    addSearchValues,
+    removeSearchValues,
+    fetchBasicDetailsResults,
+    fetchAdvancedSearchResults,
+    fetchResourceTypeInstances,
+    fetchUtilityTypeInstances,
+    fetchServiceTypeInstances,
+    fetchBasicResourceDetailsResults,
+    fetchBasicUtilityDetailsResults,
+    fetchBasicServiceDetailsResults,
+    removeResultsValues
+  }
+)(SearchModal);
