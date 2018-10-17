@@ -337,7 +337,7 @@ module.exports = Facility => {
             if (err) {
               return cb(err);
             }
-            cb(null, stream, "application/pdf");
+            cb(null, stream, "application/pdf", `attachment;filename=malu.pdf`);
           }
         );
       } else {
@@ -356,7 +356,8 @@ module.exports = Facility => {
     http: { path: "/download/:id", verb: "get" },
     returns: [
       { arg: "body", type: "file", root: true },
-      { arg: "Content-Type", type: "string", http: { target: "header" } }
+      { arg: "Content-Type", type: "string", http: { target: "header" } },
+      { arg: "Content-Disposition", type: "string", http: { target: "header" } }
     ]
   });
 
@@ -376,8 +377,6 @@ module.exports = Facility => {
         cb(error);
       }
 
-      console.log("log: ", where);
-
       const facilities = await Facility.find({
         where,
         include: [
@@ -396,21 +395,27 @@ module.exports = Facility => {
         }
 
         let contentType = null;
+        let contentDisposition = null;
+
         switch (format) {
           case "csv":
             contentType = "text/csv";
+            contentDisposition = `attachment;filename=MHFR_Facilities.csv`;
             break;
 
           case "pdf":
             contentType = "application/pdf";
+            contentDisposition = `attachment;filename=MHFR_Facilities.pdf`;
             break;
 
           case "excel":
             contentType =
               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            contentDisposition = `attachment;filename=MHFR_Facilities.xlsx`;
             break;
         }
-        cb(null, stream, contentType);
+
+        cb(null, stream, contentType, contentDisposition);
       };
 
       if (format == "pdf") {
@@ -442,7 +447,8 @@ module.exports = Facility => {
     http: { path: "/download", verb: "get" },
     returns: [
       { arg: "body", type: "file", root: true },
-      { arg: "Content-Type", type: "string", http: { target: "header" } }
+      { arg: "Content-Type", type: "string", http: { target: "header" } },
+      { arg: "Content-Disposition", type: "string", http: { target: "header" } }
     ]
   });
 
