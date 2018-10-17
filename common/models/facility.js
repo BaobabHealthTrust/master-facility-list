@@ -337,7 +337,16 @@ module.exports = Facility => {
             if (err) {
               return cb(err);
             }
-            cb(null, stream, "application/pdf", `attachment;filename=malu.pdf`);
+
+            const { facility_name: name = "MHFR_FACILITY" } = facility;
+
+            const fileName = name
+              .trim()
+              .replace(/[^\w\s]/gi, "")
+              .replace(/\s+/g, "_");
+
+            const contentDisposition = `attachment;filename=${fileName}.pdf`;
+            cb(null, stream, "application/pdf", contentDisposition);
           }
         );
       } else {
