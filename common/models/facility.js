@@ -583,7 +583,6 @@ module.exports = Facility => {
   });
 
   // FHIR Compliant endpoints
-
   Facility.fhirAllLocations = async cb => {
     return fhirCompliantFacilities();
   };
