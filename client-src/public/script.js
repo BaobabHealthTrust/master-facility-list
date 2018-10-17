@@ -29,11 +29,11 @@ $(document).ready(function() {
   }
 
   const content = $(".content");
-  const nav = $(".header");
+  const header = $(".header");
   const footer = $(".footer");
   const win = $(window);
 
-  const height = win.height() - nav.height() - footer.height();
+  const height = win.height() - header.height() - footer.height();
   content.css("min-height", height);
 
   win.on({
