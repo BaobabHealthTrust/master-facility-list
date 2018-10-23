@@ -233,15 +233,9 @@ const populate = async facilities => {
 
     const facilitiesNameWithGeocodes = uniqueFacilities.map(facility => ({
       facilityName: facility["Facility Name"],
-      latitude: facility["latitude"]
-        ? facility["latitude"]
-        : faker.address.longitude(),
-      longitude: facility["longitude"]
-        ? facility["longitude"]
-        : faker.address.latitude()
+      latitude: facility["LATITUDE"],
+      longitude: facility["LONGITUDE"]
     }));
-
-    // process.exit(0);
 
     await populateIndependentModels(uniqueFacilities);
 
