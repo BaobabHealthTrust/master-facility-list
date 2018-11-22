@@ -56,14 +56,18 @@ module.exports = Facility => {
 
   // TODO: Do the same thing for archived client
   Facility.observe("access", async function filterArchivedAndUnpublished(ctx) {
-    if (ctx.options && ctx.options.skipAccessFilter) return;
-    const query = {
-      and: [{ published_date: { neq: null } }, { archived_date: null }]
-    };
-    if (!ctx.query) ctx.query = { where: query };
-    if (ctx.query) {
-      if (ctx.query.where) ctx.query.where = { and: [ctx.query.where, query] };
-      else ctx.query.where = query;
+    if(ctx.Model.app._remotes.methodName !== "archived"){
+      if (ctx.options && ctx.options.skipAccessFilter) return;
+      const query = {
+        and: [{ published_date: { neq: null } }, { archived_date: null }]
+      };
+
+
+      if (!ctx.query) ctx.query = { where: query };
+      if (ctx.query) {
+        if (ctx.query.where) ctx.query.where = { and: [ctx.query.where, query] };
+        else ctx.query.where = query;
+      }
     }
   });
 
@@ -241,10 +245,10 @@ module.exports = Facility => {
         dateOpened: moment(facility.facility_date_opened).format("MMM Do YY"),
         string:
           `${facility.facility_name}${facility.facility_code}${
-            facility.common_name
+          facility.common_name
           }` +
           `${formattedFacility.owner.facility_owner}${
-            formattedFacility.facilityType.facility_type
+          formattedFacility.facilityType.facility_type
           }` +
           `${formattedFacility.operationalStatus.facility_operational_status}` +
           `${formattedFacility.district.district_name}`
@@ -254,12 +258,12 @@ module.exports = Facility => {
     // TODO: Handle Blank Regex
     return regex
       ? formattedFacilities
-          .filter(facility => {
-            return new RegExp(`.*${regex.toUpperCase()}`).test(
-              facility.string.toUpperCase()
-            );
-          })
-          .filter((facility, index) => index < 5)
+        .filter(facility => {
+          return new RegExp(`.*${regex.toUpperCase()}`).test(
+            facility.string.toUpperCase()
+          );
+        })
+        .filter((facility, index) => index < 5)
       : formattedFacilities;
   };
 
@@ -633,4 +637,30 @@ module.exports = Facility => {
     accepts: [{ arg: "districts", type: "array" }],
     returns: [{ arg: "response", type: "number" }]
   });
+
+  Facility.archived = async (date, cb) => {
+    const { date: archivedDate = new Date() } = date
+
+    const where = {
+      archived_date: {
+        gte: archivedDate,
+        lte: new Date()
+      }
+    }
+
+    const facilities = await Facility.find({
+      where,
+      include: ["regulatoryStatus", "operationalStatus", { district: "zone" }]
+    })
+
+    return facilities
+  };
+
+Facility.remoteMethod("archived", {
+  description: "retrieves archived facilities",
+  http: { path: "/archived", verb: "get" },
+  accepts: [{ arg: "date", type: "object" }],
+  returns: [{ arg: "facilities", type: "array" }]
+});
+
 };
