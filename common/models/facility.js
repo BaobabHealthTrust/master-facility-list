@@ -659,8 +659,8 @@ module.exports = Facility => {
 Facility.remoteMethod("archived", {
   description: "retrieves archived facilities",
   http: { path: "/archived", verb: "get" },
-  accepts: [{ arg: "date", type: "object" }],
-  returns: [{ arg: "facilities", type: "array" }]
+  accepts: { arg: "date", type: "object" },
+  returns: { arg: "facilities", type: "array" }
 });
 
 };
