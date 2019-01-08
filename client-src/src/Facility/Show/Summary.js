@@ -1,13 +1,13 @@
 //@Flow
-import React, { Component } from "react";
-import Card from "../common/MflCard";
-import { connect } from "react-redux";
-import { fetchCurrentDetails, setCurrentDetails } from "../actions";
+import React, {Component} from "react";
+import Card from "../../common/MflCard";
+import {connect} from "react-redux";
+import {fetchCurrentDetails, setCurrentDetails} from "../../actions";
 import moment from "moment";
-import { CurrentFacility } from "../types/helper-types";
-import { Loader } from "../common";
+import {CurrentFacility} from "../../types/helper-types";
+import {Loader} from "../../common";
 
-class Summary extends Component<{ current: CurrentFacility }> {
+class Summary extends Component<{current: CurrentFacility}> {
   state = {
     error: {},
     loading: true
@@ -19,10 +19,10 @@ class Summary extends Component<{ current: CurrentFacility }> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { error } = this.props;
-    this.setState({ error });
+    const {error} = this.props;
+    this.setState({error});
 
-    if (!nextProps.isLoading) this.setState({ loading: false });
+    if (!nextProps.isLoading) this.setState({loading: false});
   }
 
   _renderHeadingSection = (title, icon, label) => {
@@ -46,7 +46,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
       operationalStatus,
       district
     } = this.props.current;
-    const { facility_date_opened } = this.props.current;
+    const {facility_date_opened} = this.props.current;
     console.log(`facility_date_opened ${facility_date_opened}`);
     return (
       <div className="container">

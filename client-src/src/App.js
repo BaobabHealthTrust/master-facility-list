@@ -1,21 +1,21 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import "./App.css";
 import Navbar from "./Navbar";
-import FacilitiesHome from "./Facility/FacilitiesHome";
-import { Route, Switch } from "react-router-dom";
-import FacilityDetails from "./Facility/FacilityDetails";
+import Facilities from "./Facility";
+import {Route, Switch} from "react-router-dom";
+import ShowFacility from "./Facility/Show";
 import Dashboard from "./Dashboard/DashboardHome";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
 import MflLogin from "./common/MflLogin";
 import MfLFeedback from "./common/MfLFeedback";
-import { UsersHome } from "./users";
-import { AddFacilityHome } from "./Facility/AddFacility";
-import SearchModal from "./Facility/SearchModal";
-import { FetchAllDependancies } from "./common";
-import { connect } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Loader } from "./common";
+import {UsersHome} from "./users";
+import CreateFacility from "./Facility/Create";
+import SearchModal from "./Facility/Search";
+import {FetchAllDependancies} from "./common";
+import {connect} from "react-redux";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Loader} from "./common";
 
 class App extends Component {
   state = {
@@ -24,8 +24,8 @@ class App extends Component {
 
   checkWindowWidith = () =>
     window.innerWidth <= 480
-      ? this.setState({ widthFlag: true })
-      : this.setState({ widthFlag: false });
+      ? this.setState({widthFlag: true})
+      : this.setState({widthFlag: false});
 
   isRouteVisible = () =>
     !this.state.widthFlag && sessionStorage.getItem("token");
@@ -47,12 +47,12 @@ class App extends Component {
               <Navbar />
               <div className="content">
                 <Switch>
-                  <Route exact path="/facilities" component={FacilitiesHome} />
+                  <Route exact path="/facilities" component={Facilities} />
                   {this.isRouteVisible() && (
                     <Route
                       exact
                       path="/facilities/add"
-                      component={AddFacilityHome}
+                      component={CreateFacility}
                     />
                   )}
                   <Route
@@ -62,7 +62,7 @@ class App extends Component {
                   />
                   <Route
                     path="/facilities/:id/:sections"
-                    component={FacilityDetails}
+                    component={ShowFacility}
                   />
                   <Route exact path="/" component={Dashboard} />
                   <Route exact path="/about" component={MflAbout} />

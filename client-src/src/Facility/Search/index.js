@@ -1,9 +1,8 @@
 //@flow
 import React from "react";
-import { Tabs, Tab } from "react-materialize";
-import AdvancedLocation from "./AdvancedSearch/AdvancedLocation";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import {Tabs, Tab} from "react-materialize";
+import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
 import {
   addSearchValues,
   fetchAdvancedSearchResults,
@@ -17,19 +16,22 @@ import {
   fetchServiceTypeInstances,
   removeResultsValues,
   removeSearchValues
-} from "../actions";
-import SearchTag from "./AdvancedSearch/SearchTag";
-import { map, intersection } from "lodash";
-import AdvancedOwnershipRegulation from "./AdvancedSearch/AdvancedOwnershipRegulation";
-import AdvancedFacilityType from "./AdvancedSearch/AdvancedFacilityType";
-import AdvancedResourceType from "./AdvancedSearch/AdvancedResourceType";
-import AdvancedUtilityType from "./AdvancedSearch/AdvancedUtilityType";
-import AdvancedServiceType from "./AdvancedSearch/AdvancedServiceType";
-import { Loader } from "../common";
+} from "../../actions";
+import {map, intersection} from "lodash";
+import {
+  FacilityTypeTab,
+  LocationTab,
+  OwnershipAndRegulationStatusTab,
+  ResourcesTab,
+  ServicesTab,
+  UtilitiesTab,
+  SearchTag
+} from "./components";
+import {Loader} from "../../common";
 
 import styled from "styled-components";
 
-const DisplayButton = styled.div.attrs({ className: "btn" })`
+const DisplayButton = styled.div.attrs({className: "btn"})`
   width: 20%;
 `;
 const CloseButton = styled.div.attrs({
@@ -41,11 +43,11 @@ const SearchResultsPanel = styled.div.attrs({
 const ModalHeader = styled.div.attrs({
   className: "mfl-bm-2 flex justify-between w-full"
 })``;
-const ModalFooter = styled.div.attrs({ className: "modal-footer" })``;
+const ModalFooter = styled.div.attrs({className: "modal-footer"})``;
 const TagContainer = styled.div.attrs({
   className: "advanced-search-tag-container"
 })``;
-const ModalContent = styled.div.attrs({ className: "modal-content" })``;
+const ModalContent = styled.div.attrs({className: "modal-content"})``;
 const ModalContainer = styled.div.attrs({
   className: "container mt-8",
   id: "advanced-search",
@@ -113,18 +115,18 @@ class SearchModal extends React.Component<{}> {
 
   componentDidMount() {
     const containerHeight = window.innerHeight - 157;
-    this.setState({ containerHeight });
+    this.setState({containerHeight});
   }
 
   componentWillReceiveProps(nextProps) {
     const results = nextProps.results ? nextProps.results.length : 0;
     if (results > 0 && this.state.results - results != 0) {
-      this.setState({ loading: false, results });
+      this.setState({loading: false, results});
     }
   }
 
   handleAddSearchValue = async (e, type) => {
-    this.setState({ loading: true });
+    this.setState({loading: true});
     await this.props.addSearchValues(e, type);
     await this.props.fetchBasicResourceDetailsResults(this.props.searchValues);
     await this.props.fetchBasicUtilityDetailsResults(this.props.searchValues);
@@ -133,7 +135,7 @@ class SearchModal extends React.Component<{}> {
   };
 
   handleRemoveResults = async () => {
-    this.setState({ loading: true });
+    this.setState({loading: true});
     await this.props.removeSearchValues("", "REMOVE_ALL_SEARCH_VALUES");
     await this.props.removeResultsValues();
   };
@@ -151,13 +153,13 @@ class SearchModal extends React.Component<{}> {
   closeModal = async () => {
     await this.props.removeResultsValues();
     await this.props.removeSearchValues(0, "REMOVE_ALL_SEARCH_VALUES");
-    await this.setState({ redirect: true });
+    await this.setState({redirect: true});
   };
 
   getResultCount = results => (results ? results.length : 0);
 
   renderDisplayButton = () => (
-    <DisplayButton onClick={() => this.setState({ redirect: true })}>
+    <DisplayButton onClick={() => this.setState({redirect: true})}>
       Get Search Results
     </DisplayButton>
   );
@@ -165,7 +167,7 @@ class SearchModal extends React.Component<{}> {
   renderTabLoader = tab => (this.state.loading ? () => <Loader /> : tab);
 
   renderAdvancedLocation = () => (
-    <AdvancedLocation
+    <LocationTab
       districts={this.props.districts}
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
       action={searchActions.ADD_DISTRICT_VALUES}
@@ -173,7 +175,7 @@ class SearchModal extends React.Component<{}> {
   );
 
   renderAdvancedOwnershipRegulation = () => (
-    <AdvancedOwnershipRegulation
+    <OwnershipAndRegulationStatusTab
       operationalStatuses={this.props.operationalStatuses}
       facilityTypes={this.props.facilityTypes}
       facilityOwners={this.props.facilityOwners}
@@ -183,14 +185,14 @@ class SearchModal extends React.Component<{}> {
   );
 
   renderAdvancedFacilityTypes = () => (
-    <AdvancedFacilityType
+    <FacilityTypeTab
       facilityTypes={this.props.facilityTypes}
       handleChange={(e, type) => this.handleAddSearchValue(e, type)}
     />
   );
 
   renderAdvancedResourceTypes = () => (
-    <AdvancedResourceType
+    <ResourcesTab
       resourceTypes={this.props.resourceTypes}
       handleChange={e => this.handleSearchTypeResourceInstances(e)}
       handleChangeAddSearchValue={(e, type) =>
@@ -200,7 +202,7 @@ class SearchModal extends React.Component<{}> {
   );
 
   renderAdvancedUtilityTypes = () => (
-    <AdvancedUtilityType
+    <UtilitiesTab
       utilityTypes={this.props.utilityTypes}
       handleChange={e => this.handleSearchTypeUtilityInstances(e)}
       handleChangeAddSearchValue={(e, type) =>
@@ -210,7 +212,7 @@ class SearchModal extends React.Component<{}> {
   );
 
   renderAdvancedServices = () => (
-    <AdvancedServiceType
+    <ServicesTab
       serviceTypes={this.props.serviceTypes}
       handleChange={e => this.handleSearchTypeServiceInstances(e)}
       handleChangeAddSearchValue={(e, type) =>
@@ -253,7 +255,7 @@ class SearchModal extends React.Component<{}> {
 
   render() {
     return (
-      <ModalContainer style={{ minHeight: this.state.containerHeight }}>
+      <ModalContainer style={{minHeight: this.state.containerHeight}}>
         {this.state.redirect && <Redirect to="/facilities" />}
         <ModalContent>
           <ModalHeader>
@@ -278,7 +280,7 @@ class SearchModal extends React.Component<{}> {
           </SearchResultsPanel>
           <Tabs
             className="tab-demo z-depth-1 blue text-white"
-            onChange={(t, v) => this.setState({ activeTab: v.target.text })}
+            onChange={(t, v) => this.setState({activeTab: v.target.text})}
           >
             {this.renderTab(
               "Location",

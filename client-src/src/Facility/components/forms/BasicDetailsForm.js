@@ -1,14 +1,14 @@
 //@flow
-import React, { Component } from "react";
-import { Input, Navbar, NavItem, Row, Button } from "react-materialize";
-import { connect } from "react-redux";
-import { DatePicker, FormWizardNavigation } from "../../common";
-import { BasicDetailsFormProps } from "../../types/helper-types";
-import { Formik } from "formik";
-import { postFormData, fetchCurrentDetails } from "../../actions";
-import { Redirect } from "react-router-dom";
-import { Card, CardTitle, Table, Icon, Col } from "react-materialize";
-import { confirmAlert } from "react-confirm-alert";
+import React, {Component} from "react";
+import {Input, Navbar, NavItem, Row, Button} from "react-materialize";
+import {connect} from "react-redux";
+import {DatePicker, FormWizardNavigation} from "../../../common";
+import {BasicDetailsFormProps} from "../../../types/helper-types";
+import {Formik} from "formik";
+import {postFormData, fetchCurrentDetails} from "../../../actions";
+import {Redirect} from "react-router-dom";
+import {Card, CardTitle, Table, Icon, Col} from "react-materialize";
+import {confirmAlert} from "react-confirm-alert";
 import moment from "moment";
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
@@ -118,12 +118,12 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     return errors;
   };
 
-  handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  handleSubmit = async (values, {setSubmitting, setErrors}) => {
     if (!this.props.fromAdd) {
       confirmAlert({
-        customUI: ({ onClose }) => {
+        customUI: ({onClose}) => {
           return (
-            <Col m={6} s={12} style={{ minWidth: "400px" }}>
+            <Col m={6} s={12} style={{minWidth: "400px"}}>
               <Card
                 title="Confirm"
                 className="blu darken-4"
@@ -302,7 +302,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                 saveButton={this.props.fromAdd ? "Next" : "Save"}
                 handleSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
-                handleCancel={() => this.setState({ cancelForm: true })}
+                handleCancel={() => this.setState({cancelForm: true})}
               />
             </div>
           )}
