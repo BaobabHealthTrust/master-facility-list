@@ -1,15 +1,15 @@
 //@flow
-import React, { Component } from "react";
-import { Input, Navbar, NavItem, Row, Button } from "react-materialize";
-import { connect } from "react-redux";
-import { DatePicker, FormWizardNavigation } from "../../common";
-import { CurrentFacility } from "../../types/helper-types";
-import { Formik } from "formik";
-import { postFormData } from "../../actions";
-import { Redirect } from "react-router-dom";
+import React, {Component} from "react";
+import {Input, Navbar, NavItem, Row, Button} from "react-materialize";
+import {connect} from "react-redux";
+import {DatePicker, FormWizardNavigation} from "../../../common";
+import {CurrentFacility} from "../../../types/helper-types";
+import {Formik} from "formik";
+import {postFormData} from "../../../actions";
+import {Redirect} from "react-router-dom";
 import yup from "yup";
-import { Card, CardTitle, Table, Icon, Col } from "react-materialize";
-import { confirmAlert } from "react-confirm-alert";
+import {Card, CardTitle, Table, Icon, Col} from "react-materialize";
+import {confirmAlert} from "react-confirm-alert";
 import moment from "moment";
 
 type Props = {
@@ -124,16 +124,16 @@ class FacilityContactForm extends React.Component<Props> {
     setSubmitting(false);
     if (this.props.response.response && this.props.fromAdd) this.props.onNext();
     if (this.props.response.response && !this.props.fromAdd)
-      this.setState({ cancelForm: true });
+      this.setState({cancelForm: true});
     onClose();
   };
 
-  _handleChange = async (values, { setSubmitting, setErros }) => {
+  _handleChange = async (values, {setSubmitting, setErros}) => {
     if (!this.props.fromAdd) {
       confirmAlert({
-        customUI: ({ onClose }) => {
+        customUI: ({onClose}) => {
           return (
-            <Col m={6} s={12} style={{ minWidth: "400px" }}>
+            <Col m={6} s={12} style={{minWidth: "400px"}}>
               <Card
                 title="Confirm"
                 className="blu darken-4"
@@ -305,7 +305,7 @@ class FacilityContactForm extends React.Component<Props> {
                 saveButton={this.props.fromAdd ? "Next" : "Save"}
                 handleSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
-                handleCancel={() => this.setState({ cancelForm: true })}
+                handleCancel={() => this.setState({cancelForm: true})}
               />
             </div>
           )}
