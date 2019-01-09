@@ -4,7 +4,7 @@ import Card from "../common/MflCard";
 import {Alert} from "../common";
 import footerResizer from "../helpers/footerResize";
 import {Redirect} from "react-router-dom";
-import {checkCredentials, getUserDetails} from "../actions";
+import {checkCredentials, getUserDetails, setUserDetails} from "../actions";
 import {connect} from "react-redux";
 import styled from "styled-components";
 import {Icon} from "react-materialize";
@@ -16,7 +16,8 @@ type State = {
 
 type Props = {
   checkCredentials: Function,
-  getUserDetails: Function
+  getUserDetails: Function,
+  setUserDetails: Function
 };
 
 const MFLContainer = styled.div.attrs({className: "container mfl-container"})``;
@@ -31,14 +32,18 @@ const LoginIconContainer = styled.div.attrs({
   className: "mfl-login-icon grey lighten-2 grey-text"
 })``;
 const LoginInput = styled.input.attrs({className: "mfl-login-input"})``;
+const LoginButton = styled.a.attrs({className: "btn-large blue accent-1"})``;
 
-class MflLogin extends Component<State, Props> {
+class MflLogin extends Component<Props, State> {
   state = {
     username: "",
     password: ""
   };
 
-  attemptLogin = async () => {
+  componentDidMount() {
+    this.setState({isLoggedIn: sessionStorage.getItem("token")});
+  }
+  _attemptLogin = async () => {
     const {username, password} = this.state;
     await this.props.checkCredentials(username, password);
 
@@ -49,58 +54,30 @@ class MflLogin extends Component<State, Props> {
 
     if (isLoginSuccess) {
       await this.props.getUserDetails(userId, tokenId);
-      await sessionStorage.setItem("token", tokenId);
-      await sessionStorage.setItem(
-        "firstname",
-        this.props.loginResponse.userDetails.firstname
-      );
+      const firstname = this.props.loginResponse.userDetails.firstname;
+      await this._persistLoginDetails(userId, tokenId, firstname);
+      this.props.setUserDetails(tokenId, firstname);
     }
   };
-
-  handlePasswordInput = e => {
-    if (e.which === 13) this.attemptLogin();
-    this.setState({password: e.currentTarget.value});
-  };
-
-  render() {
-    if (sessionStorage.getItem("token")) {
-      return <Redirect to="/" />;
-    }
-    const isLoginFailed = this.props.loginResponse.isLoginFailed;
-    const loginFailedMessage =
-      "Looks like there is something wrong with your credentials. Try again";
-    return (
-      <MFLContainer>
-        <LoginContainer>
-          <LoginTitle>Login Here</LoginTitle>
-          {isLoginFailed && this._renderAlert(loginFailedMessage)}
-          <div className="mfl-tm-5" />
-          {this._renderInputField(
-            "perm_identity",
-            "text",
-            "username",
-            "Enter Username"
-          )}
-          <div className="mfl-tm-2" />
-          {this._renderInputField(
-            "lock",
-            "password",
-            "password",
-            "Enter Password"
-          )}
-          <div className="mfl-tm-5" />
-          <a onClick={this.attemptLogin} className="btn-large blue accent-1">
-            Login
-          </a>
-        </LoginContainer>
-      </MFLContainer>
-    );
-  }
 
   _changeInputField = (event: SyntheticEvent<HTMLInputElement>) => {
     if (event.which === 13) this.attemptLogin();
     this.setState({[event.currentTarget.name]: event.currentTarget.value});
   };
+
+  async _persistLoginDetails(
+    userId: string,
+    tokenId: string,
+    firstname: string
+  ) {
+    await sessionStorage.setItem("token", tokenId);
+    await sessionStorage.setItem("firstname", firstname);
+  }
+
+  _isLoggedIn() {
+    const {userDetails} = this.props;
+    return (userDetails && userDetails.token) || false;
+  }
 
   _renderInputField(
     icon: string,
@@ -126,13 +103,49 @@ class MflLogin extends Component<State, Props> {
   _renderAlert(message: string) {
     return <Alert warning message={message} />;
   }
+
+  render() {
+    if (this._isLoggedIn()) {
+      return <Redirect to="/" />;
+    }
+    const isLoginFailed = this.props.loginResponse.isLoginFailed;
+    const loginFailedMessage =
+      "Looks like there is something wrong with your credentials. Try again";
+    return (
+      <MFLContainer>
+        <LoginContainer>
+          <LoginTitle>Login Here</LoginTitle>
+          {isLoginFailed && this._renderAlert(loginFailedMessage)}
+          <div className="mfl-tm-5" />
+          {this._renderInputField(
+            "perm_identity",
+            "text",
+            "username",
+            "Enter Username"
+          )}
+          <div className="mfl-tm-2" />
+          {this._renderInputField(
+            "lock",
+            "password",
+            "password",
+            "Enter Password"
+          )}
+          <div className="mfl-tm-5" />
+          <LoginButton onClick={this._attemptLogin}>Login</LoginButton>
+        </LoginContainer>
+      </MFLContainer>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-  return {loginResponse: state.authReducer};
+  return {
+    loginResponse: state.authReducer,
+    userDetails: state.users.loggedInUser
+  };
 };
 
 export default connect(
   mapStateToProps,
-  {checkCredentials, getUserDetails}
+  {checkCredentials, getUserDetails, setUserDetails}
 )(MflLogin);
