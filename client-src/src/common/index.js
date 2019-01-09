@@ -15,3 +15,4 @@ export {default as MflCardGeneric} from "./MflCardGeneric";
 export {default as MFLGoogleMap} from "./MFLGoogleMap";
 export {default as MflAlert} from "./MflAlert";
 export {default as MFLRevealButton} from "./MFLRevealButton";
+export {default as Alert} from "./Alert";

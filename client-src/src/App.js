@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import "./App.css";
 import Navbar from "./Navbar";
-import Facilities from "./Facility";
+import FacilitiesPage from "./Facility";
 import {Route, Switch} from "react-router-dom";
 import ShowFacility from "./Facility/Show";
 import Dashboard from "./Dashboard/DashboardHome";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
-import MflLogin from "./common/MflLogin";
+import LoginPage from "./Login";
 import MfLFeedback from "./common/MfLFeedback";
 import {UsersHome} from "./users";
 import CreateFacility from "./Facility/Create";
@@ -47,7 +47,7 @@ class App extends Component {
               <Navbar />
               <div className="content">
                 <Switch>
-                  <Route exact path="/facilities" component={Facilities} />
+                  <Route exact path="/facilities" component={FacilitiesPage} />
                   {this.isRouteVisible() && (
                     <Route
                       exact
@@ -67,7 +67,7 @@ class App extends Component {
                   <Route exact path="/" component={Dashboard} />
                   <Route exact path="/about" component={MflAbout} />
                   <Route exact path="/feedback" component={MfLFeedback} />
-                  <Route exact path="/login" component={MflLogin} />
+                  <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/users" component={UsersHome} />
                 </Switch>
               </div>
