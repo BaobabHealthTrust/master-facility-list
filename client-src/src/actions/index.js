@@ -77,3 +77,4 @@ export {
 } from "./fetch-facilities-with-service";
 export {default as fetchTotalFacilities} from "./fetch-total-facilities";
 export {default as setUserDetails} from "./set-user-details";
+export {default as resetUserDetails} from "./reset-user-details";

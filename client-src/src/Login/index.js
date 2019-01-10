@@ -40,9 +40,6 @@ class MflLogin extends Component<Props, State> {
     password: ""
   };
 
-  componentDidMount() {
-    this.setState({isLoggedIn: sessionStorage.getItem("token")});
-  }
   _attemptLogin = async () => {
     const {username, password} = this.state;
     await this.props.checkCredentials(username, password);
@@ -61,7 +58,7 @@ class MflLogin extends Component<Props, State> {
   };
 
   _changeInputField = (event: SyntheticEvent<HTMLInputElement>) => {
-    if (event.which === 13) this.attemptLogin();
+    if (event.which === 13) this._attemptLogin();
     this.setState({[event.currentTarget.name]: event.currentTarget.value});
   };
 
