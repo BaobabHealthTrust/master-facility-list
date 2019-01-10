@@ -66,6 +66,13 @@ export default (state = initialState, action) => {
         isLoading: false
       };
       break;
+    case "RESET_USER_DETAILS":
+      return {
+        ...state,
+        loggedInUser: {},
+        isLoading: false
+      };
+      break;
     default:
       break;
   }
