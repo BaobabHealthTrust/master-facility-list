@@ -49,13 +49,15 @@
     "build": "react-scripts build",
     "test": "jest --watch",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "cypress": "node_modules/.bin/cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "cypress": "^3.1.4",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "flexboxgrid": "^6.3.1",
