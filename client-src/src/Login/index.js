@@ -32,7 +32,9 @@ const LoginIconContainer = styled.div.attrs({
   className: "mfl-login-icon grey lighten-2 grey-text"
 })``;
 const LoginInput = styled.input.attrs({className: "mfl-login-input"})``;
-const LoginButton = styled.a.attrs({className: "btn-large blue accent-1"})``;
+const LoginButton = styled.button.attrs({
+  className: "btn-large blue accent-1"
+})``;
 
 class MflLogin extends Component<Props, State> {
   state = {
