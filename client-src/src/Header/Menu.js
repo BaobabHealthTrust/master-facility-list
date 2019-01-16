@@ -14,6 +14,7 @@ class Menu extends Component {
   logout = async e => {
     e.preventDefault();
     await sessionStorage.removeItem("token");
+    await sessionStorage.removeItem("firstname");
     this.props.resetUserDetails();
     this.setState({redirect: true});
   };
