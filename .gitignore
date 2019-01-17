@@ -12,6 +12,8 @@
 *.tgz
 *.vscode/
 *.xml
+.env
+package-lock.json
 .cache
 config/.env
 .idea
