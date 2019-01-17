@@ -1,6 +1,6 @@
 //@flow
-import React from 'react';
-import { MflCardGeneric } from '../../common';
+import React from "react";
+import { MflCardGeneric } from "../../../common";
 import {
   BarChart,
   CartesianGrid,
@@ -9,12 +9,11 @@ import {
   Tooltip,
   Legend,
   Bar
-} from 'recharts';
-import { defaultScheme } from '../../colors'
+} from "recharts";
+import { defaultScheme } from "../../../colors";
 
 export default ({ data, keys, width }) => {
-
-  const container = document.getElementById('typeOwnershipContainer');
+  const container = document.getElementById("typeOwnershipContainer");
 
   const view = (
     <React.Fragment>
@@ -29,7 +28,9 @@ export default ({ data, keys, width }) => {
         ))}
       </BarChart>
     </React.Fragment>
-  )
+  );
 
-  return <MflCardGeneric heading="facilities by type and ownership" view={view} />
-}
+  return (
+    <MflCardGeneric heading="facilities by type and ownership" view={view} />
+  );
+};

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BarChart, PieChart, FacilitiesMap } from "./charts";
+import { BarChart, PieChart, FacilitiesMap } from "./modules/charts";
 
 import { connect } from "react-redux";
 
@@ -15,7 +15,7 @@ import {
 import { kids } from "../images";
 import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
-import DashboardSummary from "./dashboardSummary";
+import DashboardSummary from "./modules/dashboardSummary";
 import { GenericCard } from "./charts/mini-cards";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
