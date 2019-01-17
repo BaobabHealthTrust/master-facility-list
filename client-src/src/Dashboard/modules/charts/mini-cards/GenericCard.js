@@ -7,7 +7,7 @@ import {
   hospital,
   district,
   normal_hospital
-} from "../../../images";
+} from "../../../../images";
 import styled, { css } from "styled-components";
 
 const DashboardIconContainer = styled.div`
