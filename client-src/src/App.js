@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import FacilitiesPage from "./Facility";
 import { Route, Switch } from "react-router-dom";
 import ShowFacility from "./Facility/Show";
-import Dashboard from "./Dashboard/DashboardHome";
+import Dashboard from "./Dashboard";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
 import LoginPage from "./Login";
@@ -67,7 +67,6 @@ class App extends Component {
                   <Route exact path="/" component={Dashboard} />
                   <Route exact path="/about" component={MflAbout} />
                   <Route exact path="/feedback" component={MfLFeedback} />
-                  <Route exact path="/login" component={MflLogin} />
                   <Route exact path="/users" component={Users} />
                   <Route exact path="/login" component={LoginPage} />
                 </Switch>

@@ -1,5 +1,5 @@
 import React from "react";
-import { MflCardGeneric } from "../common";
+import { MflCardGeneric } from "../../common";
 
 export default props => {
   const districtTags = (
