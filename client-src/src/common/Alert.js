@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Icon} from "react-materialize";
+import React, { Component } from "react";
+import { Icon } from "react-materialize";
 import styled from "styled-components";
 
 const MFLAlert = styled.div`
@@ -32,15 +32,16 @@ export default class Alert extends Component<Props, State> {
   };
 
   render() {
-    return this.state.isOpen ? (
-      <MFLAlert warning={this.props.warning}>
-        <div>{this.props.message}</div>
-        <div onClick={() => this.setState({isOpen: false})}>
-          <Icon>close</Icon>
-        </div>
-      </MFLAlert>
-    ) : (
-      <div />
+    const { warning, message } = this.props;
+    return (
+      this.state.isOpen && (
+        <MFLAlert warning={warning}>
+          <div>{message}</div>
+          <div onClick={() => this.setState({ isOpen: false })}>
+            <Icon>close</Icon>
+          </div>
+        </MFLAlert>
+      )
     );
   }
 }
