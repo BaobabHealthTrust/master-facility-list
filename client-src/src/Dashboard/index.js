@@ -1,7 +1,12 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
-import { BarChart, PieChart, FacilitiesMap } from "./modules/charts";
-
+import {
+  BarChart,
+  PieChart,
+  DashboardSummary,
+  FacilitySummaryCard
+} from "./components";
+import FacilitiesMap from "../Features/FacilitiesMap";
 import { connect } from "react-redux";
 
 import {
@@ -15,8 +20,6 @@ import {
 import { kids } from "../images";
 import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
-import DashboardSummary from "./modules/dashboardSummary";
-import { GenericCard } from "./modules/charts/mini-cards";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -67,10 +70,11 @@ const CallToAction = styled.div.attrs({ className: "w-full p-8 mb-8" })`
   background-position-y: center;
   color: white;
 `;
+const OuterChartSurface = styled.div.attrs({ className: "" })``;
 
 // TODO: Codes for All Dependancies
 
-class DashboardHome extends React.Component<Props, State> {
+class DashboardHome extends Component<Props, State> {
   state = {
     districts: [],
     name: "",
@@ -203,109 +207,129 @@ class DashboardHome extends React.Component<Props, State> {
     footerResizer();
   }
 
+  _renderMap = () => (
+    <MapContainer>
+      <FacilitiesMap
+        onClick={this.onClick}
+        districts={this.state.districts}
+        height={600}
+      />
+    </MapContainer>
+  );
+
+  _renderWelcomeContainer = () => (
+    <WelcomeCardContainer>
+      {this.props.dependancyIsLoading && <p>Loading!</p>}
+      <div className="col s12">
+        <DashboardSummary
+          closeTag={this.closeTag}
+          districts={this.state.districts}
+        />
+      </div>
+    </WelcomeCardContainer>
+  );
+
+  _renderFacilitySummaryCards = () => (
+    <div className="row">
+      <FacilitySummaryCard
+        count={this.totalFacilities()}
+        title="Total Facilities"
+        icon="hospital"
+      />
+      <FacilitySummaryCard
+        count={this.facilitiesOfType("District Hospital")}
+        title="Dist Hospitals"
+        icon="district"
+      />
+      <FacilitySummaryCard
+        count={this.facilitiesOfType("Health Centre")}
+        title="Health Centres"
+        icon="normal_hospital"
+      />
+      <FacilitySummaryCard
+        count={this.facilitiesOfType("Dispensary")}
+        title="Dispensaries"
+        icon="clinic"
+      />
+      <FacilitySummaryCard
+        count={this.facilitiesOfType("Health Post")}
+        title="Health Posts"
+        icon="tent"
+      />
+    </div>
+  );
+
+  _renderCallToAction = () => (
+    <div className="col m12">
+      <CallToAction>
+        <Link to="/facilities/search">
+          <Button>Go to Advanced Search</Button>
+        </Link>
+        <span className="ml-4 text-2xl">
+          For a more detailed analysis of Facilities
+        </span>
+      </CallToAction>
+    </div>
+  );
+  _renderRegulatoryChart = () => (
+    <div className="col s12 m6" id="regulatoryStatusContainer">
+      <OuterChartSurface>
+        <BarChart
+          title="Facilities By License Status"
+          colorIndex={0}
+          data={this.regulatoryBarData()}
+          width={this.state.regulatoryStatusContainerWidth}
+        />
+      </OuterChartSurface>
+    </div>
+  );
+
+  _renderOperationalStatusChart = () => (
+    <div className="col s12 m6" id="operationalStatusContainer">
+      <OuterChartSurface>
+        <PieChart
+          data={this.operationalBarData()}
+          width={this.state.operationalStatusContainerWidth}
+        />
+      </OuterChartSurface>
+    </div>
+  );
+
+  _renderOwnershipStatusChart = () => (
+    <div class="col s12" id="typeOwnershipContainer">
+      <OuterChartSurface>
+        <BarChart
+          title="Facilities By Ownership"
+          colorIndex={2}
+          data={this.ownershipBarData()}
+          width={this.state.typeOwnershipContainerWidth}
+        />
+      </OuterChartSurface>
+    </div>
+  );
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <div className="row mt-6">
-          <MapContainer>
-            <FacilitiesMap
-              onClick={this.onClick}
-              districts={this.state.districts}
-              height={600}
-            />
-          </MapContainer>
+          {this._renderMap()}
           <div className="col s12 m9">
-            <WelcomeCardContainer>
-              {this.props.dependancyIsLoading && <p>Loading!</p>}
-              <div className="col s12">
-                <DashboardSummary
-                  closeTag={this.closeTag}
-                  districts={this.state.districts}
-                />
-              </div>
-            </WelcomeCardContainer>
-            <div className="row">
-              <div className="col s12 l3 col-5">
-                <GenericCard
-                  count={this.totalFacilities()}
-                  title="Total Facilities"
-                  icon="hospital"
-                />
-              </div>
-              <div className="col s12 l3 col-5">
-                <GenericCard
-                  count={this.facilitiesOfType("District Hospital")}
-                  title="Dist Hospitals"
-                  icon="district"
-                />
-              </div>
-              <div className="col s12 l3 col-5">
-                <GenericCard
-                  count={this.facilitiesOfType("Health Centre")}
-                  title="Health Centres"
-                  icon="normal_hospital"
-                />
-              </div>
-              <div className="col s12 l3 col-5">
-                <GenericCard
-                  count={this.facilitiesOfType("Dispensary")}
-                  title="Dispensaries"
-                  icon="clinic"
-                />
-              </div>
-              <div className="col s12 l3 col-5">
-                <GenericCard
-                  count={this.facilitiesOfType("Health Post")}
-                  title="Health Posts"
-                  icon="tent"
-                />
-              </div>
+            {this._renderWelcomeContainer()}
+
+            {this._renderFacilitySummaryCards()}
+
+            <div className="row hide-on-small-only">
+              {this._renderCallToAction()}
+
+              {this._renderRegulatoryChart()}
+
+              {this._renderOperationalStatusChart()}
             </div>
             <div className="row hide-on-small-only">
-              <div className="col m12">
-                <CallToAction>
-                  <Link to="/facilities/search">
-                    <Button>Go to Advanced Search</Button>
-                  </Link>
-                  <span className="ml-4 text-2xl">
-                    For a more detailed analysis of Facilities
-                  </span>
-                </CallToAction>
-              </div>
-              <div className="col s12 m6" id="regulatoryStatusContainer">
-                <div class="outer-recharts-surface">
-                  <BarChart
-                    title="Facilities By License Status"
-                    colorIndex={0}
-                    data={this.regulatoryBarData()}
-                    width={this.state.regulatoryStatusContainerWidth}
-                  />
-                </div>
-              </div>
-              <div className="col s12 m6" id="operationalStatusContainer">
-                <div className="outer-recharts-surface">
-                  <PieChart
-                    data={this.operationalBarData()}
-                    width={this.state.operationalStatusContainerWidth}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row hide-on-small-only">
-              <div class="col s12" id="typeOwnershipContainer">
-                <div class="outer-recharts-surface">
-                  <BarChart
-                    title="Facilities By Ownership"
-                    colorIndex={2}
-                    data={this.ownershipBarData()}
-                    width={this.state.typeOwnershipContainerWidth}
-                  />
-                </div>
-              </div>
+              {this._renderOwnershipStatusChart()}
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
