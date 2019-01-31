@@ -16,8 +16,7 @@ class Navbar extends Component {
   }
 
   maximizeSearch(e) {
-    document.getElementById("searchbar").className =
-      "mfl-full-screen-search";
+    document.getElementById("searchbar").className = "mfl-full-screen-search";
   }
 
   restoreSearch(e) {
@@ -51,18 +50,12 @@ class Navbar extends Component {
               </a>
             </div>
 
-            <a
-              href=""
-              data-activates="mobile-demo"
-              className="button-collapse"
-            >
+            <a href="" data-activates="mobile-demo" className="button-collapse">
               <i className="material-icons">menu</i>
             </a>
 
             <div className="left hide-on-med-and-down mfl-pl-2">
-              <a href="/">
-                Master Health Facility Registry
-              </a>
+              <a href="/">Master Health Facility Registry</a>
             </div>
 
             <form
@@ -78,10 +71,7 @@ class Navbar extends Component {
                   onClick={e => this.maximizeSearch(e)}
                   onBlur={e => this.restoreSearch(e)}
                   ref="searchInput"
-                  onKeyUp={debounce(
-                    this.handleQuickSearch,
-                    1000
-                  )}
+                  onKeyUp={debounce(this.handleQuickSearch, 1000)}
                 />
                 <label className="label-icon" for="search">
                   <i className="material-icons">search</i>
@@ -91,7 +81,7 @@ class Navbar extends Component {
                   onClick={e => this.restoreSearch(e)}
                 >
                   close
-                  </i>
+                </i>
               </div>
             </form>
             <Menu />
@@ -101,33 +91,29 @@ class Navbar extends Component {
           <div className="mfl-search-results-container">
             <div className="container">
               <h5 className="mt-8 mb-4">Search Results (Top 5)</h5>
-              {
-                this.props.searchResults.length == 0 && <h6>No Results Match your Search...</h6>
-              }
+              {this.props.searchResults.length === 0 && (
+                <h6>No Results Match your Search...</h6>
+              )}
               <Table
-                onClick={e =>
-                  this.setState({ isContainerClicked: true })
-                }
+                onClick={e => this.setState({ isContainerClicked: true })}
                 data={{
                   headers: [],
-                  records: this.props.searchResults.map(
-                    result => {
-                      return [
-                        result.id,
-                        result.code,
-                        result.name,
-                        result.district,
-                        result.status
-                      ];
-                    }
-                  )
+                  records: this.props.searchResults.map(result => {
+                    return [
+                      result.id,
+                      result.code,
+                      result.name,
+                      result.district,
+                      result.status
+                    ];
+                  })
                 }}
               />
             </div>
           </div>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
       </div>
     );
   }
@@ -139,6 +125,7 @@ const mapStateToProps = state => {
     isSearchContainerHidden: state.globalContainers.isSearchContainerHidden
   };
 };
-export default connect(mapStateToProps, { quickSearch, hideSearchContainer })(
-  Navbar
-);
+export default connect(
+  mapStateToProps,
+  { quickSearch, hideSearchContainer }
+)(Navbar);
