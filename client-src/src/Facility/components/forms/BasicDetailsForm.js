@@ -1,15 +1,14 @@
 //@flow
-import React, {Component} from "react";
-import {Input, Navbar, NavItem, Row, Button} from "react-materialize";
-import {connect} from "react-redux";
-import {DatePicker, FormWizardNavigation} from "../../../common";
-import {BasicDetailsFormProps} from "../../../types/helper-types";
-import {Formik} from "formik";
-import {postFormData, fetchCurrentDetails} from "../../../actions";
-import {Redirect} from "react-router-dom";
-import {Card, CardTitle, Table, Icon, Col} from "react-materialize";
-import {confirmAlert} from "react-confirm-alert";
-import moment from "moment";
+import React, { Component } from "react";
+import { Input, Navbar, NavItem, Row, Button } from "react-materialize";
+import { connect } from "react-redux";
+import { DatePicker, FormWizardNavigation } from "../../../common";
+import { BasicDetailsFormProps } from "../../../types/helper-types";
+import { Formik } from "formik";
+import { postFormData, fetchCurrentDetails } from "../../../actions";
+import { Redirect } from "react-router-dom";
+import { Card, CardTitle, Table, Icon, Col } from "react-materialize";
+import { confirmAlert } from "react-confirm-alert";
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   state = {
@@ -118,41 +117,38 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     return errors;
   };
 
-  handleSubmit = async (values, {setSubmitting, setErrors}) => {
+  handleSubmit = async (values, { setSubmitting, setErrors }) => {
     if (!this.props.fromAdd) {
       confirmAlert({
-        customUI: ({onClose}) => {
-          return (
-            <Col m={6} s={12} style={{minWidth: "400px"}}>
-              <Card
-                title="Confirm"
-                className="blu darken-4"
-                textClassName="white-tex"
-                actions={[
-                  <Button onClick={onClose} className="mfl-rm-2 btn-flat">
-                    No
-                  </Button>,
-                  <Button
-                    className="btn-flat"
-                    onClick={this.onClick.bind(
-                      this,
-                      onClose,
-                      values,
-                      setSubmitting
-                    )}
-                  >
-                    Yes
-                  </Button>
-                ]}
-              >
-                Are you sure you want save these changes?
-              </Card>
-            </Col>
-          );
+        customUI: ({ onClose }) => {
+          return this._renderConfirmationBox(onClose, values, setSubmitting);
         }
       });
     }
   };
+
+  _renderConfirmationBox = (onClose, values, setSubmitting) => (
+    <Col m={6} s={12} style={{ minWidth: "400px" }}>
+      <Card
+        title="Confirm"
+        className="blu darken-4"
+        textClassName="white-tex"
+        actions={[
+          <Button onClick={onClose} className="mfl-rm-2 btn-flat">
+            No
+          </Button>,
+          <Button
+            className="btn-flat"
+            onClick={this.onClick.bind(this, onClose, values, setSubmitting)}
+          >
+            Yes
+          </Button>
+        ]}
+      >
+        Are you sure you want save these changes?
+      </Card>
+    </Col>
+  );
 
   render() {
     // TODO: Fetch your own dependancies in case you have been refreshed
@@ -302,7 +298,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
                 saveButton={this.props.fromAdd ? "Next" : "Save"}
                 handleSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
-                handleCancel={() => this.setState({cancelForm: true})}
+                handleCancel={() => this.setState({ cancelForm: true })}
               />
             </div>
           )}

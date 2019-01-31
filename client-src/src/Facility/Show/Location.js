@@ -1,9 +1,9 @@
 //@flow
-import React, {Component} from "react";
+import React, { Component, Fragment } from "react";
 import Card from "../../common/MflCard";
-import {Loader} from "../../common";
-import {fetchCurrentDetails, setCurrentDetails} from "../../actions";
-import {connect} from "react-redux";
+import { Loader } from "../../common";
+import { fetchCurrentDetails, setCurrentDetails } from "../../actions";
+import { connect } from "react-redux";
 import MFLGoogleMap from "../../common/MFLGoogleMap";
 
 class Location extends Component<State> {
@@ -11,14 +11,27 @@ class Location extends Component<State> {
     loading: true
   };
 
-  componentDidMount() {
+  componentWillMount() {
     const id = this.props.match.params.id;
     this.props.fetchCurrentDetails(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading) this.setState({loading: false});
+    if (!nextProps.isLoading) this.setState({ loading: false });
   }
+  _renderContactCards = (locationData, contactPersonData, addressData) => (
+    <div className="col m6 s12">
+      <div className="row">
+        <Card heading="Location" icon="location_on" data={locationData} />
+      </div>
+      <div className="row">
+        <Card heading="Address" icon="location_city" data={addressData} />
+      </div>
+      <div className="row">
+        <Card heading="contact person" icon="person" data={contactPersonData} />
+      </div>
+    </div>
+  );
 
   render() {
     const locationData = this.props.current.locations
@@ -48,19 +61,21 @@ class Location extends Component<State> {
         ]
       : [];
 
-    const position = this.props.current.geolocations
-      ? {
-          lat: parseFloat(this.props.current.geolocations.latitude),
-          lng: parseFloat(this.props.current.geolocations.longitude)
-        }
-      : {lat: -13.9626121, lng: 33.7741195};
+    const position =
+      this.props.current.geolocations &&
+      this.props.current.geolocations.latitude != ""
+        ? {
+            lat: parseFloat(this.props.current.geolocations.latitude),
+            lng: parseFloat(this.props.current.geolocations.longitude)
+          }
+        : { lat: -13.9626121, lng: 33.7741195 };
 
     return (
       <div className="container">
         {this.state.loading ? (
           <Loader />
         ) : (
-          <div>
+          <Fragment>
             <div className="row">
               <div className="col m6 s12 mb-8">
                 <div className="z-depth-2">
@@ -68,31 +83,13 @@ class Location extends Component<State> {
                 </div>
               </div>
 
-              <div className="col m6 s12">
-                <div className="row">
-                  <Card
-                    heading="Location"
-                    icon="location_on"
-                    data={locationData}
-                  />
-                </div>
-                <div className="row">
-                  <Card
-                    heading="Address"
-                    icon="location_city"
-                    data={addressData}
-                  />
-                </div>
-                <div className="row">
-                  <Card
-                    heading="contact person"
-                    icon="person"
-                    data={contactPersonData}
-                  />
-                </div>
-              </div>
+              {this._renderContactCards(
+                locationData,
+                addressData,
+                contactPersonData
+              )}
             </div>
-          </div>
+          </Fragment>
         )}
       </div>
     );

@@ -1,14 +1,14 @@
 //@flow
-import React, {Component, ReactElement, ReactNode} from "react";
-import {MFLRevealButton} from "../../common";
+import React, { Component, ReactElement, ReactNode } from "react";
+import { MFLRevealButton } from "../../common";
 import MflGrid from "../../common/MflGrid";
-import {Facilities} from "../../types/list-types";
-import {Link} from "react-router-dom";
-import {ButtonConfiguration} from "../../types/helper-types";
+import { Facilities } from "../../types/list-types";
+import { Link } from "react-router-dom";
+import { ButtonConfiguration } from "../../types/helper-types";
 import settings from "../../settings";
-import {Card} from "react-materialize";
-import {Redirect} from "react-router-dom";
-import {HumanReadableFacility} from "../../types/model-types";
+import { Card } from "react-materialize";
+import { Redirect } from "react-router-dom";
+import { HumanReadableFacility } from "../../types/model-types";
 import styled from "styled-components";
 
 type Props = {
@@ -38,17 +38,17 @@ type MFLGridSorting = {
 };
 
 const facilitiesGridColumns = [
-  {name: "code", title: "CODE"},
-  {name: "name", title: "NAME"},
-  {name: "common", title: "COMMON NAME"},
-  {name: "ownership", title: "OWNERSHIP"},
-  {name: "type", title: "TYPE"},
-  {name: "status", title: "STATUS"},
-  {name: "district", title: "DISTRICT"},
-  {name: "dateOpened", title: "DATE OPENED"}
+  { name: "code", title: "CODE" },
+  { name: "name", title: "NAME" },
+  { name: "common", title: "COMMON NAME" },
+  { name: "ownership", title: "OWNERSHIP" },
+  { name: "type", title: "TYPE" },
+  { name: "status", title: "STATUS" },
+  { name: "district", title: "DISTRICT" },
+  { name: "dateOpened", title: "DATE OPENED" }
 ];
 
-const facilitiesGridSorting = [{columnName: "name", direction: "asc"}];
+const facilitiesGridSorting = [{ columnName: "name", direction: "asc" }];
 
 const LandingPageWrapper = styled.div.attrs({
   className: "container facility-container"
@@ -64,9 +64,30 @@ export default class FacilityList extends React.Component<Props, State> {
     redirectLink: null
   };
 
+  buttonConfiguration: ButtonConfiguration = [
+    {
+      icon: "file_copy",
+      action: () => this._downloadFileIn("csv"),
+      color: "blue",
+      name: "Download CSV"
+    },
+    {
+      icon: "grid_on",
+      action: () => this._downloadFileIn("excel"),
+      color: "green",
+      name: "Download Excel"
+    },
+    {
+      icon: "picture_as_pdf",
+      action: () => this._downloadFileIn("pdf"),
+      color: "red",
+      name: "Download PDF"
+    }
+  ];
+
   _getWhereClause(): whereClause {
-    const {filter} = this.props;
-    return filter.length ? {id: {inq: filter}} : {};
+    const { filter } = this.props;
+    return filter.length ? { id: { inq: filter } } : {};
   }
 
   _renderAddFacilityButton(): ReactElement<Link> {
@@ -123,7 +144,7 @@ export default class FacilityList extends React.Component<Props, State> {
           <RevealButtonWrapper>
             <MFLRevealButton
               buttonConfiguration={this.buttonConfiguration}
-              mainButtonConfiguration={{color: "teal", icon: "file_download"}}
+              mainButtonConfiguration={{ color: "teal", icon: "file_download" }}
             />
           </RevealButtonWrapper>
         </div>
@@ -142,27 +163,6 @@ export default class FacilityList extends React.Component<Props, State> {
     );
   }
 
-  buttonConfiguration: ButtonConfiguration = [
-    {
-      icon: "file_copy",
-      action: () => this._downloadFileIn("csv"),
-      color: "blue",
-      name: "Download CSV"
-    },
-    {
-      icon: "grid_on",
-      action: () => this._downloadFileIn("excel"),
-      color: "green",
-      name: "Download Excel"
-    },
-    {
-      icon: "picture_as_pdf",
-      action: () => this._downloadFileIn("pdf"),
-      color: "red",
-      name: "Download PDF"
-    }
-  ];
-
   render() {
     const tableRecords = this.props.dataSource || [];
     const columns: Array<MFLGridColumn> = facilitiesGridColumns;
@@ -170,14 +170,13 @@ export default class FacilityList extends React.Component<Props, State> {
 
     let display: ReactNode;
 
-    if (this.state.redirectLink)
-      display = <Redirect to={this.state.redirectLink} />;
-    else
-      display = this._renderFacilitiesLandingPage(
-        tableRecords,
-        columns,
-        defaultSorting
-      );
+    this.state.redirectLink
+      ? (display = <Redirect to={this.state.redirectLink} />)
+      : (display = this._renderFacilitiesLandingPage(
+          tableRecords,
+          columns,
+          defaultSorting
+        ));
 
     return <React.Fragment>{display}</React.Fragment>;
   }

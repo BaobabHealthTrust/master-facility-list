@@ -1,16 +1,16 @@
 //@flow
 import React from "react";
-import {Switch, Route, Link, Redirect} from "react-router-dom";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 import Summary from "./Summary";
 import Location from "./Location";
 import Resources from "./Resources";
 import Utilities from "./Utilities";
 import Services from "./Services";
-import {connect} from "react-redux";
-import {Button} from "react-materialize";
+import { connect } from "react-redux";
+import { Button } from "react-materialize";
 import SecondaryMenu from "../../common/SecondaryMenu";
-import {MFLRevealButton} from "../../common";
-import {ShowError, FetchAllDependancies, Loader} from "../../common";
+import { MFLRevealButton } from "../../common";
+import { ShowError, FetchAllDependancies, Loader } from "../../common";
 import {
   BasicDetailsForm,
   ContactsForm,
@@ -19,11 +19,11 @@ import {
   UtilitiesForm
 } from "../components";
 import settings from "../../settings";
-import {postFormData} from "../../actions";
-import {ButtonConfiguration} from "../../types/helper-types";
-import {Facility} from "../../types/model-types";
-import {Card, Col} from "react-materialize";
-import {confirmAlert} from "react-confirm-alert";
+import { postFormData } from "../../actions";
+import { ButtonConfiguration } from "../../types/helper-types";
+import { Facility } from "../../types/model-types";
+import { Card, Col } from "react-materialize";
+import { confirmAlert } from "react-confirm-alert";
 import moment from "moment";
 
 type Props = {
@@ -43,35 +43,35 @@ class FacilityDetails extends React.Component<Props> {
   };
 
   componentDidMount() {
-    const {current} = this.props;
+    const { current } = this.props;
     const results = current ? current.length : 0;
     if (results > 0 && this.state.results - results != 0) {
-      this.setState({loading: false, results});
+      this.setState({ loading: false, results });
     }
 
     const containerHeight = window.innerHeight - 128;
-    this.setState({containerHeight});
+    this.setState({ containerHeight });
   }
 
   onClick = async (onClose, e) => {
     await this.props.postFormData(
-      {archived_date: new Date()},
+      { archived_date: new Date() },
       "Facilities",
       "PATCH",
       "PATCH_BASIC_DETAILS",
       "",
       this.props.match.params.id
     );
-    if (this.props.response) this.setState({redirect: true});
+    if (this.props.response) this.setState({ redirect: true });
     else alert("Something went wrong");
     onClose();
   };
 
   _handleArchive = async () => {
     confirmAlert({
-      customUI: ({onClose}) => {
+      customUI: ({ onClose }) => {
         return (
-          <Col m={6} s={12} style={{minWidth: "400px"}}>
+          <Col m={6} s={12} style={{ minWidth: "400px" }}>
             <Card
               title="Confirm"
               className="blu darken-4"
@@ -97,7 +97,7 @@ class FacilityDetails extends React.Component<Props> {
   };
 
   componentWillReceiveProps() {
-    this.setState({pushTo: null});
+    this.setState({ pushTo: null });
   }
 
   buttonConfiguration: ButtonConfiguration = [
@@ -110,7 +110,7 @@ class FacilityDetails extends React.Component<Props> {
     {
       icon: "edit",
       action: () =>
-        this.setState({pushTo: `${this.props.location.pathname}/edit`}),
+        this.setState({ pushTo: `${this.props.location.pathname}/edit` }),
       color: "green",
       name: "Edit Facility"
     },
@@ -195,7 +195,7 @@ class FacilityDetails extends React.Component<Props> {
       }
     }
     return (
-      <div style={{minHeight: this.state.containerHeight}}>
+      <div style={{ minHeight: this.state.containerHeight }}>
         {this.state.pushTo && <Redirect to={this.state.pushTo} />}
         {this.state.redirect && <Redirect to="/facilities" />}
         <SecondaryMenu links={links} defaultActivePage={"summary"} />
@@ -207,7 +207,7 @@ class FacilityDetails extends React.Component<Props> {
               {this.props.current.facility_name}
               {this.props.current.operationalStatus && (
                 <span
-                  style={{float: "none"}}
+                  style={{ float: "none" }}
                   id="badge"
                   className={badgeClass}
                   data-badge-caption={
@@ -236,7 +236,7 @@ class FacilityDetails extends React.Component<Props> {
             </h6>
           </div>
           <div className="mt-4" className="hide-on-med-and-down">
-            {pathArr[pathArr.length - 1] != "edit" &&
+            {pathArr[pathArr.length - 1] !== "edit" &&
               sessionStorage.getItem("token") && (
                 <MFLRevealButton
                   buttonConfiguration={this.buttonConfiguration}
@@ -246,7 +246,7 @@ class FacilityDetails extends React.Component<Props> {
                   }}
                 />
               )}
-            {pathArr[pathArr.length - 1] != "edit" &&
+            {pathArr[pathArr.length - 1] !== "edit" &&
               !sessionStorage.getItem("token") && (
                 <Button
                   className="mt-4 flex flex-row align-center"
@@ -264,7 +264,7 @@ class FacilityDetails extends React.Component<Props> {
               )}
           </div>
         </div>
-        {this.props.error.message == "Network Error" && <ShowError />}
+        {this.props.error.message === "Network Error" && <ShowError />}
         {this.props.error.response && (
           <ShowError message="This Resource does not exit" />
         )}
@@ -337,5 +337,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {postFormData}
+  { postFormData }
 )(FacilityDetails);

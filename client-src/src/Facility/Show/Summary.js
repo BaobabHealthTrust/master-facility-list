@@ -1,13 +1,13 @@
 //@Flow
-import React, {Component} from "react";
-import Card from "../../common/MflCard";
-import {connect} from "react-redux";
-import {fetchCurrentDetails, setCurrentDetails} from "../../actions";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchCurrentDetails, setCurrentDetails } from "../../actions";
 import moment from "moment";
-import {CurrentFacility} from "../../types/helper-types";
-import {Loader} from "../../common";
+import { CurrentFacility } from "../../types/helper-types";
+import { Loader } from "../../common";
+import { FacilityDetail } from "./components";
 
-class Summary extends Component<{current: CurrentFacility}> {
+class Summary extends Component<{ current: CurrentFacility }> {
   state = {
     error: {},
     loading: true
@@ -19,85 +19,76 @@ class Summary extends Component<{current: CurrentFacility}> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {error} = this.props;
-    this.setState({error});
+    const { error } = this.props;
+    this.setState({ error });
 
-    if (!nextProps.isLoading) this.setState({loading: false});
+    if (!nextProps.isLoading) this.setState({ loading: false });
   }
 
-  _renderHeadingSection = (title, icon, label) => {
-    return (
-      <React.Fragment>
-        <p className="mfl-summary-header">{title}</p>
-        <p className="mfl-summary-text">
-          <i className="material-icons mfl-icon left">{icon}</i>
-          {label}
-        </p>
-        <br />
-      </React.Fragment>
-    );
-  };
+  _renderFacilityDetailsSections = ({
+    owner,
+    regulatoryStatus,
+    facilityType,
+    operationalStatus,
+    facility_date_opened,
+    district
+  }) => (
+    <div>
+      <div className="col m6 s12">
+        <FacilityDetail
+          title="Common Name"
+          icon="text_fields"
+          label={this.props.current.common_name}
+        />
+        {owner && (
+          <FacilityDetail
+            title="Owner"
+            icon="meeting_room"
+            label={owner.facility_owner}
+          />
+        )}
+        {regulatoryStatus && (
+          <FacilityDetail
+            title="Regulatory Status"
+            icon="visibility"
+            label={regulatoryStatus.facility_regulatory_status}
+          />
+        )}
+      </div>
+
+      <div className="col m6 s12">
+        <FacilityDetail
+          title="Date Opened"
+          icon="today"
+          label={moment(facility_date_opened).format("MMMM DD YYYY")}
+        />
+        {facilityType && (
+          <FacilityDetail
+            title="Facility Type"
+            icon="local_hospital"
+            label={facilityType.facility_type}
+          />
+        )}
+        {operationalStatus && (
+          <FacilityDetail
+            title="Operational Status"
+            icon="warning"
+            label={operationalStatus.facility_operational_status}
+          />
+        )}
+      </div>
+    </div>
+  );
 
   render() {
-    const {
-      owner,
-      regulatoryStatus,
-      facilityType,
-      operationalStatus,
-      district
-    } = this.props.current;
-    const {facility_date_opened} = this.props.current;
-    console.log(`facility_date_opened ${facility_date_opened}`);
     return (
       <div className="container">
-        <div>
-          <div className="row z-depth-2">
-            {this.state.loading ? (
-              <Loader />
-            ) : (
-              <div>
-                <div className="col m6 s12">
-                  {this._renderHeadingSection(
-                    "Common Name",
-                    "text_fields",
-                    this.props.current.common_name
-                  )}
-                  {owner &&
-                    this._renderHeadingSection(
-                      "Owner",
-                      "meeting_room",
-                      owner.facility_owner
-                    )}
-                  {regulatoryStatus &&
-                    this._renderHeadingSection(
-                      "Regulatory Status",
-                      "visibility",
-                      regulatoryStatus.facility_regulatory_status
-                    )}
-                </div>
-
-                <div className="col m6 s12">
-                  {this._renderHeadingSection(
-                    "Date Opened",
-                    "today",
-                    moment(facility_date_opened).format("MMMM DD YYYY")
-                  )}
-                  {facilityType &&
-                    this._renderHeadingSection(
-                      "Facility Type",
-                      "local_hospital",
-                      facilityType.facility_type
-                    )}
-                  {operationalStatus &&
-                    this._renderHeadingSection(
-                      "Operational Status",
-                      "warning",
-                      operationalStatus.facility_operational_status
-                    )}
-                </div>
-              </div>
-            )}
-          </div>
+        <div className="row z-depth-2">
+          {this.state.loading ? (
+            <Loader />
+          ) : (
+            this._renderFacilityDetailsSections(this.props.current)
+          )}
         </div>
       </div>
     );

@@ -1,10 +1,11 @@
 //@flow
-import React from "react";
-import {connect} from "react-redux";
-import {downloadFacilities} from "../actions";
-import {FacilityList} from "./components";
-import {Loader} from "../common";
-import {Facilities} from "../types/list-types";
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { downloadFacilities } from "../actions";
+import { FacilityList } from "./components";
+import { Loader } from "../common";
+import { Facilities } from "../types/list-types";
+import styled from "styled-components";
 
 type Props = {
   isLoading: boolean,
@@ -20,6 +21,8 @@ type State = {
   isAddFacility: boolean
 };
 
+const Wrapper = styled.div.attrs({ className: "container  mfl-container" })``;
+
 class FacilitiesHome extends React.Component<Props, State> {
   state = {
     isAdvancedSearch: false,
@@ -29,12 +32,12 @@ class FacilitiesHome extends React.Component<Props, State> {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading) this.setState({loading: false});
+    if (!nextProps.isLoading) this.setState({ loading: false });
   }
 
   componentDidMount() {
     const containerHeight = window.innerHeight - 128;
-    this.setState({containerHeight});
+    this.setState({ containerHeight });
   }
 
   fetchFilteredFacilities = ids =>
@@ -56,35 +59,30 @@ class FacilitiesHome extends React.Component<Props, State> {
       : "Showing All Facilities";
   };
 
-  render() {
-    const isShowFacilityList = !(
-      this.state.isAddFacility ||
-      this.state.isAdvancedSearch ||
-      this.state.isShowSearchResults
-    );
-    const isLoadingOrError = this.props.isLoading || this.props.isError;
-    return (
-      <div>
-        <div
-          className="container mfl-container"
-          style={{minHeight: this.state.containerHeight}}
-        >
-          <br />
-          {/* Show Progress Bar */}
-          {this.props.error.message == "Network Error" && <Loader />}
+  _renderErrorMessage = () =>
+    this.props.error.message === "Network Error" && <Loader />;
 
-          {/* Show Error Message */}
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
-            <FacilityList
-              dataSource={this.getDataSource()}
-              title={this.getFacilityListTitle()}
-              filter={this.props.filteredResults}
-            />
-          )}
-        </div>
-      </div>
+  _renderFacilityList = () =>
+    this.state.isLoading ? (
+      <Loader />
+    ) : (
+      <FacilityList
+        dataSource={this.getDataSource()}
+        title={this.getFacilityListTitle()}
+        filter={this.props.filteredResults}
+      />
+    );
+
+  render() {
+    return (
+      <Fragment>
+        <Wrapper minHeight={this.state.containerHeight}>
+          <br />
+          {this._renderErrorMessage()}
+
+          {this._renderFacilityList()}
+        </Wrapper>
+      </Fragment>
     );
   }
 }
@@ -102,5 +100,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {downloadFacilities}
+  { downloadFacilities }
 )(FacilitiesHome);
