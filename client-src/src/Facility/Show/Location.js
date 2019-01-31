@@ -19,15 +19,15 @@ class Location extends Component<State> {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.isLoading) this.setState({ loading: false });
   }
-  _renderContactCards = (locationData, contactPersonData, addressData) => (
+  _renderContactCards = (locationData, addressData, contactPersonData) => (
     <div className="col m6 s12">
-      <div className="row">
+      <div className="row" test_id="location">
         <Card heading="Location" icon="location_on" data={locationData} />
       </div>
-      <div className="row">
+      <div className="row" test_id="address">
         <Card heading="Address" icon="location_city" data={addressData} />
       </div>
-      <div className="row">
+      <div className="row" test_id="person">
         <Card heading="contact person" icon="person" data={contactPersonData} />
       </div>
     </div>
