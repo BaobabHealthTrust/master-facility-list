@@ -35,7 +35,26 @@ Cypress.Commands.add("login", credentials => {
     });
   });
 });
-
+Cypress.Commands.add("fetch_current_facility", id => {
+  const RESOURCE = `Facilities/${id}`;
+  const FILTER = {
+    include: [
+      "owner",
+      "facilityType",
+      "operationalStatus",
+      "regulatoryStatus",
+      "contactPeople",
+      "addresses",
+      "locations",
+      "geolocations",
+      { district: "zone" }
+    ]
+  };
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+  cy.request("GET", URL).then(res => {
+    res.body;
+  });
+});
 Cypress.Commands.add("fetch_facilieties", (filterBy, filterText) => {
   const RESOURCE = `Facilities`;
   const URL = `${END_POINT}${RESOURCE}`;
