@@ -24,7 +24,7 @@ export default ({ data, keys, width }) => {
         <Tooltip />
         <Legend />
         {keys.map((key, index) => (
-          <Bar dataKey={key} fill={defaultScheme[index]} />
+          <Bar key={key} dataKey={key} fill={defaultScheme[index]} />
         ))}
       </BarChart>
     </React.Fragment>

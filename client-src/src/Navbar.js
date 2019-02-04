@@ -73,7 +73,7 @@ class Navbar extends Component {
                   ref="searchInput"
                   onKeyUp={debounce(this.handleQuickSearch, 1000)}
                 />
-                <label className="label-icon" for="search">
+                <label className="label-icon" htmlFor="search">
                   <i className="material-icons">search</i>
                 </label>
                 <i

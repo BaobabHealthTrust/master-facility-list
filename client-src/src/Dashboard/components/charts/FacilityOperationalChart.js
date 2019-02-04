@@ -9,6 +9,35 @@ type Props = {
 };
 
 export default class FacilityOperationalStatusChart extends Component<Props> {
+  onMouseEnter = () => {
+    return [
+      {
+        target: "labels",
+        mutation: props => {
+          const label = `${props.data[props.index].x.split("(")[0]}\n${
+            props.data[props.index].x.split("(")[1]
+              ? props.data[props.index].x.split("(")[1].replace(")", "")
+              : ""
+          }\n${props.data[props.index].y}`;
+          return { text: label.replace("Pending Operation", "") };
+        }
+      }
+    ];
+  };
+  onMouseLeave = () => {
+    return [
+      {
+        target: "labels",
+        mutation: props => {
+          return {
+            text: d => {
+              return `${d.y}`;
+            }
+          };
+        }
+      }
+    ];
+  };
   render() {
     const data = this.props.data;
 
@@ -29,39 +58,8 @@ export default class FacilityOperationalStatusChart extends Component<Props> {
           {
             target: "data",
             eventHandlers: {
-              onMouseEnter: () => {
-                return [
-                  {
-                    target: "labels",
-                    mutation: props => {
-                      const label = `${
-                        props.data[props.index].x.split("(")[0]
-                      }\n${
-                        props.data[props.index].x.split("(")[1]
-                          ? props.data[props.index].x
-                              .split("(")[1]
-                              .replace(")", "")
-                          : ""
-                      }\n${props.data[props.index].y}`;
-                      return { text: label.replace("Pending Operation", "") };
-                    }
-                  }
-                ];
-              },
-              onMouseLeave: () => {
-                return [
-                  {
-                    target: "labels",
-                    mutation: props => {
-                      return {
-                        text: d => {
-                          return `${d.y}`;
-                        }
-                      };
-                    }
-                  }
-                ];
-              }
+              onMouseEnter: this.onMouseEnter,
+              onMouseLeave: this.onMouseLeave
             }
           }
         ]}

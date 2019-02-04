@@ -12,6 +12,7 @@ class FacilitiesMap extends Component {
         {districtsData.map(district => {
           return (
             <Path
+              key={district.name}
               district={district}
               districts={this.props.districts}
               onClick={this.props.onClick}
@@ -35,9 +36,9 @@ class FacilitiesMap extends Component {
           <g
             id="Page-1"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <g
               id="Dashboard"

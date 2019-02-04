@@ -14,10 +14,10 @@ class FacilitiesByOperationalStatus extends React.Component {
         height={300}
         onMouseEnter={this.onPieEnter}
       >
-        <Pie data={data} outerRadius={100} fill="#8884d8">
+        <Pie dataKey="value" data={data} outerRadius={100} fill="#8884d8">
           {defaultScheme
             .filter((_, i) => i > 3)
-            .map(color => <Cell fill={color} />)}
+            .map((color, index) => <Cell key={index} fill={color} />)}
         </Pie>
         <Legend verticalAlign="top" height={40} />
       </PieChart>

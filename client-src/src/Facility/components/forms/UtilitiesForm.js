@@ -1,5 +1,5 @@
 //@flow
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Input,
   Navbar,
@@ -10,15 +10,15 @@ import {
   Col,
   Modal
 } from "react-materialize";
-import {connect} from "react-redux";
-import {DatePicker, FormWizardNavigation} from "../../../common";
-import {BasicDetailsFormProps} from "../../../types/helper-types";
-import {Formik, FieldArray} from "formik";
-import {postFormData} from "../../../actions";
+import { connect } from "react-redux";
+import { DatePicker, FormWizardNavigation } from "../../../common";
+import { BasicDetailsFormProps } from "../../../types/helper-types";
+import { Formik, FieldArray } from "formik";
+import { postFormData } from "../../../actions";
 import yup from "yup";
-import {Redirect} from "react-router-dom";
-import {chunk} from "lodash";
-import {renderOptions} from "../helpers";
+import { Redirect } from "react-router-dom";
+import { chunk } from "lodash";
+import { renderOptions } from "../helpers";
 import {
   Utility,
   FacilityResource,
@@ -27,8 +27,8 @@ import {
   FacilityUtility
 } from "../../../types/model-types";
 
-import {CardTitle, Table, Icon} from "react-materialize";
-import {confirmAlert} from "react-confirm-alert";
+import { CardTitle, Table, Icon } from "react-materialize";
+import { confirmAlert } from "react-confirm-alert";
 
 type Props = {
   response: any,
@@ -46,10 +46,10 @@ class UtilitiesForm extends React.Component<Props> {
   };
 
   _getInitialState = () => {
-    if (this.props.fromAdd) return {utilities: []};
+    if (this.props.fromAdd) return { utilities: [] };
 
     const utilities = this.props.currentUtilities.map(util => util.utility_id);
-    return {utilities};
+    return { utilities };
   };
 
   // TODO: Maybe this could go somewhere
@@ -62,7 +62,7 @@ class UtilitiesForm extends React.Component<Props> {
 
   _renderCardHeading = title => {
     return (
-      <div className="blue" style={{padding: 15, color: "white"}}>
+      <div className="blue" style={{ padding: 15, color: "white" }}>
         {`Select All ${title} Available`}
       </div>
     );
@@ -86,12 +86,12 @@ class UtilitiesForm extends React.Component<Props> {
     } else return true;
   };
 
-  _handleSubmit = async (values, {setSubmitting, setErros}) => {
+  _handleSubmit = async (values, { setSubmitting, setErros }) => {
     alert("yes");
   };
 
   _handleChange = id => {
-    this.setState({selectedUtilities: [...this.state.selectedUtilities, id]});
+    this.setState({ selectedUtilities: [...this.state.selectedUtilities, id] });
   };
 
   render() {
@@ -109,10 +109,10 @@ class UtilitiesForm extends React.Component<Props> {
         <Formik
           initialValues={this._getInitialState()}
           onSubmit={this._handleSubmit}
-          render={({values, handleSubmit, isSubmitting}) => (
+          render={({ values, handleSubmit, isSubmitting }) => (
             <FieldArray
               name="utilities"
-              render={({push, remove}) => (
+              render={({ push, remove }) => (
                 <div>
                   {console.log(values)}
                   {this.props.utilityTypes.map(card => {
@@ -130,6 +130,7 @@ class UtilitiesForm extends React.Component<Props> {
                               .map(utility => {
                                 return (
                                   <Input
+                                    key={utility.id}
                                     s={4}
                                     type="checkbox"
                                     checked={values.utilities.includes(
@@ -162,7 +163,7 @@ class UtilitiesForm extends React.Component<Props> {
                     saveButton={this.props.fromAdd ? "Next" : "Save"}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    handleCancel={() => this.setState({cancelForm: true})}
+                    handleCancel={() => this.setState({ cancelForm: true })}
                   />
                 </div>
               )}

@@ -9,6 +9,23 @@ type Props = {
 };
 
 export default class FacilityOwnershipChart extends Component<Props> {
+  onMouseLeave = () => [
+    {
+      target: "labels",
+      mutation: props => {
+        return { text: "" };
+      }
+    }
+  ];
+
+  onMouseEnter = () => [
+    {
+      target: "labels",
+      mutation: props => {
+        return { text: props.data[props.index].x };
+      }
+    }
+  ];
   render() {
     const owners = map(this.props.data, "ownership");
     const shortOwners = owners.map(own => own.slice(0, 3).toUpperCase());
@@ -31,26 +48,8 @@ export default class FacilityOwnershipChart extends Component<Props> {
             {
               target: "data",
               eventHandlers: {
-                onMouseEnter: () => {
-                  return [
-                    {
-                      target: "labels",
-                      mutation: props => {
-                        return { text: props.data[props.index].x };
-                      }
-                    }
-                  ];
-                },
-                onMouseLeave: () => {
-                  return [
-                    {
-                      target: "labels",
-                      mutation: props => {
-                        return { text: "" };
-                      }
-                    }
-                  ];
-                }
+                onMouseEnter: this.onMouseEnter(),
+                onMouseLeave: this.onMouseLeave()
               }
             }
           ]}

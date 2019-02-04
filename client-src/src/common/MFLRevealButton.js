@@ -8,23 +8,23 @@ export default ({ buttonConfiguration, mainButtonConfiguration }) => {
       </a>
 
       <ul>
-        {
-          buttonConfiguration.map(buttonConfig => {
-            return (
-              <li>
-                <a
-                  className={`btn-floating ${buttonConfig.color} darken-1 tooltipped`}
-                  data-delay='500'
-                  data-tooltip={buttonConfig.name}
-                  onClick={buttonConfig.action}
-                >
-                  <i className="material-icons">{buttonConfig.icon}</i>
-                </a>
-              </li>
-            )
-          })
-        }
+        {buttonConfiguration.map((buttonConfig, index) => {
+          return (
+            <li key={index}>
+              <a
+                className={`btn-floating ${
+                  buttonConfig.color
+                } darken-1 tooltipped`}
+                data-delay="500"
+                data-tooltip={buttonConfig.name}
+                onClick={buttonConfig.action}
+              >
+                <i className="material-icons">{buttonConfig.icon}</i>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
-}
+};
