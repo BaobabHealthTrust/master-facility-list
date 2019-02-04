@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 
 const Loader = styled.div.attrs({ className: "center-align" })`
@@ -13,21 +13,23 @@ const Loader = styled.div.attrs({ className: "center-align" })`
   left: 0;
   bottom: 0;
   right: 0;
-`
+`;
 export default () => {
   return (
     <Loader>
-      <div class="preloader-wrapper big active">
-        <div class="spinner-layer spinner-blue-only">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
+      <div className="preloader-wrapper big active">
+        <div className="spinner-layer spinner-blue-only">
+          <div className="circle-clipper left">
+            <div className="circle" />
+          </div>
+          <div className="gap-patch">
+            <div className="circle" />
+          </div>
+          <div className="circle-clipper right">
+            <div className="circle" />
           </div>
         </div>
       </div>
     </Loader>
-  )
-}
+  );
+};

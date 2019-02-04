@@ -93,7 +93,7 @@ export default class FacilityList extends React.Component<Props, State> {
   _renderAddFacilityButton(): ReactElement<Link> {
     return (
       <Link className="ml-4 waves-effect waves-light btn" to="/facilities/add">
-        <i class="material-icons left">add</i>Add NewFacility
+        <i className="material-icons left">add</i>Add NewFacility
       </Link>
     );
   }

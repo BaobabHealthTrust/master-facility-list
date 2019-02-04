@@ -296,7 +296,7 @@ class DashboardHome extends Component<Props, State> {
   );
 
   _renderOwnershipStatusChart = () => (
-    <div class="col s12" id="typeOwnershipContainer">
+    <div className="col s12" id="typeOwnershipContainer">
       <OuterChartSurface>
         <BarChart
           title="Facilities By Ownership"

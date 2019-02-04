@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Link} from "react-router-dom";
-import {connect} from "react-redux";
-import {resetUserDetails} from "../actions";
-import {Dropdown, NavItem, Button, Icon} from "react-materialize";
-import {Redirect} from "react-router-dom";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { resetUserDetails } from "../actions";
+import { Dropdown, NavItem, Button, Icon } from "react-materialize";
+import { Redirect } from "react-router-dom";
 
 class Menu extends Component {
   state = {
@@ -16,7 +16,7 @@ class Menu extends Component {
     await sessionStorage.removeItem("token");
     await sessionStorage.removeItem("firstname");
     this.props.resetUserDetails();
-    this.setState({redirect: true});
+    this.setState({ redirect: true });
   };
 
   setClassName = (page: string) => {
@@ -26,7 +26,7 @@ class Menu extends Component {
   };
 
   navigateTo = (activePage: string) =>
-    this.setState({activePage, redirect: false});
+    this.setState({ activePage, redirect: false });
 
   renderMenuItem = (page: string, url: string) => (
     <li className={this.setClassName(page)}>
@@ -40,7 +40,7 @@ class Menu extends Component {
     const username = this.props.userDetails.name;
     return (
       <Dropdown
-        style={{marginTop: 65}}
+        style={{ marginTop: 65 }}
         trigger={
           <li>
             <a className="flex">
@@ -84,7 +84,7 @@ class Menu extends Component {
           <ul id="nav-mobile" className="right mfl-pr-10 hide-on-med-and-down">
             {this.renderMenu()}
           </ul>
-          <ul class="side-nav" id="mobile-demo">
+          <ul className="side-nav" id="mobile-demo">
             {this.renderMenu()}
           </ul>
         </div>
@@ -101,5 +101,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {resetUserDetails}
+  { resetUserDetails }
 )(Menu);

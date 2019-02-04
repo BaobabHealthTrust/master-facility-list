@@ -5,8 +5,14 @@ import { DistrictTag } from "./";
 export default props => {
   const districtTags = (
     <div>
-      {props.districts.map(district => {
-        return <DistrictTag district={district} onClick={props.closeTag} />;
+      {props.districts.map((district, index) => {
+        return (
+          <DistrictTag
+            key={index}
+            district={district}
+            onClick={props.closeTag}
+          />
+        );
       })}
     </div>
   );

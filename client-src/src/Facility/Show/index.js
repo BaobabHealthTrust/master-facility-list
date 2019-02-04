@@ -258,7 +258,7 @@ class FacilityDetails extends React.Component<Props> {
                     );
                   }}
                 >
-                  <i class="material-icons">file_download</i>
+                  <i className="material-icons">file_download</i>
                   <div>Download</div>
                 </Button>
               )}

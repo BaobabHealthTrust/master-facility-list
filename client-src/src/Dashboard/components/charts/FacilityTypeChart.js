@@ -17,7 +17,6 @@ type Props = {
 
 export default class FacilityTypeChart extends Component<Props> {
   render() {
-    console.log(this.props.data);
     const chartDefinition = (
       <VictoryChart
         height={190}

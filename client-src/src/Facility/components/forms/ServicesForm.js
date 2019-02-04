@@ -1,5 +1,5 @@
 //@flow
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Input,
   Navbar,
@@ -8,18 +8,18 @@ import {
   Button,
   Pagination
 } from "react-materialize";
-import {connect} from "react-redux";
-import {DatePicker, FormWizardNavigation} from "../../../common";
-import {BasicDetailsFormProps} from "../../../types/helper-types";
-import {Formik} from "formik";
+import { connect } from "react-redux";
+import { DatePicker, FormWizardNavigation } from "../../../common";
+import { BasicDetailsFormProps } from "../../../types/helper-types";
+import { Formik } from "formik";
 import {
   postFormData,
   fetchCurrentServices,
   deleteFromApi
 } from "../../../actions";
 import yup from "yup";
-import {renderOptions} from "../helpers";
-import {Redirect} from "react-router-dom";
+import { renderOptions } from "../helpers";
+import { Redirect } from "react-router-dom";
 import {
   Service,
   ServiceType,
@@ -36,7 +36,7 @@ type Props = {
   facility: Facility,
   postFormData: Function,
   deleteFromApi: Function,
-  deleteServiceResponse: {count: number},
+  deleteServiceResponse: { count: number },
   onNext: Function,
   fromAdd: Function,
   patchResponse: any
@@ -68,7 +68,7 @@ class ServicesForm extends React.Component<Props> {
     else alert("Could not Finalize Process");
   };
 
-  _handleChange = async (values, {setSubmitting, setErros}) => {
+  _handleChange = async (values, { setSubmitting, setErros }) => {
     const {
       selectedServiceType,
       firstLevelService,
@@ -196,9 +196,9 @@ class ServicesForm extends React.Component<Props> {
         <div className="mfl-tm-2" />
         <Formik
           onSubmit={this._handleChange}
-          render={({handleSubmit, isSubmitting}) => (
+          render={({ handleSubmit, isSubmitting }) => (
             <div>
-              <div className="row" style={{minHeight: 300}}>
+              <div className="row" style={{ minHeight: 300 }}>
                 <div className="col m6 s12">
                   <Row>
                     <Input
@@ -273,7 +273,7 @@ class ServicesForm extends React.Component<Props> {
                         type="select"
                         label="Select Sub-sub Service"
                         onChange={e =>
-                          this.setState({thirdLevelService: e.target.value})
+                          this.setState({ thirdLevelService: e.target.value })
                         }
                       >
                         <option key="default" value="-1">
@@ -312,7 +312,10 @@ class ServicesForm extends React.Component<Props> {
                       })
                       .map(fs => {
                         return (
-                          <div className="p-4 mb-2 shadow w-full cursor-pointer">
+                          <div
+                            key={fs.facilityService.id}
+                            className="p-4 mb-2 shadow w-full cursor-pointer"
+                          >
                             <div className="flex justify-between">
                               <div>
                                 <strong>{fs.service.service_name}</strong>
@@ -385,7 +388,7 @@ class ServicesForm extends React.Component<Props> {
                           ? Math.ceil(this.props.facilityServices.length / 3)
                           : 0
                       }
-                      onSelect={number => this.setState({pageNumber: number})}
+                      onSelect={number => this.setState({ pageNumber: number })}
                       className="mt-4"
                     />
                   )}
@@ -394,7 +397,7 @@ class ServicesForm extends React.Component<Props> {
               <FormWizardNavigation
                 saveButton={this.props.fromAdd && "Next"}
                 handleSubmit={this._publishFacility}
-                handleCancel={() => this.setState({cancelForm: true})}
+                handleCancel={() => this.setState({ cancelForm: true })}
                 isSubmitting={false}
               />
             </div>

@@ -16,6 +16,26 @@ type Props = {
 };
 
 export default class FacilityRegulatoryStatusChart extends Component<Props> {
+  onMouseEnter = () => [
+    {
+      target: "labels",
+      mutation: props => {
+        return {
+          text: `${props.data[props.index].x} : ${props.data[props.index].y}`
+        };
+      }
+    }
+  ];
+
+  onMouseLeave = () => [
+    {
+      target: "labels",
+      mutation: props => {
+        return { text: "" };
+      }
+    }
+  ];
+
   render() {
     const ticks = map(this.props.data, "regulatoryStatus");
     const legendData =
@@ -62,30 +82,8 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
             {
               target: "data",
               eventHandlers: {
-                onMouseEnter: () => {
-                  return [
-                    {
-                      target: "labels",
-                      mutation: props => {
-                        return {
-                          text: `${props.data[props.index].x} : ${
-                            props.data[props.index].y
-                          }`
-                        };
-                      }
-                    }
-                  ];
-                },
-                onMouseLeave: () => {
-                  return [
-                    {
-                      target: "labels",
-                      mutation: props => {
-                        return { text: "" };
-                      }
-                    }
-                  ];
-                }
+                onMouseEnter: this.onMouseEnter(),
+                onMouseLeave: this.onMouseLeave()
               }
             }
           ]}
