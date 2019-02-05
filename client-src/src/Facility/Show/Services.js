@@ -8,15 +8,15 @@ import {
 } from "../../actions";
 
 import Container from "./components/ServicesContainer";
-import {connect} from "react-redux";
-import {Service, ServiceType} from "../../types/model-types";
-import {Tab, Tabs} from "react-materialize";
-import {Col, Card} from "react-materialize";
-import {MflAlert} from "../../common";
-import {Loader} from "../../common";
+import { connect } from "react-redux";
+import { Service, ServiceType } from "../../types/model-types";
+import { Tab, Tabs } from "react-materialize";
+import { Col, Card } from "react-materialize";
+import { MflAlert } from "../../common";
+import { Loader } from "../../common";
 
 type Props = {
-  services: Array<{service: Service}>,
+  services: Array<{ service: Service }>,
   serviceTypes: any,
   allServices: Array<Service>
 };
@@ -54,13 +54,13 @@ class Services extends React.Component<Props> {
           <Tabs className="tabs blue accent-1 mfl-tabs tabs-fixed-width">
             {this.props.serviceTypes.map((type, index) => {
               return (
-                <Tab title={type.service_type} active={index == 0}>
+                <Tab key={index} title={type.service_type} active={index == 0}>
                   {this.props.services &&
                     this.props.services
                       .filter(service => service.serviceType.id === type.id)
-                      .map(tlService => {
+                      .map((tlService, index) => {
                         return (
-                          <Col m={4} s={12}>
+                          <Col key={index} m={4} s={12}>
                             <Card title={tlService.service.service_name}>
                               <ul>
                                 {tlService.children.map(slService => {
