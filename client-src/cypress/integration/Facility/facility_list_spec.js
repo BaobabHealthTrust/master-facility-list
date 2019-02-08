@@ -230,4 +230,20 @@ describe("Tests Facility List", () => {
         );
     });
   });
+  it("Shows facility on google maps", () => {
+    cy.fetch_current_facility(facility.id).then(locationDetails => {
+      const location =
+        locationDetails.body.geolocations &&
+        locationDetails.body.geolocations.latitude !== ""
+          ? `${parseFloat(
+              locationDetails.body.geolocations.latitude
+            )},${parseFloat(locationDetails.body.geolocations.longitude)}`
+          : "-13.962612,33.774119";
+
+      cy.get("a[title='Open this area in Google Maps (opens a new window)']")
+        .first()
+        .invoke("attr", "href")
+        .should("contain", `${location}`);
+    });
+  });
 });
