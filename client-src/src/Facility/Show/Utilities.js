@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component, Fragment } from "react";
 import Card from "../../common/MflCard";
 import {
   fetchCurrentDetails,
@@ -9,11 +9,24 @@ import {
   postFormData,
   editFacilityDependancies
 } from "../../actions";
-import {connect} from "react-redux";
-import {UtilitiesForm} from "../components";
-import {uniq, chunk, map, pull} from "lodash";
-import {MflAlert} from "../../common";
-import {Loader} from "../../common";
+import { connect } from "react-redux";
+import { UtilitiesForm } from "../components";
+import { uniq, chunk, map, pull } from "lodash";
+import { MflAlert } from "../../common";
+import { Loader } from "../../common";
+import styled from "styled-components";
+
+const Container = styled.div.attrs({
+  className: "container"
+})``;
+
+const UtilityCard = styled.div.attrs({
+  className: "col m4 s12"
+})``;
+
+const Row = styled.div.attrs({
+  className: "row"
+})``;
 
 class Utilities extends Component {
   state = {
@@ -60,18 +73,18 @@ class Utilities extends Component {
     );
     if (this.props.postResponse.facilityUtilityResponse.status === 200) {
       await this.props.fetchCurrentUtilities(facilityId);
-      this.setState({isEditUtilities: false});
+      this.setState({ isEditUtilities: false });
       await this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
     }
   };
 
   toggleEditUtilities = () => {
-    this.setState({isEditUtilities: true});
+    this.setState({ isEditUtilities: true });
   };
 
   handleCancel = () => {
     this.props.addFormValues("", "REMOVE_ALL_FORM_VALUES");
-    this.setState({isEditUtilities: false});
+    this.setState({ isEditUtilities: false });
   };
 
   async componentDidMount() {
@@ -81,7 +94,46 @@ class Utilities extends Component {
     await this.props.fetchCurrentUtilities(id);
   }
 
-  getResourceTypeIcon(utilityType) {
+  _renderAlert() {
+    return (
+      <MflAlert message={"Utilities are not available for this facility"} />
+    );
+  }
+  _getPresentTypes = (utilities, utilityTypes) =>
+    utilityTypes.filter(util =>
+      uniq(utilities.map(util => util.utilities.utility_type_id)).includes(
+        util.id
+      )
+    );
+  _getUtilitiesByType = (type, utilities) =>
+    utilities
+      .filter(util => util.utility.utility_type_id === type.id)
+      .map(util => [util.utility.utility_name]);
+
+  _renderCardForUtilityType = (type, utilities) => {
+    var data = this._getUtilitiesByType(type, utilities);
+    return (
+      <UtilityCard key={data[0]}>
+        <Card
+          heading={type.utility_type}
+          data={data}
+          icon={this.getUtilityTypeIcon(type.utility_type)}
+        />
+      </UtilityCard>
+    );
+  };
+  _renderCardsRows = (cardsChunks, utilities) => (
+    <Fragment>
+      {cardsChunks.map((card, index) => {
+        return (
+          <Row key={index}>
+            {card.map(type => this._renderCardForUtilityType(type, utilities))}
+          </Row>
+        );
+      })}
+    </Fragment>
+  );
+  getUtilityTypeIcon(utilityType) {
     switch (utilityType.toUpperCase()) {
       case "ENERGY PROVIDER":
         return "lightbulb_outline";
@@ -97,63 +149,33 @@ class Utilities extends Component {
   }
 
   render() {
-    const presentTypes = this.props.utilities
-      ? this.props.utilityTypes.filter(util =>
-          uniq(
-            this.props.utilities.map(util => util.utility.utility_type_id)
-          ).includes(util.id)
-        )
+    const { utilities, utilityTypes } = this.props;
+    const presentTypes = utilities
+      ? this._getPresentTypes(utilities, utilityTypes)
       : [];
 
-    const cards = chunk(presentTypes, 3);
+    const cardsChunks = chunk(presentTypes, 3);
 
     return (
-      <div className="container">
-        {cards.length == 0 ? (
-          <MflAlert message={"Utilities are not available for this facility"} />
-        ) : (
-          ""
-        )}
+      <Container>
+        {cardsChunks.length == 0 && this._renderAlert()}
         {this.state.loading ? (
           <Loader />
         ) : (
-          <div>
+          <Fragment>
             {!this.state.isEditUtilities ? (
-              <div>
-                {cards.map(card => {
-                  return (
-                    <div className="row">
-                      {card.map(type => {
-                        const data = this.props.utilities
-                          .filter(
-                            util => util.utility.utility_type_id === type.id
-                          )
-                          .map(util => [util.utility.utility_name]);
-                        return (
-                          <div className="col m4 s12">
-                            <Card
-                              heading={type.utility_type}
-                              data={data}
-                              icon={this.getResourceTypeIcon(type.utility_type)}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
+              this._renderCardsRows(cardsChunks, utilities)
             ) : (
               <UtilitiesForm
                 submitUtilityData={this.submitEditUtilityData}
                 isEditUtilities={this.state.isEditUtilities}
-                currentUtilities={this.props.utilities}
+                currentUtilities={utilities}
                 handleCancel={this.handleCancel}
               />
             )}
-          </div>
+          </Fragment>
         )}
-      </div>
+      </Container>
     );
   }
 }
