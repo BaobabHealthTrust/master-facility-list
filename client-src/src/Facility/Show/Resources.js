@@ -93,9 +93,9 @@ class Resources extends Component<Props> {
     );
   };
 
-  _renderCardsRows = (cardsChucks, resources) => (
+  _renderCardsRows = (cardsChunks, resources) => (
     <Fragment>
-      {cardsChucks.map((card, index) => {
+      {cardsChunks.map((card, index) => {
         return (
           <Row key={index}>
             {card.map(type => this._renderCardForResourceType(type, resources))}
@@ -116,15 +116,15 @@ class Resources extends Component<Props> {
       ? this._getPresentTypes(resources, resourceTypes)
       : [];
 
-    const cardsChucks = chunk(presentTypes, 3);
+    const cardsChunks = chunk(presentTypes, 3);
 
     return (
       <Container>
-        {cardsChucks.length == 0 && this._renderAlert()}
+        {cardsChunks.length == 0 && this._renderAlert()}
         {this.state.loading ? (
           <Loader />
         ) : (
-          this._renderCardsRows(cardsChucks, resources)
+          this._renderCardsRows(cardsChunks, resources)
         )}
       </Container>
     );
