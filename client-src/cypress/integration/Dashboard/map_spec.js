@@ -1,7 +1,6 @@
 /// <reference types="Cypress" />
-import testDashboardSummaryStat from "../../support/card_test";
-import { districtsData } from "../../../src/Dashboard/modules/charts/FacilitiesMap/modules";
-describe("Test Dashboard Charts", () => {
+
+describe("Test Filter Map Charts", () => {
   const FRONTEND_URL = "http://localhost:3000";
 
   it("Should Render all districts on map", () => {
@@ -33,7 +32,7 @@ describe("Test Dashboard Charts", () => {
 
               cy.fetch_districts("district_name", selectedDistricts).then(
                 districtsData => {
-                  if (Math.floor(Math.random() * 20 > 5)) return;
+                  if (Math.floor(Math.random() * 20 > 2)) return;
                   //check facility summary statistics
                   cy.fetch_facilieties_for_districts(
                     null,
@@ -42,7 +41,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .first()
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   district hospitals
@@ -53,7 +53,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(1)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Health Centers
@@ -64,7 +65,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(2)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Dispensary
@@ -75,7 +77,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(3)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Health Post
@@ -86,7 +89,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(4)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
 
@@ -147,7 +151,7 @@ describe("Test Dashboard Charts", () => {
 
               cy.fetch_districts("district_name", selectedDistricts).then(
                 districtsData => {
-                  if (Math.floor(Math.random() * 20 > 5)) return;
+                  if (Math.floor(Math.random() * 20 > 2)) return;
                   //check facility summary statistics
                   cy.fetch_facilieties_for_districts(
                     null,
@@ -156,7 +160,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .first()
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   district hospitals
@@ -167,7 +172,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(1)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Health Centers
@@ -178,7 +184,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(2)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Dispensary
@@ -189,7 +196,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(3)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
                   //   Health Post
@@ -200,7 +208,8 @@ describe("Test Dashboard Charts", () => {
                   ).then(res => {
                     cy.get(".card")
                       .eq(4)
-                      .find(".sc-htoDjs")
+                      .find("p")
+                      .first()
                       .should("have.html", `${res.length}`);
                   });
 

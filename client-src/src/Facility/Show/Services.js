@@ -7,7 +7,6 @@ import {
   setCurrentDetails
 } from "../../actions";
 
-import Container from "./components/ServicesContainer";
 import { connect } from "react-redux";
 import { Service, ServiceType } from "../../types/model-types";
 import { Tab, Tabs } from "react-materialize";
@@ -39,52 +38,56 @@ class Services extends React.Component<Props> {
     await this.props.fetchCurrentDetails(id);
     await this.props.fetchCurrentServices(id);
   }
+  _renderAlert = () => (
+    <MflAlert message={"Services are not available for this facility"} />
+  );
+  _renderService = tlService => (
+    <Card title={tlService.service.service_name}>
+      <ul>
+        {tlService.children.map(slService => {
+          return (
+            <li>
+              <h6>{slService.service.service_name}</h6>
+              <ul>
+                {slService.children.map(tlService => (
+                  <li className="mt-4 ml-8">
+                    > {tlService.service.service_name}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          );
+        })}
+      </ul>
+    </Card>
+  );
+  _renderServiceTab = (type, key) => (
+    <Tab key={key} title={type.service_type} active={key == 0}>
+      {this.props.services &&
+        this.props.services
+          .filter(service => service.serviceType.id === type.id)
+          .map((tlService, index) => {
+            return (
+              <Col key={index} m={4} s={12}>
+                {this._renderService(tlService)}
+              </Col>
+            );
+          })}
+    </Tab>
+  );
 
   render() {
     return (
       <div className="container">
-        {this.props.allServices.length == 0 ? (
-          <MflAlert message={"Services are not available for this facility"} />
-        ) : (
-          ""
-        )}
+        {this.props.allServices.length == 0 && this._renderAlert()}
+
         {this.state.loading ? (
           <Loader />
         ) : (
           <Tabs className="tabs blue accent-1 mfl-tabs tabs-fixed-width">
-            {this.props.serviceTypes.map((type, index) => {
-              return (
-                <Tab key={index} title={type.service_type} active={index == 0}>
-                  {this.props.services &&
-                    this.props.services
-                      .filter(service => service.serviceType.id === type.id)
-                      .map((tlService, index) => {
-                        return (
-                          <Col key={index} m={4} s={12}>
-                            <Card title={tlService.service.service_name}>
-                              <ul>
-                                {tlService.children.map(slService => {
-                                  return (
-                                    <li>
-                                      <h6>{slService.service.service_name}</h6>
-                                      <ul>
-                                        {slService.children.map(tlService => (
-                                          <li className="mt-4 ml-8">
-                                            > {tlService.service.service_name}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </li>
-                                  );
-                                })}
-                              </ul>
-                            </Card>
-                          </Col>
-                        );
-                      })}
-                </Tab>
-              );
-            })}
+            {this.props.serviceTypes.map((type, index) =>
+              this._renderServiceTab(type, index)
+            )}
           </Tabs>
         )}
       </div>

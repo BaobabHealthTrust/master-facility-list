@@ -11,7 +11,8 @@ describe("Test Dashboard Summary Statistics", () => {
         .should("be.visible");
       cy.get(".card")
         .first()
-        .find(".sc-htoDjs")
+        .find("p")
+        .first()
         .should("have.html", `${res.length}`);
     });
   });
@@ -23,7 +24,8 @@ describe("Test Dashboard Summary Statistics", () => {
         .should("be.visible");
       cy.get(".card")
         .eq(1)
-        .find(".sc-htoDjs")
+        .find("p")
+        .first()
         .should("have.html", `${res.length}`);
     });
   });
@@ -35,7 +37,8 @@ describe("Test Dashboard Summary Statistics", () => {
         .should("be.visible");
       cy.get(".card")
         .eq(2)
-        .find(".sc-htoDjs")
+        .find("p")
+        .first()
         .should("have.html", `${res.length}`);
     });
   });
@@ -47,7 +50,8 @@ describe("Test Dashboard Summary Statistics", () => {
         .should("be.visible");
       cy.get(".card")
         .eq(3)
-        .find(".sc-htoDjs")
+        .find("p")
+        .first()
         .should("have.html", `${res.length}`);
     });
   });
@@ -59,7 +63,8 @@ describe("Test Dashboard Summary Statistics", () => {
         .should("be.visible");
       cy.get(".card")
         .eq(4)
-        .find(".sc-htoDjs")
+        .find("p")
+        .first()
         .should("have.html", `${res.length}`);
     });
   });

@@ -179,3 +179,11 @@ Cypress.Commands.add("fetch_districts", (filterBy, filterColl = []) => {
       : res.body;
   });
 });
+
+Cypress.Commands.add("quick_search", searchTerm => {
+  const RESOURCE = `Facilities/list`;
+  const URL = `${END_POINT}${RESOURCE}?regex=${searchTerm}`;
+  cy.request("GET", URL).then(res => {
+    return res.body.data;
+  });
+});
