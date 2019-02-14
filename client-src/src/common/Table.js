@@ -33,12 +33,10 @@ class MflTable extends Component {
             <tr key={id} onClick={this.handleRedirect.bind(this, id)}>
               {record
                 .filter((cell, index) => index !== 0)
-                .map(cell => {
+                .map((cell, index) => {
                   return (
-                    <td>
-                      <span className="truncate">
-                        {cell}
-                      </span>
+                    <td key={index}>
+                      <span className="truncate">{cell}</span>
                     </td>
                   );
                 })}
@@ -66,7 +64,10 @@ class MflTable extends Component {
     );
   }
 }
-const mapStateToProps = (store) => {
-  return {}
-}
-export default connect(mapStateToProps, { hideSearchContainer })(MflTable);
+const mapStateToProps = store => {
+  return {};
+};
+export default connect(
+  mapStateToProps,
+  { hideSearchContainer }
+)(MflTable);
