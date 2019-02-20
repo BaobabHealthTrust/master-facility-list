@@ -1,7 +1,7 @@
-import axios from 'axios';
-import settings from '../settings';
+import axios from "axios";
+import settings from "../settings";
 
-export default (id) => {
+export default id => {
   const END_POINT = `${settings.hostname}/api/`;
   const RESOURCE = `FacilityServices/hierarchy`;
 
@@ -9,7 +9,7 @@ export default (id) => {
 
   const request = axios.get(URL);
   return {
-    type: 'FETCH_CURRENT_SERVICES',
+    type: "FETCH_CURRENT_SERVICES",
     payload: request
   };
-}
+};

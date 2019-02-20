@@ -1,9 +1,9 @@
 function scrollBars() {
-  var body = document.querySelector('body');
+  var body = document.querySelector("body");
   return {
     vertical: body.scrollHeight > body.clientHeight,
     horizontal: body.scrollWidth > body.clientWidth
-  }
+  };
 }
 
 export default () => {
@@ -14,4 +14,4 @@ export default () => {
   //         document.querySelector('.page-footer').style.position = "absolute";
   //     }
   // }, 0);
-}
+};
