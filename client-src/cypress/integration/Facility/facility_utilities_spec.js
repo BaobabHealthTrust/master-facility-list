@@ -28,4 +28,26 @@ describe("Tests Facility Utilities Page", () => {
       .first()
       .should("contain", facility.code);
   });
+  it("Renders facility utilities", () => {
+    cy.fetch_current_utilities(facility.id).then(res => {
+      const data = res.body.data;
+      if (data.length == 0) {
+        cy.get("div.card-panel.yellow").should(
+          "contain",
+          "Utilities are not available for this facility"
+        );
+      } else {
+        var renderedUtilities = [];
+        cy.get("table .mfl-card-row .mfl-summary-subheader")
+          .each(el => {
+            renderedUtilities.push(el.context.innerHTML.toUpperCase());
+          })
+          .then(() => {
+            expect(renderedUtilities).to.include.members(
+              data.map(data => data.utility.utility_name.toUpperCase())
+            );
+          });
+      }
+    });
+  });
 });

@@ -32,7 +32,7 @@ describe("Tests Facility Contacts Page", () => {
               locationDetails.body.geolocations.latitude
             )},${parseFloat(locationDetails.body.geolocations.longitude)}`
           : "-13.962612,33.774119";
-      cy.wait(60 * 10);
+      cy.wait(60 * 20);
       cy.get("a[title='Open this area in Google Maps (opens a new window)']")
         .first()
         .invoke("attr", "href")
