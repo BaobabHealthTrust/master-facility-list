@@ -42,5 +42,20 @@ describe("Tests Quick Search", () => {
           .should("contain", facility.code);
       });
     });
+
+    cy.get("#searchbar #search").clear();
+    cy.wait(60 * 60);
+
+    cy.quick_search("").then(res => {
+      res.map((facility, index) => {
+        let searchRows = cy.get(".mfl-search-results-container table tbody tr");
+        searchRows
+          .eq(index)
+          .get("td")
+          .first()
+          .get("span")
+          .should("contain", facility.code);
+      });
+    });
   });
 });
