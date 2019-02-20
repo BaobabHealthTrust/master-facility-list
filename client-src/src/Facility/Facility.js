@@ -36,7 +36,7 @@ class FacilitiesHome extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const containerHeight = window.innerHeight - 128;
+    const containerHeight = window.innerHeight - 120;
     this.setState({ containerHeight });
   }
 

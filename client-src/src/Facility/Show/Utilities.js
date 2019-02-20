@@ -101,9 +101,7 @@ class Utilities extends Component {
   }
   _getPresentTypes = (utilities, utilityTypes) =>
     utilityTypes.filter(util =>
-      uniq(utilities.map(util => util.utilities.utility_type_id)).includes(
-        util.id
-      )
+      uniq(utilities.map(util => util.id)).includes(util.id)
     );
   _getUtilitiesByType = (type, utilities) =>
     utilities

@@ -13,13 +13,16 @@ import { Tab, Tabs } from "react-materialize";
 import { Col, Card } from "react-materialize";
 import { MflAlert } from "../../common";
 import { Loader } from "../../common";
+import styled from "styled-components";
 
 type Props = {
   services: Array<{ service: Service }>,
   serviceTypes: any,
   allServices: Array<Service>
 };
-
+const Container = styled.div.attrs({
+  className: "container"
+})``;
 class Services extends React.Component<Props> {
   state = {
     isEditResources: false,
@@ -78,7 +81,7 @@ class Services extends React.Component<Props> {
 
   render() {
     return (
-      <div className="container">
+      <Container>
         {this.props.allServices.length == 0 && this._renderAlert()}
 
         {this.state.loading ? (
@@ -90,7 +93,7 @@ class Services extends React.Component<Props> {
             )}
           </Tabs>
         )}
-      </div>
+      </Container>
     );
   }
 }

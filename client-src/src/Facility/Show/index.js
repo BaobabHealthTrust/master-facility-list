@@ -25,6 +25,7 @@ import { Facility } from "../../types/model-types";
 import { Card, Col } from "react-materialize";
 import { confirmAlert } from "react-confirm-alert";
 import moment from "moment";
+import styled from "styled-components";
 
 type Props = {
   match: any,
@@ -32,6 +33,31 @@ type Props = {
   postFormData: Function,
   response: Partial<Facility>
 };
+
+const Container = styled.div``;
+
+const TitleBar = styled.div.attrs({
+  className: "container mfl-titles flex flex-row justify-between"
+})``;
+
+const FacilityName = styled.h5``;
+
+const StatusBadge = styled.span`
+  float: none;
+`;
+
+const FacilityCodeDistrict = styled.h6``;
+
+const LastUpdated = styled.small`
+  font-size: "80%";
+  font-style: "italic";
+  text-transform: "capitalize";
+  color: "#999";
+`;
+
+const Tools = styled.div.attrs({
+  className: "mt-4 hide-on-med-and-down"
+})``;
 
 class FacilityDetails extends React.Component<Props> {
   state = {
@@ -100,6 +126,138 @@ class FacilityDetails extends React.Component<Props> {
     this.setState({ pushTo: null });
   }
 
+  _renderRoutes = () => (
+    <Switch>
+      <Route exact path="/facilities/:id/summary" component={Summary} />
+      <Route
+        exact
+        path="/facilities/:id/summary/edit"
+        component={BasicDetailsForm}
+      />
+
+      <Route exact path="/facilities/:id/locations" component={Location} />
+      <Route
+        exact
+        path="/facilities/:id/locations/edit"
+        component={ContactsForm}
+      />
+
+      <Route exact path="/facilities/:id/resources" component={Resources} />
+      <Route
+        exact
+        path="/facilities/:id/resources/edit"
+        component={ResourcesForm}
+      />
+
+      <Route exact path="/facilities/:id/utilities" component={Utilities} />
+      <Route
+        exact
+        path="/facilities/:id/utilities/edit"
+        component={UtilitiesForm}
+      />
+
+      <Route exact path="/facilities/:id/services" component={Services} />
+      <Route
+        exact
+        path="/facilities/:id/services/edit"
+        component={ServicesForm}
+      />
+    </Switch>
+  );
+
+  _renderTitleBar = () => {
+    const { location, current, match } = this.props;
+    const pathArr: string[] = location.pathname.split("/");
+    return (
+      <TitleBar>
+        <div>
+          <FacilityName>
+            <FetchAllDependancies />
+            {current.facility_name}
+            {current.operationalStatus && (
+              <StatusBadge
+                id="badge"
+                className={this._getBadgeClass()}
+                data-badge-caption={
+                  current.operationalStatus.facility_operational_status
+                }
+              />
+            )}
+          </FacilityName>
+          <FacilityCodeDistrict>
+            {current.facility_code},&nbsp;
+            {current.district && current.district.district_name}
+            &nbsp;&nbsp;
+            <LastUpdated>
+              Last Updated - {moment(current.updated_at).format("LLLL")}
+            </LastUpdated>
+          </FacilityCodeDistrict>
+        </div>
+
+        <Tools>
+          {pathArr[pathArr.length - 1] !== "edit" &&
+            sessionStorage.getItem("token") && (
+              <MFLRevealButton
+                buttonConfiguration={this.buttonConfiguration}
+                mainButtonConfiguration={{
+                  color: "teal",
+                  icon: "more_horiz"
+                }}
+              />
+            )}
+          {pathArr[pathArr.length - 1] !== "edit" &&
+            !sessionStorage.getItem("token") && (
+              <Button
+                className="mt-4 flex flex-row align-center"
+                onClick={() => {
+                  window.open(
+                    `${settings.hostname}/api/facilities/download/${
+                      match.params.id
+                    }`
+                  );
+                }}
+              >
+                <i className="material-icons">file_download</i>
+                <div>Download</div>
+              </Button>
+            )}
+        </Tools>
+      </TitleBar>
+    );
+  };
+  _renderAlert = () => {
+    if (this.props.error.message === "Network Error") return <ShowError />;
+    if (this.props.error.response)
+      return <ShowError message="This Resource does not exit" />;
+  };
+
+  _getBadgeClass = () => {
+    const { current } = this.props;
+    let badgeClass = "new badge";
+    if (current.operationalStatus) {
+      switch (current.operationalStatus.facility_operational_status) {
+        case "Closed":
+          badgeClass = "new badge red";
+          break;
+        case "Closed (Temporary)":
+          badgeClass = "new badge deep-orange";
+          break;
+        case "Functional":
+          badgeClass = "new badge green";
+          break;
+        case "Pending Operation (Under construction)":
+          badgeClass = "new badge orange";
+          break;
+        case "Pending Operation (Construction Complete)":
+          badgeClass = "new badge brown";
+          break;
+        default:
+          break;
+      }
+    }
+    return badgeClass;
+  };
+
   buttonConfiguration: ButtonConfiguration = [
     {
       icon: "delete",
@@ -128,8 +286,9 @@ class FacilityDetails extends React.Component<Props> {
   ];
 
   render() {
-    const pathArr: string[] = this.props.location.pathname.split("/");
-    const id = this.props.match.params.id;
+    const { match } = this.props;
+
+    const id = match.params.id;
     const summaryLink = `/facilities/${id}/summary`;
     const locationsLink = `/facilities/${id}/locations`;
     const resourcesLink = `/facilities/${id}/resources`;
@@ -169,159 +328,19 @@ class FacilityDetails extends React.Component<Props> {
       }
     ];
 
-    let badgeClass = "new badge";
-
-    if (this.props.current.operationalStatus) {
-      switch (
-        this.props.current.operationalStatus.facility_operational_status
-      ) {
-        case "Closed":
-          badgeClass = "new badge red";
-          break;
-        case "Closed (Temporary)":
-          badgeClass = "new badge deep-orange";
-          break;
-        case "Functional":
-          badgeClass = "new badge green";
-          break;
-        case "Pending Operation (Under construction)":
-          badgeClass = "new badge orange";
-          break;
-        case "Pending Operation (Construction Complete)":
-          badgeClass = "new badge brown";
-          break;
-        default:
-          break;
-      }
-    }
     return (
-      <div style={{ minHeight: this.state.containerHeight }}>
+      <Container style={{ minHeight: this.state.containerHeight }}>
         {this.state.pushTo && <Redirect to={this.state.pushTo} />}
         {this.state.redirect && <Redirect to="/facilities" />}
+
         <SecondaryMenu links={links} defaultActivePage={"summary"} />
-        <div className="container mfl-titles flex flex-row justify-between">
-          <div>
-            <h5>
-              {/* TODO: Fetch Current Data Here on your own */}
-              <FetchAllDependancies />
-              {this.props.current.facility_name}
-              {this.props.current.operationalStatus && (
-                <span
-                  style={{ float: "none" }}
-                  id="badge"
-                  className={badgeClass}
-                  data-badge-caption={
-                    this.props.current.operationalStatus
-                      .facility_operational_status
-                  }
-                />
-              )}
-            </h5>
-            <h6>
-              {this.props.current.facility_code},&nbsp;
-              {this.props.current.district &&
-                this.props.current.district.district_name}
-              &nbsp;&nbsp;
-              <small
-                style={{
-                  fontSize: "80%",
-                  fontStyle: "italic",
-                  textTransform: "capitalize",
-                  color: "#999"
-                }}
-              >
-                Last Updated -{" "}
-                {moment(this.props.current.updated_at).format("LLLL")}
-              </small>
-            </h6>
-          </div>
-          <div className="mt-4" className="hide-on-med-and-down">
-            {pathArr[pathArr.length - 1] !== "edit" &&
-              sessionStorage.getItem("token") && (
-                <MFLRevealButton
-                  buttonConfiguration={this.buttonConfiguration}
-                  mainButtonConfiguration={{
-                    color: "teal",
-                    icon: "more_horiz"
-                  }}
-                />
-              )}
-            {pathArr[pathArr.length - 1] !== "edit" &&
-              !sessionStorage.getItem("token") && (
-                <Button
-                  className="mt-4 flex flex-row align-center"
-                  onClick={() => {
-                    window.open(
-                      `${settings.hostname}/api/facilities/download/${
-                        this.props.match.params.id
-                      }`
-                    );
-                  }}
-                >
-                  <i className="material-icons">file_download</i>
-                  <div>Download</div>
-                </Button>
-              )}
-          </div>
-        </div>
-        {this.props.error.message === "Network Error" && <ShowError />}
-        {this.props.error.response && (
-          <ShowError message="This Resource does not exit" />
-        )}
 
-        {this.state.loading ? (
-          <Loader />
-        ) : (
-          <Switch>
-            <Route exact path="/facilities/:id/summary" component={Summary} />
-            <Route
-              exact
-              path="/facilities/:id/summary/edit"
-              component={BasicDetailsForm}
-            />
+        {this._renderTitleBar()}
 
-            <Route
-              exact
-              path="/facilities/:id/locations"
-              component={Location}
-            />
-            <Route
-              exact
-              path="/facilities/:id/locations/edit"
-              component={ContactsForm}
-            />
+        {this._renderAlert()}
 
-            <Route
-              exact
-              path="/facilities/:id/resources"
-              component={Resources}
-            />
-            <Route
-              exact
-              path="/facilities/:id/resources/edit"
-              component={ResourcesForm}
-            />
-
-            <Route
-              exact
-              path="/facilities/:id/utilities"
-              component={Utilities}
-            />
-            <Route
-              exact
-              path="/facilities/:id/utilities/edit"
-              component={UtilitiesForm}
-            />
-
-            <Route exact path="/facilities/:id/services" component={Services} />
-            <Route
-              exact
-              path="/facilities/:id/services/edit"
-              component={ServicesForm}
-            />
-          </Switch>
-        )}
-      </div>
+        {this.state.loading ? <Loader /> : this._renderRoutes()}
+      </Container>
     );
   }
 }
