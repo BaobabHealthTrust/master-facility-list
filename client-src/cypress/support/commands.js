@@ -55,6 +55,34 @@ Cypress.Commands.add("fetch_current_facility", id => {
     res.body;
   });
 });
+
+Cypress.Commands.add("fetch_current_resources", id => {
+  const RESOURCE = `FacilityResources/latest?id=${id}`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_current_utilities", id => {
+  const RESOURCE = `FacilityUtilities/latest?id=${id}`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_current_services", id => {
+  const RESOURCE = `FacilityServices/hierarchy?facility_id=${id}`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    res.body;
+  });
+});
+
 Cypress.Commands.add("fetch_facilieties", (filterBy, filterText) => {
   const RESOURCE = `Facilities`;
   const URL = `${END_POINT}${RESOURCE}`;
@@ -184,6 +212,6 @@ Cypress.Commands.add("quick_search", searchTerm => {
   const RESOURCE = `Facilities/list`;
   const URL = `${END_POINT}${RESOURCE}?regex=${searchTerm}`;
   cy.request("GET", URL).then(res => {
-    return res.body.data;
+    return res.body.data.slice(0, 5);
   });
 });
