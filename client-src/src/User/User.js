@@ -5,11 +5,15 @@ import { UserList } from "./components/index";
 import CreateUser from "./Create";
 import ViewUser from "./Show";
 import "../App.css";
+import styled from "styled-components";
+
+const Container = styled.div``;
 
 export default class Index extends React.Component {
   state = {
     user: null,
-    delay: 3000
+    delay: 3000,
+    containerHeight: 0
   };
 
   componentWillMount() {
@@ -20,6 +24,8 @@ export default class Index extends React.Component {
 
   componentDidMount() {
     footerResizer();
+    const containerHeight = window.innerHeight - 128;
+    this.setState({ containerHeight });
   }
 
   onUserSelected = user => {
@@ -63,7 +69,7 @@ export default class Index extends React.Component {
 
   render() {
     return (
-      <div className="container ">
+      <Container style={{ minHeight: this.state.containerHeight }}>
         <div className="flex flex-wrap pt-16">
           <div className="w-full sm:w-full md:w-full lg:w-full xl:w-full px-2 mb-4">
             <h4>
@@ -87,7 +93,7 @@ export default class Index extends React.Component {
             />
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }

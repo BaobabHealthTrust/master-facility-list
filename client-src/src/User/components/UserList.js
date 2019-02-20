@@ -64,6 +64,7 @@ class UsersList extends React.Component {
             pageSize={10}
             defaultSorting={this.defaultSorting}
             rowSelected={user => onUserSelected(user)}
+            title="Users"
           />
         )}
       </Card>

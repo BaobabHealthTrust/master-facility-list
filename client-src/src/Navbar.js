@@ -98,7 +98,7 @@ class Navbar extends Component {
                 onClick={e => this.setState({ isContainerClicked: true })}
                 data={{
                   headers: [],
-                  records: this.props.searchResults.map(result => {
+                  records: this.props.searchResults.slice(0, 5).map(result => {
                     return [
                       result.id,
                       result.code,
