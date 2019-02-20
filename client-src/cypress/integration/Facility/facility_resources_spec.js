@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+import { filter } from "bluebird";
+
 describe("Tests Facility Resources Page", () => {
   const FRONTEND_URL = "http://localhost:3000";
 
@@ -28,5 +30,40 @@ describe("Tests Facility Resources Page", () => {
     cy.get(".container.mfl-titles")
       .first()
       .should("contain", facility.code);
+  });
+  it("Renders facility resources", () => {
+    cy.fetch_current_resources(facility.id).then(res => {
+      const data = res.body.data;
+      if (data.length == 0) {
+        cy.get("div.card-panel.yellow").should(
+          "contain",
+          "Resources are not available for this facility"
+        );
+      } else {
+        var renderedResources = [];
+        cy.get("table .mfl-card-row .mfl-summary-subheader")
+          .each((el, index) => {
+            renderedResources.push(el.context.innerHTML.toUpperCase());
+
+            let quantity = data.filter(
+              data =>
+                data.resource.resource_name.toUpperCase() ==
+                el.context.innerHTML.toUpperCase()
+            )[0].quantity;
+
+            cy.get("table .mfl-card-row .mfl-summary-subtext")
+              .eq(index)
+              .should("contain", quantity);
+            expect(
+              data.map(data => data.resource.resource_name.toUpperCase())
+            ).to.include(el.context.innerHTML.toUpperCase());
+          })
+          .then(() => {
+            expect(renderedResources).to.include.members(
+              data.map(data => data.resource.resource_name.toUpperCase())
+            );
+          });
+      }
+    });
   });
 });

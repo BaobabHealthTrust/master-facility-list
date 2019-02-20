@@ -28,4 +28,11 @@ describe("Tests Facility Services Page", () => {
       .first()
       .should("contain", facility.code);
   });
+  it("Renders facility services", () => {
+    cy.fetch_current_services(facility.id).then(res => {
+      const data = res.body.hierarchy;
+      if (data.length != 0) {
+      }
+    });
+  });
 });
