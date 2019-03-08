@@ -7,7 +7,8 @@ const initialState = {
     token: sessionStorage.getItem("token"),
     name: sessionStorage.getItem("firstname")
   },
-  userAccessTokens: []
+  userAccessTokens: [],
+  validationErrors: []
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -19,10 +20,8 @@ export default (state = initialState, action) => {
           isLoading: false
         };
       }
-      return state;
       break;
     case "FETCH_USER_ACCESS_TOKENS":
-      console.log(action.payload);
       if (action.payload.data) {
         return {
           ...state,
@@ -30,13 +29,16 @@ export default (state = initialState, action) => {
           isLoading: false
         };
       }
-      return state;
       break;
     case "POST_USER":
-      console.log(action.payload);
       return {
         ...state,
         userCreated: action.payload.data ? true : false,
+        validationErrors: action.error
+          ? action.payload
+            ? action.payload.response.data.error.details.messages
+            : ["There was a general error"]
+          : [],
         isLoading: false
       };
       break;
@@ -44,6 +46,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         userUpdated: action.payload.data ? true : false,
+        validationErrors: action.error
+          ? action.payload
+            ? action.payload.response.data.error.details.messages
+            : ["There was a general error"]
+          : [],
         isLoading: false
       };
       break;
@@ -51,6 +58,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         passwordChanged: action.payload.data ? true : false,
+        validationErrors: action.error
+          ? action.payload
+            ? action.payload.response.data.error.details.messages
+            : ["There was a general error"]
+          : [],
         isLoading: false
       };
       break;
@@ -59,6 +71,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false
       };
+      break;
     case "SET_USER_DETAILS":
       return {
         ...state,
@@ -74,7 +87,7 @@ export default (state = initialState, action) => {
       };
       break;
     default:
+      return state;
       break;
   }
-  return state;
 };

@@ -6,10 +6,11 @@ export default async (
   resource: string,
   method: string,
   actionType: string,
-  endpoint = '',
-  id = null) => {
+  endpoint = "",
+  id = null
+) => {
   const END_POINT = `${settings.hostname}/api/`;
-  const token = await sessionStorage.getItem('token');
+  const token = await sessionStorage.getItem("token");
 
   const headers = {
     Authorization: token
@@ -23,4 +24,4 @@ export default async (
     type: actionType,
     payload: response
   };
-}
+};
