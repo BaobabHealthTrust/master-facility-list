@@ -171,7 +171,6 @@ export class CreateUser extends Component {
           labelClassName="mfl-max-width"
           value={values.username}
           onChange={handleChange}
-          error={errors.username}
           onBlur={handleBlur}
           error={touched.username && errors.username}
           name="username"

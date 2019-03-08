@@ -813,7 +813,7 @@ svg #districts path:hover {
 .mfl-about-text {
   font-size: 100%;
   line-height: 1.5;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  /* font-family: Georgia, "Times New Roman", Times, serif; */
 }
 
 .mfl-feedback-img {

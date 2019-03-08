@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard";
 import MflAbout from "./common/MflAbout";
 import Footer from "./common/Footer";
 import LoginPage from "./Login";
-import MfLFeedback from "./common/MfLFeedback";
+import MfLFeedback from "./Feedback";
 import Users from "./User";
 import CreateFacility from "./Facility/Create";
 import SearchModal from "./Facility/Search";

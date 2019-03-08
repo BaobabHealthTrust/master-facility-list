@@ -8,7 +8,7 @@ export { default as DatePicker } from "./DatePicker";
 export { default as FormWizardNavigation } from "./FormWizardNavigation";
 export { default as FormWizardTabHeading } from "./FormWizardTabHeading";
 export { default as FinishedForm } from "./FinishedForm";
-export { default as FeedbackForm } from "./FeedbackForm";
+
 export { default as MflGrid } from "./MflGrid";
 export { default as Banner } from "./Banner";
 export { default as MflCardGeneric } from "./MflCardGeneric";
