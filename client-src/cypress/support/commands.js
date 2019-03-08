@@ -215,3 +215,22 @@ Cypress.Commands.add("quick_search", searchTerm => {
     return res.body.data.slice(0, 5);
   });
 });
+
+Cypress.Commands.add("fetch_users", () => {
+  const RESOURCE = `Clients`;
+  const FILTER = {
+    where: {
+      archived_date: null
+    },
+    order: "created_at DESC"
+  };
+
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+
+  const headers = {
+    Authorization: `${sessionStorage.getItem("token")}`
+  };
+  cy.request({ method: "GET", url: URL, headers: headers }).then(res => {
+    return res.body.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
+  });
+});
