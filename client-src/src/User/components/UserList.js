@@ -1,45 +1,13 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Card } from "react-materialize";
 import { fetchUsers } from "../../actions/index";
 import { MflGrid, Loader } from "../../common/index";
 
 import "../../App.css";
-
-import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  PagingPanel,
-  TableFilterRow,
-  Toolbar,
-  SearchPanel
-} from "@devexpress/dx-react-grid-material-ui";
-import {
-  SortingState,
-  IntegratedSorting,
-  PagingState,
-  IntegratedPaging,
-  FilteringState,
-  IntegratedFiltering,
-  SearchState
-} from "@devexpress/dx-react-grid";
-
-class UsersList extends React.Component {
-  state = {
-    loading: true,
-    results: 0
-  };
-
-  componentDidMount() {
+class UserList extends Component {
+  componentWillMount() {
     this.props.fetchUsers();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading)
-      this.setState({
-        loading: false
-      });
   }
 
   columns = [
@@ -50,7 +18,6 @@ class UsersList extends React.Component {
   ];
 
   defaultSorting = [{ columnName: "firstname", direction: "asc" }];
-
   render() {
     const { users, onUserSelected, isLoading } = this.props;
     return (
@@ -71,16 +38,14 @@ class UsersList extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    users: state.users.users,
-    isLoading: state.users.isLoading
-  };
-};
+const mapStateToProps = state => ({
+  users: state.users.users,
+  isLoading: state.users.isLoading
+});
 
 const mapDispatchToProps = { fetchUsers };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UsersList);
+)(UserList);
