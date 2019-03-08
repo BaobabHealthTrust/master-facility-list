@@ -1,16 +1,22 @@
 import React from "react";
 import { Modal, Row, Input, Col, Button, Icon } from "react-materialize";
+import { Redirect } from "react-router-dom";
 import { Formik } from "formik";
-import { postFormData, fetchUserAccessTokens } from "../../../actions";
+import {
+  postFormData,
+  fetchUserAccessTokens,
+  resetUserDetails
+} from "../../actions";
 import { connect } from "react-redux";
 import yup from "yup";
-import "../../../App.css";
+import { Toast } from "../../common";
+import "../../App.css";
 
-class ChangePasswordForm extends React.Component {
-  state = {
-    delay: 3000
+class ChangePassword extends React.Component {
+  initialValues = {
+    password: "",
+    confirmPassword: ""
   };
-
   passwordValidationMessage =
     "Weak password, The password must be a combination of numbers, letters, and special characters";
 
@@ -19,45 +25,45 @@ class ChangePasswordForm extends React.Component {
       .string()
       .min(5)
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
         this.passwordValidationMessage
       )
       .required(),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null])
+      .oneOf([yup.ref("password"), null], "Passwords do no match")
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gm,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
         this.passwordValidationMessage
       )
       .required("Password confirm is required")
   });
 
-  showToastMessage = message => {
-    window.Materialize.toast(message, this.state.delay);
-  };
-
-  onPasswordChanged = async () => {
-    this.showToastMessage("Password changed successfully, reloading");
+  onPasswordChanged = async actions => {
+    Toast("Password changed successfully");
     await this.props.fetchUserAccessTokens(this.props.user.id);
     const accessToken = await sessionStorage.getItem("token");
     const isCurrentUser = this.props.userAccessTokens
       .map(accessToken => accessToken.id)
       .includes(accessToken);
+
+    actions.resetForm();
+
+    // TODO: workout logic to send the user to the login page
+    document.getElementById("closeChangePassBtn").click();
+
     if (isCurrentUser) {
-      await sessionStorage.removeItem("token");
+      await sessionStorage.clear();
+      this.props.resetUserDetails();
+      this.props.redirect("/login");
     }
-    setTimeout(() => {
-      // TODO: workout logic to send the user to the login page
-      window.location.reload();
-    }, this.state.delay + 300);
   };
 
   onPasswordChangeError = () => {
-    this.showToastMessage("Password changing failed, try again");
+    Toast("Password changing failed, try again");
   };
 
-  _handleChange = async (values, { setSubmitting, setErros }) => {
+  _handleSubmit = async (values, actions) => {
     await this.props.postFormData(
       values,
       "Clients",
@@ -66,7 +72,7 @@ class ChangePasswordForm extends React.Component {
       this.props.user.id
     );
     this.props.passwordChanged
-      ? this.onPasswordChanged()
+      ? this.onPasswordChanged(actions)
       : this.onPasswordChangeError();
   };
 
@@ -76,7 +82,7 @@ class ChangePasswordForm extends React.Component {
         initialValues={this.initialValues}
         validate={this.validate}
         validationSchema={this.schema}
-        onSubmit={this._handleChange}
+        onSubmit={this._handleSubmit}
         render={({
           values,
           errors,
@@ -89,19 +95,26 @@ class ChangePasswordForm extends React.Component {
           <Modal
             header="Change Password"
             trigger={
-              <Button waves="light" className="btn-flat">
+              <Button waves="light" className="green darken-2">
                 change password
               </Button>
             }
             actions={
               <div class="">
-                <Button modal="close" flat waves="light">
+                <Button
+                  modal="close"
+                  flat
+                  waves="light"
+                  disabled={isSubmitting}
+                  id="closeChangePassBtn"
+                >
                   cancel
                 </Button>
                 <Button
                   waves="light"
                   className="blue darken-2"
                   onClick={handleSubmit}
+                  disabled={isSubmitting}
                 >
                   Save Password
                 </Button>
@@ -150,9 +163,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   postFormData,
-  fetchUserAccessTokens
+  fetchUserAccessTokens,
+  resetUserDetails
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChangePasswordForm);
+)(ChangePassword);

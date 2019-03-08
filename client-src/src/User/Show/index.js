@@ -1,41 +1,26 @@
-import React from "react";
-import { Card, CardTitle, Table, Button, Icon, Col } from "react-materialize";
-import { ChangePasswordForm } from "../components";
+import React, { Component } from "react";
+import { Card, Table, Button, Col } from "react-materialize";
+import ChangePassword from "../Update/ChangePassword";
 import UpdateUserModal from "../Update";
 import { connect } from "react-redux";
 import { postFormData, fetchUsers } from "../../actions/index";
-import { MflConfirmModal } from "../../common";
 import moment from "moment";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-
 import "../../App.css";
 
-class Index extends React.Component {
-  state = {
-    delay: 3000,
-    userId: sessionStorage.getItem("userId")
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
-  showToastMessage = message => {
-    window.Materialize.toast(message, this.state.delay);
-  };
-
+export class Index extends Component {
   archiveUser = async () => {
-    await this.props.postFormData(
+    const { postFormData, user, fetchUsers, onUserArchived } = this.props;
+    await postFormData(
       { archived_date: moment().format("YYYY-MM-DD") },
-      `Clients/${this.props.user.id}`,
+      `Clients/${user.id}`,
       "PATCH",
       "ARCHIVE_USER"
     );
-    // TODO: Check if this has really deleted the user
-    await this.props.fetchUsers();
-    this.props.onUserArchived();
+    await fetchUsers();
+    onUserArchived();
   };
 
   confirmUserArchive = () => {
@@ -69,13 +54,6 @@ class Index extends React.Component {
       }
     });
   };
-
-  emptyUserState = () => (
-    <Card title="No user selected">
-      <p>Select a user from the list for more details</p>
-    </Card>
-  );
-
   showDeleteButton = () => {
     const propsUserId = Number(this.props.user.id);
     const storageUserId = Number(sessionStorage.getItem("id"));
@@ -83,13 +61,39 @@ class Index extends React.Component {
     if (propsUserId === storageUserId) {
       return "";
     }
+
     return (
       <Button waves="light" className="red" onClick={this.confirmUserArchive}>
-        delete user
+        Delete User
       </Button>
     );
   };
 
+  _renderUserDetails = () => {
+    const { user } = this.props;
+    return (
+      <Table test-id="viewuser">
+        <tbody>
+          <tr>
+            <td>First Name</td>
+            <td>{user.firstname}</td>
+          </tr>
+          <tr>
+            <td>Last Name</td>
+            <td>{user.lastname}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{user.email}</td>
+          </tr>
+          <tr>
+            <td>Role</td>
+            <td>System administrator</td>
+          </tr>
+        </tbody>
+      </Table>
+    );
+  };
   userView = () =>
     this.props.user ? (
       <Card
@@ -97,38 +101,27 @@ class Index extends React.Component {
         actions={[
           <UpdateUserModal
             user={this.props.user}
-            onUserUpdateSuccess={this.props.onUserUpdateSuccess}
+            onUserUpdated={this.props.onUserUpdated}
             onUserUpdateError={this.props.onUserUpdateError}
           />,
-          <ChangePasswordForm user={this.props.user} />,
+          <ChangePassword
+            user={this.props.user}
+            redirect={this.props.redirect}
+          />,
           this.showDeleteButton()
         ]}
       >
         <div className="mb-2" />
-        <Table>
-          <tbody>
-            <tr>
-              <td>First Name</td>
-              <td>{this.props.user.firstname}</td>
-            </tr>
-            <tr>
-              <td>Last Name</td>
-              <td>{this.props.user.lastname}</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td>{this.props.user.email}</td>
-            </tr>
-            <tr>
-              <td>Role</td>
-              <td>System administrator</td>
-            </tr>
-          </tbody>
-        </Table>
+        {this._renderUserDetails()}
       </Card>
     ) : (
       ""
     );
+  emptyUserState = () => (
+    <Card title="No User Selected">
+      <p>Select a user from the list for more details</p>
+    </Card>
+  );
 
   render() {
     return (
