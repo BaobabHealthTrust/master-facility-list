@@ -39,7 +39,10 @@ describe("Facility List Spec", () => {
     cy.fetch_facilieties_list().then(res => {
       for (let testCount = 1; testCount <= 3; testCount++) {
         // get random facility index
-        facilityIndex = Math.floor(Math.random() * 9);
+        facilityIndex =
+          res.length >= 10
+            ? Math.floor(Math.random() * 9)
+            : Math.floor(Math.random() * (res.length - 1));
         //   check code
         cy.get("table tbody .MuiTableRow-root-32")
           .eq(facilityIndex)

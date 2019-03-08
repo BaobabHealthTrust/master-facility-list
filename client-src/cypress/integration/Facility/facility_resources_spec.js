@@ -9,8 +9,12 @@ describe("Tests Facility Resources Page", () => {
   it("Renders facility resources page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
     // get random facility index
-    var facilityIndex = Math.floor(Math.random() * 9);
+
     cy.fetch_facilieties_list().then(res => {
+      var facilityIndex =
+        res.length >= 10
+          ? Math.floor(Math.random() * 9)
+          : Math.floor(Math.random() * (res.length - 1));
       facility = res[facilityIndex];
       cy.get("table tbody .MuiTableRow-root-32")
         .eq(facilityIndex)

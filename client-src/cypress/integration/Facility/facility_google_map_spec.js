@@ -6,8 +6,12 @@ describe("Tests Facility Contacts Page", () => {
   it("Renders facility contacts page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
     // get random facility index
-    var facilityIndex = Math.floor(Math.random() * 9);
+
     cy.fetch_facilieties_list().then(res => {
+      var facilityIndex =
+        res.length >= 10
+          ? Math.floor(Math.random() * 9)
+          : Math.floor(Math.random() * (res.length - 1));
       facility = res[facilityIndex];
       cy.get("table tbody .MuiTableRow-root-32")
         .eq(facilityIndex)
@@ -32,8 +36,9 @@ describe("Tests Facility Contacts Page", () => {
               locationDetails.body.geolocations.latitude
             )},${parseFloat(locationDetails.body.geolocations.longitude)}`
           : "-13.962612,33.774119";
-      cy.wait(60 * 20);
-      cy.get("a[title='Open this area in Google Maps (opens a new window)']")
+      cy.wait(60 * 60);
+
+      cy.get("div[test-id='fgooglemap'] a")
         .first()
         .invoke("attr", "href")
         .should("contain", `${location}`);
