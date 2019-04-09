@@ -12,6 +12,7 @@
 
 import settings from "../../src/settings";
 const END_POINT = `${settings.hostname}/api/`;
+
 Cypress.Commands.add("login", credentials => {
   const RESOURCE = `Clients/login/`;
   const URL = `${END_POINT}${RESOURCE}`;
@@ -74,12 +75,39 @@ Cypress.Commands.add("fetch_current_utilities", id => {
   });
 });
 
+Cypress.Commands.add("fetch_utilities", () => {
+  const RESOURCE = `Utilities`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_resources", () => {
+  const RESOURCE = `Resources`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
 Cypress.Commands.add("fetch_current_services", id => {
   const RESOURCE = `FacilityServices/hierarchy?facility_id=${id}`;
 
   const URL = `${END_POINT}${RESOURCE}`;
   cy.request("GET", URL).then(res => {
-    res.body;
+    return res.body.hierarchy;
+  });
+});
+
+Cypress.Commands.add("fetch_service_types", () => {
+  const RESOURCE = `ServiceTypes`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
   });
 });
 
@@ -92,6 +120,14 @@ Cypress.Commands.add("fetch_facilieties", (filterBy, filterText) => {
           return facility[filterBy] == filterText;
         })
       : res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_facility_details", id => {
+  const RESOURCE = `Facilities/`;
+  const URL = `${END_POINT}${RESOURCE}${id}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
   });
 });
 
@@ -233,4 +269,13 @@ Cypress.Commands.add("fetch_users", () => {
   cy.request({ method: "GET", url: URL, headers: headers }).then(res => {
     return res.body.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
   });
+});
+Cypress.Commands.add("fetch_add_facility", async () => {
+  return JSON.parse(await localStorage.getItem("new_facility"));
+});
+Cypress.Commands.add("clear_local_storage", async () => {
+  return await localStorage.clear();
+});
+Cypress.Commands.add("set_active_tab", async () => {
+  return await localStorage.setItem("new_facility_active_tab");
 });

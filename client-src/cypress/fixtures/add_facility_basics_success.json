@@ -1,0 +1,20 @@
+{
+  "facility_code": "string",
+  "facility_code_dhis2": "string",
+  "facility_code_openlmis": "string",
+  "registration_number": 0,
+  "facility_name": "string",
+  "common_name": "string",
+  "facility_date_opened": "2019-04-08T07:56:27.757Z",
+  "facility_type_id": 0,
+  "facility_owner_id": 0,
+  "facility_operational_status_id": 0,
+  "facility_regulatory_status_id": 0,
+  "district_id": 0,
+  "client_id": 0,
+  "archived_date": "2019-04-08T07:56:27.757Z",
+  "published_date": "2019-04-08T07:56:27.757Z",
+  "created_at": "$now",
+  "updated_at": "$now",
+  "id": 0
+}
