@@ -11,13 +11,7 @@ import { Button } from "react-materialize";
 import SecondaryMenu from "../../common/SecondaryMenu";
 import { MFLRevealButton } from "../../common";
 import { ShowError, FetchAllDependancies, Loader } from "../../common";
-import {
-  BasicDetailsForm,
-  ContactsForm,
-  ServicesForm,
-  ResourcesForm,
-  UtilitiesForm
-} from "../components";
+import UpdateFacility from "../Update/UpdateFacility";
 import settings from "../../settings";
 import { postFormData } from "../../actions";
 import { ButtonConfiguration } from "../../types/helper-types";
@@ -132,35 +126,35 @@ class FacilityDetails extends React.Component<Props> {
       <Route
         exact
         path="/facilities/:id/summary/edit"
-        component={BasicDetailsForm}
+        component={UpdateFacility}
       />
 
       <Route exact path="/facilities/:id/locations" component={Location} />
       <Route
         exact
         path="/facilities/:id/locations/edit"
-        component={ContactsForm}
+        component={UpdateFacility}
       />
 
       <Route exact path="/facilities/:id/resources" component={Resources} />
       <Route
         exact
         path="/facilities/:id/resources/edit"
-        component={ResourcesForm}
+        component={UpdateFacility}
       />
 
       <Route exact path="/facilities/:id/utilities" component={Utilities} />
       <Route
         exact
         path="/facilities/:id/utilities/edit"
-        component={UtilitiesForm}
+        component={UpdateFacility}
       />
 
       <Route exact path="/facilities/:id/services" component={Services} />
       <Route
         exact
         path="/facilities/:id/services/edit"
-        component={ServicesForm}
+        component={UpdateFacility}
       />
     </Switch>
   );

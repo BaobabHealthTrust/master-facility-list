@@ -84,7 +84,8 @@ class Services extends React.Component<Props> {
       <Container>
         {this.props.allServices.length == 0 && this._renderAlert()}
 
-        {this.state.loading ? (
+        {this.props.isLoading.fetchCurrentServices &&
+        this.props.isLoading.fetchServiceTypes ? (
           <Loader />
         ) : (
           <Tabs className="tabs blue accent-1 mfl-tabs tabs-fixed-width">
@@ -98,13 +99,13 @@ class Services extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = state => {
   return {
-    facilities: store.facilities.list,
-    services: store.facilities.currentServices.hierarchy,
-    serviceTypes: store.dependancies.serviceTypes,
-    allServices: store.facilities.services,
-    isLoading: store.facilities.isLoading
+    facilities: state.facilities.list,
+    services: state.facilities.currentServices.hierarchy,
+    serviceTypes: state.dependancies.serviceTypes,
+    allServices: state.facilities.services,
+    isLoading: state.statusErrors.isLoading
   };
 };
 

@@ -1,7 +1,7 @@
 //@flow
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { downloadFacilities } from "../actions";
+import { downloadFacilities, fetchFacilities } from "../actions";
 import { FacilityList } from "./components";
 import { Loader } from "../common";
 import { Facilities } from "../types/list-types";
@@ -31,12 +31,15 @@ class FacilitiesHome extends React.Component<Props, State> {
     containerHeight: 0
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading) this.setState({ loading: false });
-  }
+  isLoading = () => {
+    for (let dependancyStateId in this.props.isLoading) {
+      if (this.props.isLoading[dependancyStateId] == true) return true;
+    }
+    return false;
+  };
 
   componentDidMount() {
-    const containerHeight = window.innerHeight - 120;
+    const containerHeight = window.innerHeight - 128;
     this.setState({ containerHeight });
   }
 
@@ -63,7 +66,7 @@ class FacilitiesHome extends React.Component<Props, State> {
     this.props.error.message === "Network Error" && <Loader />;
 
   _renderFacilityList = () =>
-    this.state.isLoading ? (
+    this.isLoading() ? (
       <Loader />
     ) : (
       <FacilityList
@@ -91,7 +94,7 @@ const mapStateToProps = state => {
   return {
     facilities: state.facilities.all.data,
     error: state.facilities.error,
-    isLoading: state.facilities.isLoading,
+    isLoading: state.statusErrors,
     download: state.downloads.data,
     filteredResults:
       state.searchResults.advancedSearchFacilities.basicDetailsFacilities
@@ -100,5 +103,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { downloadFacilities }
+  { downloadFacilities, fetchFacilities }
 )(FacilitiesHome);

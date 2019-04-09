@@ -39,12 +39,6 @@ class Resources extends Component<Props> {
     loading: true
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading) this.setState({ loading: false });
-    const { error } = this.props;
-    this.setState({ error });
-  }
-
   async componentDidMount() {
     const id = this.props.match.params.id;
     await this.props.fetchCurrentDetails(id);
@@ -121,7 +115,8 @@ class Resources extends Component<Props> {
     return (
       <Container>
         {cardsChunks.length == 0 && this._renderAlert()}
-        {this.state.loading ? (
+        {this.props.isLoading.fetchCurrentResources &&
+        this.props.isLoading.fetchResourceTypes ? (
           <Loader />
         ) : (
           this._renderCardsRows(cardsChunks, resources)
@@ -135,7 +130,7 @@ const mapStateToProps = state => {
   return {
     resources: state.facilities.currentResources.data,
     facilities: state.facilities.list,
-    isLoading: state.facilities.isLoading,
+    isLoading: state.statusErrors.isLoading,
     error: state.facilities.error,
     resourceTypes: state.dependancies.resourceTypes
   };

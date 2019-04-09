@@ -10,7 +10,7 @@ import {
   editFacilityDependancies
 } from "../../actions";
 import { connect } from "react-redux";
-import { UtilitiesForm } from "../components";
+import { UtilitiesForm } from "../components/Forms";
 import { uniq, chunk, map, pull } from "lodash";
 import { MflAlert } from "../../common";
 import { Loader } from "../../common";
@@ -100,9 +100,12 @@ class Utilities extends Component {
     );
   }
   _getPresentTypes = (utilities, utilityTypes) =>
-    utilityTypes.filter(util =>
-      uniq(utilities.map(util => util.id)).includes(util.id)
-    );
+    utilityTypes.filter(utilType => {
+      return uniq(utilities.map(util => util.utility.utility_type_id)).includes(
+        utilType.id
+      );
+    });
+
   _getUtilitiesByType = (type, utilities) =>
     utilities
       .filter(util => util.utility.utility_type_id === type.id)
@@ -148,16 +151,17 @@ class Utilities extends Component {
 
   render() {
     const { utilities, utilityTypes } = this.props;
-    const presentTypes = utilities
-      ? this._getPresentTypes(utilities, utilityTypes)
-      : [];
-
+    const presentTypes =
+      utilities && utilityTypes
+        ? this._getPresentTypes(utilities, utilityTypes)
+        : [];
     const cardsChunks = chunk(presentTypes, 3);
 
     return (
       <Container>
         {cardsChunks.length == 0 && this._renderAlert()}
-        {this.state.loading ? (
+        {this.props.isLoading.fetchCurrentUtilities &&
+        this.props.isLoading.fetchUtilityTypes ? (
           <Loader />
         ) : (
           <Fragment>
@@ -182,11 +186,10 @@ const mapStateToProps = state => {
   return {
     utilities: state.facilities.currentUtilities.data,
     facilities: state.facilities.list,
-    isLoading: state.facilities.isLoading,
+    isLoading: state.statusErrors.isLoading,
     utilityTypes: state.dependancies.utilityTypes,
     postResponse: state.postResponse,
-    formValues: state.formValues,
-    isLoading: state.facilities.isLoading
+    formValues: state.formValues
   };
 };
 
