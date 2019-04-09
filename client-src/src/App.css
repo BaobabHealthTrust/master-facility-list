@@ -2,7 +2,11 @@ html,
 body {
   height: 100%;
 }
-
+.root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .mfl-container {
   max-width: 1400px;
   min-height: 710px;

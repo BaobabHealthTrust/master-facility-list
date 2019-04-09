@@ -273,7 +273,7 @@ class CreateFacilityWizard extends React.Component<{}> {
   };
 
   render() {
-    return !isLoggedIn(this.props.userDetails) ? (
+    return !isLoggedIn(this.props.userDetails) || this.state.redirect ? (
       <Redirect to="/facilities" />
     ) : (
       <Fragment>
