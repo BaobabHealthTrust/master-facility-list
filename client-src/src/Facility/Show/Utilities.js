@@ -10,7 +10,7 @@ import {
   editFacilityDependancies
 } from "../../actions";
 import { connect } from "react-redux";
-import { UtilitiesForm } from "../components/Forms";
+import { Utilities as UtilitiesForm } from "../Forms";
 import { uniq, chunk, map, pull } from "lodash";
 import { MflAlert } from "../../common";
 import { Loader } from "../../common";

@@ -1,8 +1,6 @@
 //@flow
 import React from "react";
-import { Input, Row, Button, Pagination } from "react-materialize";
-import { Alert, FormWizardNavigation } from "../../../common";
-import { renderOptions } from "../../helpers/utilities";
+import { Form } from "./Form";
 import {
   Service,
   ServiceType,
@@ -108,38 +106,38 @@ class ServicesForm extends React.Component<Props> {
     });
   };
 
-  _getServicesForRender = () => {
+  _generateServiceHierarchy = () => {
     let serviceTypes = this._getSelectedServiceTypes();
 
     let services = [];
 
     for (let serviceType of serviceTypes) {
-      let servicesForType = this.state.services.filter(
+      let serviceOfSpecificType = this.state.services.filter(
         serv => serv.selectedServiceType == serviceType.id
       );
 
-      let firstLevelServices = servicesForType.map(serv =>
+      let firstLevelServiceIds = serviceOfSpecificType.map(serv =>
         Number(serv.firstLevelService)
       );
 
-      let secondLevelServices = servicesForType.map(serv =>
+      let secondLevelServiceIds = serviceOfSpecificType.map(serv =>
         Number(serv.secondLevelService)
       );
 
-      let thirdLevelServices = servicesForType.map(serv =>
+      let thirdLevelServiceIds = serviceOfSpecificType.map(serv =>
         Number(serv.thirdLevelService)
       );
 
       serviceType["first"] = this.props.services.filter(serv =>
-        firstLevelServices.includes(serv.id)
+        firstLevelServiceIds.includes(serv.id)
       );
 
       serviceType["second"] = this.props.services.filter(serv =>
-        secondLevelServices.includes(serv.id)
+        secondLevelServiceIds.includes(serv.id)
       );
 
       serviceType["third"] = this.props.services.filter(serv =>
-        thirdLevelServices.includes(serv.id)
+        thirdLevelServiceIds.includes(serv.id)
       );
 
       services.push(serviceType);
@@ -148,7 +146,7 @@ class ServicesForm extends React.Component<Props> {
   };
 
   _renderSelectedServices() {
-    let services = this._getServicesForRender();
+    let services = this._generateServiceHierarchy();
 
     return (
       <SelectedServicesContainer
@@ -159,6 +157,49 @@ class ServicesForm extends React.Component<Props> {
       />
     );
   }
+
+  _onChange = (e, level) => {
+    switch (level) {
+      case "type":
+        this.setState({
+          service: {
+            ...this.state.service,
+            selectedServiceType: Number(e.target.value),
+            firstLevelService: -1,
+            secondLevelService: -1,
+            thirdLevelService: -1
+          }
+        });
+        break;
+      case "first":
+        this.setState({
+          service: {
+            ...this.state.service,
+            firstLevelService: Number(e.target.value),
+            secondLevelService: -1,
+            thirdLevelService: -1
+          }
+        });
+        break;
+      case "second":
+        this.setState({
+          service: {
+            ...this.state.service,
+            secondLevelService: Number(e.target.value),
+            thirdLevelService: -1
+          }
+        });
+        break;
+      case "third":
+        this.setState({
+          service: {
+            ...this.state.service,
+            thirdLevelService: Number(e.target.value)
+          }
+        });
+        break;
+    }
+  };
 
   _onNext = async (values, { setSubmitting }) => {
     if (this.state.services.length == 0) {
@@ -247,147 +288,6 @@ class ServicesForm extends React.Component<Props> {
     });
   };
 
-  _renderForm = props => {
-    var { isSubmitting, handleSubmit } = props;
-
-    return (
-      <div test-id="servicesForm">
-        <div className="mfl-tm-2" />
-        {this.state.errors.length > 0 && (
-          <Alert warning message={`${this.state.errors}`} />
-        )}
-        <div>
-          <div className="row" style={{ minHeight: 300 }}>
-            <div className="col m6 s12">
-              <Row>
-                <Input
-                  s={12}
-                  type="select"
-                  value={this.state.service.selectedServiceType}
-                  label="Select Service Type"
-                  onChange={e =>
-                    this.setState({
-                      service: {
-                        ...this.state.service,
-                        selectedServiceType: Number(e.target.value),
-                        firstLevelService: -1,
-                        secondLevelService: -1,
-                        thirdLevelService: -1
-                      }
-                    })
-                  }
-                >
-                  <option key="default" value="-1">
-                    Select Service Type
-                  </option>
-                  {renderOptions(this.props.serviceTypes, "service_type")}
-                </Input>
-                {this.state.service.selectedServiceType > 0 && (
-                  <Input
-                    s={12}
-                    type="select"
-                    label="Select Service"
-                    onChange={e =>
-                      this.setState({
-                        service: {
-                          ...this.state.service,
-                          firstLevelService: Number(e.target.value),
-                          secondLevelService: -1,
-                          thirdLevelService: -1
-                        }
-                      })
-                    }
-                  >
-                    <option key="default" value="-1">
-                      Select Sub Service
-                    </option>
-                    {renderOptions(this._filteredServices(0), "service_name")}
-                  </Input>
-                )}
-              </Row>
-              <Row>
-                {this._filteredServices(this.state.service.firstLevelService)
-                  .length > 0 && (
-                  <Input
-                    s={12}
-                    type="select"
-                    label="Select Sub Service"
-                    onChange={e =>
-                      this.setState({
-                        service: {
-                          ...this.state.service,
-                          secondLevelService: Number(e.target.value),
-                          thirdLevelService: -1
-                        }
-                      })
-                    }
-                  >
-                    <option key="default" value="-1">
-                      Select Sub-sub Service
-                    </option>
-                    {renderOptions(
-                      this._filteredServices(
-                        this.state.service.firstLevelService
-                      ),
-                      "service_name"
-                    )}
-                  </Input>
-                )}
-                {this._filteredServices(this.state.service.secondLevelService)
-                  .length > 0 && (
-                  <Input
-                    s={12}
-                    type="select"
-                    label="Select Sub-sub Service"
-                    onChange={e =>
-                      this.setState({
-                        service: {
-                          ...this.state.service,
-                          thirdLevelService: Number(e.target.value)
-                        }
-                      })
-                    }
-                  >
-                    <option key="default" value="-1">
-                      Select Sub Service
-                    </option>
-                    {renderOptions(
-                      this._filteredServices(
-                        this.state.service.secondLevelService
-                      ),
-                      "service_name"
-                    )}
-                  </Input>
-                )}
-                <Row>
-                  <Button
-                    className="ml-6"
-                    onClick={this._addService}
-                    disabled={isSubmitting}
-                  >
-                    Add Service
-                  </Button>
-                </Row>
-              </Row>
-            </div>
-            <div className="col m6 s12">
-              <h6 className="mb-4 flex items-center">
-                <i className="material-icons mr-4">verified_user</i> Services
-              </h6>
-              {this._renderSelectedServices()}
-            </div>
-          </div>
-          <FormWizardNavigation
-            saveButton={isSubmitting ? "Saving..." : "Save"}
-            handleSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-            handleCancel={() => this.props.cancel()}
-          />
-        </div>
-      </div>
-    );
-  };
-
   render() {
     return (
       <Container>
@@ -396,7 +296,17 @@ class ServicesForm extends React.Component<Props> {
           initialValues={this.props.initalValues}
           validationSchema={this.schema}
           onSubmit={this._onNext}
-          render={props => this._renderForm(props)}
+          render={props => (
+            <Form
+              {...this.props}
+              {...props}
+              onChange={(e, level) => this._onChange(e, level)}
+              {...this.state}
+              addService={service => this._addService(service)}
+              filteredServices={services => this._filteredServices(services)}
+              renderSelectedServices={() => this._renderSelectedServices()}
+            />
+          )}
         />
       </Container>
     );
