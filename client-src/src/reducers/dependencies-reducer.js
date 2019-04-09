@@ -1,3 +1,6 @@
+import _ from "lodash";
+import Store from "../Store";
+
 export default (
   state = {
     resourceTypes: [],
@@ -10,66 +13,88 @@ export default (
     regulatoryStatuses: [],
     searchResourceTypes: [],
     serviceInstance: [],
-    isLoading: true,
+    isLoading: {},
     isNetworkError: false
   },
   action
 ) => {
-  if (action.error) {
-    return {
-      ...state,
-      isLoading: false,
-      isNetworkError: true
-    };
-  }
+  let actionGroup = _.join(
+    _.split(action.type, "_", _.split(action.type, "_").length - 1),
+    "_"
+  );
+
   switch (action.type) {
-    case "FETCH_RESOURCE_TYPES":
+    case "FETCH_RESOURCE_TYPES_FULFILLED":
       return {
         ...state,
         resourceTypes: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_UTILITY_TYPES":
+    case "FETCH_UTILITY_TYPES_FULFILLED":
       return {
         ...state,
         utilityTypes: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_DISTRICTS":
+    case "FETCH_DISTRICTS_FULFILLED":
       return {
         ...state,
         districts: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_OPERATIONAL_STATUSES":
+    case "FETCH_OPERATIONAL_STATUSES_FULFILLED":
       return {
         ...state,
         operationalStatuses: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_FACILITY_TYPES":
+    case "FETCH_FACILITY_TYPES_FULFILLED":
       return {
         ...state,
         facilityTypes: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_FACILITY_OWNERS":
+    case "FETCH_FACILITY_OWNERS_FULFILLED":
       return {
         ...state,
         facilityOwners: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_REGULATORY_STATUSES":
+    case "FETCH_REGULATORY_STATUSES_FULFILLED":
       return {
         ...state,
         regulatoryStatuses: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
-    case "FETCH_SERVICE_TYPES":
+    case "FETCH_SERVICE_TYPES_FULFILLED":
       return {
         ...state,
         serviceTypes: action.payload.data,
-        isLoading: false,
+        isLoading: {
+          ...state.isLoading,
+          [`${actionGroup}`]: false
+        }
       };
 
     default:
