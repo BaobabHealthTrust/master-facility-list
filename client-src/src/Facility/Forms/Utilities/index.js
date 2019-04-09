@@ -32,14 +32,6 @@ class UtilitiesForm extends React.Component<Props> {
 
   inputField = [];
 
-  _renderCardHeading = title => {
-    return (
-      <div className="blue" style={{ padding: 15, color: "white" }}>
-        {`Select All ${title} Available`}
-      </div>
-    );
-  };
-
   _validate = values => {
     let errors = [];
     this.props.utilityTypes.forEach(type => {
