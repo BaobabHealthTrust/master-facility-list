@@ -14,67 +14,57 @@ export default (
   action
 ) => {
   switch (action.type) {
-    case "ADD_DISTRICT_VALUES":
+    case "ADD_DISTRICT_VALUES_FULFILLED":
       return {
         ...state,
-        districtValues: uniq([...state.districtValues, action.payload]),
-
+        districtValues: uniq([...state.districtValues, action.payload])
       };
-    case "ADD_OPERATIONAL_STATUS_VALUES":
+    case "ADD_OPERATIONAL_STATUS_VALUES_FULFILLED":
       return {
         ...state,
         operationalStatusValues: uniq([
           ...state.operationalStatusValues,
           action.payload
-        ]),
-
+        ])
       };
-    case "ADD_FACILITY_TYPE_VALUES":
+    case "ADD_FACILITY_TYPE_VALUES_FULFILLED":
       return {
         ...state,
-        facilityTypeValues: uniq([
-          ...state.facilityTypeValues,
-          action.payload
-        ]),
-
+        facilityTypeValues: uniq([...state.facilityTypeValues, action.payload])
       };
-    case "ADD_FACILITY_OWNER_VALUES":
+    case "ADD_FACILITY_OWNER_VALUES_FULFILLED":
       return {
         ...state,
         facilityOwnerValues: uniq([
           ...state.facilityOwnerValues,
           action.payload
-        ]),
-
+        ])
       };
-    case "ADD_REGULATORY_STATUS_VALUES":
+    case "ADD_REGULATORY_STATUS_VALUES_FULFILLED":
       return {
         ...state,
         regulatoryStatusValues: uniq([
           ...state.regulatoryStatusValues,
           action.payload
-        ]),
-
+        ])
       };
-    case "ADD_RESOURCE_TYPE_INSTANCE":
+    case "ADD_RESOURCE_TYPE_INSTANCE_FULFILLED":
       return {
         ...state,
         typeResourceInstanceValues: uniq([
           ...state.typeResourceInstanceValues,
           action.payload
-        ]),
-
+        ])
       };
-    case "ADD_UTILITY_TYPE_INSTANCE":
+    case "ADD_UTILITY_TYPE_INSTANCE_FULFILLED":
       return {
         ...state,
         typeUtilityInstanceValues: uniq([
           ...state.typeUtilityInstanceValues,
           action.payload
-        ]),
-
+        ])
       };
-    case "ADD_SERVICE_TYPE_INSTANCE":
+    case "ADD_SERVICE_TYPE_INSTANCE_FULFILLED":
       return {
         ...state,
         typeServiceInstanceValues: uniq([
@@ -82,70 +72,60 @@ export default (
           action.payload
         ])
       };
-    case "REMOVE_DISTRICT_VALUES":
+    case "REMOVE_DISTRICT_VALUES_FULFILLED":
       return {
         ...state,
-        districtValues: pull(
-          state.districtValues,
-          action.payload.toString()
-        ),
-
+        districtValues: pull(state.districtValues, action.payload.toString())
       };
-    case "REMOVE_OPERATIONAL_STATUS_VALUES":
+    case "REMOVE_OPERATIONAL_STATUS_VALUES_FULFILLED":
       return {
         ...state,
         operationalStatusValues: pull(
           state.operationalStatusValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_FACILITY_TYPE_VALUES":
+    case "REMOVE_FACILITY_TYPE_VALUES_FULFILLED":
       return {
         ...state,
         facilityTypeValues: pull(
           state.facilityTypeValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_FACILITY_OWNER_VALUES":
+    case "REMOVE_FACILITY_OWNER_VALUES_FULFILLED":
       return {
         ...state,
         facilityOwnerValues: pull(
           state.facilityOwnerValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_REGULATORY_STATUS_VALUES":
+    case "REMOVE_REGULATORY_STATUS_VALUES_FULFILLED":
       return {
         ...state,
         regulatoryStatusValues: pull(
           state.regulatoryStatusValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_RESOURCE_TYPE_INSTANCES":
+    case "REMOVE_RESOURCE_TYPE_INSTANCES_FULFILLED":
       return {
         ...state,
         typeResourceInstanceValues: pull(
           state.typeResourceInstanceValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_UTILITY_TYPE_INSTANCES":
+    case "REMOVE_UTILITY_TYPE_INSTANCES_FULFILLED":
       return {
         ...state,
         typeUtilityInstanceValues: pull(
           state.typeUtilityInstanceValues,
           action.payload.toString()
-        ),
-
+        )
       };
-    case "REMOVE_SERVICE_TYPE_INSTANCES":
+    case "REMOVE_SERVICE_TYPE_INSTANCES_FULFILLED":
       return {
         ...state,
         typeServiceInstanceValues: pull(
@@ -153,7 +133,7 @@ export default (
           action.payload.toString()
         )
       };
-    case "REMOVE_ALL_SEARCH_VALUES":
+    case "REMOVE_ALL_SEARCH_VALUES_FULFILLED":
       return {
         facilityTypeValues: [],
         districtValues: [],

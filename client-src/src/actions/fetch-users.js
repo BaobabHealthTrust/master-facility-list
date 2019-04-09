@@ -1,7 +1,8 @@
 import axios from "axios";
 import settings from "../settings";
+import store from "../Store";
 
-const fetchUsers = async () => {
+const fetchUsers = () => {
   const END_POINT = `${settings.hostname}/api/`;
   const RESOURCE = `Clients`;
   const FILTER = {
@@ -9,24 +10,24 @@ const fetchUsers = async () => {
       archived_date: null
     },
     order: "created_at DESC"
-  }
+  };
 
   const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
 
   const headers = {
-    Authorization: `${await sessionStorage.getItem('token')}`
+    Authorization: `${sessionStorage.getItem("token")}`
   };
 
   const response = axios({
     url: URL,
     headers,
-    method: 'GET'
+    method: "GET"
   });
 
   return {
-    type: 'FETCH_USERS',
+    type: "FETCH_USERS",
     payload: response
   };
-}
+};
 
 export default fetchUsers;

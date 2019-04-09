@@ -16,10 +16,20 @@ import { FetchAllDependancies } from "./common";
 import { connect } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Loader } from "./common";
+import styled from "styled-components";
+import { timingSafeEqual } from "crypto";
 
 class App extends Component {
   state = {
-    widthFlag: false
+    widthFlag: false,
+    minHeight: 0
+  };
+
+  isLoading = dependancyStatuses => {
+    for (let dependancyStateId in dependancyStatuses) {
+      if (dependancyStatuses[dependancyStateId] === true) return true;
+    }
+    return false;
   };
 
   checkWindowWidith = () =>
@@ -32,6 +42,7 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.checkWindowWidith);
+    this.setState({ minHeight: window.innerHeight - 156 });
     this.checkWindowWidith();
     this.isRouteVisible();
   }
@@ -40,41 +51,47 @@ class App extends Component {
     return (
       <React.Fragment>
         <FetchAllDependancies />
-        {this.props.loading && <Loader />}
-        {!this.props.loading && (
-          <Router>
-            <div className="mfl-page-wrap">
-              <Navbar />
-              <div className="content">
-                <Switch>
-                  <Route exact path="/facilities" component={FacilitiesPage} />
-                  {this.isRouteVisible() && (
+        {this.props.loading && this.isLoading(this.props.loading) && <Loader />}
+        {this.props.loading &&
+          !this.isLoading(this.props.loading) && (
+            <Router>
+              <div className="mfl-page-wrap">
+                <Navbar />
+                <div
+                  className="content"
+                  style={{ minHeight: this.state.minHeight }}
+                >
+                  <Switch>
+                    <Route
+                      exact
+                      path="/facilities"
+                      component={FacilitiesPage}
+                    />
                     <Route
                       exact
                       path="/facilities/add"
                       component={CreateFacility}
                     />
-                  )}
-                  <Route
-                    exact
-                    path="/facilities/search"
-                    component={SearchModal}
-                  />
-                  <Route
-                    path="/facilities/:id/:sections"
-                    component={ShowFacility}
-                  />
-                  <Route exact path="/" component={Dashboard} />
-                  <Route exact path="/about" component={MflAbout} />
-                  <Route exact path="/feedback" component={MfLFeedback} />
-                  <Route exact path="/users" component={Users} />
-                  <Route exact path="/login" component={LoginPage} />
-                </Switch>
+                    <Route
+                      exact
+                      path="/facilities/search"
+                      component={SearchModal}
+                    />
+                    <Route
+                      path="/facilities/:id/:sections"
+                      component={ShowFacility}
+                    />
+                    <Route exact path="/" component={Dashboard} />
+                    <Route exact path="/about" component={MflAbout} />
+                    <Route exact path="/feedback" component={MfLFeedback} />
+                    <Route exact path="/users" component={Users} />
+                    <Route exact path="/login" component={LoginPage} />
+                  </Switch>
+                </div>
+                <Footer />
               </div>
-              <Footer />
-            </div>
-          </Router>
-        )}
+            </Router>
+          )}
       </React.Fragment>
     );
   }

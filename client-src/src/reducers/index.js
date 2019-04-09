@@ -10,21 +10,23 @@ import AuthReducer from "./auth-reducer";
 import FormValues from "./form-values-reducer";
 import PostResponse from "./form-post-reducer";
 import UsersReducer from "./users-reducer";
-import FeedbackReducer from './feedback-reducer';
+import FeedbackReducer from "./feedback-reducer";
+import statusErrorsReducer from "./status-errors-reducer";
 
 const rootReducer = combineReducers({
-    facilities: FacilitiesReducer,
-    dependancies: DependanciesReducer,
-    downloads: DownloadsReducer,
-    searchResults: SearchResults,
-    globalContainers: GlobalContainers,
-    advancedSearchValues: AdvancedSearchReducer,
-    dashboardStatistics: DashboardStatistics,
-    authReducer: AuthReducer,
-    formValues: FormValues,
-    postResponse: PostResponse,
-    users: UsersReducer,
-    feedback: FeedbackReducer
+  facilities: FacilitiesReducer,
+  dependancies: DependanciesReducer,
+  downloads: DownloadsReducer,
+  searchResults: SearchResults,
+  globalContainers: GlobalContainers,
+  advancedSearchValues: AdvancedSearchReducer,
+  dashboardStatistics: DashboardStatistics,
+  authReducer: AuthReducer,
+  formValues: FormValues,
+  postResponse: PostResponse,
+  users: UsersReducer,
+  feedback: FeedbackReducer,
+  statusErrors: statusErrorsReducer
 });
 
 export default rootReducer;

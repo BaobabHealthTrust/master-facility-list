@@ -12,7 +12,7 @@ const initialState = {
 };
 export default (state = initialState, action) => {
   switch (action.type) {
-    case "FETCH_USERS":
+    case "FETCH_USERS_FULFILLED":
       if (action.payload.data) {
         return {
           ...state,
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
         };
       }
       break;
-    case "FETCH_USER_ACCESS_TOKENS":
+    case "FETCH_USER_ACCESS_TOKENS_FULFILLED":
       if (action.payload.data) {
         return {
           ...state,
@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
         };
       }
       break;
-    case "POST_USER":
+    case "POST_USER_FULFILLED":
       return {
         ...state,
         userCreated: action.payload.data ? true : false,
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
         isLoading: false
       };
       break;
-    case "UPDATE_USER":
+    case "UPDATE_USER_FULFILLED":
       return {
         ...state,
         userUpdated: action.payload.data ? true : false,
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
         isLoading: false
       };
       break;
-    case "CHANGE_USER_PASSWORD":
+    case "CHANGE_USER_PASSWORD_FULFILLED":
       return {
         ...state,
         passwordChanged: action.payload.data ? true : false,
@@ -66,7 +66,7 @@ export default (state = initialState, action) => {
         isLoading: false
       };
       break;
-    case "ARCHIVE_USER":
+    case "ARCHIVE_USER_FULFILLED":
       return {
         ...state,
         isLoading: false

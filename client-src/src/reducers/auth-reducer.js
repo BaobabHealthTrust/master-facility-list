@@ -14,13 +14,13 @@ export default (
     };
   }
   switch (action.type) {
-    case "CHECK_CREDENTIALS":
+    case "CHECK_CREDENTIALS_FULFILLED":
       return {
         isLoginFailed: false,
         loginResponse: action.payload.data,
         userDetails: state.userDetails
       };
-    case "GET_USER_DETAILS":
+    case "GET_USER_DETAILS_FULFILLED":
       return {
         isLoginFailed: false,
         loginResponse: state.loginResponse,

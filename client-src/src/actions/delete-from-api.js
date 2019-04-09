@@ -1,11 +1,11 @@
 import axios from "axios";
 import settings from "../settings";
 
-export default async (id, resource, actionType) => {
+export default (id, resource, actionType) => {
   const END_POINT = `${settings.hostname}/api/`;
 
   const headers = {
-    Authorization: await sessionStorage.getItem('token')
+    Authorization: sessionStorage.getItem("token")
   };
 
   const url = `${END_POINT}${resource}/${id}`;
@@ -15,4 +15,4 @@ export default async (id, resource, actionType) => {
     type: actionType,
     payload: response
   };
-}
+};
