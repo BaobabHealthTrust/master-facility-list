@@ -54,31 +54,24 @@ class Index extends React.Component {
       onUserUpdated
     } = this.props;
 
-    const updateUser = await postFormData(
-      values,
-      "Clients",
-      "PATCH",
-      "UPDATE_USER",
-      `${user.id}`
-    );
-
-    if (updateUser.payload && updateUser.payload.data) {
-      actions.resetForm();
-      document.getElementById("closeUpdateModalBtn").click();
-      fetchUsers();
-      onUserUpdated();
-    } else {
-      let errors = updateUser.error
-        ? updateUser.payload
-          ? updateUser.payload.response.data.error.details.messages
-          : ["There was a general error"]
-        : [];
-      actions.setErrors({
-        username: errors.username ? errors.username : "",
-        email: errors.email ? errors.email : ""
+    postFormData(values, "Clients", "PATCH", "UPDATE_USER", `${user.id}`)
+      .then(res => {
+        if (res.action.payload && res.action.payload.data) {
+          actions.resetForm();
+          document.getElementById("closeUpdateModalBtn").click();
+          fetchUsers();
+          onUserUpdated();
+        }
+      })
+      .catch(() => {
+        let errors = this.props.errors.updateUser;
+        actions.setErrors({
+          username: errors.username ? errors.username : "",
+          email: errors.email ? errors.email : ""
+        });
+        Toast("Failed To Update User");
       });
-      Toast("Failed To Update User");
-    }
+
     actions.setSubmitting(false);
   };
 
@@ -131,7 +124,8 @@ class Index extends React.Component {
           value={values.firstname}
           name="firstname"
           labelClassName="mfl-max-width"
-          label="Enter your firstname"
+          label="Firstname"
+          placeholder="Enter Firstname"
           error={touched.firstname && errors.firstname}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -141,7 +135,8 @@ class Index extends React.Component {
           value={values.lastname}
           name="lastname"
           labelClassName="mfl-max-width"
-          label="Enter your lastname"
+          label="Surname"
+          placeholder="Enter Surname"
           error={touched.lastname && errors.lastname}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -153,7 +148,8 @@ class Index extends React.Component {
           value={values.username}
           name="username"
           labelClassName="mfl-max-width"
-          label="Enter your username"
+          label="Username"
+          placeholder="Enter Username"
           error={touched.username && errors.username}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -163,7 +159,8 @@ class Index extends React.Component {
           value={values.email}
           name="email"
           labelClassName="mfl-max-width"
-          label="Enter your email"
+          label="Email"
+          placeholder="example@example.com"
           error={touched.email && errors.email}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -187,7 +184,8 @@ class Index extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-    userUpdated: state.users.userUpdated
+    userUpdated: state.users.userUpdated,
+    errors: state.statusErrors.errors
   };
 };
 
