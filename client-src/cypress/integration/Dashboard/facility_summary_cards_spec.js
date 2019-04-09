@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe("Test Dashboard Summary Statistics", () => {
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   it("Should show valid Facilities statistics", () => {
     cy.visit(FRONTEND_URL);

@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe("Test Dashboard Charts", () => {
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   it("Should Render all required charts", () => {
     cy.visit(FRONTEND_URL);
