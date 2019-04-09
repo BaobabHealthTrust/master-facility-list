@@ -16,9 +16,6 @@ class Location extends Component<State> {
     this.props.fetchCurrentDetails(id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading) this.setState({ loading: false });
-  }
   _renderContactCards = (locationData, addressData, contactPersonData) => (
     <div className="col m6 s12">
       <div className="row" test_id="location">
@@ -72,7 +69,7 @@ class Location extends Component<State> {
 
     return (
       <div className="container">
-        {this.state.loading ? (
+        {this.props.isLoading.fetchFacilityDetails ? (
           <Loader />
         ) : (
           <Fragment>
@@ -99,7 +96,7 @@ class Location extends Component<State> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isLoading: state.facilities.isLoading
+    isLoading: state.statusErrors.isLoading
   };
 };
 

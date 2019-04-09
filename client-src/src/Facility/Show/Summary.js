@@ -13,16 +13,9 @@ class Summary extends Component<{ current: CurrentFacility }> {
     loading: true
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const id = this.props.match.params.id;
     this.props.fetchCurrentDetails(id);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { error } = this.props;
-    this.setState({ error });
-
-    if (!nextProps.isLoading) this.setState({ loading: false });
   }
 
   _renderFacilityDetailsSections = ({
@@ -84,7 +77,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
     return (
       <div className="container">
         <div className="row z-depth-2">
-          {this.state.loading ? (
+          {this.props.isLoading.fetchFacilityDetails ? (
             <Loader />
           ) : (
             this._renderFacilityDetailsSections(this.props.current)
@@ -98,8 +91,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
 const mapStateToProps = state => {
   return {
     current: state.facilities.currentDetails,
-    isLoading: state.facilities.isLoading,
-    error: state.facilities.error
+    isLoading: state.statusErrors.isLoading
   };
 };
 
