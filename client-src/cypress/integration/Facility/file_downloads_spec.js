@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 describe("Facility List Spec", () => {
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   it("Navigates to facility list page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
