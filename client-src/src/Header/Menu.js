@@ -37,7 +37,7 @@ class Menu extends Component {
   );
 
   renderLogout = () => {
-    const username = this.props.userDetails.name;
+    const username = this.props.userDetails ? this.props.userDetails.name : "";
     return (
       <Dropdown
         style={{ marginTop: 65 }}

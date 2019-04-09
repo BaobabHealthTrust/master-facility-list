@@ -62,7 +62,7 @@ export default class DatePicker extends React.Component<{}> {
           value={day}
         >
           {[...Array(31).keys()].map(dy => (
-            <option>{(dy + 1).toString().padStart(2, "0")}</option>
+            <option key={dy}>{(dy + 1).toString().padStart(2, "0")}</option>
           ))}
         </Input>
       </Fragment>

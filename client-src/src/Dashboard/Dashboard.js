@@ -219,7 +219,6 @@ class DashboardHome extends Component<Props, State> {
 
   _renderWelcomeContainer = () => (
     <WelcomeCardContainer>
-      {this.props.dependancyIsLoading && <p>Loading!</p>}
       <div className="col s12">
         <DashboardSummary
           closeTag={this.closeTag}

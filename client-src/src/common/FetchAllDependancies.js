@@ -1,5 +1,5 @@
 //@flow
-import React from 'react'
+import React from "react";
 import {
   fetchDistricts,
   fetchFacilityTypes,
@@ -14,10 +14,10 @@ import {
   fetchUtilities,
   fetchServices
 } from "../actions";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
 class FetchAllDependancies extends React.Component<{}> {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchDistricts();
     this.props.fetchOperationalStatuses();
     this.props.fetchFacilityTypes();
@@ -33,21 +33,24 @@ class FetchAllDependancies extends React.Component<{}> {
   }
 
   render() {
-    return <div />
+    return <div />;
   }
 }
 
-export default connect(state => { }, {
-  fetchDistricts,
-  fetchFacilityTypes,
-  fetchFacilityOwners,
-  fetchUtilityTypes,
-  fetchResourceTypes,
-  fetchServiceTypes,
-  fetchRegulatoryStatuses,
-  fetchOperationalStatuses,
-  fetchFacilities,
-  fetchResources,
-  fetchUtilities,
-  fetchServices
-})(FetchAllDependancies)
+export default connect(
+  state => ({}),
+  {
+    fetchDistricts,
+    fetchFacilityTypes,
+    fetchFacilityOwners,
+    fetchUtilityTypes,
+    fetchResourceTypes,
+    fetchServiceTypes,
+    fetchRegulatoryStatuses,
+    fetchOperationalStatuses,
+    fetchFacilities,
+    fetchResources,
+    fetchUtilities,
+    fetchServices
+  }
+)(FetchAllDependancies);
