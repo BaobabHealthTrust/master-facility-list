@@ -1,6 +1,6 @@
-import { getResourcesFieldDefaults } from "../../helpers/utilities";
-import { getUtilitiesDefaults } from "../../helpers/utilities";
-import { getServicesDefaults } from "../../helpers/utilities";
+import { getResourcesFieldDefaults } from "../helpers/utilities";
+import { getUtilitiesDefaults } from "../helpers/utilities";
+import { getServicesDefaults } from "../helpers/utilities";
 import moment from "moment";
 
 export const setInitialValues = (nextProp, fromAdd = false) => {

@@ -1,14 +1,14 @@
 //@flow
 import React, { Fragment } from "react";
 import {
-  BasicDetailsForm,
-  ContactsForm,
-  ResourcesForm,
-  UtilitiesForm,
-  ServicesForm,
+  BasicDetails,
+  Contacts,
+  Resources,
+  Utilities,
+  Services,
   FinishedForm
-} from "../../components/Forms";
-import { setInitialValues } from "../../components/Forms/values";
+} from "../../Forms";
+import { setInitialValues } from "../../Forms/values";
 import { connect } from "react-redux";
 import { postFormData, fetchCurrentDetails } from "../../../actions";
 import { FormWizardTabHeading } from "../../../common";
@@ -167,7 +167,7 @@ class CreateFacilityWizard extends React.Component<{}> {
     switch (this.state.active) {
       case "Basic Details":
         return (
-          <BasicDetailsForm
+          <BasicDetails
             fromAdd
             initalValues={this.state.initalValues.details}
             onSubmit={values =>
@@ -179,7 +179,7 @@ class CreateFacilityWizard extends React.Component<{}> {
         );
       case "Contacts & Location":
         return (
-          <ContactsForm
+          <Contacts
             fromAdd
             initalValues={this.state.initalValues.contact}
             onSubmit={values => this._onSubmit(values, "contact", "Resources")}
@@ -189,7 +189,7 @@ class CreateFacilityWizard extends React.Component<{}> {
         );
       case "Resources":
         return (
-          <ResourcesForm
+          <Resources
             fromAdd
             initalValues={this.state.initalValues.resources}
             onSubmit={values =>
@@ -201,7 +201,7 @@ class CreateFacilityWizard extends React.Component<{}> {
         );
       case "Utilities":
         return (
-          <UtilitiesForm
+          <Utilities
             fromAdd
             initalValues={this.state.initalValues.utilities}
             onSubmit={values => this._onSubmit(values, "utilities", "Services")}
@@ -211,7 +211,7 @@ class CreateFacilityWizard extends React.Component<{}> {
         );
       case "Services":
         return (
-          <ServicesForm
+          <Services
             fromAdd
             initalValues={this.state.initalValues.services}
             onSubmit={values => this._onSubmit(values, "services", "Finish")}
@@ -225,7 +225,7 @@ class CreateFacilityWizard extends React.Component<{}> {
         );
       default:
         return (
-          <BasicDetailsForm
+          <BasicDetails
             fromAdd
             initalValues={this.state.initalValues.details}
             onSubmit={values =>

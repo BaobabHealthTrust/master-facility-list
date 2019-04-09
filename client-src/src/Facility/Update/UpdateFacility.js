@@ -1,12 +1,12 @@
 //@flow
 import React, { Fragment } from "react";
 import {
-  BasicDetailsForm,
-  ContactsForm,
-  ResourcesForm,
-  UtilitiesForm,
-  ServicesForm
-} from "../components/Forms";
+  BasicDetails,
+  Contacts,
+  Resources,
+  Utilities,
+  Services
+} from "../Forms";
 import { connect } from "react-redux";
 import {
   postFormData,
@@ -21,9 +21,9 @@ import {
   basicSchema,
   contactSchema,
   getResourcesSchema
-} from "../components/Forms/schema";
+} from "../Forms/schema";
 import { getCurrentServices } from "../helpers/utilities";
-import { setInitialValues } from "../components/Forms/values";
+import { setInitialValues } from "../Forms/values";
 import { Redirect } from "react-router-dom";
 import swal from "@sweetalert/with-react";
 import {
@@ -297,7 +297,7 @@ class UpdateFacility extends React.Component<{}> {
     switch (this.state.active) {
       case "summary":
         return (
-          <BasicDetailsForm
+          <BasicDetails
             initalValues={this.state.initalValues.details}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
@@ -306,7 +306,7 @@ class UpdateFacility extends React.Component<{}> {
         );
       case "locations":
         return (
-          <ContactsForm
+          <Contacts
             initalValues={this.state.initalValues.contact}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
@@ -315,7 +315,7 @@ class UpdateFacility extends React.Component<{}> {
         );
       case "resources":
         return (
-          <ResourcesForm
+          <Resources
             initalValues={this.state.initalValues.resources}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
@@ -324,7 +324,7 @@ class UpdateFacility extends React.Component<{}> {
         );
       case "utilities":
         return (
-          <UtilitiesForm
+          <Utilities
             initalValues={this.state.initalValues.utilities}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
@@ -333,7 +333,7 @@ class UpdateFacility extends React.Component<{}> {
         );
       case "services":
         return (
-          <ServicesForm
+          <Services
             initalValues={this.state.initalValues.services}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
@@ -342,7 +342,7 @@ class UpdateFacility extends React.Component<{}> {
         );
       default:
         return (
-          <BasicDetailsForm
+          <BasicDetails
             initalValues={this.state.initalValues.details}
             onSubmit={values => this.handleSubmit(values)}
             cancel={this._cancel}
