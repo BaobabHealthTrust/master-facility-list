@@ -1,34 +1,16 @@
 //@flow
-import React, { Component } from "react";
-import {
-  Input,
-  Navbar,
-  NavItem,
-  Row,
-  Button,
-  Card,
-  Col,
-  Modal
-} from "react-materialize";
-import { connect } from "react-redux";
-import { DatePicker, FormWizardNavigation } from "../../../common";
-import { BasicDetailsFormProps } from "../../../types/helper-types";
-import { Formik, FieldArray } from "formik";
-import { postFormData } from "../../../actions";
-import yup from "yup";
-import { Redirect } from "react-router-dom";
-import { chunk } from "lodash";
-import { renderOptions } from "../helpers";
+import React from "react";
+import { Input, Row, Card, Col } from "react-materialize";
+import { Alert, FormWizardNavigation } from "../../../common";
+import { FieldArray } from "formik";
 import {
   Utility,
-  FacilityResource,
   Facility,
   UtilityType,
   FacilityUtility
 } from "../../../types/model-types";
-
-import { CardTitle, Table, Icon } from "react-materialize";
-import { confirmAlert } from "react-confirm-alert";
+import { Formik } from "formik";
+import styled from "styled-components";
 
 type Props = {
   response: any,
@@ -40,25 +22,16 @@ type Props = {
   currentUtilities: Array<FacilityUtility>
 };
 
+const Container = styled.div.attrs({
+  className: "container"
+})``;
+
 class UtilitiesForm extends React.Component<Props> {
   state = {
-    cancelForm: false
+    errors: []
   };
 
-  _getInitialState = () => {
-    if (this.props.fromAdd) return { utilities: [] };
-
-    const utilities = this.props.currentUtilities.map(util => util.utility_id);
-    return { utilities };
-  };
-
-  // TODO: Maybe this could go somewhere
-  _getFacilityId = async () => {
-    const facilityId = this.props.fromAdd
-      ? (await this.props.facility.id) || 1
-      : Number(await this.props.match.params.id);
-    return facilityId;
-  };
+  inputField = [];
 
   _renderCardHeading = title => {
     return (
@@ -79,114 +52,104 @@ class UtilitiesForm extends React.Component<Props> {
         errors.push(type.utility_type);
       }
     });
+    return errors;
+  };
+
+  _onNext = async (values, { setSubmitting }) => {
+    let errors = this._validate(values);
 
     if (errors.length > 0) {
-      alert(`Please Select at Least One ${errors[0]}`);
-      return false;
-    } else return true;
+      this.setState({ errors });
+      setSubmitting(false);
+      return;
+    }
+
+    this.props.onSubmit(values.utilities);
+    setSubmitting(false);
   };
 
-  _handleSubmit = async (values, { setSubmitting, setErros }) => {
-    alert("yes");
-  };
+  _renderForm = props => {
+    var { values, isSubmitting, handleSubmit } = props;
 
-  _handleChange = id => {
-    this.setState({ selectedUtilities: [...this.state.selectedUtilities, id] });
-  };
-
-  render() {
     return (
-      <div className="container">
-        {this.state.cancelForm &&
-          this.props.fromAdd && <Redirect to="/facilities" />}
-        {this.state.cancelForm &&
-          !this.props.fromAdd && (
-            <Redirect
-              to={`/facilities/${this.props.match.params.id}/utilities`}
-            />
-          )}
+      <div test-id="utilitiesForm">
         <div className="mfl-tm-2" />
-        <Formik
-          initialValues={this._getInitialState()}
-          onSubmit={this._handleSubmit}
-          render={({ values, handleSubmit, isSubmitting }) => (
-            <FieldArray
-              name="utilities"
-              render={({ push, remove }) => (
-                <div>
-                  {console.log(values)}
-                  {this.props.utilityTypes.map(card => {
-                    return (
-                      <Col m={12} s={12}>
-                        <Card
-                          horizontal
-                          header={this._renderCardHeading(
-                            `Select ${card.utility_type}`
-                          )}
-                        >
-                          <Row>
-                            {this.props.utilities
-                              .filter(util => util.utility_type_id == card.id)
-                              .map(utility => {
-                                return (
-                                  <Input
-                                    key={utility.id}
-                                    s={4}
-                                    type="checkbox"
-                                    checked={values.utilities.includes(
-                                      utility.id
-                                    )}
-                                    name="utilities"
-                                    label={utility.utility_name}
-                                    onChange={() => {
-                                      if (
-                                        !values.utilities.includes(utility.id)
-                                      )
-                                        push(utility.id);
-                                      else {
-                                        remove(
-                                          values.utilities.findIndex(
-                                            util => util == utility.id
-                                          )
-                                        );
-                                      }
-                                    }}
-                                  />
-                                );
-                              })}
-                          </Row>
-                        </Card>
-                      </Col>
-                    );
-                  })}
-                  <FormWizardNavigation
-                    saveButton={this.props.fromAdd ? "Next" : "Save"}
-                    handleSubmit={handleSubmit}
-                    isSubmitting={isSubmitting}
-                    handleCancel={() => this.setState({ cancelForm: true })}
-                  />
-                </div>
-              )}
-            />
+        {this.state.errors.length > 0 && (
+          <Alert
+            warning
+            message={`Please Select at Least One: ${this.state.errors}`}
+          />
+        )}
+        <FieldArray
+          name="utilities"
+          render={({ push, remove }) => (
+            <div>
+              {this.props.utilityTypes.map(card => {
+                return (
+                  <Col m={12} s={12}>
+                    <Card
+                      header={this._renderCardHeading(
+                        `Select ${card.utility_type}`
+                      )}
+                    >
+                      <Row>
+                        {values.utilities &&
+                          this.props.utilities
+                            .filter(util => util.utility_type_id == card.id)
+                            .map(utility => {
+                              return (
+                                <Input
+                                  key={`${utility.id}`}
+                                  s={4}
+                                  type="checkbox"
+                                  checked={values.utilities.includes(
+                                    utility.id
+                                  )}
+                                  name="utilities"
+                                  label={utility.utility_name}
+                                  onChange={() => {
+                                    if (!values.utilities.includes(utility.id))
+                                      push(utility.id);
+                                    else {
+                                      remove(
+                                        values.utilities.findIndex(
+                                          util => util == utility.id
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                              );
+                            })}
+                      </Row>
+                    </Card>
+                  </Col>
+                );
+              })}
+              <FormWizardNavigation
+                saveButton={this.props.fromAdd ? "Next" : "Save"}
+                handleSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+                handleCancel={() => this.props.cancel()}
+              />
+            </div>
           )}
         />
       </div>
     );
+  };
+  render() {
+    return (
+      <Container>
+        <Formik
+          enableReinitialize={true}
+          initialValues={this.props.initalValues}
+          onSubmit={this._onNext}
+          render={props => this._renderForm(props)}
+        />
+      </Container>
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    utilityTypes: state.dependancies.utilityTypes,
-    response: state.facilities.utilitiesResponse,
-    utilities: state.facilities.utilities,
-    currentUtilities: state.facilities.currentUtilities.data
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    postFormData
-  }
-)(UtilitiesForm);
+export default UtilitiesForm;
