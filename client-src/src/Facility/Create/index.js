@@ -1,18 +1,22 @@
 //@flow
 import React from "react";
-import footerResizer from "../../helpers/footerResize";
 import CreateFacilityWizard from "./components/CreateFacilityWizard";
-import {FormHeading} from "../../common";
+import { FormHeading } from "../../common";
+import styled from "styled-components";
 
-export default ({handleCancelAddFacility}) => {
+const Container = styled.div.attrs({
+  className: "mt-8 container"
+})``;
+
+export default () => {
   return (
-    <div className="mt-8 container">
+    <Container>
       <FormHeading
         title="Add New Facility"
         entityName=""
         icon="local_hospital"
       />
-      <CreateFacilityWizard handleCancelAddFacility={handleCancelAddFacility} />
-    </div>
+      <CreateFacilityWizard />
+    </Container>
   );
 };
