@@ -14,12 +14,12 @@ export class CreateUser extends Component {
   };
 
   initialValues = {
-    firstname: "",
-    lastname: "",
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
+    firstname: null,
+    lastname: null,
+    username: null,
+    email: null,
+    password: null,
+    confirmPassword: null
   };
 
   passwordValidationMessage =
@@ -61,43 +61,35 @@ export class CreateUser extends Component {
       .required("Password confirm is required")
   });
 
-  _handleSubmit = async (values, actions) => {
-    const {
-      postFormData,
-      userCreated,
-      fetchUsers,
-      validationErrors
-    } = this.props;
+  _handleSubmit = (values, actions) => {
+    const { postFormData, userCreated, fetchUsers } = this.props;
 
-    const addUser = await postFormData(
+    postFormData(
       { data: values },
       "Clients",
       "POST",
       "POST_USER",
       "createAdmin"
-    );
+    )
+      .then(res => {
+        if (res.action.payload && res.action.payload.data) {
+          Toast("User Created Successfully");
+          actions.resetForm();
+          document.getElementById("closeButton").click();
+          fetchUsers();
+          return;
+        }
+      })
+      .catch(() => {
+        let errors = this.props.errors.postUser;
+        actions.setErrors({
+          username: errors.username ? errors.username : "",
+          email: errors.email ? errors.email : ""
+        });
+        Toast("Failed To Create User");
+      });
 
     actions.setSubmitting(false);
-
-    if (addUser.payload && addUser.payload.data) {
-      Toast("User Created Successfully");
-      actions.resetForm();
-      document.getElementById("closeButton").click();
-      fetchUsers();
-      return;
-    }
-
-    let errors = addUser.error
-      ? addUser.payload
-        ? addUser.payload.response.data.error.details.messages
-        : ["There was a general error"]
-      : [];
-    actions.setErrors({
-      username: errors.username ? errors.username : "",
-      email: errors.email ? errors.email : ""
-    });
-
-    Toast("Failed To Create User");
   };
 
   _renderModalActions = (handleSubmit, isSubmitting) => (
@@ -144,7 +136,8 @@ export class CreateUser extends Component {
 
         <Input
           s={6}
-          label="Enter First Name"
+          label="First Name"
+          placeholder="Enter First Name"
           labelClassName="mfl-max-width"
           value={values.firstname}
           onChange={handleChange}
@@ -155,7 +148,8 @@ export class CreateUser extends Component {
 
         <Input
           s={6}
-          label="Enter Last Name"
+          label="Last Name"
+          placeholder="Enter Last name"
           labelClassName="mfl-max-width"
           value={values.lastname}
           onChange={handleChange}
@@ -167,7 +161,8 @@ export class CreateUser extends Component {
       <Row>
         <Input
           s={6}
-          label="Enter Username"
+          label="Username"
+          placeholder="Enter Username"
           labelClassName="mfl-max-width"
           value={values.username}
           onChange={handleChange}
@@ -179,6 +174,7 @@ export class CreateUser extends Component {
           s={6}
           label="Enter Email"
           labelClassName="mfl-max-width"
+          placeholder="example@example.com"
           value={values.email}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -189,7 +185,8 @@ export class CreateUser extends Component {
       <Row>
         <Input
           s={6}
-          label="Enter Password"
+          label="Password"
+          placeholder="Enter Password"
           labelClassName="mfl-max-width"
           value={values.password}
           onChange={handleChange}
@@ -202,6 +199,7 @@ export class CreateUser extends Component {
           s={6}
           label="Confirm Password"
           labelClassName="mfl-max-width"
+          placeholder="Confirm Password"
           value={values.confirmPassword}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -227,7 +225,7 @@ export class CreateUser extends Component {
 const mapStateToProps = state => {
   return {
     userCreated: state.users.userCreated,
-    validationErrors: state.users.validationErrors
+    errors: state.statusErrors.errors
   };
 };
 
