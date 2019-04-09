@@ -1,9 +1,7 @@
 /// <reference types="Cypress" />
 
-import { filter } from "bluebird";
-
 describe("Tests Facility Resources Page", () => {
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   var facility;
   it("Renders facility resources page", () => {
