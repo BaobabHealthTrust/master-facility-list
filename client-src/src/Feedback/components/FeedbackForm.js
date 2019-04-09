@@ -128,6 +128,7 @@ class FeedbackForm extends React.Component {
       <Row>
         <Col>
           <Button
+            test-id="feedbackBtn"
             disabled={isSubmitting}
             className="blue"
             waves="light"
