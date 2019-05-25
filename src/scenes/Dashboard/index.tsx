@@ -7,8 +7,14 @@ import Container from "../../components/atoms/Container";
 import Map from "../../components/organisms/MalawiMap";
 import WelcomeBanner from "../../components/organisms/Welcome";
 import StatCards from "../../components/organisms/StatisticsCards";
+import Charts from "../../components/organisms/Charts";
 
 const index = () => {
+  const grahpData = [
+    { name: "Other", value: 10 },
+    { name: "Test", value: 50 },
+    { name: "Test1", value: 60 }
+  ];
   // make sure you have the svg file in images folder
   const statistics = [
     {
@@ -52,7 +58,7 @@ const index = () => {
     <Container style={{ minHeight: "100%", padding: "25px", flexGrow: "1" }}>
       <Grid container spacing={32}>
         <Grid className="hide-on-med-and-down" item xs={12} md={3}>
-          <Card heading="Select District" view={map} />
+          <Card heading="Select District">{map}</Card>
         </Grid>
 
         <Grid item xs={12} md={9}>
@@ -62,6 +68,12 @@ const index = () => {
             </Grid>
             <Grid item xs={12} md={12}>
               <StatCards statistics={statistics} />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Charts
+                licenseStatusData={grahpData}
+                operationalStatusData={grahpData}
+              />
             </Grid>
           </Grid>
         </Grid>

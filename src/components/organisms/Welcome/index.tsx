@@ -8,7 +8,7 @@ const Welcome = (props: Props) => {
     districts.length > 0
       ? "Currently showing statistics from :"
       : "Currently showing National level Facilities Statistics";
-  return <Card heading={title} view={view} />;
+  return <Card heading={title}>{view}</Card>;
 };
 
 export default Welcome;

@@ -15,7 +15,7 @@ const StatCard = (props: Props) => {
       <DashboardIconTitle>{title}</DashboardIconTitle>
     </Container>
   );
-  return <Card view={view} />;
+  return <Card>{view}</Card>;
 };
 
 export default StatCard;

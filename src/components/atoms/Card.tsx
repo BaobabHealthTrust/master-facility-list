@@ -1,19 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-export default ({ heading, view, style }: Props) => {
+export default ({ heading, children, style }: Props) => {
   return (
     <CardContainer style={style}>
       {heading && <Title>{heading}</Title>}
-      <Body>{view}</Body>
+      <Body>{children}</Body>
     </CardContainer>
   );
 };
 
 type Props = {
   heading?: any;
-  view: any;
   style?: Object;
+  children: any;
 };
 
 const CardContainer = styled.div.attrs({ className: "z-depth-2" })`
