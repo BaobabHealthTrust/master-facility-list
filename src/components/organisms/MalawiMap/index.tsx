@@ -6,20 +6,6 @@ import PropTypes from "prop-types";
 const MalawiMap = (props: Props) => {
   const { onClick, districtsSelected, fill, height, selectedColor } = props;
 
-  const [selectedDistricts, setSelectedDistricts] = useState(districtsSelected);
-
-  const _updateSelectedDistricts = (e: any) => {
-    const district: any = e.target.id;
-    //@ts-ignore
-    const updatedSelectedDistricts = selectedDistricts.includes(district)
-      ? selectedDistricts.filter(dist => dist != district)
-      : [...selectedDistricts, district];
-
-    //@ts-ignore
-    setSelectedDistricts(updatedSelectedDistricts);
-    onClick(updatedSelectedDistricts);
-  };
-
   const _renderFilterMap = () => {
     return (
       <g id="Map-Filter" transform="translate(26.000000, 160.000000)">
@@ -29,8 +15,8 @@ const MalawiMap = (props: Props) => {
               <Path
                 key={district.name}
                 district={district}
-                selectedDistricts={selectedDistricts}
-                onClick={_updateSelectedDistricts}
+                selectedDistricts={districtsSelected}
+                onClick={() => onClick(district.name)}
                 selectedColor={selectedColor}
               />
             );

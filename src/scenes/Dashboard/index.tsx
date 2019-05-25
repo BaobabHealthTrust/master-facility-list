@@ -1,92 +1,178 @@
-import React from "react";
-import styled from "styled-components";
-import { Grid } from "@material-ui/core";
-import Card from "../../components/atoms/Card";
-import Container from "../../components/atoms/Container";
-//@ts-ignore
-import Map from "../../components/organisms/MalawiMap";
-import WelcomeBanner from "../../components/organisms/Welcome";
-import StatCards from "../../components/organisms/StatisticsCards";
-import Charts from "../../components/organisms/Charts";
+import React, { Component } from "react";
+import Dashboard from "./Dashboard";
+import { connect } from "react-redux";
 
-const index = () => {
-  const grahpData = [
-    { name: "Other", value: 10 },
-    { name: "Test", value: 50 },
-    { name: "Test1", value: 60 }
-  ];
+class index extends Component<any> {
+  initialState: Array<string> = [];
+  state = {
+    districtsFilter: this.initialState
+  };
+
+  getFilteredFacilities = () =>
+    this.props.facilities.filter(
+      (facility: any) =>
+        this.state.districtsFilter.length == 0 ||
+        this.inFilter(facility.district)
+    );
+
+  inFilter = (district: string) =>
+    this.state.districtsFilter.includes(district);
+
+  handleFilterAdd = (district: string) => {
+    let districts: Array<string> = this.state.districtsFilter;
+    districts.push(district);
+    this.setState({ districtsFilter: districts });
+  };
+
+  handleFilterRem = (district: string) => {
+    let districts = this.state.districtsFilter;
+    this.setState({
+      districtsFilter: districts.filter(dis => dis != district)
+    });
+  };
+
+  handleMapClick = (district: string) => {
+    if (this.inFilter(district)) {
+      this.handleFilterRem(district);
+      return;
+    }
+    this.handleFilterAdd(district);
+  };
+
+  getFacilitiesOfType = (type: string) => {
+    return this.getFilteredFacilities()
+      ? this.getFilteredFacilities().filter(
+          (facility: any) => facility.type == type
+        ).length
+      : 0;
+  };
+
+  generateBarChartData = (
+    comparisonModel: any,
+    comparisonField: any,
+    facilityField: any
+  ) => {
+    const data = this.getFilteredFacilities();
+    if (data) {
+      return this.props[comparisonModel].map((model: any) => {
+        return {
+          name: model[comparisonField],
+          count: data.filter(
+            (facility: any) => facility[facilityField] == model[comparisonField]
+          ).length
+        };
+      });
+    }
+    return [];
+  };
+
+  getRegulatoryBarData = () => {
+    const data = this.generateBarChartData(
+      "regulatoryStatuses",
+      "facility_regulatory_status",
+      "regulatoryStatus"
+    );
+
+    const registered = data
+      .filter((val: any) => val.name == "Registered")
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    const notRegistered = data
+      .filter((val: any) => val.name == "Not Registered")
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    const pending = data
+      .filter(
+        (val: any) => val.name != "Registered" && val.name != "Not Registered"
+      )
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    return [
+      { name: "Registered", value: registered },
+      { name: "Pending", value: notRegistered },
+      { name: "Not Registered", value: pending }
+    ];
+  };
+
+  getOperationalBarData = () => {
+    const data = this.generateBarChartData(
+      "operationalStatuses",
+      "facility_operational_status",
+      "status"
+    );
+
+    const opened = data
+      .filter((val: any) => val.name == "Functional")
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    const tempClosed = data
+      .filter((val: any) => val.name == "Closed (Temporary)")
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    const closed = data
+      .filter(
+        (val: any) =>
+          val.name != "Functional" && val.name != "Closed (Temporary)"
+      )
+      .reduce((acc: any, cur: any) => Number(acc) + Number(cur.count), 0);
+
+    return [
+      { name: "Functional", value: opened },
+      { name: "Closed (Temporary)", value: tempClosed },
+      { name: "Closed", value: closed }
+    ];
+  };
   // make sure you have the svg file in images folder
-  const statistics = [
+  getFacilitiesByTypeData = () => [
     {
-      count: 10,
+      count: this.getFilteredFacilities().length,
       title: "Total Facilities",
       icon: "hospital.svg",
       onClick: () => {}
     },
     {
-      count: 10,
+      count: this.getFacilitiesOfType("District Hospital"),
       title: "Dist Hospitals",
       icon: "district.svg",
       onClick: () => {}
     },
     {
-      count: 10,
+      count: this.getFacilitiesOfType("Health Centre"),
       title: "Health Centers",
       icon: "clinic.svg",
       onClick: () => {}
     },
     {
-      count: 10,
+      count: this.getFacilitiesOfType("Dispensary"),
       title: "Dispensaries",
       icon: "normal-hospital.svg",
       onClick: () => {}
     }
   ];
-
-  const map = (
-    <MapContainer>
-      <Map
-        districtsSelected={[]}
-        onClick={(districts: any) => console.log(districts)}
-        height={700}
-        selectedColor="#0468b1"
-        fill="#9D9D9D"
+  render() {
+    return (
+      <Dashboard
+        cardsData={this.getFacilitiesByTypeData()}
+        licenseStatusGrapphData={this.getRegulatoryBarData()}
+        operationalStatusGraphData={this.getOperationalBarData()}
+        selectedDistricts={this.state.districtsFilter}
+        onRemoveDistrictFilter={(district: string) => {
+          this.handleFilterRem(district);
+        }}
+        onMapClick={(district: string) => {
+          this.handleMapClick(district);
+        }}
       />
-    </MapContainer>
-  );
-  return (
-    <Container style={{ minHeight: "100%", padding: "25px", flexGrow: "1" }}>
-      <Grid container spacing={32}>
-        <Grid className="hide-on-med-and-down" item xs={12} md={3}>
-          <Card heading="Select District">{map}</Card>
-        </Grid>
+    );
+  }
+}
 
-        <Grid item xs={12} md={9}>
-          <Grid container spacing={24}>
-            <Grid item xs={12} md={12}>
-              <WelcomeBanner districts={[]} />
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <StatCards statistics={statistics} />
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <Charts
-                licenseStatusData={grahpData}
-                operationalStatusData={grahpData}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Container>
-  );
-};
+const mapStateToProps = (state: any) => ({
+  status: state.status,
+  districts: state.dependancies.districts.list,
+  operationalStatuses: state.dependancies.operationalStatuses.list,
+  regulatoryStatuses: state.dependancies.regulatoryStatuses.list,
+  facilities: state.facilities.list
+});
 
-export default index;
-
-const MapContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export default connect(mapStateToProps)(index);

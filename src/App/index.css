@@ -4,3 +4,28 @@ body {
   font-size: 16px;
   background: #f3f3f3;
 }
+
+.table div[class*="Toolbar-toolbar-"] {
+  background-color: #375a8c !important;
+  color: #ffffff !important;
+  border-bottom: 0px !important;
+}
+
+.table input[class*="MuiInput-input-"] {
+  margin: 0px !important;
+}
+.table input[class*="MuiInput-input-"],
+.table div[class*="MuiInput-root-"] {
+  background-color: #fff !important;
+  border-bottom: 0px !important;
+  padding-left: 1rem;
+}
+.table input[class*="MuiInput-underline-"]::before {
+  border-bottom: 0px !important;
+}
+
+.table input[class*="MuiInput-input-"]:hover,
+.table input[class*="MuiInput-input-"]:focus {
+  border-bottom: 0px !important;
+  box-shadow: none !important;
+}

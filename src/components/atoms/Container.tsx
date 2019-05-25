@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 const Container = (props: Props) => {
   return (
-    <StyledContainer style={props.style}>{props.children}</StyledContainer>
+    <StyledContainer className={props.className} style={props.style}>
+      {props.children}
+    </StyledContainer>
   );
 };
 
@@ -12,6 +14,7 @@ export default Container;
 type Props = {
   style?: Object;
   children: any;
+  className?: any;
 };
 
 const StyledContainer = styled.div`

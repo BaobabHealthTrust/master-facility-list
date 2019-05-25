@@ -19,11 +19,11 @@ const PieChar = (props: Props) => {
   return (
     <Container>
       <Chart
-        width={width || 300}
+        width={width || 350}
         height={height || 300}
         onMouseEnter={onPieEnter}
       >
-        <Pie dataKey="value" data={data} outerRadius={120} fill="#8884d8">
+        <Pie dataKey="value" data={data} outerRadius={100} fill="#8884d8">
           {scheme.map((color, index) => (
             <Cell key={index} fill={color} />
           ))}
