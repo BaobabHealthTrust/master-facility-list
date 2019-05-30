@@ -100,38 +100,38 @@ module.exports = Facility => {
     return "Data Successfully Created";
   };
 
-  // Facility.contactDetails = async (data, id, cb) => {
-  //   await server.models.Address.create({
-  //     physical_address: data.physicalAddress,
-  //     postal_address: data.postalAddress,
-  //     client_id: data.client,
-  //     facility_id: id
-  //   }).catch(err => cb(err));
+  Facility.contactDetails = async (data, id, cb) => {
+    await server.models.Address.create({
+      physical_address: data.physicalAddress,
+      postal_address: data.postalAddress,
+      client_id: data.client,
+      facility_id: id
+    }).catch(err => cb(err));
 
-  //   await server.models.ContactPeople.create({
-  //     contact_person_fullname: data.contactName,
-  //     contact_person_phone: data.contactPhoneNumber,
-  //     contact_person_email: data.contactEmail,
-  //     client_id: data.client,
-  //     facility_id: id
-  //   }).catch(err => cb(err));
+    await server.models.ContactPeople.create({
+      contact_person_fullname: data.contactName,
+      contact_person_phone: data.contactPhoneNumber,
+      contact_person_email: data.contactEmail,
+      client_id: data.client,
+      facility_id: id
+    }).catch(err => cb(err));
 
-  //   await server.models.Location.create({
-  //     catchment_area: data.catchmentArea,
-  //     catchment_population: data.catchmentPopulation,
-  //     client_id: data.client,
-  //     facility_id: id
-  //   }).catch(err => cb(err));
+    await server.models.Location.create({
+      catchment_area: data.catchmentArea,
+      catchment_population: data.catchmentPopulation,
+      client_id: data.client,
+      facility_id: id
+    }).catch(err => cb(err));
 
-  //   await server.models.Geolocation.create({
-  //     longitude: data.longitude,
-  //     latitude: data.latitude,
-  //     client_id: data.client,
-  //     facility_id: id
-  //   }).catch(err => cb(err));
+    await server.models.Geolocation.create({
+      longitude: data.longitude,
+      latitude: data.latitude,
+      client_id: data.client,
+      facility_id: id
+    }).catch(err => cb(err));
 
-  //   return "Data Successfully Created";
-  // };
+    return "Data Successfully Created";
+  };
 
   Facility.updateContactDetails = async (data, id, cb) => {
     await server.models.Address.findOne({ where: { facility_id: id } }).then(
@@ -366,7 +366,11 @@ module.exports = Facility => {
     returns: [
       { arg: "body", type: "file", root: true },
       { arg: "Content-Type", type: "string", http: { target: "header" } },
-      { arg: "Content-Disposition", type: "string", http: { target: "header" } }
+      {
+        arg: "Content-Disposition",
+        type: "string",
+        http: { target: "header" }
+      }
     ]
   });
 
@@ -382,8 +386,8 @@ module.exports = Facility => {
       if (!format) {
         const error = new Error("Invalid post format.");
         error.name = "ERROR";
-        error.status = 400;
-        cb(error);
+        error.status = 401;
+        await cb(error);
       }
 
       const facilities = await Facility.find({
@@ -398,9 +402,10 @@ module.exports = Facility => {
           { district: "zone" }
         ]
       }).catch(err => cb(err));
-      const callback = (err, stream) => {
+
+      const callback = async (err, stream) => {
         if (err) {
-          return cb(err);
+          return await cb(err);
         }
 
         let contentType = null;
@@ -424,28 +429,27 @@ module.exports = Facility => {
             break;
         }
 
-        cb(null, stream, contentType, contentDisposition);
+        await cb(null, stream, contentType, contentDisposition);
       };
 
-      if (format == "pdf") {
-        generatePdfFile(facilities, callback);
-      }
+      switch (format) {
+        case "pdf":
+          await generatePdfFile(facilities, callback);
+          break;
 
-      if (format == "excel") {
-        generateExcelFile(facilities, callback);
-      }
+        case "excel":
+          await generateExcelFile(facilities, callback);
+          break;
 
-      if (format == "csv") {
-        generateCsvFile(facilities, callback);
-      }
+        case "csv":
+          await generateCsvFile(facilities, callback);
+          break;
 
-      const error = new Error();
-      error.name = "ERROR";
-      error.status = 400;
-      error.message = "Invalid facility ID.";
-      cb(error);
+        default:
+          await cb(error);
+      }
     } catch (error) {
-      cb(error);
+      await cb(error);
     }
   };
 
@@ -457,7 +461,11 @@ module.exports = Facility => {
     returns: [
       { arg: "body", type: "file", root: true },
       { arg: "Content-Type", type: "string", http: { target: "header" } },
-      { arg: "Content-Disposition", type: "string", http: { target: "header" } }
+      {
+        arg: "Content-Disposition",
+        type: "string",
+        http: { target: "header" }
+      }
     ]
   });
 
