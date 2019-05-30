@@ -11,12 +11,8 @@
       "type": "string",
       "required": false
     },
-    "facility_code_dhis2": {
-      "type": "string",
-      "required": false
-    },
-    "facility_code_openlmis": {
-      "type": "string",
+    "facility_code_mapping": {
+      "type": "json",
       "required": false
     },
     "registration_number": {

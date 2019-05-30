@@ -1,14 +1,26 @@
-const facilityData = require('./facility-data'); 
+const facilityData = require('./facility-data');
 
 module.exports = async (facility) => {
     const { contactPerson, geolocation, address, operationalStatus } = await facilityData(facility);
+    const facilityCodeMaps = facility.facility_code_mapping;
+    const extraIdentifiers = [];
+    if (facilityCodeMaps && Array.isArray(facilityCodeMaps)) {
+        facilityCodeMaps.forEach(facilityCodeMap => {
+            extraIdentifiers.push({
+                system: facilityCodeMap.system,
+                value: facilityCodeMap.code
+            })
+        })
+    }
     return {
         resourceType: 'Location',
         id: facility.id,
         identifier: [
             {
+                "system": "mhfr",
                 value: facility.facility_code
-            }
+            },
+            ...extraIdentifiers
         ],
         status: 'active',
         operationalStatus: {
