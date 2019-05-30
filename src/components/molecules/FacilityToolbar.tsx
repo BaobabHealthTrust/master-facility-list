@@ -8,6 +8,7 @@ import {
   faFilePdf,
   faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 library.add(faPlus, faFilePdf, faFileExcel);
 
@@ -23,9 +24,11 @@ function FacilityToolbar() {
         </Button>
       </DownloadButtonsContainer>
       <AddButtonContainer>
-        <Button theme="primary" icon={<FontAwesomeIcon icon={faPlus} />}>
-          Add Facility
-        </Button>
+        <Link to="/facilities/add">
+          <Button theme="primary" icon={<FontAwesomeIcon icon={faPlus} />}>
+            Add Facility
+          </Button>
+        </Link>
       </AddButtonContainer>
     </ButtonsContainer>
   );

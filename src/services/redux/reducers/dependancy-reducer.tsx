@@ -24,6 +24,9 @@ const initialState = {
   },
   owners: {
     list: []
+  },
+  facilityTypes: {
+    list: []
   }
 };
 export default (
@@ -98,6 +101,21 @@ export default (
         }
       };
 
+    case actions.fetchFacilityTypes + "_FULFILLED":
+      return {
+        ...state,
+        facilityTypes: {
+          list: action.payload.data
+        }
+      };
+
+    case actions.fetchOwners + "_FULFILLED":
+      return {
+        ...state,
+        owners: {
+          list: action.payload.data
+        }
+      };
     case actions.fetchOperationalStatuses + "_FULFILLED":
       return {
         ...state,

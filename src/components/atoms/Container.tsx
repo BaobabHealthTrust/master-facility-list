@@ -19,7 +19,7 @@ type Props = {
 
 const StyledContainer = styled.div`
   width: 100%;
-  padding: 0px 10%;
+  padding: 0px 5%;
   @media (max-width: 992) {
     padding: 0px 5%;
   }

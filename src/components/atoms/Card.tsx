@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { Paper } from "@material-ui/core";
 
-export default ({ heading, children, style }: Props) => {
+export default ({ heading, children, style, bodyStyle }: Props) => {
   return (
-    <CardContainer style={style}>
-      {heading && <Title>{heading}</Title>}
-      <Body>{children}</Body>
-    </CardContainer>
+    <Paper>
+      <CardContainer style={style}>
+        {heading && <Title>{heading}</Title>}
+        <Body style={bodyStyle}>{children}</Body>
+      </CardContainer>
+    </Paper>
   );
 };
 
@@ -14,9 +17,10 @@ type Props = {
   heading?: any;
   style?: Object;
   children: any;
+  bodyStyle?: any;
 };
 
-const CardContainer = styled.div.attrs({ className: "z-depth-2" })`
+const CardContainer = styled.div`
   width: 100%;
   background: white;
 `;

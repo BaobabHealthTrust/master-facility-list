@@ -7,7 +7,13 @@ function Menu(props: Props) {
   return (
     <Container className="hide-on-med-and-down">
       {items.map((item, index) => (
-        <MenuItem key={index} body={item.text} active={item.active} />
+        <MenuItem
+          key={index}
+          body={item.text}
+          active={item.active}
+          item={item}
+          dropdown={item.options ? true : false}
+        />
       ))}
     </Container>
   );
@@ -20,6 +26,9 @@ type Props = {
     text: string;
     active: boolean;
     icon?: React.ReactElement;
+    link?: string;
+    name: string;
+    options?: Array<any>;
   }>;
 };
 

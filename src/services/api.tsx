@@ -51,7 +51,49 @@ export const getDistricts = () => {
   return axios.get(url);
 };
 
+export const getFacilityTypes = () => {
+  const url = `${settings.API}/FacilityTypes`;
+  return axios.get(url);
+};
+
 export const getFacilities = () => {
   const url = `${settings.API}/facilities/list`;
+  return axios.get(url);
+};
+
+export const getFacilityResources = (facilityId: number) => {
+  const url = `${settings.API}/FacilityResources/latest?id=${facilityId}`;
+  return axios.get(url);
+};
+
+export const getFacilityBasicDetails = (facilityId: number) => {
+  const FILTER = {
+    include: [
+      "owner",
+      "facilityType",
+      "operationalStatus",
+      "regulatoryStatus",
+      "contactPeople",
+      "addresses",
+      "locations",
+      "geolocations",
+      { district: "zone" }
+    ]
+  };
+  const url = `${settings.API}/Facilities/${facilityId}?filter=${JSON.stringify(
+    FILTER
+  )}`;
+  return axios.get(url);
+};
+
+export const getFacilityServices = (facilityId: number) => {
+  const url = `${
+    settings.API
+  }/FacilityServices/hierarchy?facility_id=${facilityId}`;
+  return axios.get(url);
+};
+
+export const getFacilityUtilities = (facilityId: number) => {
+  const url = `${settings.API}/FacilityUtilities/latest?id=${facilityId}`;
   return axios.get(url);
 };

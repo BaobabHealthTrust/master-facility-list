@@ -9,11 +9,11 @@ class index extends Component<any> {
   };
 
   getFilteredFacilities = () =>
-    this.props.facilities.filter(
-      (facility: any) =>
-        this.state.districtsFilter.length == 0 ||
-        this.inFilter(facility.district)
-    );
+    this.state.districtsFilter.length == 0
+      ? this.props.facilities
+      : this.props.facilities.filter((facility: any) =>
+          this.inFilter(facility.district)
+        );
 
   inFilter = (district: string) =>
     this.state.districtsFilter.includes(district);

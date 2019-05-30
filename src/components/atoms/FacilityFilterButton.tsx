@@ -1,56 +1,35 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faTimes } from "@fortawesome/free-solid-svg-icons";
+import Button from "../atoms/Button";
 
 library.add(faFilter, faTimes);
 
 export default function SearchButton(props: Props) {
   return (
     <ButtonContainer title="Advanced Search">
-      <Link
+      <Button
         style={{
           borderRadius: "0px",
-          width: props.open ? "340px" : "0",
+          width: props.open ? "340px" : "",
           transition: "all 2s ease-in-out !important",
-          backgroundColor: "#375a8c"
+          backgroundColor: "#375a8c",
+          margin: "0px"
         }}
-        className="waves-effect btn"
-        to="#"
+        onClick={(e: any) => props.onClick()}
+        icon={
+          props.open ? (
+            <FontAwesomeIcon icon={faTimes} />
+          ) : (
+            <FontAwesomeIcon icon={faFilter} />
+          )
+        }
+        iconPosition="right"
       >
-        {!props.open && (
-          <span>
-            {
-              //@ts-ignore
-              <i
-                test_id="search_drawer_btn"
-                onClick={e => props.onClick()}
-                className="material-icons left"
-              >
-                <FontAwesomeIcon icon={faFilter} />
-              </i>
-            }
-          </span>
-        )}
-
-        {props.open && (
-          <span>
-            <span>Advanced Filter</span>
-            {
-              //@ts-ignore
-              <i
-                test_id="search_drawer_btn"
-                onClick={e => props.onClick()}
-                className="material-icons right"
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </i>
-            }
-          </span>
-        )}
-      </Link>
+        {props.open ? <span>Advanced Filter</span> : <div />}
+      </Button>
     </ButtonContainer>
   );
 }

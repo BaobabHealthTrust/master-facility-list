@@ -33,7 +33,13 @@ const styles = (theme: any) => ({
 });
 
 const index = (props: Props) => {
-  const { classes, onToggleDrawer, drawerOpen, facilities } = props;
+  const {
+    classes,
+    onToggleDrawer,
+    drawerOpen,
+    facilities,
+    onFacilityClicked
+  } = props;
 
   return (
     <div className="hide-on-med-and-down">
@@ -55,12 +61,7 @@ const index = (props: Props) => {
           </Grid>
 
           <Grid item xs={12} md={12}>
-            <FacilityList
-              onSelect={(selected: any) => {
-                alert(selected);
-              }}
-              data={facilities}
-            />
+            <FacilityList onSelect={onFacilityClicked} data={facilities} />
           </Grid>
         </Grid>
       </Container>
@@ -73,5 +74,6 @@ type Props = {
   onToggleDrawer: Function;
   facilities: Array<any>;
   classes?: any;
+  onFacilityClicked: Function;
 };
 export default withStyles(styles, { withTheme: true })(index);

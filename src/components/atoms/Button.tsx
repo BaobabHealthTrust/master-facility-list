@@ -2,19 +2,30 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 
 const Button = (props: Props) => {
-  const { children, onClick, style, icon, iconPosition, theme } = props;
+  const {
+    children,
+    onClick,
+    style,
+    icon,
+    iconPosition,
+    theme,
+    disabled,
+    type
+  } = props;
   const btnTheme = theme ? themes[theme] : themes.primary;
   const buttonClass = `waves-effect btn`;
+
   return (
     <ThemeProvider theme={btnTheme}>
       <Btn
+        {...type}
+        disabled={disabled}
         className={buttonClass}
         style={style}
         onClick={e => onClick && onClick()}
       >
-        {(iconPosition == "left" || !iconPosition) && (
-          <IconContainer>{icon}</IconContainer>
-        )}
+        {(iconPosition == "left" || !iconPosition) &&
+          (icon && <IconContainer>{icon}</IconContainer>)}
         {children}
         {iconPosition == "right" && <IconContainer>{icon}</IconContainer>}
       </Btn>
@@ -31,7 +42,9 @@ type Props = {
   color?: string;
   icon?: any;
   iconPosition?: "right" | "left";
-  theme?: "primary" | "secondary" | "warning" | "success";
+  theme?: "primary" | "secondary" | "warning" | "success" | "default";
+  disabled?: boolean;
+  type?: string;
 };
 
 const Btn = styled.button`
@@ -39,6 +52,7 @@ const Btn = styled.button`
   vertical-align: middle;
   display: inline-block;
   font-weight: 400;
+  min-width: 100px;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -48,20 +62,20 @@ const Btn = styled.button`
   transition: font-size 0.5s ease-in-out, padding 0.5s ease-in-out,
     color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  color: white;
+  color: ${props =>
+    props.theme.background == "transparent" ? "black" : "white"};
   background: ${props => props.theme.background};
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
-    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props =>
+    props.theme.background == "transparent"
+      ? ""
+      : `0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2)`};
   :hover {
     text-decoration: none;
     outline: 0;
-    box-shadow: 0 0 0.1rem 0.1rem ${props => props.theme.background};
     background: ${props => props.theme.background} !important;
   }
-  margin-left: 10px;
-  &:first-child {
-    margin-left: 0px;
-  }
+  margin: 5px 10px;
 `;
 
 const IconContainer = styled.span`
@@ -73,12 +87,15 @@ const themes: any = {
     background: "#375a8c"
   },
   secondary: {
-    background: "#0d47a1"
+    background: "#5a90dc"
   },
   warning: {
     background: "#c38665"
   },
   success: {
     background: "#517c4f"
+  },
+  default: {
+    background: "transparent"
   }
 };

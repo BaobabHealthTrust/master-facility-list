@@ -5,3 +5,17 @@ export const toggleFacilityFilter = () => {
     type: actions.toggleFacilityFilter
   };
 };
+
+export const setActivePage = (page: string) => {
+  return {
+    type: actions.setActivePage,
+    payload: page
+  };
+};
+
+export const setActiveFacilityPage = (page: string) => {
+  return {
+    type: actions.setActiveFacilityPage,
+    payload: page
+  };
+};

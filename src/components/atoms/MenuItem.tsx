@@ -1,14 +1,42 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { setActivePage } from "../../services/redux/actions/ui";
+import DropDownMenu from "../atoms/DropdownMenu";
 
 function MenuItem(props: Props) {
-  return <Container active={props.active}>{props.body}</Container>;
+  const { item, active, body, setActivePage, dropdown } = props;
+
+  return dropdown ? (
+    <DropDownMenu
+      active={active}
+      options={item.options}
+      menu={body}
+      onClickOption={() => setActivePage(item.name)}
+    />
+  ) : (
+    <Link
+      style={{ height: "100%" }}
+      to={item.link && item.link}
+      onClick={() => setActivePage(item.name)}
+    >
+      <Container active={active}>{body}</Container>
+    </Link>
+  );
 }
-export default MenuItem;
+
+export default connect(
+  null,
+  { setActivePage }
+)(MenuItem);
 
 type Props = {
   body: string | ReactElement;
   active: boolean;
+  item: any;
+  setActivePage: Function;
+  dropdown?: boolean;
 };
 
 const Container = styled<any>("div")`

@@ -11,5 +11,12 @@ export default {
   fetchDistricts: "FETCH_DISTRICTS",
   fetchOwners: "FETCH_OWNERS",
   fetchFacilities: "FETCH_FACILITIES",
+  fetchFacilityTypes: "FETCH_FACILITY_TYPES",
+  fetchCurrentBasic: "FETCH_CURRENT_BASIC",
+  fetchCurrentResources: "FETCH_CURRENT_RESOURCES",
+  fetchCurrentServices: "FETCH_CURRENT_SERVICES",
+  fetchCurrentUtilities: "FETCH_CURRENT_UTILITIES",
+  setActivePage: "SET_ACTIVE_PAGE",
+  setActiveFacilityPage: "SET_ACTIVE_FACILITY_PAGE",
   dependacyError: "DEPENDANCY_ERROR"
 };

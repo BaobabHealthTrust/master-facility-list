@@ -1,25 +1,40 @@
 import React from "react";
+import styled from "styled-components";
+import { Grid } from "@material-ui/core";
 
 export default () => {
   return (
-    <div style={{ height: "60px" }}>
-      <footer className="light-blue darken-4 align-middle">
-        <div className="row px-4 py-4 mx-0 my-0">
-          <div className="col s6 m6">
+    <footer>
+      <Container>
+        <Grid container>
+          <Grid item xs={12} sm={12} md={6}>
             <img
               style={{ width: 90, height: 30 }}
               src="/static/images/kuunika_logo.png"
             />
-          </div>
+          </Grid>
 
-          <div className="col s6 m6 white-text text-right">
-            <span className="mfl-copy text-left mt-4">
+          <Grid item xs={12} sm={12} md={6} style={{ textAlign: "right" }}>
+            <span style={{ alignContent: "right" }}>
               © {new Date().getFullYear()} Copyright, Republic of Malawi,
               Ministry of Health
             </span>
-          </div>
-        </div>
-      </footer>
-    </div>
+          </Grid>
+        </Grid>
+      </Container>
+    </footer>
   );
 };
+
+const Container = styled.div`
+  min-height: 60px;
+  background: #0d47a1;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
+  @media (max-width: 440px) {
+    font-size: 12px;
+  }
+`;
+

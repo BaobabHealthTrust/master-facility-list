@@ -6,6 +6,9 @@ import { Header, Footer } from "../components/organisms";
 import Content from "../components/organisms/Content";
 import Dashboard from "../scenes/Dashboard";
 import Facilities from "../scenes/Facility";
+import AddFacility from "../scenes/Facility/CreateFacility";
+import ViewFacility from "../scenes/Facility/ViewFacility";
+import UpdateFacility from "../scenes/Facility/UpdateFacility";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -17,7 +20,8 @@ import {
   fetchRegulatoryStatuses,
   fetchDistricts,
   fetchOperationalStatuses,
-  dispatchDependancyError
+  dispatchDependancyError,
+  fetchFacilityTypes
 } from "../services/redux/actions/dependancies";
 import { fetchFacilities } from "../services/redux/actions/facilities";
 
@@ -33,7 +37,8 @@ const App: React.FC = (props: any) => {
     fetchDistricts,
     fetchOperationalStatuses,
     dispatchDependancyError,
-    fetchFacilities
+    fetchFacilities,
+    fetchFacilityTypes
   } = props;
 
   fetchUtilities().catch(() => {
@@ -73,18 +78,33 @@ const App: React.FC = (props: any) => {
   });
 
   fetchFacilities().catch(() => {});
+
+  fetchFacilityTypes().catch(() => {});
+
   return (
     <>
-      <Header />
-      <Content>
-        <Router>
+      <Router>
+        <Header />
+        <Content>
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/Facilities" component={Facilities} />
+            <Route exact path="/Facilities/add" component={AddFacility} />
+            <Route exact path="/Facilities/:id" component={ViewFacility} />
+            <Route
+              exact
+              path="/Facilities/:id/:page"
+              component={ViewFacility}
+            />
+            <Route
+              exact
+              path="/Facilities/:id/:page/edit"
+              component={UpdateFacility}
+            />
           </Switch>
-        </Router>
-      </Content>
-      <Footer />
+        </Content>
+        <Footer />
+      </Router>
     </>
   );
 };
@@ -102,6 +122,7 @@ export default connect(
     fetchDistricts,
     fetchOperationalStatuses,
     dispatchDependancyError,
-    fetchFacilities
+    fetchFacilities,
+    fetchFacilityTypes
   }
 )(App);
