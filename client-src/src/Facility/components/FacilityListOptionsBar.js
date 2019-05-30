@@ -2,16 +2,13 @@ import React from "react";
 import { isAdmin } from "../../helpers/utilities";
 import styled from "styled-components";
 import settings from "../../settings";
-import { MFLRevealButton } from "../../common";
 import { Link } from "react-router-dom";
 import { ButtonConfiguration } from "../../types/helper-types";
-import PropTypes from "prop-types";
+import SearchButton from "./Search/SearchButton";
 
-const RevealButtonWrapper = styled.div.attrs({
-  className: "hide-on-med-and-down"
-})`
-  margin-top: -10px;
-`;
+const ButtonsContainer = styled.div.attrs({
+  className: "flex flex-row w-full justify-between mt-5 mb-5"
+})``;
 
 export function FacilityListOptionsBar(props) {
   const buttons: ButtonConfiguration = [
@@ -31,18 +28,13 @@ export function FacilityListOptionsBar(props) {
     }
   ];
 
-  const _renderAdvancedSearchButton = (): ReactElement<Link> => (
-    <Link className="btn-flat" to="/facilities/search">
-      <i className="material-icons left">search</i>
-      <span>Advanced Search</span>
-    </Link>
-  );
-
   const _renderButtons = () =>
     buttons.map(button => <Button key={button.text} {...button} />);
 
   const _getWhereClause = (): whereClause => {
-    const { filter } = props;
+    const { filterOptions } = props;
+    const filter =
+      filterOptions.length > 0 ? props.filter.map(facility => facility.id) : [];
     return filter.length ? { id: { inq: filter } } : {};
   };
 
@@ -57,12 +49,17 @@ export function FacilityListOptionsBar(props) {
   };
 
   return (
-    <div className="flex flex-row w-full justify-between mt-5 mb-5">
-      {_renderAdvancedSearchButton()}
+    <ButtonsContainer>
+      <SearchButton
+        className="hide-on-med-and-down"
+        onClick={props.onClick}
+        open={props.open}
+      />
       {_renderButtons()}
       <div className="hide-on-small-only ml-auto">
         {isAdmin() && (
           <Button
+            margin="0"
             color="#517c4f"
             icon="add_circle"
             text="Add Facility"
@@ -71,15 +68,18 @@ export function FacilityListOptionsBar(props) {
           />
         )}
       </div>
-    </div>
+    </ButtonsContainer>
   );
 }
 
 export default function Button(props) {
   const { color, icon, text } = props;
+  const buttonClass = props.margin
+    ? `waves-effect btn`
+    : `mr-3 waves-effect btn`;
   return props.link ? (
     <Link
-      className={`ml-3 waves-effect btn`}
+      className={buttonClass}
       to={props.link}
       style={{ backgroundColor: color }}
     >
@@ -88,7 +88,7 @@ export default function Button(props) {
     </Link>
   ) : (
     <Link
-      className={`ml-3 waves-effect btn`}
+      className={buttonClass}
       style={{ backgroundColor: color }}
       to="#"
       onClick={() => props.action()}

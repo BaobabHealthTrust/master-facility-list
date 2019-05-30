@@ -9,7 +9,7 @@ describe("Facility List Spec", () => {
       .should("contain", "FACILITIES");
   });
   it("Shows Facilities Table", () => {
-    cy.get("table.MuiTable-root-30.Table-table-28")
+    cy.get("[class*='MuiTable']")
       .first()
       .should("be.visible");
   });
@@ -25,7 +25,9 @@ describe("Facility List Spec", () => {
       "DATE OPENED"
     ];
     var tableHeaders = [];
-    cy.get("table .MuiTableHead-root-31 tr th .SortingControl-sortLabelText-62")
+    cy.get("[class*=MuiTableHead] tr")
+      .first()
+      .find("th span>span")
       .each((el, index, lis) => {
         tableHeaders.push(el.context.innerHTML);
       })
@@ -36,6 +38,7 @@ describe("Facility List Spec", () => {
   var facilityIndex;
 
   it("Shows valid facility data", () => {
+    let rowSelector = "[class*='MuiTable'] tbody [class*=MuiTableRow]";
     cy.fetch_facilieties_list().then(res => {
       for (let testCount = 1; testCount <= 3; testCount++) {
         // get random facility index
@@ -44,56 +47,56 @@ describe("Facility List Spec", () => {
             ? Math.floor(Math.random() * 9)
             : Math.floor(Math.random() * (res.length - 1));
         //   check code
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .first()
           .should("contain", res[facilityIndex].code);
 
         // check name
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(1)
           .should("contain", res[facilityIndex].name);
 
         // check common name
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(2)
           .should("contain", res[facilityIndex].common);
 
         // check ownership
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(3)
           .should("contain", res[facilityIndex].ownership);
 
         // check type
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(4)
           .should("contain", res[facilityIndex].type);
 
         // check status
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(5)
           .should("contain", res[facilityIndex].status);
 
         // check district
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(6)
           .should("contain", res[facilityIndex].district);
 
         // check date opened
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
           .eq(7)

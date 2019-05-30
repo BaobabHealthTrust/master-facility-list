@@ -5,6 +5,7 @@ import UpdateUserModal from "../Update";
 import { connect } from "react-redux";
 import { postFormData, fetchUsers } from "../../actions/index";
 import moment from "moment";
+import { Toast } from "../../common";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css

@@ -1,6 +1,18 @@
 //@flow
 export { default as addSearchValues } from "./add-search-values.js";
 export { default as downloadFacilities } from "./download-facilities.js";
+
+export { basicAdvancedFilter as filterFacilities } from "./advanced-search";
+export {
+  resourcesAdvancedFilter as filterFacilitiesByResources
+} from "./advanced-search";
+export {
+  utilitiesAdvancedFilter as filterFacilitiesByUtilities
+} from "./advanced-search";
+export {
+  servicesAdvancedFilter as filterFacilitiesByServices
+} from "./advanced-search";
+
 export {
   default as fetchAdvancedSearchResults
 } from "./fetch-advanced-search-results";
@@ -80,3 +92,4 @@ export {
 export { default as fetchTotalFacilities } from "./fetch-total-facilities";
 export { default as setUserDetails } from "./set-user-details";
 export { default as resetUserDetails } from "./reset-user-details";
+export { toggleAdvancedSearch } from "./ui";

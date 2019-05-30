@@ -13,7 +13,16 @@ export default (
     regulatoryStatuses: [],
     searchResourceTypes: [],
     serviceInstance: [],
-    isLoading: {},
+    isLoading: {
+      fetchResourceTypes:true,
+      fetchUtilityTypes:true,
+      fetchDistricts:true,
+      fetchOperationalStatuses:true,
+      fetchFacilityTypes:true,
+      fetchFacilityOwners:true,
+      fetchRegulatoryStatuses:true,
+      fetchServiceTypes:true
+    },
     isNetworkError: false
   },
   action
@@ -22,15 +31,31 @@ export default (
     _.split(action.type, "_", _.split(action.type, "_").length - 1),
     "_"
   );
-
+  let formattedActionGroup = _.camelCase(actionGroup);
+  
   switch (action.type) {
+    case "DEPENDANCY_ERROR":return {
+      ...state,
+      isLoading: {
+        ...state.isLoading,
+        fetchResourceTypes:false,
+      fetchUtilityTypes:false,
+      fetchDistricts:false,
+      fetchOperationalStatuses:false,
+      fetchFacilityTypes:false,
+      fetchFacilityOwners:false,
+      fetchRegulatoryStatuses:false,
+      fetchServiceTypes:false
+      },
+      isNetworkError:true
+    };
     case "FETCH_RESOURCE_TYPES_FULFILLED":
       return {
         ...state,
         resourceTypes: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_UTILITY_TYPES_FULFILLED":
@@ -39,7 +64,7 @@ export default (
         utilityTypes: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_DISTRICTS_FULFILLED":
@@ -48,7 +73,7 @@ export default (
         districts: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_OPERATIONAL_STATUSES_FULFILLED":
@@ -57,7 +82,7 @@ export default (
         operationalStatuses: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_FACILITY_TYPES_FULFILLED":
@@ -66,7 +91,7 @@ export default (
         facilityTypes: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_FACILITY_OWNERS_FULFILLED":
@@ -75,7 +100,7 @@ export default (
         facilityOwners: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_REGULATORY_STATUSES_FULFILLED":
@@ -84,7 +109,7 @@ export default (
         regulatoryStatuses: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
     case "FETCH_SERVICE_TYPES_FULFILLED":
@@ -93,7 +118,7 @@ export default (
         serviceTypes: action.payload.data,
         isLoading: {
           ...state.isLoading,
-          [`${actionGroup}`]: false
+          [`${formattedActionGroup}`]: false
         }
       };
 

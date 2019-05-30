@@ -6,7 +6,14 @@ import { connect } from "react-redux";
 import yup from "yup";
 import "../../App.css";
 import { Toast } from "../../common";
+import styled from "styled-components";
 
+const CardTitle = styled.div.attrs({
+  className: "mfl-card-title  bg-blue"
+})`
+  margin: -24px;
+  margin-bottom: 24px;
+`;
 export class CreateUser extends Component {
   state = {
     success: true,
@@ -28,23 +35,28 @@ export class CreateUser extends Component {
   schema = yup.object().shape({
     firstname: yup
       .string()
+      .typeError("First name is required")
       .min(3)
       .required("First name is required"),
     lastname: yup
       .string()
+      .typeError("last name is required")
       .min(3)
       .required("last name is required"),
     username: yup
       .string()
+      .typeError("username is required")
       .min(6)
       .required("username is required"),
     email: yup
       .string()
+      .typeError("enter a valid email address")
       .email("enter a valid email address")
       .required("email is required"),
 
     password: yup
       .string()
+      .typeError("atleast 8 characters long")
       .min(8, "atleast 8 characters long")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
@@ -53,6 +65,7 @@ export class CreateUser extends Component {
       .required("password is required"),
     confirmPassword: yup
       .string()
+      .typeError("Passwords do not match")
       .oneOf([yup.ref("password"), null], "Passwords do not match")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
@@ -62,7 +75,7 @@ export class CreateUser extends Component {
   });
 
   _handleSubmit = (values, actions) => {
-    const { postFormData, userCreated, fetchUsers } = this.props;
+    const { postFormData, fetchUsers } = this.props;
 
     postFormData(
       { data: values },
@@ -77,7 +90,6 @@ export class CreateUser extends Component {
           actions.resetForm();
           document.getElementById("closeButton").click();
           fetchUsers();
-          return;
         }
       })
       .catch(() => {
@@ -125,7 +137,7 @@ export class CreateUser extends Component {
   }) => (
     <Modal
       trigger={this.props.trigger()}
-      header="Add Admin User"
+      header={<CardTitle>Add User</CardTitle>}
       actions={this._renderModalActions(handleSubmit, isSubmitting)}
       modalOptions={{
         dismissible: false

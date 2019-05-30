@@ -3,10 +3,12 @@ const initialState = {
   userCreated: false,
   userUpdated: false,
   passwordChanged: false,
-  loggedInUser: {
-    token: sessionStorage.getItem("token"),
-    name: sessionStorage.getItem("firstname")
-  },
+  loggedInUser: sessionStorage.getItem("user")
+    ? {
+        ...JSON.parse(sessionStorage.getItem("user")),
+        name: JSON.parse(sessionStorage.getItem("user")).firstname
+      }
+    : { token: null, name: null },
   userAccessTokens: [],
   validationErrors: []
 };

@@ -22,7 +22,11 @@ const Row = styled.div.attrs({
 
 const MainContainer = styled.div.attrs({
   className: "col m8 s12"
-})``;
+})`
+  @media (min-width: 620px) {
+    padding-right: 60px !important;
+  }
+`;
 
 const AsideContainer = styled.div.attrs({
   className: "col m4 s12"
@@ -30,13 +34,9 @@ const AsideContainer = styled.div.attrs({
 
 class MflFeedback extends Component {
   // TODO: show loading state upon sending user feedback
-  componentDidMount() {
-    footerResizer();
-  }
-
   _renderLinks = () => (
     <ul className="mfl-abm">
-      <li className="black-text text-lighten-2">
+      <li className="text-lighten-2 mfl-useful-links-container">
         <span className="mfl-about-icon">
           <i className="material-icons">file_download</i>
         </span>
@@ -48,7 +48,7 @@ class MflFeedback extends Component {
           Download guidelines
         </a>
       </li>
-      <li className="black-text text-lighten-2">
+      <li className="text-lighten-2 mfl-useful-links-container">
         <span className="mfl-about-icon">
           <i className="material-icons">insert_link</i>
         </span>
@@ -85,11 +85,11 @@ class MflFeedback extends Component {
               <FeedbackForm />
             </MainContainer>
             <AsideContainer>
+              <Heading>Instructions</Heading>
+              {this._renderInstructions()}
               <Heading>Useful Links</Heading>
               {this._renderLinks()}
               <TopMargin />
-              <Heading>Instructions</Heading>
-              {this._renderInstructions()}
             </AsideContainer>
           </Row>
         </Container>

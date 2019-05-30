@@ -25,7 +25,12 @@ import styled, { withTheme } from "styled-components";
 
 const Title = styled.div`
   font-size: 24px;
-  margin-bottom: -40px;
+  margin-bottom: -3.5rem;
+  margin-top: 3rem;
+  margin-left: 300px;
+  position: relative;
+  z-index: 9999;
+  color: white;
 `;
 
 const styles = () => ({
@@ -86,6 +91,7 @@ class MflGrid extends React.Component {
     return (
       <React.Fragment>
         <Paper>
+          <Title className="hide-on-small-only">{this.props.title}</Title>
           <Grid rows={this.props.rows} columns={this.props.columns}>
             <SortingState defaultSorting={this.props.defaultSorting} />
             <IntegratedSorting />
@@ -98,7 +104,10 @@ class MflGrid extends React.Component {
             <SearchState />
             <IntegratedFiltering />
             <Table tableComponent={TableComponent} rowComponent={TableRow} />
-            <TableHeaderRow showSortingControls />
+            <TableHeaderRow
+              showSortingControls
+              titleComponent={<Table.Title>{this.props.title}</Table.Title>}
+            />
             <ToolBarComponent />
             <SearchPanel
               style={{

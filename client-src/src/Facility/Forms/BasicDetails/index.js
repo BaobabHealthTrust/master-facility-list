@@ -5,11 +5,7 @@ import { BasicDetailsFormProps } from "../../../types/helper-types";
 import { basicSchema } from "../schema";
 import { Formik } from "formik";
 import styled from "styled-components";
-import _ from "lodash";
-
-const Container = styled.div.attrs({
-  className: "container"
-})``;
+import { isEmpty } from "lodash";
 
 class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
   componentWillReceiveProps(nextProp) {
@@ -33,7 +29,7 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     let errors = await this.props.onSubmit({
       ...values
     });
-    if (!_.isEmpty(errors)) {
+    if (!isEmpty(errors)) {
       setErrors({
         facilityName: errors.facility_name ? errors.facility_name[0] : "",
         commonName: errors.common_name ? errors.common_name[0] : "",
@@ -47,15 +43,13 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
 
   render() {
     return (
-      <Container>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.initalValues}
-          validationSchema={basicSchema}
-          onSubmit={this._onNext}
-          render={props => <Form {...this.props} {...props} />}
-        />
-      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.initalValues}
+        validationSchema={basicSchema}
+        onSubmit={this._onNext}
+        render={props => <Form {...this.props} {...props} />}
+      />
     );
   }
 }

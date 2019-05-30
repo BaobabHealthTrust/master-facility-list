@@ -8,7 +8,6 @@ import {
 } from "./components";
 import FacilitiesMap from "../Features/FacilitiesMap";
 import { connect } from "react-redux";
-
 import {
   FacilityService,
   Facility,
@@ -22,6 +21,11 @@ import { Button } from "react-materialize";
 import footerResizer from "../helpers/footerResize";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import {
+  removeSearchValues,
+  addSearchValues,
+  toggleAdvancedSearch
+} from "../actions";
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -50,6 +54,10 @@ type State = {
   districts: Array<String>
 };
 
+const Container = styled.div`
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+`;
 const MapContainer = styled.div.attrs({
   className: "col s12 m3 hide-on-small-only"
 })`
@@ -61,7 +69,6 @@ const WelcomeCardContainer = styled.div.attrs({ className: "row" })`
   position: sticky;
   top: -50px;
   z-index: 100;
-  background: white;
 `;
 const CallToAction = styled.div.attrs({ className: "w-full p-8 mb-8" })`
   background: rgba(43, 43, 104, 1);
@@ -156,24 +163,58 @@ class DashboardHome extends Component<Props, State> {
       }, 0);
     return [...mainOwnerShips, { name: "Other", count: otherOwnershipsCount }];
   };
-  regulatoryBarData = () =>
-    this.generateBarChartData(
+  regulatoryBarData = () => {
+    const data = this.generateBarChartData(
       "regulatoryStatuses",
       "facility_regulatory_status",
       "regulatoryStatus"
     );
+
+    const registered = data
+      .filter(val => val.name == "Registered")
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    const notRegistered = data
+      .filter(val => val.name == "Not Registered")
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    const pending = data
+      .filter(val => val.name != "Registered" && val.name != "Not Registered")
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    return [
+      { name: "Registered", value: registered },
+      { name: "Pending", value: notRegistered },
+      { name: "Not Registered", value: pending }
+    ];
+  };
+
   operationalBarData = () => {
     const data = this.generateBarChartData(
       "operationalStatuses",
       "facility_operational_status",
       "status"
     );
-    return data.map(d => {
-      return {
-        name: d.name,
-        value: d.count
-      };
-    });
+
+    const opened = data
+      .filter(val => val.name == "Functional")
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    const tempClosed = data
+      .filter(val => val.name == "Closed (Temporary)")
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    const closed = data
+      .filter(
+        val => val.name != "Functional" && val.name != "Closed (Temporary)"
+      )
+      .reduce((acc, cur) => Number(acc) + Number(cur.count), 0);
+
+    return [
+      { name: "Functional", value: opened },
+      { name: "Closed (Temporary)", value: tempClosed },
+      { name: "Closed", value: closed }
+    ];
   };
 
   totalFacilities = () =>
@@ -187,7 +228,26 @@ class DashboardHome extends Component<Props, State> {
     await this.setState({ districts });
   };
 
-  onClick = async event => {
+  onSummaryCardClick = (facilityType = "all") => {
+    this.props.removeSearchValues(null, "REMOVE_ALL_SEARCH_VALUES");
+
+    if (facilityType != "all") {
+      facilityType = this.props.facilityTypes.filter(
+        type => type.facility_type == facilityType
+      )[0];
+      let val = {
+        type: "facilityTypes",
+        id: facilityType.id,
+        label: facilityType.facility_type
+      };
+      if (!this.props.advancedSearchOpen) this.props.toggleAdvancedSearch();
+      this.props.addSearchValues(val, "ADD_ADVANCED_SEARCH_VALUE");
+    }
+
+    this.props.history.push("/facilities");
+  };
+
+  onMapClick = async event => {
     const district = event.target.id;
     if (this.state.districts.includes(district)) {
       const districts = this.state.districts.filter(d => d != district);
@@ -210,9 +270,9 @@ class DashboardHome extends Component<Props, State> {
   _renderMap = () => (
     <MapContainer>
       <FacilitiesMap
-        onClick={this.onClick}
+        onClick={this.onMapClick}
         districts={this.state.districts}
-        height={600}
+        height={680}
       />
     </MapContainer>
   );
@@ -234,26 +294,31 @@ class DashboardHome extends Component<Props, State> {
         count={this.totalFacilities()}
         title="Total Facilities"
         icon="hospital"
+        onClick={() => this.onSummaryCardClick()}
       />
       <FacilitySummaryCard
         count={this.facilitiesOfType("District Hospital")}
         title="Dist Hospitals"
         icon="district"
+        onClick={() => this.onSummaryCardClick("District Hospital")}
       />
       <FacilitySummaryCard
         count={this.facilitiesOfType("Health Centre")}
         title="Health Centres"
         icon="normal_hospital"
+        onClick={() => this.onSummaryCardClick("Health Centre")}
       />
       <FacilitySummaryCard
         count={this.facilitiesOfType("Dispensary")}
         title="Dispensaries"
         icon="clinic"
+        onClick={() => this.onSummaryCardClick("Dispensary")}
       />
       <FacilitySummaryCard
         count={this.facilitiesOfType("Health Post")}
         title="Health Posts"
         icon="tent"
+        onClick={() => this.onSummaryCardClick("Health Post")}
       />
     </div>
   );
@@ -273,9 +338,9 @@ class DashboardHome extends Component<Props, State> {
   _renderRegulatoryChart = () => (
     <div className="col s12 m6" id="regulatoryStatusContainer">
       <OuterChartSurface>
-        <BarChart
+        <PieChart
           title="Facilities By License Status"
-          colorIndex={0}
+          colorIndex={2}
           data={this.regulatoryBarData()}
           width={this.state.regulatoryStatusContainerWidth}
         />
@@ -287,6 +352,7 @@ class DashboardHome extends Component<Props, State> {
     <div className="col s12 m6" id="operationalStatusContainer">
       <OuterChartSurface>
         <PieChart
+          title="Facilities By Operational Status"
           data={this.operationalBarData()}
           width={this.state.operationalStatusContainerWidth}
         />
@@ -308,8 +374,8 @@ class DashboardHome extends Component<Props, State> {
   );
   render() {
     return (
-      <Fragment>
-        <div className="row mt-6">
+      <Container>
+        <div className="row pt-6">
           {this._renderMap()}
           <div className="col s12 m9">
             {this._renderWelcomeContainer()}
@@ -317,18 +383,13 @@ class DashboardHome extends Component<Props, State> {
             {this._renderFacilitySummaryCards()}
 
             <div className="row hide-on-small-only">
-              {this._renderCallToAction()}
-
               {this._renderRegulatoryChart()}
 
               {this._renderOperationalStatusChart()}
             </div>
-            <div className="row hide-on-small-only">
-              {this._renderOwnershipStatusChart()}
-            </div>
           </div>
         </div>
-      </Fragment>
+      </Container>
     );
   }
 }
@@ -341,11 +402,12 @@ const mapStateToProps = store => {
     regulatoryStatuses: store.dependancies.regulatoryStatuses,
     dependancyIsLoading: store.dependancies.isLoading,
     dependancyIsNetworkError: store.dependancies.isNetworkError,
-    facilityTypes: store.dependancies.facilityTypes
+    facilityTypes: store.dependancies.facilityTypes,
+    advancedSearchOpen: store.ui.advancedSearchOpen
   };
 };
 
 export default connect(
   mapStateToProps,
-  {}
+  { removeSearchValues, addSearchValues, toggleAdvancedSearch }
 )(DashboardHome);

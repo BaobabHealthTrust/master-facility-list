@@ -15,8 +15,22 @@ class Navbar extends Component {
     };
   }
 
+  defaultSearchIcon = `
+    <i
+      class="btn ml-4 mt-2  material-icons"
+      style=
+        "background-color: #94afd0;
+        color: #496384;
+        padding: 0 1.5rem"
+  
+    >
+      search
+    </i>
+  `;
+
   maximizeSearch(e) {
     document.getElementById("searchbar").className = "mfl-full-screen-search";
+    document.getElementById("searchLabelContainer").innerHTML = "";
   }
 
   restoreSearch(e) {
@@ -25,7 +39,10 @@ class Navbar extends Component {
         this.props.hideSearchContainer(true);
 
         document.getElementById("searchbar").className =
-          "left mfl-normal-search hide-on-small-only";
+          "left hide-on-small-only mfl-normal-search";
+        document.getElementById(
+          "searchLabelContainer"
+        ).innerHTML = this.defaultSearchIcon;
       }
     }, 100);
   }
@@ -39,23 +56,37 @@ class Navbar extends Component {
     return (
       <div className="header">
         <nav>
-          <div className="nav-wrapper blue darken-4">
-            <a href="/" className="center hide-on-med-and-up">
+          <div
+            className="nav-wrapper blue darken-4"
+            style={{ fontSize: "28px" }}
+          >
+            <a href="/" className="center hide-on-med-and-up mfl-nav-title">
               Master Health Facility Registry
             </a>
 
             <div className="left hide-on-med-and-down mfl-pl-10">
               <a href="/">
-                <img src={logo} alt="logo" width="60" />
+                <img
+                  src={logo}
+                  alt="logo"
+                  width="70"
+                  style={{ padding: "5px" }}
+                />
               </a>
             </div>
 
-            <a href="" data-activates="mobile-demo" className="button-collapse">
-              <i className="material-icons">menu</i>
+            <a
+              href="#"
+              data-activates="mobile-demo"
+              className="button-collapse"
+            >
+              <i style={{ lineHeight: "inherit" }} className="material-icons">
+                menu
+              </i>
             </a>
 
-            <div className="left hide-on-med-and-down mfl-pl-2">
-              <a href="/">Master Health Facility Registry</a>
+            <div className="left hide-on-med-and-down mfl-nav-title">
+              <a href="#">{`Master Health Facility Registry`.toUpperCase()}</a>
             </div>
 
             <form
@@ -73,8 +104,21 @@ class Navbar extends Component {
                   ref="searchInput"
                   onKeyUp={debounce(this.handleQuickSearch, 1000)}
                 />
-                <label className="label-icon" htmlFor="search">
-                  <i className="material-icons">search</i>
+                <label
+                  id="searchLabelContainer"
+                  className="label-icon"
+                  htmlFor="search"
+                >
+                  <i
+                    className="btn ml-4 mt-2  material-icons"
+                    style={{
+                      backgroundColor: "#94afd0",
+                      color: "#496384",
+                      padding: "0 1.5rem"
+                    }}
+                  >
+                    search
+                  </i>
                 </label>
                 <i
                   className="material-icons"
@@ -88,7 +132,10 @@ class Navbar extends Component {
           </div>
         </nav>
         {!this.props.isSearchContainerHidden ? (
-          <div className="mfl-search-results-container">
+          <div
+            className="mfl-search-results-container"
+            style={{ zIndex: "1300" }}
+          >
             <div className="container">
               <h5 className="mt-8 mb-4">Search Results (Top 5)</h5>
               {this.props.searchResults.length === 0 && (

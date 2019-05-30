@@ -26,10 +26,6 @@ type Props = {
   patchResponse: any
 };
 
-const Container = styled.div.attrs({
-  className: "container"
-})``;
-
 class ServicesForm extends React.Component<Props> {
   state = {
     service: {
@@ -290,25 +286,23 @@ class ServicesForm extends React.Component<Props> {
 
   render() {
     return (
-      <Container>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.props.initalValues}
-          validationSchema={this.schema}
-          onSubmit={this._onNext}
-          render={props => (
-            <Form
-              {...this.props}
-              {...props}
-              onChange={(e, level) => this._onChange(e, level)}
-              {...this.state}
-              addService={service => this._addService(service)}
-              filteredServices={services => this._filteredServices(services)}
-              renderSelectedServices={() => this._renderSelectedServices()}
-            />
-          )}
-        />
-      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.props.initalValues}
+        validationSchema={this.schema}
+        onSubmit={this._onNext}
+        render={props => (
+          <Form
+            {...this.props}
+            {...props}
+            onChange={(e, level) => this._onChange(e, level)}
+            {...this.state}
+            addService={service => this._addService(service)}
+            filteredServices={services => this._filteredServices(services)}
+            renderSelectedServices={() => this._renderSelectedServices()}
+          />
+        )}
+      />
     );
   }
 }

@@ -7,19 +7,31 @@ import Resources from "./Resources";
 import Utilities from "./Utilities";
 import Services from "./Services";
 import { connect } from "react-redux";
-import { Button } from "react-materialize";
-import SecondaryMenu from "../../common/SecondaryMenu";
+import { Row, Col } from "react-materialize";
+import SecondaryMenu from "./components/Menu";
 import { MFLRevealButton } from "../../common";
 import { ShowError, FetchAllDependancies, Loader } from "../../common";
 import UpdateFacility from "../Update/UpdateFacility";
 import settings from "../../settings";
 import { postFormData } from "../../actions";
-import { ButtonConfiguration } from "../../types/helper-types";
 import { Facility } from "../../types/model-types";
-import { Card, Col } from "react-materialize";
+import { Card } from "react-materialize";
 import { confirmAlert } from "react-confirm-alert";
-import moment from "moment";
 import styled from "styled-components";
+import OptionsBar from "./components/OptionsBar";
+import MFLGoogleMapBg from "../../common/MFLGoogleMapBg";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import FacilityTitle from "../../common/FacilityViewTitle";
+import { isAdmin } from "../../helpers/utilities";
+import {
+  faPlus,
+  faHospital,
+  faEnvelope,
+  faBed,
+  faWifi,
+  faStethoscope
+} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   match: any,
@@ -28,30 +40,30 @@ type Props = {
   response: Partial<Facility>
 };
 
-const Container = styled.div``;
-
-const TitleBar = styled.div.attrs({
-  className: "container mfl-titles flex flex-row justify-between"
-})``;
-
-const FacilityName = styled.h5``;
-
-const StatusBadge = styled.span`
-  float: none;
+const Container = styled.div.attrs({})`
+  padding: 30px 40px;
+  @media (max-width: 390px) {
+    padding: 1rem 1.5rem;
+  }
 `;
 
-const FacilityCodeDistrict = styled.h6``;
+const FacilityName = styled.div.attrs({
+  className: "mfl-titles flex flex-row justify-between"
+})``;
 
-const LastUpdated = styled.small`
-  font-size: "80%";
-  font-style: "italic";
-  text-transform: "capitalize";
-  color: "#999";
+const Content = styled.div`
+  padding: 0 2.5rem;
+  @media (max-width: 390px) {
+    padding: 1rem 0rem;
+  }
 `;
 
-const Tools = styled.div.attrs({
-  className: "mt-4 hide-on-med-and-down"
-})``;
+const DetailsContainer = styled.div`
+  margin-top: "10px";
+  @media (min-width: 390px) {
+    margin-top: ${props => (props.isDetailsPage ? "-600px" : "10px")};
+  }
+`;
 
 class FacilityDetails extends React.Component<Props> {
   state = {
@@ -72,6 +84,11 @@ class FacilityDetails extends React.Component<Props> {
     const containerHeight = window.innerHeight - 128;
     this.setState({ containerHeight });
   }
+
+  isDetailsPage = () => {
+    const pathArr = this.props.location.pathname.split("/");
+    return pathArr[pathArr.length - 1] != "edit";
+  };
 
   onClick = async (onClose, e) => {
     await this.props.postFormData(
@@ -159,129 +176,14 @@ class FacilityDetails extends React.Component<Props> {
     </Switch>
   );
 
-  _renderTitleBar = () => {
-    const { location, current, match } = this.props;
-    const pathArr: string[] = location.pathname.split("/");
-    return (
-      <TitleBar>
-        <div>
-          <FacilityName>
-            <FetchAllDependancies />
-            {current.facility_name}
-            {current.operationalStatus && (
-              <StatusBadge
-                id="badge"
-                className={this._getBadgeClass()}
-                data-badge-caption={
-                  current.operationalStatus.facility_operational_status
-                }
-              />
-            )}
-          </FacilityName>
-          <FacilityCodeDistrict>
-            {current.facility_code},&nbsp;
-            {current.district && current.district.district_name}
-            &nbsp;&nbsp;
-            <LastUpdated>
-              Last Updated - {moment(current.updated_at).format("LLLL")}
-            </LastUpdated>
-          </FacilityCodeDistrict>
-        </div>
-
-        <Tools>
-          {pathArr[pathArr.length - 1] !== "edit" &&
-            sessionStorage.getItem("token") && (
-              <MFLRevealButton
-                buttonConfiguration={this.buttonConfiguration}
-                mainButtonConfiguration={{
-                  color: "teal",
-                  icon: "more_horiz"
-                }}
-              />
-            )}
-          {pathArr[pathArr.length - 1] !== "edit" &&
-            !sessionStorage.getItem("token") && (
-              <Button
-                className="mt-4 flex flex-row align-center"
-                onClick={() => {
-                  window.open(
-                    `${settings.hostname}/api/facilities/download/${
-                      match.params.id
-                    }`
-                  );
-                }}
-              >
-                <i className="material-icons">file_download</i>
-                <div>Download</div>
-              </Button>
-            )}
-        </Tools>
-      </TitleBar>
-    );
-  };
   _renderAlert = () => {
     if (this.props.error.message === "Network Error") return <ShowError />;
     if (this.props.error.response)
       return <ShowError message="This Resource does not exit" />;
   };
 
-  _getBadgeClass = () => {
-    const { current } = this.props;
-    let badgeClass = "new badge";
-    if (current.operationalStatus) {
-      switch (current.operationalStatus.facility_operational_status) {
-        case "Closed":
-          badgeClass = "new badge red";
-          break;
-        case "Closed (Temporary)":
-          badgeClass = "new badge deep-orange";
-          break;
-        case "Functional":
-          badgeClass = "new badge green";
-          break;
-        case "Pending Operation (Under construction)":
-          badgeClass = "new badge orange";
-          break;
-        case "Pending Operation (Construction Complete)":
-          badgeClass = "new badge brown";
-          break;
-        default:
-          break;
-      }
-    }
-    return badgeClass;
-  };
-
-  buttonConfiguration: ButtonConfiguration = [
-    {
-      icon: "delete",
-      action: () => this._handleArchive(),
-      color: "red",
-      name: "Delete Facility"
-    },
-    {
-      icon: "edit",
-      action: () =>
-        this.setState({ pushTo: `${this.props.location.pathname}/edit` }),
-      color: "green",
-      name: "Edit Facility"
-    },
-    {
-      icon: "file_download",
-      action: () =>
-        window.open(
-          `${settings.hostname}/api/facilities/download/${
-            this.props.match.params.id
-          }`
-        ),
-      color: "blue",
-      name: "Download Facility Details"
-    }
-  ];
-
   render() {
     const { match } = this.props;
-
     const id = match.params.id;
     const summaryLink = `/facilities/${id}/summary`;
     const locationsLink = `/facilities/${id}/locations`;
@@ -291,49 +193,102 @@ class FacilityDetails extends React.Component<Props> {
 
     const links = [
       {
+        icon: <FontAwesomeIcon icon={faHospital} />,
         name: "summary",
-        displayName: "Summary".toUpperCase(),
+        displayName: "Facilty Details",
         redirect: summaryLink,
         clickHandler: null
       },
       {
+        icon: <FontAwesomeIcon icon={faEnvelope} />,
         name: "contactsandlocations",
-        displayName: "Contacts and Locations".toUpperCase(),
+        displayName: "Facility Contacts",
         redirect: locationsLink,
         clickHandler: null
       },
       {
+        icon: <FontAwesomeIcon icon={faBed} />,
         name: "resources",
-        displayName: "resources".toUpperCase(),
+        displayName: "Facility Resources",
         redirect: resourcesLink,
         clickHandler: null
       },
       {
+        icon: <FontAwesomeIcon icon={faWifi} />,
         name: "utilities",
-        displayName: "utilities".toUpperCase(),
+        displayName: "Facility Utilities",
         redirect: utilitiesLink,
         clickHandler: null
       },
       {
+        icon: <FontAwesomeIcon icon={faStethoscope} />,
         name: "services",
-        displayName: "services".toUpperCase(),
+        displayName: "Facility Services",
         redirect: servicesLink,
         clickHandler: null
       }
     ];
 
+    const position =
+      this.props.current.geolocations &&
+      this.props.current.geolocations.latitude != ""
+        ? {
+            lat: parseFloat(this.props.current.geolocations.latitude),
+            lng: parseFloat(this.props.current.geolocations.longitude)
+          }
+        : { lat: -13.9626121, lng: 33.7741195 };
+
     return (
-      <Container style={{ minHeight: this.state.containerHeight }}>
+      <Container>
+        <FetchAllDependancies />
         {this.state.pushTo && <Redirect to={this.state.pushTo} />}
         {this.state.redirect && <Redirect to="/facilities" />}
+        <Row>
+          <Col m={2} s={12} style={{ padding: "0px" }}>
+            <SecondaryMenu links={links} defaultActivePage={"summary"} />
+          </Col>
+          <Col m={10} s={12}>
+            <Content>
+              <FacilityName>
+                <FacilityTitle
+                  icon={<FontAwesomeIcon icon={faHospital} />}
+                  title={this.props.current.facility_name}
+                />
+                <div className="hide-on-small-only ml-auto">
+                  {isAdmin() && (
+                    <Button
+                      margin="0"
+                      color="#517c4f"
+                      icon="add_circle"
+                      text="Add Facility"
+                      link="/facilities/add"
+                    />
+                  )}
+                </div>
+              </FacilityName>
 
-        <SecondaryMenu links={links} defaultActivePage={"summary"} />
-
-        {this._renderTitleBar()}
-
-        {this._renderAlert()}
-
-        {this.state.loading ? <Loader /> : this._renderRoutes()}
+              <OptionsBar
+                {...this.props}
+                handleArchive={() => {
+                  this._handleArchive();
+                }}
+              />
+              {this._renderAlert()}
+              {this.isDetailsPage() && (
+                <div className="hide-on-small-only">
+                  <MFLGoogleMapBg position={position} isMarkerShown />
+                </div>
+              )}
+              {this.state.loading ? (
+                <Loader />
+              ) : (
+                <DetailsContainer isDetailsPage={this.isDetailsPage()}>
+                  {this._renderRoutes()}
+                </DetailsContainer>
+              )}
+            </Content>
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -352,3 +307,30 @@ export default connect(
   mapStateToProps,
   { postFormData }
 )(FacilityDetails);
+
+function Button(props) {
+  const { color, icon, text } = props;
+  const buttonClass = props.margin
+    ? `waves-effect btn`
+    : `mr-3 waves-effect btn`;
+  return props.link ? (
+    <Link
+      className={buttonClass}
+      to={props.link}
+      style={{ backgroundColor: color }}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  ) : (
+    <Link
+      className={buttonClass}
+      style={{ backgroundColor: color }}
+      to="#"
+      onClick={() => props.onClick()}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  );
+}

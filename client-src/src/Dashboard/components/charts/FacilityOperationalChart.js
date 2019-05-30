@@ -44,7 +44,7 @@ export default class FacilityOperationalStatusChart extends Component<Props> {
     const chartDefinition = (
       <VictoryPie
         data={data}
-        colorScale={["#4caf50", "#ff9800", "#795548 ", "#ff5722 ", "#f44336"]}
+        colorScale={["#4caf50", "#ff9800", "#795548 "]}
         padding={0}
         style={pieStyle}
         theme={VictoryTheme.material}

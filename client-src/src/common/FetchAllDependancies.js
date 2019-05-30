@@ -15,21 +15,28 @@ import {
   fetchServices
 } from "../actions";
 import { connect } from "react-redux";
+import store from "../Store"
 
 class FetchAllDependancies extends React.Component<{}> {
+  dispatchError=()=>{
+    store.dispatch({
+      type: 'DEPENDANCY_ERROR',
+      payload:""
+  })}
+
   componentWillMount() {
-    this.props.fetchDistricts();
-    this.props.fetchOperationalStatuses();
-    this.props.fetchFacilityTypes();
-    this.props.fetchFacilityOwners();
-    this.props.fetchRegulatoryStatuses();
-    this.props.fetchResourceTypes();
-    this.props.fetchUtilityTypes();
-    this.props.fetchServiceTypes();
-    this.props.fetchResources();
-    this.props.fetchUtilities();
-    this.props.fetchServices();
-    this.props.fetchFacilities();
+    this.props.fetchDistricts().catch(()=>{this.dispatchError()});
+    this.props.fetchOperationalStatuses().catch(()=>{this.dispatchError()});
+    this.props.fetchFacilityTypes().catch(()=>{this.dispatchError()});
+    this.props.fetchFacilityOwners().catch(()=>{this.dispatchError()});
+    this.props.fetchRegulatoryStatuses().catch(()=>{this.dispatchError()});
+    this.props.fetchResourceTypes().catch(()=>{this.dispatchError()});
+    this.props.fetchUtilityTypes().catch(()=>{this.dispatchError()});
+    this.props.fetchServiceTypes().catch(()=>{this.dispatchError()});
+    this.props.fetchResources().catch(()=>{this.dispatchError()});
+    this.props.fetchUtilities().catch(()=>{this.dispatchError()});
+    this.props.fetchServices().catch(()=>{this.dispatchError()});
+    this.props.fetchFacilities().catch(()=>{this.dispatchError()});
   }
 
   render() {

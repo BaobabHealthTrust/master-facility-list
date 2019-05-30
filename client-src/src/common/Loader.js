@@ -29,6 +29,7 @@ export default () => {
             <div className="circle" />
           </div>
         </div>
+        
       </div>
     </Loader>
   );
