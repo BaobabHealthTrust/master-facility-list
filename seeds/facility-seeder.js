@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const server = require('../server/server');
 const faker = require('faker');
 const getIds = require('./seed-helpers').getIds;
@@ -11,7 +11,7 @@ const {
   District,
   Client,
   Resource,
-  Facility
+  Facility,
 } = server.models;
 
 module.exports = async (facilityCount) => {
@@ -32,14 +32,18 @@ module.exports = async (facilityCount) => {
       facility_date_opened: faker.date.recent(),
       facility_type_id: faker.random.arrayElement(facilityTypeIds),
       facility_owner_id: faker.random.arrayElement(ownerIds),
-      facility_operational_status_id: faker.random.arrayElement(operationalStatusIds),
-      facility_regulatory_status_id: faker.random.arrayElement(regulatoryStatusIds),
+      facility_operational_status_id: faker.random.arrayElement(
+        operationalStatusIds,
+      ),
+      facility_regulatory_status_id: faker.random.arrayElement(
+        regulatoryStatusIds,
+      ),
       district_id: faker.random.arrayElement(districtIds),
       client_id: faker.random.arrayElement(clientIds),
-      published_date: "2018-05-09"
-    }
+      published_date: '2018-05-09',
+    };
     facilities.push(facility);
   }
   console.log(`Creating ${facilities.length} Facilities`);
   return await Facility.create(facilities);
-}
+};
