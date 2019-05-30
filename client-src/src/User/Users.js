@@ -1,33 +1,34 @@
 import React, { Component } from "react";
-import footerResizer from "../helpers/footerResize";
-import { Icon, Button, Modal } from "react-materialize";
+import { isAdmin } from "../helpers/utilities";
+import { Icon } from "react-materialize";
+import { Button } from "./components/UserListOptionsBar";
 import { UserList } from "./components/index";
-import CreateUser from "./Create";
-import ViewUser from "./Show";
 import "../App.css";
 import styled from "styled-components";
 import { Toast } from "../common";
+import CreateUser from "./Create";
+import Title from "../common/FacilityViewTitle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div.attrs({
   className: "container"
 })``;
 
-const Heading = styled.h4``;
+const Heading = styled.div.attrs({
+  className: "px-2"
+})``;
 
 const FlexContainer = styled.div.attrs({
-  className: "flex flex-wrap pt-16"
+  className: "flex flex-row w-full justify-between mb-5"
 })``;
 
 const HaedingContainer = styled.div.attrs({
-  className: "w-full sm:w-full md:w-full lg:w-full xl:w-full px-2 mb-4"
+  className: "px-2 mt-5"
 })``;
 
 const UsersListContainer = styled.div.attrs({
-  className: "w-full sm:w-full md:w-full lg:w-2/3 xl:w-2/3 px-2"
-})``;
-
-const ViewUserContainer = styled.div.attrs({
-  className: "w-full sm:w-full md:w-full lg:w-1/3 xl:w-1/3 px-2"
+  className: "w-full sm:w-full md:w-full lg:w-full xl:w-full px-2 mb-5"
 })``;
 
 export class Users extends Component {
@@ -38,11 +39,6 @@ export class Users extends Component {
   redirect = target => {
     this.props.history.push(target);
   };
-
-  componentWillMount() {
-    const containerHeight = window.innerHeight - 128;
-    this.setState({ containerHeight });
-  }
 
   onUserSelected = user => {
     this.setState({
@@ -65,35 +61,36 @@ export class Users extends Component {
   };
 
   _renderCreateUserButton = () => (
-    <Button
-      floating
-      large
-      waves="light"
-      className="hide-on-small-only blue mfl-fl-right"
-      icon="add"
-    />
+    <div className="hide-on-small-only mt-5 ml-auto">
+      {isAdmin() && (
+        <Button
+          color="#517c4f"
+          icon="add_circle"
+          text="Add User"
+          action={() => {}}
+        />
+      )}
+    </div>
   );
+
   render() {
     return (
       <Container style={{ minHeight: this.state.containerHeight }}>
         <FlexContainer>
           <HaedingContainer>
             <Heading>
-              <Icon>people</Icon> USER MANAGEMENT
-              <CreateUser trigger={this._renderCreateUserButton} />
+              <Title
+                icon={<FontAwesomeIcon icon={faUsers} />}
+                title="User Management"
+              />
             </Heading>
           </HaedingContainer>
+          <CreateUser trigger={this._renderCreateUserButton} />
+        </FlexContainer>
+        <FlexContainer>
           <UsersListContainer>
             <UserList onUserSelected={this.onUserSelected} />
           </UsersListContainer>
-          <ViewUserContainer>
-            <ViewUser
-              user={this.state.user}
-              onUserArchived={this.onUserArchived}
-              onUserUpdated={this.onUserUpdated}
-              redirect={this.redirect}
-            />
-          </ViewUserContainer>
         </FlexContainer>
       </Container>
     );

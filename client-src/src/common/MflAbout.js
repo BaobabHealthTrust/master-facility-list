@@ -37,7 +37,7 @@ class MflAbout extends Component {
         <TopMargin />
         <div className="container mfl-modal-container">
           <div className="row">
-            <div className="col m8 s12">
+            <div className="col m8 s12" style={{ paddingRight: "60px" }}>
               <Heading>Purpose</Heading>
               <div className="text-xl text-grey-darker mfl-purpose">
                 <p>
@@ -75,7 +75,7 @@ class MflAbout extends Component {
             <div className="col m4 s12">
               <Heading>Related Links</Heading>
               <ul className="mfl-abm">
-                <li className="black-text text-lighten-2">
+                <li className="black-text text-lighten-2 mfl-useful-links-container">
                   <span className="mfl-about-icon">
                     <i className="material-icons">file_download</i>
                   </span>
@@ -87,7 +87,7 @@ class MflAbout extends Component {
                     Download guidelines
                   </a>
                 </li>
-                <li className="black-text text-lighten-2">
+                <li className="black-text text-lighten-2 mfl-useful-links-container">
                   <span className="mfl-about-icon">
                     <i className="material-icons">insert_link</i>
                   </span>
@@ -99,7 +99,7 @@ class MflAbout extends Component {
                     About Kuunika
                   </a>
                 </li>
-                <li className="black-text text-lighten-2">
+                <li className="black-text text-lighten-2 mfl-useful-links-container">
                   <span className="mfl-about-icon">
                     <i className="material-icons">insert_link</i>
                   </span>

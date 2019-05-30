@@ -12,6 +12,7 @@ import PostResponse from "./form-post-reducer";
 import UsersReducer from "./users-reducer";
 import FeedbackReducer from "./feedback-reducer";
 import statusErrorsReducer from "./status-errors-reducer";
+import uiReducer from "./ui-reducer";
 
 const rootReducer = combineReducers({
   facilities: FacilitiesReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   postResponse: PostResponse,
   users: UsersReducer,
   feedback: FeedbackReducer,
-  statusErrors: statusErrorsReducer
+  statusErrors: statusErrorsReducer,
+  ui: uiReducer
 });
 
 export default rootReducer;

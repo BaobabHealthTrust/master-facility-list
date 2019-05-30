@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import ShowFacility from "./Facility/Show";
 import Dashboard from "./Dashboard";
 import MflAbout from "./common/MflAbout";
+import MflHelp from "./common/MflHelp";
 import Footer from "./common/Footer";
 import LoginPage from "./Login";
 import MfLFeedback from "./Feedback";
@@ -15,14 +16,14 @@ import SearchModal from "./Facility/Search";
 import { FetchAllDependancies } from "./common";
 import { connect } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Loader } from "./common";
+import { Preloader } from "./common";
 import styled from "styled-components";
 import { timingSafeEqual } from "crypto";
 
 class App extends Component {
   state = {
     widthFlag: false,
-    minHeight: 0
+    minHeight: 100
   };
 
   isLoading = dependancyStatuses => {
@@ -42,7 +43,7 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.checkWindowWidith);
-    this.setState({ minHeight: window.innerHeight - 156 });
+    this.setState({ minHeight: window.innerHeight - 150 });
     this.checkWindowWidith();
     this.isRouteVisible();
   }
@@ -51,9 +52,15 @@ class App extends Component {
     return (
       <React.Fragment>
         <FetchAllDependancies />
-        {this.props.loading && this.isLoading(this.props.loading) && <Loader />}
         {this.props.loading &&
-          !this.isLoading(this.props.loading) && (
+          this.isLoading(this.props.loading) &&
+          !this.props.networkError && <Preloader />}
+        {this.props.loading &&
+          !this.isLoading(this.props.loading) &&
+          this.props.networkError && <Preloader error />}
+        {this.props.loading &&
+          !this.isLoading(this.props.loading) &&
+          !this.props.networkError && (
             <Router>
               <div className="mfl-page-wrap">
                 <Navbar />
@@ -83,6 +90,7 @@ class App extends Component {
                     />
                     <Route exact path="/" component={Dashboard} />
                     <Route exact path="/about" component={MflAbout} />
+                    <Route exact path="/help" component={MflHelp} />
                     <Route exact path="/feedback" component={MfLFeedback} />
                     <Route exact path="/users" component={Users} />
                     <Route exact path="/login" component={LoginPage} />

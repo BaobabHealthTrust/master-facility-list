@@ -2,7 +2,7 @@ import _ from "lodash";
 export default (
   state = {
     isLoading: {},
-    errors: {}
+    errors: {},
   },
   action
 ) => {
@@ -11,7 +11,6 @@ export default (
     "_"
   );
   let formattedActionGroup = _.camelCase(actionGroup);
-
   switch (action.type) {
     case `${actionGroup}_PENDING`:
       return {
@@ -31,10 +30,10 @@ export default (
         errors: {
           ...state.errors,
           [formattedActionGroup]: action.error
-            ? action.payload && action.payload.response.data.error.details
+            ? action.payload && action.payload.response && action.payload.response.data.error.details
               ? action.payload.response.data.error.details.messages
               : ["There was a general error"]
-            : []
+            : ["There was a network error "]
         },
         isLoading: {
           ...state.isLoading,

@@ -23,10 +23,6 @@ type Props = {
   currentResources: Array<FacilityResource>
 };
 
-const Container = styled.div.attrs({
-  className: "container"
-})``;
-
 class ResourcesForm extends React.Component<Props> {
   schema = {};
   initalValues = {};
@@ -53,21 +49,19 @@ class ResourcesForm extends React.Component<Props> {
 
   render() {
     return (
-      <Container>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.props.initalValues}
-          validationSchema={this.schema}
-          onSubmit={this._onNext}
-          render={props => (
-            <Form
-              {...this.props}
-              {...props}
-              filteredResources={id => this._filteredResources(id)}
-            />
-          )}
-        />
-      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.props.initalValues}
+        validationSchema={this.schema}
+        onSubmit={this._onNext}
+        render={props => (
+          <Form
+            {...this.props}
+            {...props}
+            filteredResources={id => this._filteredResources(id)}
+          />
+        )}
+      />
     );
   }
 }

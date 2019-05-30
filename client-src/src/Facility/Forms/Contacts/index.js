@@ -13,9 +13,6 @@ type Props = {
   current: CurrentFacility,
   fromAdd: ?boolean
 };
-const Container = styled.div.attrs({
-  className: "container"
-})``;
 
 class FacilityContactForm extends React.Component<Props> {
   initalValues = {
@@ -63,15 +60,13 @@ class FacilityContactForm extends React.Component<Props> {
 
   render() {
     return (
-      <Container>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.initalValues}
-          validationSchema={contactSchema}
-          onSubmit={this._onNext}
-          render={props => <Form {...this.props} {...props} />}
-        />
-      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.initalValues}
+        validationSchema={contactSchema}
+        onSubmit={this._onNext}
+        render={props => <Form {...this.props} {...props} />}
+      />
     );
   }
 }

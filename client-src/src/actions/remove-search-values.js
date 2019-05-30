@@ -1,6 +1,6 @@
-export default (id, type) => {
-    return {
-        type: type,
-        payload: id
-    };
+export default (value, type) => {
+  return {
+    type: type,
+    payload: value
+  };
 };

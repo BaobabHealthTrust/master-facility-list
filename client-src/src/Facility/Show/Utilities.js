@@ -15,6 +15,24 @@ import { uniq, chunk, map, pull } from "lodash";
 import { MflAlert } from "../../common";
 import { Loader } from "../../common";
 import styled from "styled-components";
+import { Paper } from "@material-ui/core";
+import { Row, Col } from "react-materialize";
+import { Link } from "react-router-dom";
+import settings from "../../settings";
+import FacilityDetail from "./components/FacilityDetail";
+import { isLoggedIn } from "../helpers/utilities";
+import { DetailsCard } from "./components/DetailsCard";
+import { redirectToEdit } from "./helpers";
+
+const CardContent = styled.div.attrs({
+  className: "row"
+})`
+  padding: 10px 0px;
+`;
+
+const CardTitle = styled.div.attrs({
+  className: "mfl-card-title  bg-blue"
+})``;
 
 const Container = styled.div.attrs({
   className: "container"
@@ -22,10 +40,6 @@ const Container = styled.div.attrs({
 
 const UtilityCard = styled.div.attrs({
   className: "col m4 s12"
-})``;
-
-const Row = styled.div.attrs({
-  className: "row"
 })``;
 
 class Utilities extends Component {
@@ -114,15 +128,18 @@ class Utilities extends Component {
   _renderCardForUtilityType = (type, utilities) => {
     var data = this._getUtilitiesByType(type, utilities);
     return (
-      <UtilityCard key={data[0]}>
-        <Card
-          heading={type.utility_type}
-          data={data}
+      <Col m={4} s={12} className="mb-5" key={data[0]}>
+        <SectionTitle
           icon={this.getUtilityTypeIcon(type.utility_type)}
+          text={type.utility_type}
         />
-      </UtilityCard>
+        {data.map(data => (
+          <FacilityDetail key={data[0]} label={data[0]} text={data[1]} />
+        ))}
+      </Col>
     );
   };
+
   _renderCardsRows = (cardsChunks, utilities) => (
     <Fragment>
       {cardsChunks.map((card, index) => {
@@ -158,26 +175,21 @@ class Utilities extends Component {
     const cardsChunks = chunk(presentTypes, 3);
 
     return (
-      <Container>
-        {cardsChunks.length == 0 && this._renderAlert()}
-        {this.props.isLoading.fetchCurrentUtilities &&
-        this.props.isLoading.fetchUtilityTypes ? (
-          <Loader />
-        ) : (
-          <Fragment>
-            {!this.state.isEditUtilities ? (
-              this._renderCardsRows(cardsChunks, utilities)
-            ) : (
-              <UtilitiesForm
-                submitUtilityData={this.submitEditUtilityData}
-                isEditUtilities={this.state.isEditUtilities}
-                currentUtilities={utilities}
-                handleCancel={this.handleCancel}
-              />
-            )}
-          </Fragment>
-        )}
-      </Container>
+      <Row>
+        <Col m={8} s={12} offset="m4">
+          <DetailsCard
+            isLoading={this.props.isLoading.fetchFacilityDetails}
+            isLoggedIn={isLoggedIn()}
+            title="Facility Utilities"
+            btnText="Edit Utilities"
+            onEditBtnClick={() => {
+              redirectToEdit(this.props);
+            }}
+          >
+            {this._renderCardsRows(cardsChunks, utilities)}
+          </DetailsCard>
+        </Col>
+      </Row>
     );
   }
 }
@@ -205,3 +217,54 @@ export default connect(
     editFacilityDependancies
   }
 )(Utilities);
+function Button(props) {
+  const { color, icon, text } = props;
+  const buttonClass = props.margin
+    ? `waves-effect btn`
+    : `mr-3 waves-effect btn`;
+  return props.link ? (
+    <Link
+      className={buttonClass}
+      to={props.link}
+      style={{ backgroundColor: color }}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  ) : (
+    <Link
+      className={buttonClass}
+      style={{ backgroundColor: color }}
+      to="#"
+      onClick={() => props.onClick()}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  );
+}
+
+function SectionTitle(props) {
+  return (
+    <div
+      style={{
+        paddingBottom: "10px",
+        borderBottom: "1px solid gray",
+        marginBottom: "10px"
+      }}
+    >
+      <i
+        className="material-icons"
+        style={{
+          display: "inline-block",
+          padding: "0 0.5rem",
+          verticalAlign: "middle",
+          fontSize: "20px"
+        }}
+      >
+        {props.icon}
+      </i>
+      <b>{props.text}</b>
+    </div>
+  );
+}

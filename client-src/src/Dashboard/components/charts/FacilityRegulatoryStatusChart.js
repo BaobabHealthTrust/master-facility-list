@@ -49,7 +49,7 @@ export default class FacilityRegulatoryStatusChart extends Component<Props> {
           })
         : [{ name: "one" }];
 
-    const colorScale = ["#3b5586", "#5170aa", "#6289d1", "#5f7399", "#747b88"];
+    const colorScale = ["#3b5586", "#5170aa", "#6289d1"];
 
     const barData = colorScale.map((cs, i) => {
       return Object.assign({}, { fill: cs }, this.props.data[i]);

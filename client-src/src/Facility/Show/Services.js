@@ -10,19 +10,22 @@ import {
 import { connect } from "react-redux";
 import { Service, ServiceType } from "../../types/model-types";
 import { Tab, Tabs } from "react-materialize";
-import { Col, Card } from "react-materialize";
+import { Row, Col, Card } from "react-materialize";
 import { MflAlert } from "../../common";
 import { Loader } from "../../common";
 import styled from "styled-components";
+import { isLoggedIn } from "../helpers/utilities";
+import { DetailsCard } from "./components/DetailsCard";
+import { redirectToEdit } from "./helpers";
+import { ServicesContainer } from "./components/ServicesContainer";
+import { chunk } from "lodash";
 
 type Props = {
   services: Array<{ service: Service }>,
   serviceTypes: any,
   allServices: Array<Service>
 };
-const Container = styled.div.attrs({
-  className: "container"
-})``;
+
 class Services extends React.Component<Props> {
   state = {
     isEditResources: false,
@@ -44,6 +47,7 @@ class Services extends React.Component<Props> {
   _renderAlert = () => (
     <MflAlert message={"Services are not available for this facility"} />
   );
+
   _renderService = tlService => (
     <Card title={tlService.service.service_name}>
       <ul>
@@ -79,22 +83,69 @@ class Services extends React.Component<Props> {
     </Tab>
   );
 
-  render() {
-    return (
-      <Container>
-        {this.props.allServices.length == 0 && this._renderAlert()}
+  _renderServices = servicesChunks =>
+    servicesChunks.map(serviceChunk => (
+      <Row>
+        {serviceChunk.map(serviceHierachy => (
+          <Col m={6} s={12}>
+            <ServicesContainer
+              key={serviceChunk.id}
+              serviceHierachy={serviceHierachy}
+            />
+          </Col>
+        ))}
+      </Row>
+    ));
 
-        {this.props.isLoading.fetchCurrentServices &&
-        this.props.isLoading.fetchServiceTypes ? (
-          <Loader />
-        ) : (
-          <Tabs className="tabs blue accent-1 mfl-tabs tabs-fixed-width">
-            {this.props.serviceTypes.map((type, index) =>
-              this._renderServiceTab(type, index)
-            )}
-          </Tabs>
-        )}
-      </Container>
+  _getServicesHierachy = () =>
+    this.props.services && this.props.serviceTypes
+      ? this.props.serviceTypes
+          .map(type => {
+            return {
+              ...type,
+              services: this.props.services.filter(
+                service => service.serviceType.id === type.id
+              )
+            };
+          })
+          .filter(serviceType => serviceType.services.length > 0)
+      : [];
+
+  render() {
+    let servicesChunks = chunk(this._getServicesHierachy(), 3);
+    return (
+      <Row>
+        <Col m={8} s={12} offset="m4">
+          <DetailsCard
+            isLoading={this.props.isLoading.fetchFacilityDetails}
+            isLoggedIn={isLoggedIn()}
+            title="Facility Services"
+            btnText="Edit Services"
+            onEditBtnClick={() => {
+              redirectToEdit(this.props);
+            }}
+          >
+            {this._renderServices(servicesChunks)}
+          </DetailsCard>
+        </Col>
+      </Row>
+      // <Container>
+      //   {this.props.allServices.length == 0 && this._renderAlert()}
+
+      //   {this.props.isLoading.fetchCurrentServices &&
+      //   this.props.isLoading.fetchServiceTypes ? (
+      //     <Loader />
+      //   ) : (
+      //     <Tabs
+      //       style={{ position: "relative", zIndex: "1" }}
+      //       className="tabs blue accent-1 mfl-tabs tabs-fixed-width"
+      //     >
+      //       {this.props.serviceTypes.map((type, index) =>
+      //         this._renderServiceTab(type, index)
+      //       )}
+      //     </Tabs>
+      //   )}
+      // </Container>
     );
   }
 }

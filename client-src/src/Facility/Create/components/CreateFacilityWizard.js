@@ -8,10 +8,11 @@ import {
   Services,
   FinishedForm
 } from "../../Forms";
+import { Paper } from "@material-ui/core";
 import { setInitialValues } from "../../Forms/values";
 import { connect } from "react-redux";
 import { postFormData, fetchCurrentDetails } from "../../../actions";
-import { FormWizardTabHeading } from "../../../common";
+import WizardHeader from "./WizardHeader";
 import { Redirect } from "react-router-dom";
 import swal from "@sweetalert/with-react";
 import {
@@ -34,6 +35,9 @@ const WizardHeaderContainer = styled.div.attrs({
   font-size: 20;
   margin-top: 20;
 `;
+const Container = styled.div.attrs({
+  className: "mt-8 container"
+})``;
 class CreateFacilityWizard extends React.Component<{}> {
   state = {
     active: "Basic Details",
@@ -47,6 +51,14 @@ class CreateFacilityWizard extends React.Component<{}> {
     },
     initalValues: {}
   };
+
+  formLabels = [
+    "Basic Details",
+    "Contacts & Location",
+    "Resources",
+    "Utilities",
+    "Services"
+  ];
 
   _onSubmit = async (values, key, nextTab) => {
     this._setFacilityDetails(key, values);
@@ -241,33 +253,7 @@ class CreateFacilityWizard extends React.Component<{}> {
   _renderTabHeadings = () => {
     return (
       this.state.active != "Finish" && (
-        <WizardHeaderContainer>
-          <FormWizardTabHeading
-            index="1"
-            title="Basic Details"
-            active={this.state.active}
-          />
-          <FormWizardTabHeading
-            index="2"
-            title="Contacts & Location"
-            active={this.state.active}
-          />
-          <FormWizardTabHeading
-            index="3"
-            title="Resources"
-            active={this.state.active}
-          />
-          <FormWizardTabHeading
-            index="4"
-            title="Utilities"
-            active={this.state.active}
-          />
-          <FormWizardTabHeading
-            index="5"
-            title="Services"
-            active={this.state.active}
-          />
-        </WizardHeaderContainer>
+        <WizardHeader formLabels={this.formLabels} active={this.state.active} />
       )
     );
   };
@@ -278,7 +264,9 @@ class CreateFacilityWizard extends React.Component<{}> {
     ) : (
       <Fragment>
         {this._renderTabHeadings()}
-        {this._renderForms()}
+        <Container>
+          <Paper>{this._renderForms()}</Paper>
+        </Container>
       </Fragment>
     );
   }

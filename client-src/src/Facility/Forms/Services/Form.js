@@ -3,15 +3,20 @@ import { Input, Row, Button, Pagination } from "react-materialize";
 import { Alert, FormWizardNavigation } from "../../../common";
 import { renderOptions } from "../../helpers/utilities";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
+const FormWrapper = styled.div`
+  padding: 3rem;
+`;
 export function Form(props) {
   let { isSubmitting, handleSubmit } = props;
 
   return (
     <div test-id="servicesForm">
       <div className="mfl-tm-2" />
+
       {props.errors.length > 0 && <Alert warning message={`${props.errors}`} />}
-      <div>
+      <FormWrapper>
         <div className="row" style={{ minHeight: 300 }}>
           <div className="col m6 s12">
             <Row>
@@ -94,13 +99,13 @@ export function Form(props) {
             {props.renderSelectedServices()}
           </div>
         </div>
-        <FormWizardNavigation
-          saveButton={isSubmitting ? "Saving..." : "Save"}
-          handleSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-          handleCancel={() => props.cancel()}
-        />
-      </div>
+      </FormWrapper>
+      <FormWizardNavigation
+        saveButton={isSubmitting ? "Saving..." : "Save"}
+        handleSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        handleCancel={() => props.cancel()}
+      />
     </div>
   );
 }

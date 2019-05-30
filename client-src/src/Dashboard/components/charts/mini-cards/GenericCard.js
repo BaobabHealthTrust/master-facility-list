@@ -8,35 +8,40 @@ import {
   district,
   normal_hospital
 } from "../../../../images";
+import { MflRow } from "../../../../common";
 import styled, { css } from "styled-components";
 
-const DashboardIconContainer = styled.div`
-  border-bottom: 1px solid #666;
-  margin-top: -10px;
-  padding-bottom: 20px;
+const TopContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #666;
+  padding-bottom: 20px;
 `;
+
+const DashboardIconContainer = styled.div`
+  margin: auto;
+  flex: 1;
+`;
+
 const DashboardIconCount = styled.p`
-  font-size: 2.5em;
+  font-size: 3em;
   font-weight: bold;
-  ${({ highlight }) =>
-    highlight &&
-    css`
-      color: #0f52ba !important;
-    `};
+  flex: 1;
+  text-align: right;
+  margin: auto;
+  &:first-child {
+    color: #0f52ba !important;
+  }
 `;
 const DashboardIconImg = styled.img`
-  width: 70%;
+  width: 50px;
 `;
+
 const DashboardIconTitle = styled.p`
   font-size: 1.5em;
-  ${({ highlight }) =>
-    highlight &&
-    css`
-      color: #0f52ba !important;
-    `};
+  &:first-child {
+    color: #0f52ba !important;
+  }
 `;
 
 export default props => {
@@ -48,20 +53,15 @@ export default props => {
     clinic
   };
 
-  const highlight = props.icon == "hospital";
-  const background = highlight ? "#eff5ff" : "#fff";
-
   return (
-    <Card style={{ background }}>
-      <DashboardIconContainer>
-        <DashboardIconImg src={iconMapper[props.icon]} />
-      </DashboardIconContainer>
-      <DashboardIconCount highlight={highlight}>
-        {props.count}
-      </DashboardIconCount>
-      <DashboardIconTitle highlight={highlight}>
-        {props.title}
-      </DashboardIconTitle>
+    <Card>
+      <TopContainer>
+        <DashboardIconContainer>
+          <DashboardIconImg src={iconMapper[props.icon]} />
+        </DashboardIconContainer>
+        <DashboardIconCount>{props.count}</DashboardIconCount>
+      </TopContainer>
+      <DashboardIconTitle>{props.title}</DashboardIconTitle>
     </Card>
   );
 };

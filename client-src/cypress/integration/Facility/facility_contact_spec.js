@@ -13,14 +13,14 @@ describe("Tests Facility Contacts Page", () => {
           ? Math.floor(Math.random() * 9)
           : Math.floor(Math.random() * (res.length - 1));
       facility = res[facilityIndex];
-      cy.get("table tbody .MuiTableRow-root-32")
+      cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
         .eq(facilityIndex)
         .click();
     });
   });
   it("Renders the facility contacts page", () => {
     var ref = `/facilities/${facility.id}/locations`;
-    cy.get(`.nav-wrapper ul li a[href='${ref}']`)
+    cy.get(`[class*='MuiPaper'] a[href='${ref}']`)
       .first()
       .click();
     cy.location().should(loc => {

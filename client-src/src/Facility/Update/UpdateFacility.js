@@ -38,6 +38,7 @@ import {
 import { isLoggedIn, getFacilityId, getCurrentTab } from "../helpers/utilities";
 import { Loader, Alert } from "../../common";
 import styled from "styled-components";
+import { Paper } from "@material-ui/core";
 
 const Container = styled.div.attrs({
   className: "container"
@@ -171,7 +172,10 @@ class UpdateFacility extends React.Component<{}> {
   };
 
   onSubmitUtilitiesDetails = values => {
-    for (let currentUtility of this.props.currentUtilities) {
+    const currentUtilities = this.props.currentUtilities
+      ? []
+      : this.props.currentUtilities;
+    for (let currentUtility of currentUtilities) {
       if (!values.includes(currentUtility.utility_id)) {
         deleteUtility(currentUtility.id, deleteFromApi);
       }
@@ -179,7 +183,7 @@ class UpdateFacility extends React.Component<{}> {
     return updateUtilityDetails(
       this.props.currentFacility,
       values,
-      this.props.currentUtilities,
+      currentUtilities,
       this.props.postFormData
     )
       .then(() => {
@@ -244,6 +248,12 @@ class UpdateFacility extends React.Component<{}> {
       isLoading.fetchCurrentUtilities &&
       isLoading.fetchCurrentServices
     );
+  };
+
+  _getRedirectLink = () => {
+    const currentLocation = this.props.location.pathname;
+    const locArr = currentLocation.split("/").filter(val => val != "edit");
+    return locArr.join("/");
   };
 
   _setValidationSchema = () => {
@@ -354,15 +364,17 @@ class UpdateFacility extends React.Component<{}> {
 
   render() {
     return !isLoggedIn(this.props.userDetails) || this.state.redirect ? (
-      <Redirect to="/facilities" />
+      <Redirect to={this._getRedirectLink()} />
     ) : (
       <Fragment>
         <Container>
-          {this.isLoading() && <Loader />}
-          {this.state.error && (
-            <Alert warning message="Failed To Update Details" />
-          )}
-          {!this.isLoading() && this._renderForms()}
+          <Paper>
+            {this.isLoading() && <Loader />}
+            {this.state.error && (
+              <Alert warning message="Failed To Update Details" />
+            )}
+            {!this.isLoading() && this._renderForms()}
+          </Paper>
         </Container>
       </Fragment>
     );

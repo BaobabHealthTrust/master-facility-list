@@ -15,17 +15,15 @@ class FacilitiesByOperationalStatus extends React.Component {
         onMouseEnter={this.onPieEnter}
       >
         <Pie dataKey="value" data={data} outerRadius={100} fill="#8884d8">
-          {defaultScheme
-            .filter((_, i) => i > 3)
-            .map((color, index) => <Cell key={index} fill={color} />)}
+          {defaultScheme.map((color, index) => (
+            <Cell key={index} fill={color} />
+          ))}
         </Pie>
         <Legend verticalAlign="top" height={40} />
       </PieChart>
     );
 
-    return (
-      <MflCardGeneric heading="Facilities by operational status" view={view} />
-    );
+    return <MflCardGeneric heading={this.props.title} view={view} />;
   }
 }
 

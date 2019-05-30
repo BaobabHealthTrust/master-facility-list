@@ -1,13 +1,13 @@
 //@flow
-import React, {Component, SyntheticEvent} from "react";
+import React, { Component, SyntheticEvent } from "react";
 import Card from "../common/MflCard";
-import {Alert} from "../common";
+import { Alert } from "../common";
 import footerResizer from "../helpers/footerResize";
-import {Redirect} from "react-router-dom";
-import {checkCredentials, getUserDetails, setUserDetails} from "../actions";
-import {connect} from "react-redux";
+import { Redirect } from "react-router-dom";
+import { checkCredentials, getUserDetails, setUserDetails } from "../actions";
+import { connect } from "react-redux";
 import styled from "styled-components";
-import {Icon} from "react-materialize";
+import { Icon } from "react-materialize";
 
 type State = {
   username: string,
@@ -20,8 +20,10 @@ type Props = {
   setUserDetails: Function
 };
 
-const MFLContainer = styled.div.attrs({className: "container mfl-container"})``;
-const LoginTitle = styled.h4.attrs({className: "white-text"})``;
+const MFLContainer = styled.div.attrs({
+  className: "container mfl-container"
+})``;
+const LoginTitle = styled.h4.attrs({ className: "white-text" })``;
 const LoginContainer = styled.div.attrs({
   className: "mfl-login-container blue darken-4"
 })``;
@@ -31,7 +33,7 @@ const LoginInputContainer = styled.div.attrs({
 const LoginIconContainer = styled.div.attrs({
   className: "mfl-login-icon grey lighten-2 grey-text"
 })``;
-const LoginInput = styled.input.attrs({className: "mfl-login-input"})``;
+const LoginInput = styled.input.attrs({ className: "mfl-login-input" })``;
 const LoginButton = styled.button.attrs({
   className: "btn-large blue accent-1"
 })``;
@@ -43,7 +45,7 @@ class MflLogin extends Component<Props, State> {
   };
 
   _attemptLogin = async () => {
-    const {username, password} = this.state;
+    const { username, password } = this.state;
     await this.props.checkCredentials(username, password);
 
     const isLoginSuccess = await !this.props.loginResponse.isLoginFailed;
@@ -54,27 +56,39 @@ class MflLogin extends Component<Props, State> {
     if (isLoginSuccess) {
       await this.props.getUserDetails(userId, tokenId);
       const firstname = this.props.loginResponse.userDetails.firstname;
-      await this._persistLoginDetails(userId, tokenId, firstname);
-      this.props.setUserDetails(tokenId, firstname);
+      await this._persistLoginDetails(
+        userId,
+        tokenId,
+        this.props.loginResponse.userDetails
+      );
+      this.props.setUserDetails({
+        token: tokenId,
+        id: userId,
+        ...this.props.loginResponse.userDetails
+      });
     }
   };
 
   _changeInputField = (event: SyntheticEvent<HTMLInputElement>) => {
     if (event.which === 13) this._attemptLogin();
-    this.setState({[event.currentTarget.name]: event.currentTarget.value});
+    this.setState({ [event.currentTarget.name]: event.currentTarget.value });
   };
 
-  async _persistLoginDetails(
-    userId: string,
-    tokenId: string,
-    firstname: string
-  ) {
+  async _persistLoginDetails(userId: string, tokenId: string, user: Object) {
     await sessionStorage.setItem("token", tokenId);
-    await sessionStorage.setItem("firstname", firstname);
+    await sessionStorage.setItem("firstname", user.firstname);
+    await sessionStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: userId,
+        token: tokenId,
+        ...user
+      })
+    );
   }
 
   _isLoggedIn() {
-    const {userDetails} = this.props;
+    const { userDetails } = this.props;
     return (userDetails && userDetails.token) || false;
   }
 
@@ -146,5 +160,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {checkCredentials, getUserDetails, setUserDetails}
+  { checkCredentials, getUserDetails, setUserDetails }
 )(MflLogin);

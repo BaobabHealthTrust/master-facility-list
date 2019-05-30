@@ -6,7 +6,12 @@ export default props => {
   return (
     <div className="footer">
       <a href="#" className="pin-r" id="back-to-top" title="Back to top">
-        <Button floating small="true" className="absolute mr-4 pin-r blue">
+        <Button
+          floating
+          small="true"
+          className="absolute mr-4 pin-r blue"
+          style={{ bottom: "10px", right: "10px" }}
+        >
           <i className="material-icons">keyboard_arrow_up</i>
         </Button>
       </a>
@@ -18,8 +23,8 @@ export default props => {
 
           <div className="col m6 white-text text-right">
             <span className="mfl-copy text-left mt-4">
-              © {new Date().getFullYear()} Copyright, Republic of Malawi,
-              Ministry of Health
+              © {new Date().getFullYear()} , Republic of Malawi, Ministry of
+              Health
             </span>
           </div>
         </div>

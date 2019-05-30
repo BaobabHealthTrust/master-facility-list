@@ -279,3 +279,148 @@ Cypress.Commands.add("clear_local_storage", async () => {
 Cypress.Commands.add("set_active_tab", async () => {
   return await localStorage.setItem("new_facility_active_tab");
 });
+
+Cypress.Commands.add("basic_filter", (type, value) => {
+  const RESOURCE = `Facilities`;
+
+  const FILTER = {
+    where: {
+      [type]: value
+    }
+  };
+
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("resources_filter", (id, value) => {
+  const RESOURCE = `FacilityResources`;
+  const RESOURCE2 = `Facilities/list`;
+
+  const FILTER = {
+    where: {
+      and: [
+        {
+          resource_id: id
+        },
+        { quantity: { gte: value[0] } },
+        { quantity: { lte: value[1] } }
+      ]
+    }
+  };
+
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+
+  cy.request("GET", URL).then(res => {
+    let URL = `${END_POINT}${RESOURCE2}?filter=${JSON.stringify({
+      where: { id: { inq: res.body.map(result => result.facility_id) } },
+      order: "facility_name"
+    })}`;
+    return cy.request("GET", URL).then(res => {
+      return res.body.data;
+    });
+  });
+});
+
+Cypress.Commands.add("utilities_filter", id => {
+  const RESOURCE = `FacilityUtilities`;
+  const RESOURCE2 = `Facilities/list`;
+
+  const FILTER = {
+    where: {
+      utility_id: id
+    }
+  };
+
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+
+  cy.request("GET", URL).then(res => {
+    let URL = `${END_POINT}${RESOURCE2}?filter=${JSON.stringify({
+      where: { id: { inq: res.body.map(result => result.facility_id) } },
+      order: "facility_name"
+    })}`;
+    return cy.request("GET", URL).then(res => {
+      return res.body.data;
+    });
+  });
+});
+
+Cypress.Commands.add("services_filter", id => {
+  const RESOURCE = `FacilityServices`;
+  const RESOURCE2 = `Facilities/list`;
+
+  const FILTER = {
+    where: {
+      service_id: id
+    }
+  };
+
+  const URL = `${END_POINT}${RESOURCE}?filter=${JSON.stringify(FILTER)}`;
+
+  cy.request("GET", URL).then(res => {
+    let URL = `${END_POINT}${RESOURCE2}?filter=${JSON.stringify({
+      where: { id: { inq: res.body.map(result => result.facility_id) } },
+      order: "facility_name"
+    })}`;
+    return cy.request("GET", URL).then(res => {
+      return res.body.data;
+    });
+  });
+});
+
+Cypress.Commands.add("fetch_facility_types", () => {
+  const RESOURCE = `FacilityTypes`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_regulatory_statuses", () => {
+  const RESOURCE = `RegulatoryStatuses `;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_operational_statuses", () => {
+  const RESOURCE = `OperationalStatuses `;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_owners", () => {
+  const RESOURCE = `Owners`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_resources", () => {
+  const RESOURCE = `Resources`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});
+
+Cypress.Commands.add("fetch_services", () => {
+  const RESOURCE = `Services`;
+
+  const URL = `${END_POINT}${RESOURCE}`;
+  cy.request("GET", URL).then(res => {
+    return res.body;
+  });
+});

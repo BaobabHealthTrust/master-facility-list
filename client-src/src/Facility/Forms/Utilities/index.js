@@ -21,10 +21,6 @@ type Props = {
   currentUtilities: Array<FacilityUtility>
 };
 
-const Container = styled.div.attrs({
-  className: "container"
-})``;
-
 class UtilitiesForm extends React.Component<Props> {
   state = {
     errors: []
@@ -61,16 +57,14 @@ class UtilitiesForm extends React.Component<Props> {
 
   render() {
     return (
-      <Container>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.props.initalValues}
-          onSubmit={this._onNext}
-          render={props => (
-            <Form {...this.props} {...props} errors={this.state.errors} />
-          )}
-        />
-      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.props.initalValues}
+        onSubmit={this._onNext}
+        render={props => (
+          <Form {...this.props} {...props} errors={this.state.errors} />
+        )}
+      />
     );
   }
 }

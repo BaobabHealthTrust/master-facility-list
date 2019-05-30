@@ -5,6 +5,14 @@ import { Loader } from "../../common";
 import { fetchCurrentDetails, setCurrentDetails } from "../../actions";
 import { connect } from "react-redux";
 import MFLGoogleMap from "../../common/MFLGoogleMap";
+import styled from "styled-components";
+import { Paper } from "@material-ui/core";
+import { Row, Col } from "react-materialize";
+import { Link } from "react-router-dom";
+import FacilityDetail from "./components/FacilityDetail";
+import { isLoggedIn } from "../helpers/utilities";
+import { DetailsCard } from "./components/DetailsCard";
+import { redirectToEdit } from "./helpers";
 
 class Location extends Component<State> {
   state = {
@@ -16,45 +24,65 @@ class Location extends Component<State> {
     this.props.fetchCurrentDetails(id);
   }
 
-  _renderContactCards = (locationData, addressData, contactPersonData) => (
-    <div className="col m6 s12">
-      <div className="row" test_id="location">
-        <Card heading="Location" icon="location_on" data={locationData} />
-      </div>
-      <div className="row" test_id="address">
-        <Card heading="Address" icon="location_city" data={addressData} />
-      </div>
-      <div className="row" test_id="person">
-        <Card heading="contact person" icon="person" data={contactPersonData} />
-      </div>
-    </div>
+  _renderContactSections = (locationData, addressData, contactPersonData) => (
+    <Fragment>
+      <Col m={4} s={12} className="mb-5">
+        <SectionTitle icon="person" text="Contact Person" />
+        {contactPersonData.map(contact => (
+          <FacilityDetail
+            key={contact[0]}
+            label={contact[0]}
+            text={contact[1]}
+          />
+        ))}
+      </Col>
+
+      <Col m={4} s={12} className="mb-5">
+        <SectionTitle icon="location_on" text="Location" />
+        {locationData.map(contact => (
+          <FacilityDetail
+            key={contact[0]}
+            label={contact[0]}
+            text={contact[1]}
+          />
+        ))}
+      </Col>
+
+      <Col m={4} s={12} className="mb-5">
+        <SectionTitle icon="contact_mail" text="Contact Address" />
+        {addressData.map(contact => (
+          <FacilityDetail
+            key={contact[0]}
+            label={contact[0]}
+            text={contact[1]}
+          />
+        ))}
+      </Col>
+    </Fragment>
   );
 
   render() {
     const locationData = this.props.current.locations
       ? [
-          ["catchment area", this.props.current.locations.catchment_area],
-          ["population", this.props.current.locations.catchment_population],
-          ["district", this.props.current.district.district_name]
+          ["Catchment area", this.props.current.locations.catchment_area],
+          ["Population", this.props.current.locations.catchment_population],
+          ["District", this.props.current.district.district_name]
         ]
       : [];
 
     const contactPersonData = this.props.current.contactPeople
       ? [
-          [
-            "Fullname",
-            this.props.current.contactPeople.contact_person_fullname
-          ],
-          ["email", this.props.current.contactPeople.contact_person_email],
-          ["phone", this.props.current.contactPeople.contact_person_phone]
+          ["", this.props.current.contactPeople.contact_person_fullname],
+          ["", this.props.current.contactPeople.contact_person_email],
+          ["", this.props.current.contactPeople.contact_person_phone]
         ]
       : [];
 
     const addressData = this.props.current.addresses
       ? [
-          ["physical", this.props.current.addresses.physical_address],
-          ["postal", this.props.current.addresses.postal_address],
-          ["zone", this.props.current.district.zone.zone_name]
+          ["", this.props.current.addresses.physical_address],
+          ["", this.props.current.addresses.postal_address],
+          ["", this.props.current.district.zone.zone_name]
         ]
       : [];
 
@@ -68,27 +96,25 @@ class Location extends Component<State> {
         : { lat: -13.9626121, lng: 33.7741195 };
 
     return (
-      <div className="container">
-        {this.props.isLoading.fetchFacilityDetails ? (
-          <Loader />
-        ) : (
-          <Fragment>
-            <div className="row">
-              <div className="col m6 s12 mb-8">
-                <div className="z-depth-2">
-                  <MFLGoogleMap position={position} isMarkerShown />
-                </div>
-              </div>
-
-              {this._renderContactCards(
-                locationData,
-                addressData,
-                contactPersonData
-              )}
-            </div>
-          </Fragment>
-        )}
-      </div>
+      <Row>
+        <Col m={8} s={12} offset="m4">
+          <DetailsCard
+            isLoading={this.props.isLoading.fetchFacilityDetails}
+            isLoggedIn={isLoggedIn()}
+            title="Facility Contact Details"
+            btnText="Edit Contacts"
+            onEditBtnClick={() => {
+              redirectToEdit(this.props);
+            }}
+          >
+            {this._renderContactSections(
+              locationData,
+              addressData,
+              contactPersonData
+            )}
+          </DetailsCard>
+        </Col>
+      </Row>
     );
   }
 }
@@ -107,3 +133,54 @@ export default connect(
     fetchCurrentDetails
   }
 )(Location);
+function Button(props) {
+  const { color, icon, text } = props;
+  const buttonClass = props.margin
+    ? `waves-effect btn`
+    : `mr-3 waves-effect btn`;
+  return props.link ? (
+    <Link
+      className={buttonClass}
+      to={props.link}
+      style={{ backgroundColor: color }}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  ) : (
+    <Link
+      className={buttonClass}
+      style={{ backgroundColor: color }}
+      to="#"
+      onClick={() => props.onClick()}
+    >
+      <i className="material-icons left">{icon}</i>
+      {text}
+    </Link>
+  );
+}
+
+function SectionTitle(props) {
+  return (
+    <div
+      style={{
+        paddingBottom: "10px",
+        borderBottom: "1px solid gray",
+        marginBottom: "10px"
+      }}
+    >
+      <i
+        className="material-icons"
+        style={{
+          display: "inline-block",
+          padding: "0 0.5rem",
+          verticalAlign: "middle",
+          fontSize: "20px"
+        }}
+      >
+        {props.icon}
+      </i>
+      <b>{props.text}</b>
+    </div>
+  );
+}

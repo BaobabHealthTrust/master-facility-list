@@ -6,25 +6,21 @@ import { connect } from "react-redux";
 import yup from "yup";
 import { Toast } from "../../common";
 import "../../App.css";
+import styled from "styled-components";
 
-class Index extends React.Component {
+const CardTitle = styled.div.attrs({
+  className: "mfl-card-title  bg-blue"
+})`
+  margin: -24px;
+  margin-bottom: 24px;
+`;
+export class UpdateUser extends React.Component {
   initialValues = {
     firstname: this.props.user.firstname,
     lastname: this.props.user.lastname,
     username: this.props.user.username,
     email: this.props.user.email
   };
-
-  componentWillReceiveProps(nextProp) {
-    if (nextProp.user !== this.props.user) {
-      this.initialValues = {
-        firstname: nextProp.user.firstname,
-        lastname: nextProp.user.lastname,
-        username: nextProp.user.username,
-        email: nextProp.user.email
-      };
-    }
-  }
 
   schema = yup.object().shape({
     firstname: yup
@@ -58,9 +54,9 @@ class Index extends React.Component {
       .then(res => {
         if (res.action.payload && res.action.payload.data) {
           actions.resetForm();
-          document.getElementById("closeUpdateModalBtn").click();
+          document.getElementById(`closeUpdateModalBtn${user.id}`).click();
           fetchUsers();
-          onUserUpdated();
+          Toast("User Updated Successfully!!!");
         }
       })
       .catch(() => {
@@ -78,7 +74,7 @@ class Index extends React.Component {
   _renderModalActions = (handleSubmit, isSubmitting) => (
     <div>
       <Button
-        id="closeUpdateModalBtn"
+        id={`closeUpdateModalBtn${this.props.user.id}`}
         modal="close"
         flat
         waves="light"
@@ -107,12 +103,8 @@ class Index extends React.Component {
     handleBlur
   }) => (
     <Modal
-      header="Edit Administrator User"
-      trigger={
-        <Button test-id="updateUserBtn" waves="light" className="blue darken-2">
-          Update User
-        </Button>
-      }
+      trigger={this.props.trigger}
+      header={<CardTitle>Update User</CardTitle>}
       actions={this._renderModalActions(handleSubmit, isSubmitting)}
       modalOptions={{
         dismissible: false
@@ -197,4 +189,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Index);
+)(UpdateUser);
