@@ -8,17 +8,20 @@ module.exports = async (facility) => {
         facilityCodeMaps.forEach(facilityCodeMap => {
             extraIdentifiers.push({
                 system: facilityCodeMap.system,
-                value: facilityCodeMap.code
+                value: facilityCodeMap.code,
+                url: facilityCodeMap.url || ''
             })
         })
     }
+    const url = `http://${process.env.HOST}:${process.env.PORT}/api/facilities/${facility.id}`;
     return {
         resourceType: 'Location',
         id: facility.id,
         identifier: [
             {
                 "system": "mhfr",
-                value: facility.facility_code
+                value: facility.facility_code,
+                url
             },
             ...extraIdentifiers
         ],
@@ -53,6 +56,6 @@ module.exports = async (facility) => {
                 address.village
             ]
         },
-        endpoint: `/api/Facilities/fhir/location/${facility.id}`
+        endpoint: url
     }
 }
