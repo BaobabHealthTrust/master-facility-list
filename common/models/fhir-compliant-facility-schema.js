@@ -1,14 +1,29 @@
-const facilityData = require('./facility-data'); 
+const facilityData = require('./facility-data');
 
 module.exports = async (facility) => {
     const { contactPerson, geolocation, address, operationalStatus } = await facilityData(facility);
+    const facilityCodeMaps = facility.facility_code_mapping;
+    const extraIdentifiers = [];
+    if (facilityCodeMaps && Array.isArray(facilityCodeMaps)) {
+        facilityCodeMaps.forEach(facilityCodeMap => {
+            extraIdentifiers.push({
+                system: facilityCodeMap.system,
+                value: facilityCodeMap.code,
+                url: facilityCodeMap.url || ''
+            })
+        })
+    }
+    const url = `http://${process.env.HOST}:${process.env.PORT}/api/facilities/${facility.id}`;
     return {
         resourceType: 'Location',
         id: facility.id,
         identifier: [
             {
-                value: facility.facility_code
-            }
+                "system": "mhfr",
+                value: facility.facility_code,
+                url
+            },
+            ...extraIdentifiers
         ],
         status: 'active',
         operationalStatus: {
@@ -41,6 +56,6 @@ module.exports = async (facility) => {
                 address.village
             ]
         },
-        endpoint: `/api/Facilities/fhir/location/${facility.id}`
+        endpoint: url
     }
 }

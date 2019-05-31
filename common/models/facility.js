@@ -241,10 +241,10 @@ module.exports = Facility => {
         dateOpened: moment(facility.facility_date_opened).format("MMM Do YY"),
         string:
           `${facility.facility_name}${facility.facility_code}${
-            facility.common_name
+          facility.common_name
           }` +
           `${formattedFacility.owner.facility_owner}${
-            formattedFacility.facilityType.facility_type
+          formattedFacility.facilityType.facility_type
           }` +
           `${formattedFacility.operationalStatus.facility_operational_status}` +
           `${formattedFacility.district.district_name}`
@@ -254,12 +254,21 @@ module.exports = Facility => {
     // TODO: Handle Blank Regex
     return regex
       ? formattedFacilities
+<<<<<<< HEAD
           .filter(facility => {
             return new RegExp(`.*${regex.toUpperCase()}`).test(
               facility.string.toUpperCase()
             );
           })
           .filter((facility, index) => index < 5)
+=======
+        .filter(facility => {
+          return new RegExp(`.*${regex.toUpperCase()}`).test(
+            facility.string.toUpperCase()
+          );
+        })
+        .filter((facility, index) => index < 5)
+>>>>>>> ae6a8da5bc48f92d2bfbe9d178620f86fd1a30b9
       : formattedFacilities;
   };
 
