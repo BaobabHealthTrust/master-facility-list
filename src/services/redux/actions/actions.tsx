@@ -18,5 +18,9 @@ export default {
   fetchCurrentUtilities: "FETCH_CURRENT_UTILITIES",
   setActivePage: "SET_ACTIVE_PAGE",
   setActiveFacilityPage: "SET_ACTIVE_FACILITY_PAGE",
+  fetchUsers: "FETCH_USERS",
+  userLogin: "USER_LOGIN",
+  userLogout: "USER_LOGOUT",
+  fetchUserDetails: "FETCH_USER_DETAILS",
   dependacyError: "DEPENDANCY_ERROR"
 };

@@ -7,7 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
+import { faAlignJustify, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Home,
   AddBox,
@@ -22,7 +23,7 @@ import MobileMenu from "../../molecules/MobileMenu";
 library.add(faAlignJustify);
 
 const Header = (props: Props) => {
-  const { activePage } = props;
+  const { activePage, auth, logout } = props;
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const isActivePage = (page: string) =>
@@ -66,11 +67,11 @@ const Header = (props: Props) => {
       ]
     },
     {
-      text: "Profile",
-      name: "Profile",
+      text: `${auth.details.firstname || "Profile"}`,
+      name: "Home",
       active: isActivePage("Profile"),
       icon: <AccountCircle />,
-      options: [{ text: "Logout", link: `/logout` }]
+      options: [{ text: "Logout", link: `/`, onClick: logout }]
     }
   ];
 
@@ -89,6 +90,7 @@ const Header = (props: Props) => {
       icon: <AddBox />,
       link: `/facilities`
     },
+
     {
       text: "More",
       name: "More",
@@ -103,10 +105,17 @@ const Header = (props: Props) => {
         { text: "Feedback", link: `/feedback` },
         { text: "Help", link: `/help` }
       ]
+    },
+    {
+      text: "Login",
+      name: "Login",
+      active: isActivePage("login"),
+      icon: <FontAwesomeIcon icon={faLock} />,
+      link: `/login`
     }
   ];
 
-  const menuItems = true ? adminMenuItems : publicMenuItems;
+  const menuItems = auth.authenticated ? adminMenuItems : publicMenuItems;
 
   return (
     <Container>
@@ -148,6 +157,8 @@ export default Header;
 
 type Props = {
   activePage: string;
+  auth: any;
+  logout: Function;
 };
 const Container = styled.div`
   flex-grow: 1;

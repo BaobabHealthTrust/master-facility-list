@@ -9,6 +9,7 @@ import Facilities from "../scenes/Facility";
 import AddFacility from "../scenes/Facility/CreateFacility";
 import ViewFacility from "../scenes/Facility/ViewFacility";
 import UpdateFacility from "../scenes/Facility/UpdateFacility";
+import UserLogin from "../scenes/Login";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -101,6 +102,7 @@ const App: React.FC = (props: any) => {
               path="/Facilities/:id/:page/edit"
               component={UpdateFacility}
             />
+            <Route exact path="/login" component={UserLogin} />
           </Switch>
         </Content>
         <Footer />

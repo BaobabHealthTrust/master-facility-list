@@ -1,7 +1,21 @@
-import React from "react";
-import { basicSchema } from "../../../components/organisms/FacilityForms/schema";
-import { basic } from "../../../components/organisms/FacilityForms/initialValues";
+import React, { useState } from "react";
+import {
+  basicSchema,
+  contactSchema,
+  getResourcesSchema
+} from "../../../components/organisms/FacilityForms/schema";
+import {
+  basic,
+  contact,
+  resources,
+  utilities,
+  services
+} from "../../../components/organisms/FacilityForms/initialValues";
 import BasicDetailsForm from "../../../components/organisms/FacilityForms/BasicDetails";
+import ContactDetailsForm from "../../../components/organisms/FacilityForms/ContactDetails";
+import ResourceDetails from "../../../components/organisms/FacilityForms/Resources";
+import UtilitiesForm from "../../../components/organisms/FacilityForms/Utilities";
+import ServicesForm from "../../../components/organisms/FacilityForms/Services";
 import Container from "../../../components/atoms/Container";
 import Title from "../../../components/molecules/PageTitle";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -23,7 +37,8 @@ function UpdateFacility(props: Props) {
     onSubmit,
     facilitySubMenu,
     onChangePage,
-    facility
+    facility,
+    loadingStates
   } = props;
   return (
     <>
@@ -60,6 +75,44 @@ function UpdateFacility(props: Props) {
                   dependancies={dependancies}
                 />
               )}
+              {activePage == pages.contact && (
+                <ContactDetailsForm
+                  initialValues={contact(facility)}
+                  schema={contactSchema}
+                  onSubmit={onSubmit}
+                  networkError={[]}
+                  dependancies={dependancies}
+                />
+              )}
+              {activePage == pages.resources && (
+                <ResourceDetails
+                  initialValues={resources(
+                    dependancies.resources.list,
+                    facility.resources
+                  )}
+                  schema={getResourcesSchema(dependancies.resources.list)}
+                  onSubmit={onSubmit}
+                  networkError={[]}
+                  dependancies={dependancies}
+                />
+              )}
+              {activePage == pages.utilities && (
+                <UtilitiesForm
+                  initialValues={utilities(facility.utilities)}
+                  onSubmit={onSubmit}
+                  networkError={[]}
+                  dependancies={dependancies}
+                />
+              )}
+              {activePage == pages.services &&
+                !loadingStates.fetchCurrentServices && (
+                  <ServicesForm
+                    initialValues={services(facility.services)}
+                    onSubmit={onSubmit}
+                    networkError={[]}
+                    dependancies={dependancies}
+                  />
+                )}
             </Grid>
           </Grid>
         </Container>
@@ -76,7 +129,6 @@ type Props = {
   facility: any;
   onChangePage: Function;
   facilitySubMenu: Array<any>;
+  loadingStates: any;
 };
 export default UpdateFacility;
-
-const getInitialValues: any = () => ({});

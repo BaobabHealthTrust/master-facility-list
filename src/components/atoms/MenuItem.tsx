@@ -13,13 +13,18 @@ function MenuItem(props: Props) {
       active={active}
       options={item.options}
       menu={body}
-      onClickOption={() => setActivePage(item.name)}
+      onClickOption={() => {
+        setActivePage(item.name);
+      }}
     />
   ) : (
     <Link
       style={{ height: "100%" }}
       to={item.link && item.link}
-      onClick={() => setActivePage(item.name)}
+      onClick={() => {
+        setActivePage(item.name);
+        item.onClick && item.onClick();
+      }}
     >
       <Container active={active}>{body}</Container>
     </Link>

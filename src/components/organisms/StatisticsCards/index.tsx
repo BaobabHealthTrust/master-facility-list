@@ -7,9 +7,10 @@ const StatCards = (props: Props) => {
   const { statistics } = props;
   return (
     <Grid container spacing={32}>
-      {statistics.map(stat => (
-        <Grid item md={3} xs={12} sm={6}>
+      {statistics.map((stat, index: number) => (
+        <Grid item md={true} xs={12} sm={6}>
           <StatCard
+            highlight={index == 0}
             icon={stat.icon}
             count={stat.count}
             title={stat.title}

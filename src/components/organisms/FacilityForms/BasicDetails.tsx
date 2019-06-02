@@ -36,13 +36,6 @@ function Basic(props: Props) {
           render={formikProps => <Form {...props} {...formikProps} />}
         />
       </div>
-      {/* <Formik
-        enableReinitialize={true}
-        initialValues={initialValues}
-        validationSchema={schema}
-        onSubmit={onNext}
-        render={formikProps => <Form {...props} {...formikProps} />}
-      /> */}
     </Paper>
   );
 }
@@ -59,12 +52,7 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     setFieldValue,
-    dependancies,
-    facilityTypes,
-    operationalStatuses,
-    regulatoryStatuses,
-    facilityOwners,
-    districts
+    dependancies
   } = props;
   return (
     <form onSubmit={handleSubmit}>

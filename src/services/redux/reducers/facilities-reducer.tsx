@@ -6,6 +6,10 @@ const initialState = {
     resources: [],
     services: [],
     utilities: []
+  },
+  advancedFilter: {
+    filterValues: [],
+    filterResults: {}
   }
 };
 export default (

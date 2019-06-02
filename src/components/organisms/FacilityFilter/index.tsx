@@ -1,11 +1,14 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
+import SearchTabs from "./SearchTabs";
+import { connect } from "react-redux";
 
 const drawerWidth = 320;
 
 const FilterDrawer = (props: Props) => {
-  const { classes, open } = props;
+  const onAddFilter = (value: any) => {};
+  const { classes, open, dependancies, filterOptions } = props;
   return (
     <Drawer
       className={classes.drawer}
@@ -15,13 +18,21 @@ const FilterDrawer = (props: Props) => {
       classes={{
         paper: classes.drawerPaper
       }}
-    />
+    >
+      <SearchTabs
+        dependancies={dependancies}
+        filterOptions={filterOptions}
+        onAddFilter={(value: any) => onAddFilter(value)}
+      />
+    </Drawer>
   );
 };
 
 type Props = {
   classes?: any;
   open: boolean;
+  dependancies: any;
+  filterOptions: Array<any>;
 };
 const styles: any = (theme: any) => ({
   root: {
@@ -50,4 +61,12 @@ const styles: any = (theme: any) => ({
   }
 });
 
-export default withStyles(styles, { withTheme: true })(FilterDrawer);
+const mapStateToProps = (state: any) => ({
+  dependancies: state.dependancies,
+  filterOptions: state.facilities.advancedFilter.filterValues
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles, { withTheme: true })(FilterDrawer));

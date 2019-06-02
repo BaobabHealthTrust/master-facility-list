@@ -1,13 +1,28 @@
 import React from "react";
-import { basicSchema } from "../../../components/organisms/FacilityForms/schema";
-import { basic } from "../../../components/organisms/FacilityForms/initialValues";
+import {
+  basicSchema,
+  contactSchema,
+  getResourcesSchema
+} from "../../../components/organisms/FacilityForms/schema";
+import {
+  basic,
+  contact,
+  resources,
+  utilities,
+  services
+} from "../../../components/organisms/FacilityForms/initialValues";
 import BasicDetailsForm from "../../../components/organisms/FacilityForms/BasicDetails";
+import ContactDetails from "../../../components/organisms/FacilityForms/ContactDetails";
+import ResourceDetails from "../../../components/organisms/FacilityForms/Resources";
+import UtilityDetails from "../../../components/organisms/FacilityForms/Utilities";
+import ServicesForm from "../../../components/organisms/FacilityForms/Services";
 import Container from "../../../components/atoms/Container";
 import PageTitle from "../../../components/molecules/PageTitle";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHospital } from "@fortawesome/free-solid-svg-icons";
 import Stepper from "../../../components/molecules/AddFacilityStepper";
+import { FacilityPages as pages } from "../../../services/utils";
 
 library.add(faHospital);
 
@@ -24,13 +39,49 @@ function CreateFacility(props: Props) {
       <Stepper active={active} sections={sections} />
       {
         <Container>
-          <BasicDetailsForm
-            initialValues={basic()}
-            schema={basicSchema}
-            onSubmit={onSubmit}
-            networkError={[]}
-            dependancies={dependancies}
-          />
+          {active == sections[0] && (
+            <BasicDetailsForm
+              initialValues={basic()}
+              schema={basicSchema}
+              onSubmit={onSubmit}
+              networkError={[]}
+              dependancies={dependancies}
+            />
+          )}
+          {active == sections[1] && (
+            <ContactDetails
+              initialValues={contact()}
+              schema={contactSchema}
+              onSubmit={onSubmit}
+              networkError={[]}
+              dependancies={dependancies}
+            />
+          )}
+          {active == sections[2] && (
+            <ResourceDetails
+              initialValues={resources(dependancies.resources.list)}
+              schema={getResourcesSchema(dependancies.resources.list)}
+              onSubmit={onSubmit}
+              networkError={[]}
+              dependancies={dependancies}
+            />
+          )}
+          {active == sections[3] && (
+            <UtilityDetails
+              initialValues={utilities()}
+              onSubmit={onSubmit}
+              networkError={[]}
+              dependancies={dependancies}
+            />
+          )}
+          {active == sections[4] && (
+            <ServicesForm
+              initialValues={services()}
+              onSubmit={onSubmit}
+              networkError={[]}
+              dependancies={dependancies}
+            />
+          )}
         </Container>
       }
     </div>

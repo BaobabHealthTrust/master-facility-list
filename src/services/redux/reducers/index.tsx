@@ -4,13 +4,15 @@ import dependancyRed from "./dependancy-reducer";
 import errorsReducer from "./errors_reducer";
 import statusReducer from "./status_reducer";
 import facilitiesReducer from "./facilities-reducer";
+import usersReducer from "./users-reducer";
 
 const rootReducer = combineReducers({
   ui: uiReducer,
   dependancies: dependancyRed,
   errors: errorsReducer,
   status: statusReducer,
-  facilities: facilitiesReducer
+  facilities: facilitiesReducer,
+  users: usersReducer
 });
 
 export default rootReducer;

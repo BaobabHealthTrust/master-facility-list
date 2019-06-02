@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Header from "./Header";
 import { setActivePage } from "../../../services/redux/actions/ui";
+import { userLogout } from "../../../services/redux/actions/users";
 // @ts-ignore
 import { split } from "lodash";
 
@@ -12,18 +13,27 @@ export class index extends Component<Props> {
     this.props.setActivePage(page);
   }
   render() {
-    return <Header activePage={this.props.activePage} />;
+    return (
+      <Header
+        logout={this.props.userLogout}
+        auth={this.props.auth}
+        activePage={this.props.activePage}
+      />
+    );
   }
 }
 
 type Props = {
   activePage: string;
   setActivePage: Function;
+  userLogout: Function;
+  auth: any;
 };
 const mapStateToProps = (state: any) => ({
-  activePage: state.ui.activePage
+  activePage: state.ui.activePage,
+  auth: state.users.currentUser
 });
 export default connect(
   mapStateToProps,
-  { setActivePage }
+  { setActivePage, userLogout }
 )(index);

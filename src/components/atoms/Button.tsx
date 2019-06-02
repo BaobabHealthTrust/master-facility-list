@@ -13,7 +13,7 @@ const Button = (props: Props) => {
     type
   } = props;
   const btnTheme = theme ? themes[theme] : themes.primary;
-  const buttonClass = `waves-effect btn`;
+  const buttonClass = `waves-effect waves-light btn`;
 
   return (
     <ThemeProvider theme={btnTheme}>
@@ -50,6 +50,7 @@ type Props = {
 const Btn = styled.button`
   cursor: pointer;
   vertical-align: middle;
+  text-transform: none;
   display: inline-block;
   font-weight: 400;
   min-width: 100px;
@@ -65,11 +66,6 @@ const Btn = styled.button`
   color: ${props =>
     props.theme.background == "transparent" ? "black" : "white"};
   background: ${props => props.theme.background};
-  box-shadow: ${props =>
-    props.theme.background == "transparent"
-      ? ""
-      : `0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
-    0 3px 1px -2px rgba(0, 0, 0, 0.2)`};
   :hover {
     text-decoration: none;
     outline: 0;

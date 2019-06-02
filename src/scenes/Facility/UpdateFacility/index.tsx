@@ -85,10 +85,11 @@ export class index extends Component<Props> {
   };
 
   render() {
-    const { facility } = this.props;
+    const { facility, loading } = this.props;
 
     return (
       <UpdateFacility
+        loadingStates={loading}
         sections={pages}
         activePage={this.props.facilityPage}
         onSubmit={this.onSubmit}
@@ -108,7 +109,8 @@ const mapStateToProps = (state: any) => {
     drawerOpen: state.ui.advancedSearchOpen,
     facilityPage: state.ui.activeFacilityPage,
     facility: state.facilities.current,
-    dependancies: state.dependancies
+    dependancies: state.dependancies,
+    loading: state.status
   };
 };
 
@@ -125,6 +127,7 @@ type Props = {
   fetchCurrentUtilities: Function;
   setActiveFacilityPage: Function;
   history?: any;
+  loading: any;
 };
 export default connect(
   mapStateToProps,

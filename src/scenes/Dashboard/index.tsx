@@ -147,6 +147,12 @@ class index extends Component<any> {
       title: "Dispensaries",
       icon: "normal-hospital.svg",
       onClick: () => {}
+    },
+    {
+      count: this.getFacilitiesOfType("Health Post"),
+      title: "Health Posts",
+      icon: "tent.svg",
+      onClick: () => {}
     }
   ];
   render() {

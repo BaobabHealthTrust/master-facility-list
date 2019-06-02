@@ -87,6 +87,7 @@ class ClickAway extends React.Component<Props> {
                       onClick={() => {
                         onClickOption(option.name);
                         this.handleClickAway();
+                        option.onClick && option.onClick();
                       }}
                     >
                       <Link style={{ color: "#0d47a1" }} to={option.link}>

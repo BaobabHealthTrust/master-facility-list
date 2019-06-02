@@ -24,7 +24,7 @@ export class index extends Component<Props> {
     return (
       <CreateFacility
         sections={this.formSections}
-        active="Basic Details"
+        active="Services"
         onSubmit={this.onSubmit}
         dependancies={this.props.dependancies}
       />

@@ -97,3 +97,26 @@ export const getFacilityUtilities = (facilityId: number) => {
   const url = `${settings.API}/FacilityUtilities/latest?id=${facilityId}`;
   return axios.get(url);
 };
+
+export const getUsers = () => {
+  const url = `${settings.API}/clients`;
+  return axios.get(url);
+};
+
+export const authenticateUser = (credentials: {
+  username: string;
+  password: string;
+}) => {
+  const url = `${settings.API}/clients/login`;
+  return axios.post(url, credentials);
+};
+
+export const getUserDetails = (userId: number, token: string) => {
+  const url = `${settings.API}/clients/${userId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.get(url, header);
+};
