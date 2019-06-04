@@ -30,7 +30,8 @@ type Props = {
 };
 
 const Container = styled.div`
-  padding: 10;
+  padding: 10px;
+  margin-bottom: -11px;
   background-color: #eee;
   display: flex;
   justify-content: flex-end;

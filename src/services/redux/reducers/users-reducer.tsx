@@ -39,6 +39,11 @@ export default (
           details: action.payload.data
         }
       };
+    case actions.fetchUsers + "_FULFILLED":
+      return {
+        ...state,
+        users: action.payload.data
+      };
     default:
       return state;
   }

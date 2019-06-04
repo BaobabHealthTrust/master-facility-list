@@ -14,6 +14,7 @@ import { fetchOwners } from "../../../services/redux/actions/dependancies";
 import { FacilityPages as pages } from "../../../services/utils";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { patchFacilityBasicDetails } from "../../../services/redux/actions/facilities";
 import {
   faHospital,
   faEnvelope,
@@ -21,6 +22,7 @@ import {
   faWifi,
   faStethoscope
 } from "@fortawesome/free-solid-svg-icons";
+import { getBasicDetails } from "./helpers";
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -57,6 +59,10 @@ export class index extends Component<Props> {
     }
   ];
 
+  onCancel = () => {
+    this.props.history.goBack();
+  };
+
   handlePageChange = (page: any) => {
     this.props.setActiveFacilityPage(page);
     this.props.history.push(`/facilities/${this.props.facility.id}/${page}`);
@@ -80,15 +86,48 @@ export class index extends Component<Props> {
       this.props.fetchCurrentUtilities(facilityId);
     }
   }
-  onSubmit = () => {
-    alert("submitted");
+  onSubmit = (values: any) => {
+    switch (this.props.facilityPage) {
+      case "summary":
+        return this.onSubmitBasicDetails(values);
+      // case "locations":
+      //   return this.onSubmitContactDetails(values);
+      // case "resources":
+      //   return this.onSubmitResourcesDetails(values);
+      // case "utilities":
+      //   return this.onSubmitUtilitiesDetails(values);
+      // case "services":
+      //   return this.onSubmitServicesDetails(values);
+    }
   };
 
+  onSubmitBasicDetails = async (values: any) => {
+    let token = (await sessionStorage.getItem("token")) || "";
+    let val = {
+      ...values,
+      published_date: values.publishedDate
+    };
+    if (token == "") return;
+
+    return this.props
+      .patchFacilityBasicDetails(
+        getBasicDetails(val),
+        this.props.facility.id,
+        token
+      )
+      .then(() => {
+        return;
+      })
+      .catch(() => {
+        return;
+      });
+  };
   render() {
     const { facility, loading } = this.props;
 
     return (
       <UpdateFacility
+        onCancel={this.onCancel}
         loadingStates={loading}
         sections={pages}
         activePage={this.props.facilityPage}
@@ -126,6 +165,7 @@ type Props = {
   fetchCurrentServices: Function;
   fetchCurrentUtilities: Function;
   setActiveFacilityPage: Function;
+  patchFacilityBasicDetails: Function;
   history?: any;
   loading: any;
 };
@@ -137,6 +177,7 @@ export default connect(
     fetchCurrentBasic,
     fetchCurrentServices,
     fetchCurrentUtilities,
-    setActiveFacilityPage
+    setActiveFacilityPage,
+    patchFacilityBasicDetails
   }
 )(index);

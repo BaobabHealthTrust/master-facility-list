@@ -38,7 +38,8 @@ function UpdateFacility(props: Props) {
     facilitySubMenu,
     onChangePage,
     facility,
-    loadingStates
+    loadingStates,
+    onCancel
   } = props;
   return (
     <>
@@ -68,6 +69,7 @@ function UpdateFacility(props: Props) {
               </Grid>
               {activePage == pages.summary && (
                 <BasicDetailsForm
+                  onCancel={onCancel}
                   initialValues={basic(facility)}
                   schema={basicSchema}
                   onSubmit={onSubmit}
@@ -77,6 +79,7 @@ function UpdateFacility(props: Props) {
               )}
               {activePage == pages.contact && (
                 <ContactDetailsForm
+                  onCancel={onCancel}
                   initialValues={contact(facility)}
                   schema={contactSchema}
                   onSubmit={onSubmit}
@@ -86,6 +89,7 @@ function UpdateFacility(props: Props) {
               )}
               {activePage == pages.resources && (
                 <ResourceDetails
+                  onCancel={onCancel}
                   initialValues={resources(
                     dependancies.resources.list,
                     facility.resources
@@ -98,6 +102,7 @@ function UpdateFacility(props: Props) {
               )}
               {activePage == pages.utilities && (
                 <UtilitiesForm
+                  onCancel={onCancel}
                   initialValues={utilities(facility.utilities)}
                   onSubmit={onSubmit}
                   networkError={[]}
@@ -107,6 +112,7 @@ function UpdateFacility(props: Props) {
               {activePage == pages.services &&
                 !loadingStates.fetchCurrentServices && (
                   <ServicesForm
+                    onCancel={onCancel}
                     initialValues={services(facility.services)}
                     onSubmit={onSubmit}
                     networkError={[]}
@@ -130,5 +136,6 @@ type Props = {
   onChangePage: Function;
   facilitySubMenu: Array<any>;
   loadingStates: any;
+  onCancel: Function;
 };
 export default UpdateFacility;

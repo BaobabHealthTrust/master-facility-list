@@ -3,7 +3,11 @@ import { Grid } from "@material-ui/core";
 import Title from "../../molecules/PageTitle";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHospital, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHospital,
+  faEdit,
+  faPlusCircle
+} from "@fortawesome/free-solid-svg-icons";
 import Container from "../../atoms/Container";
 import OptionsBar from "../../molecules/FacilityViewOptionsBar";
 import Card from "../../atoms/Card";
@@ -43,6 +47,13 @@ function index(props: Props) {
           <Title
             title={basic.facility_name}
             icon={<FontAwesomeIcon icon={faHospital} />}
+            options={
+              <Link to="/facilities/add">
+                <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
+                  Add Facility
+                </Button>
+              </Link>
+            }
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>

@@ -51,11 +51,6 @@ export function ActionButtons(props: Props) {
       >
         Download Pdf
       </Button>
-      <Link to="/facilities/add">
-        <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
-          Add Facility
-        </Button>
-      </Link>
     </div>
   );
 }

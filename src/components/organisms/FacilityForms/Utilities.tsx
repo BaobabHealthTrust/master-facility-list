@@ -15,7 +15,7 @@ function Basic(props: Props) {
   const { initialValues, onSubmit } = props;
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    onSubmit();
+    onSubmit(values.utilities, "utilities", "Services");
     setSubmitting(false);
   };
 
@@ -45,18 +45,19 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     setFieldValue,
-    dependancies
+    dependancies,
+    onCancel
   } = props;
 
   const onUtilityClick = async (utility: any) => {
     let utilities = values.utilities;
     if (!utilities.includes(utility.id)) {
       utilities.push(utility.id);
-      setFieldValue({ utilities });
+      setFieldValue(utilities, utilities);
     } else {
       let index = utilities.indexOf(utility.id);
       utilities = utilities.splice(index, 1);
-      setFieldValue({ utilities });
+      setFieldValue(utilities, utilities);
     }
   };
   return (
@@ -88,9 +89,7 @@ export function Form(props: any) {
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}
-            handleCancel={() => {
-              alert("canel");
-            }}
+            handleCancel={onCancel}
             saveBtnText="Next"
             isSubmitting={isSubmitting}
           />
@@ -105,6 +104,7 @@ type Props = {
   onSubmit: any;
   networkError: Array<any>;
   dependancies: any;
+  onCancel: Function;
 };
 
 const FormWrapper = styled.div`

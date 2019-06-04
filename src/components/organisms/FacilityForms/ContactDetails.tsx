@@ -21,7 +21,7 @@ function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    onSubmit();
+    onSubmit(values, "contact", "Resources");
     setSubmitting(false);
   };
 
@@ -52,7 +52,8 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     setFieldValue,
-    dependancies
+    dependancies,
+    onCancel
   } = props;
   return (
     <form onSubmit={handleSubmit}>
@@ -117,7 +118,7 @@ export function Form(props: any) {
             <FormControl className="mfl-max-width">
               <TextField
                 value={values.contactPhoneNumber}
-                name="contactName"
+                name="contactPhoneNumber"
                 label="Contact Person Phone Number"
                 placeholder="Contact Person Phone Number"
                 error={errors.contactPhoneNumber && touched.contactPhoneNumber}
@@ -135,7 +136,7 @@ export function Form(props: any) {
             <FormControl className="mfl-max-width">
               <TextField
                 value={values.contactEmail}
-                name="contactName"
+                name="contactEmail"
                 label="Contact Person Email"
                 placeholder="Contact Person Email"
                 error={errors.contactEmail && touched.contactEmail}
@@ -149,11 +150,29 @@ export function Form(props: any) {
               )}
             </FormControl>
           </Grid>
-          <Grid item sm={12} md={6}>
+          <Grid item sm={12} md={3}>
+            <FormControl className="mfl-max-width">
+              <TextField
+                value={values.catchmentArea}
+                name="catchmentArea"
+                label="Catchment Area"
+                placeholder="Enter Catchment Area"
+                error={errors.catchmentArea && touched.catchmentArea}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.catchmentArea && touched.catchmentArea && (
+                <FormHelperText id="component-error-text">
+                  {errors.catchmentArea}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+          <Grid item sm={12} md={3}>
             <FormControl className="mfl-max-width">
               <TextField
                 value={values.catchmentPopulation}
-                name="contactName"
+                name="catchmentPopulation"
                 label="Estimated Catchment Population"
                 placeholder="Estimated Catchment Population"
                 error={
@@ -173,7 +192,7 @@ export function Form(props: any) {
             <FormControl className="mfl-max-width">
               <TextField
                 value={values.latitude}
-                name="contactName"
+                name="latitude"
                 label="Facility Latitude"
                 placeholder="Facility Latitude"
                 error={errors.latitude && touched.latitude}
@@ -191,7 +210,7 @@ export function Form(props: any) {
             <FormControl className="mfl-max-width">
               <TextField
                 value={values.longitude}
-                name="contactName"
+                name="longitude"
                 label="Facility Longitude"
                 placeholder="Facility Longitude"
                 error={errors.longitude && touched.longitude}
@@ -211,9 +230,7 @@ export function Form(props: any) {
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}
-            handleCancel={() => {
-              alert("canel");
-            }}
+            handleCancel={onCancel}
             saveBtnText="Next"
             isSubmitting={isSubmitting}
           />
@@ -229,6 +246,7 @@ type Props = {
   onSubmit: any;
   networkError: Array<any>;
   dependancies: any;
+  onCancel: Function;
 };
 
 const FormWrapper = styled.div`

@@ -74,6 +74,7 @@ class ServicesForm extends React.Component<Props> {
     }
     return services;
   };
+
   removeService = (id: number) => {
     let removedService = null;
     let services = this.state.services.filter((ser: any) => {
@@ -253,7 +254,7 @@ class ServicesForm extends React.Component<Props> {
   };
 
   onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    this.props.onSubmit();
+    this.props.onSubmit(values.services, "services", "Finish");
     setSubmitting(false);
   };
   render() {
@@ -297,7 +298,8 @@ export function Form(props: any) {
     service,
     onChange,
     addService,
-    renderSelectedServices
+    renderSelectedServices,
+    onCancel
   } = props;
 
   return (
@@ -396,9 +398,7 @@ export function Form(props: any) {
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}
-            handleCancel={() => {
-              alert("canel");
-            }}
+            handleCancel={onCancel}
             saveBtnText="Next"
             isSubmitting={isSubmitting}
           />
@@ -413,6 +413,7 @@ type Props = {
   onSubmit: any;
   networkError: Array<any>;
   dependancies: any;
+  onCancel: Function;
 };
 
 const FormWrapper = styled.div`

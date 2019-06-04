@@ -26,6 +26,7 @@
     "@types/yup": "^0.26.13",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "cypress": "^3.3.1",
     "formik": "^1.5.7",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",

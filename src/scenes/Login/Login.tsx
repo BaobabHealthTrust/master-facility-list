@@ -8,7 +8,7 @@ import { Formik } from "formik";
 
 function Login(props: Props) {
   const initialValues: any = { username: null, password: null };
-  const onSubmit = async (values: any, { setSubmitting, setErrors }: any) => {
+  const onSubmit = async (values: any, { setSubmitting }: any) => {
     await props.onSubmit(values);
     setSubmitting(false);
   };

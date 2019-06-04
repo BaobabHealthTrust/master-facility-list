@@ -98,11 +98,6 @@ export const getFacilityUtilities = (facilityId: number) => {
   return axios.get(url);
 };
 
-export const getUsers = () => {
-  const url = `${settings.API}/clients`;
-  return axios.get(url);
-};
-
 export const authenticateUser = (credentials: {
   username: string;
   password: string;
@@ -119,4 +114,87 @@ export const getUserDetails = (userId: number, token: string) => {
     }
   };
   return axios.get(url, header);
+};
+export const getUsers = (token: string) => {
+  const url = `${settings.API}/clients`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.get(url, header);
+};
+
+export const publishFacility = (data: any, token: string) => {
+  const url = `${settings.API}/Facilities/publish`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const postBasicDetails = (data: any, token: string) => {
+  const url = `${settings.API}/Facilities`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const putBasicDetails = (
+  data: any,
+  facilityId: number,
+  token: string
+) => {
+  const url = `${settings.API}/Facilities/${facilityId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.put(url, data, header);
+};
+
+export const postContactDetails = (data: any, token: string) => {
+  const url = `${settings.API}/Facilities/contactDetails`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const postResources = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityResources`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const postUtilities = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityUtilities`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const postServices = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityServices`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
 };

@@ -2,7 +2,6 @@ import React from "react";
 import { Formik } from "formik";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-// @ts-ignore
 import {
   TextField,
   FormControl,
@@ -21,7 +20,7 @@ function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    onSubmit();
+    onSubmit(values, "details", "Contacts & Location");
     setSubmitting(false);
   };
 
@@ -52,7 +51,8 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     setFieldValue,
-    dependancies
+    dependancies,
+    onCancel
   } = props;
   return (
     <form onSubmit={handleSubmit}>
@@ -186,12 +186,14 @@ export function Form(props: any) {
               <Select
                 onBlur={handleBlur}
                 error={errors.facilityOwner && touched.facilityOwner}
-                onChange={(e: any) => setFieldValue("owner", e.target.value)}
+                onChange={(e: any) =>
+                  setFieldValue("facilityOwner", e.target.value)
+                }
                 input={
                   <Input
-                    name="owner"
+                    name="facilityOwner"
                     error={errors.facilityOwner && touched.facilityOwner}
-                    id="owner"
+                    id="facilityOwner"
                   />
                 }
                 value={values.facilityOwner}
@@ -262,9 +264,7 @@ export function Form(props: any) {
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}
-            handleCancel={() => {
-              alert("canel");
-            }}
+            handleCancel={onCancel}
             saveBtnText="Next"
             isSubmitting={isSubmitting}
           />
@@ -280,6 +280,7 @@ type Props = {
   onSubmit: any;
   networkError: Array<any>;
   dependancies: any;
+  onCancel: Function;
 };
 
 const FormWrapper = styled.div`

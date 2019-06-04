@@ -27,7 +27,7 @@ import { FacilityPages as pages } from "../../../services/utils";
 library.add(faHospital);
 
 function CreateFacility(props: Props) {
-  const { sections, dependancies, active, onSubmit } = props;
+  const { sections, dependancies, active, onSubmit, onCancel } = props;
   return (
     <div>
       <Container style={{ paddingTop: "40px", marginBottom: "20px" }}>
@@ -46,6 +46,7 @@ function CreateFacility(props: Props) {
               onSubmit={onSubmit}
               networkError={[]}
               dependancies={dependancies}
+              onCancel={onCancel}
             />
           )}
           {active == sections[1] && (
@@ -55,6 +56,7 @@ function CreateFacility(props: Props) {
               onSubmit={onSubmit}
               networkError={[]}
               dependancies={dependancies}
+              onCancel={onCancel}
             />
           )}
           {active == sections[2] && (
@@ -64,6 +66,7 @@ function CreateFacility(props: Props) {
               onSubmit={onSubmit}
               networkError={[]}
               dependancies={dependancies}
+              onCancel={onCancel}
             />
           )}
           {active == sections[3] && (
@@ -72,6 +75,7 @@ function CreateFacility(props: Props) {
               onSubmit={onSubmit}
               networkError={[]}
               dependancies={dependancies}
+              onCancel={onCancel}
             />
           )}
           {active == sections[4] && (
@@ -80,6 +84,7 @@ function CreateFacility(props: Props) {
               onSubmit={onSubmit}
               networkError={[]}
               dependancies={dependancies}
+              onCancel={onCancel}
             />
           )}
         </Container>
@@ -93,5 +98,6 @@ type Props = {
   active: string;
   onSubmit: Function;
   dependancies: any;
+  onCancel: Function;
 };
 export default CreateFacility;
