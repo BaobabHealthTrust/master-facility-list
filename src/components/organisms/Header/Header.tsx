@@ -19,11 +19,20 @@ import {
 import Menu from "../../molecules/Menu";
 import Search from "../../molecules/Search";
 import MobileMenu from "../../molecules/MobileMenu";
+import SearchContainer from "./SearchContainer";
 
 library.add(faAlignJustify);
 
 const Header = (props: Props) => {
-  const { activePage, auth, logout } = props;
+  const {
+    activePage,
+    auth,
+    logout,
+    onClickSearchItem,
+    onSearchValueChange,
+    searchOpen,
+    toggleSearch
+  } = props;
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const isActivePage = (page: string) =>
@@ -138,7 +147,14 @@ const Header = (props: Props) => {
               <Typography variant="h5" color="inherit" noWrap>
                 {`Master Health Facility Registry`.toUpperCase()}
               </Typography>
-              <Search className="hide-on-small-only" />
+              <Search onClick={toggleSearch} className="hide-on-small-only" />
+              {searchOpen && (
+                <SearchContainer
+                  onClickSearchItem={onClickSearchItem}
+                  onChange={onSearchValueChange}
+                  onClose={toggleSearch}
+                />
+              )}
             </ToolsContainer>
             <Menu items={menuItems} />
             <MobileMenu
@@ -159,6 +175,10 @@ type Props = {
   activePage: string;
   auth: any;
   logout: Function;
+  onClickSearchItem: Function;
+  onSearchValueChange: Function;
+  toggleSearch: Function;
+  searchOpen: boolean;
 };
 const Container = styled.div`
   flex-grow: 1;

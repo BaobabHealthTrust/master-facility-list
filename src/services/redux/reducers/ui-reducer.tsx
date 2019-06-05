@@ -2,6 +2,7 @@ import actions from "../actions/actions";
 
 const initialState = {
   advancedSearchOpen: false,
+  searchOpen: false,
   activePage: "Home",
   activeFacilityPage: "summary"
 };
@@ -24,6 +25,11 @@ export default (
       return {
         ...state,
         activeFacilityPage: action.payload
+      };
+    case actions.toggleSearch:
+      return {
+        ...state,
+        searchOpen: !state.searchOpen
       };
     default:
       return state;

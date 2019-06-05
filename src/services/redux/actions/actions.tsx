@@ -10,6 +10,8 @@ export default {
   fetchOperationalStatuses: "FETCH_OPERATIONAL_STATUSES",
   fetchDistricts: "FETCH_DISTRICTS",
   fetchOwners: "FETCH_OWNERS",
+  setSearchValue: "SET_FILTER_VALUE",
+  toggleSearch: "TOGGLE_SEARCH",
   postFacilityBasicDetails: "POST_FACILITY_BASIC_DETAILS",
   putFacilityBasicDetails: "PUT_FACILITY_BASIC_DETAILS",
   postFacilityContactDetails: "POST_FACILITY_CONTACT_DETAILS",

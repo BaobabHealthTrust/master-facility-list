@@ -18,7 +18,8 @@ const initialState = {
       utilities: [],
       services: []
     }
-  } as { filterValues: Array<any>; filterResults: any }
+  } as { filterValues: Array<any>; filterResults: any },
+  quickSearchValue: "" as any
 };
 export default (
   state = initialState,
@@ -29,6 +30,11 @@ export default (
       return {
         ...state,
         list: action.payload.data.data
+      };
+    case actions.setSearchValue:
+      return {
+        ...state,
+        quickSearchValue: action.payload
       };
     case actions.fetchFilteredFacilities:
       return {
@@ -173,7 +179,7 @@ export default (
           ...state.advancedFilter,
           filterResults: {
             ...state.advancedFilter.filterResults,
-            srvices: tempServices
+            services: tempServices
           }
         }
       };

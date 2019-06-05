@@ -79,6 +79,20 @@ export class index extends Component<any> {
     this.props.fetchCurrentServices(facilityId);
     this.props.fetchCurrentUtilities(facilityId);
   }
+
+  componentWillReceiveProps(newProps: any) {
+    if (
+      newProps.match.params.id &&
+      newProps.match.params.id != this.state.facilityId
+    ) {
+      let facilityId = newProps.match.params.id;
+      this.setState({ facilityId });
+      this.props.fetchCurrentBasic(facilityId);
+      this.props.fetchCurrentResources(facilityId);
+      this.props.fetchCurrentServices(facilityId);
+      this.props.fetchCurrentUtilities(facilityId);
+    }
+  }
   render() {
     const { facility } = this.props;
     const { services, utilities, resources } = facility;

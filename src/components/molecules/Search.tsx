@@ -9,7 +9,7 @@ library.add(faSearch);
 const Search = (props: Props) => {
   return (
     <>
-      <SearchButton className={props.className}>
+      <SearchButton onClick={e => props.onClick()} className={props.className}>
         <FontAwesomeIcon icon={faSearch} />
       </SearchButton>
     </>
@@ -20,6 +20,7 @@ export default Search;
 
 type Props = {
   className?: string;
+  onClick: Function;
 };
 const SearchButton = styled.div`
   background-color: #94afd0;

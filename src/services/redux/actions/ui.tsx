@@ -6,6 +6,12 @@ export const toggleFacilityFilter = () => {
   };
 };
 
+export const toggleSearch = () => {
+  return {
+    type: actions.toggleSearch
+  };
+};
+
 export const setActivePage = (page: string) => {
   return {
     type: actions.setActivePage,

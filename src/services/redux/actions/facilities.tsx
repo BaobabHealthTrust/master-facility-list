@@ -29,6 +29,13 @@ export const fetchCurrentBasic = (facilityId: number) => {
   };
 };
 
+export const setQuickSearchValue = (value: any) => {
+  return {
+    type: actions.setSearchValue,
+    payload: value
+  };
+};
+
 export const fetchCurrentResources = (facilityId: number) => {
   return {
     type: actions.fetchCurrentResources,
