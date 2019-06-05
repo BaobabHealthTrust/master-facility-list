@@ -56,13 +56,22 @@ export const getFacilityTypes = () => {
   return axios.get(url);
 };
 
-export const getFacilities = () => {
-  const url = `${settings.API}/facilities/list`;
+export const getFacilities = (filter: any = null) => {
+  const url =
+    filter == null
+      ? `${settings.API}/facilities/list`
+      : `${settings.API}/facilities/list?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
-export const getFacilityResources = (facilityId: number) => {
-  const url = `${settings.API}/FacilityResources/latest?id=${facilityId}`;
+export const getFacilityResources = (
+  facilityId: number = -1,
+  filter: any = null
+) => {
+  const url =
+    filter === null
+      ? `${settings.API}/FacilityResources/latest?id=${facilityId}`
+      : `${settings.API}/FacilityResources?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
@@ -86,15 +95,25 @@ export const getFacilityBasicDetails = (facilityId: number) => {
   return axios.get(url);
 };
 
-export const getFacilityServices = (facilityId: number) => {
-  const url = `${
-    settings.API
-  }/FacilityServices/hierarchy?facility_id=${facilityId}`;
+export const getFacilityServices = (
+  facilityId: number = -1,
+  filter: any = null
+) => {
+  const url =
+    filter === null
+      ? `${settings.API}/FacilityServices/hierarchy?facility_id=${facilityId}`
+      : `${settings.API}/FacilityServices?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
-export const getFacilityUtilities = (facilityId: number) => {
-  const url = `${settings.API}/FacilityUtilities/latest?id=${facilityId}`;
+export const getFacilityUtilities = (
+  facilityId: number = -1,
+  filter: any = null
+) => {
+  const url =
+    filter === null
+      ? `${settings.API}/FacilityUtilities/latest?id=${facilityId}`
+      : `${settings.API}/FacilityUtilities?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 

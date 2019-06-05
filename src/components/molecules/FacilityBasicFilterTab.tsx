@@ -5,16 +5,16 @@ import { Grid } from "@material-ui/core";
 
 function FacilityBasicFilterTab(props: Props) {
   const [values, setValues] = useState({
-    district: -1,
-    facilityType: -1,
-    regulatoryStatus: -1,
-    operationalStatus: -1,
-    facilityOwner: -1
+    districts: -1,
+    facilityTypes: -1,
+    regulatoryStatuses: -1,
+    operationalStatuses: -1,
+    facilityOwners: -1
   });
   const { dependancies } = props;
   const districts = dependancies.districts.list.map((district: any) => {
     return {
-      type: "district",
+      type: "districts",
       id: district.id,
       label: district.district_name
     };
@@ -50,7 +50,7 @@ function FacilityBasicFilterTab(props: Props) {
 
   const facilityOwners = dependancies.owners.list.map((owner: any) => {
     return {
-      type: "facilityOwner",
+      type: "facilityOwners",
       id: owner.id,
       label: owner.facility_owner
     };
@@ -72,7 +72,7 @@ function FacilityBasicFilterTab(props: Props) {
             label="Filter By District"
             values={values}
             model={districts}
-            modelName="district"
+            modelName="districts"
             onChange={onChange}
           />
         </Grid>
@@ -81,7 +81,7 @@ function FacilityBasicFilterTab(props: Props) {
             label="Filter By Type"
             values={values}
             model={facilityTypes}
-            modelName="facilityType"
+            modelName="facilityTypes"
             onChange={onChange}
           />
         </Grid>
@@ -90,7 +90,7 @@ function FacilityBasicFilterTab(props: Props) {
             label="Filter By Regulatory Status"
             values={values}
             model={regulatoryStatuses}
-            modelName="regulatoryStatus"
+            modelName="regulatoryStatuses"
             onChange={onChange}
           />
         </Grid>
@@ -99,7 +99,7 @@ function FacilityBasicFilterTab(props: Props) {
             label="Filter By Operational Status"
             values={values}
             model={operationalStatuses}
-            modelName="operationalStatus"
+            modelName="operationalStatuses"
             onChange={onChange}
           />
         </Grid>
@@ -108,7 +108,7 @@ function FacilityBasicFilterTab(props: Props) {
             label="Filter By Ownership"
             values={values}
             model={facilityOwners}
-            modelName="facilityOwner"
+            modelName="facilityOwners"
             onChange={onChange}
           />
         </Grid>

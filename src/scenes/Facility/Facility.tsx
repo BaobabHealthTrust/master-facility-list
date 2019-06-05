@@ -8,6 +8,7 @@ import FacilityList from "../../components/organisms/FacilityList";
 import FacilityToolBar from "../../components/molecules/FacilityToolbar";
 import FacilityFilterDrawer from "../../components/organisms/FacilityFilter";
 import FilterButton from "../../components/atoms/FacilityFilterButton";
+import FilterCards from "../../components/molecules/FacilityFilterCards";
 
 const drawerWidth = 360;
 const styles = (theme: any) => ({
@@ -38,13 +39,16 @@ const index = (props: Props) => {
     onToggleDrawer,
     drawerOpen,
     facilities,
-    onFacilityClicked
+    onFacilityClicked,
+    onRemoveFilter,
+    onAddFilter,
+    filterOptions
   } = props;
 
   return (
     <div className="hide-on-med-and-down">
       <FilterButton open={drawerOpen} onClick={onToggleDrawer} />
-      <FacilityFilterDrawer open={drawerOpen} />
+      <FacilityFilterDrawer open={drawerOpen} onAddFilter={onAddFilter} />
       <Container
         style={{
           minHeight: "100%",
@@ -59,7 +63,16 @@ const index = (props: Props) => {
           <Grid item xs={12} md={12}>
             <FacilityToolBar />
           </Grid>
-
+          {filterOptions.length > 0 && (
+            <Grid item xs={12} md={12}>
+              <Card>
+                <FilterCards
+                  filterOptions={filterOptions}
+                  onRemove={onRemoveFilter}
+                />
+              </Card>
+            </Grid>
+          )}
           <Grid item xs={12} md={12}>
             <FacilityList onSelect={onFacilityClicked} data={facilities} />
           </Grid>
@@ -75,5 +88,8 @@ type Props = {
   facilities: Array<any>;
   classes?: any;
   onFacilityClicked: Function;
+  onAddFilter: Function;
+  onRemoveFilter: Function;
+  filterOptions: Array<any>;
 };
 export default withStyles(styles, { withTheme: true })(index);

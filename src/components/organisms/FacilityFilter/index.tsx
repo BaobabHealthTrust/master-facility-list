@@ -7,8 +7,7 @@ import { connect } from "react-redux";
 const drawerWidth = 320;
 
 const FilterDrawer = (props: Props) => {
-  const onAddFilter = (value: any) => {};
-  const { classes, open, dependancies, filterOptions } = props;
+  const { classes, open, dependancies, filterOptions, onAddFilter } = props;
   return (
     <Drawer
       className={classes.drawer}
@@ -22,7 +21,7 @@ const FilterDrawer = (props: Props) => {
       <SearchTabs
         dependancies={dependancies}
         filterOptions={filterOptions}
-        onAddFilter={(value: any) => onAddFilter(value)}
+        onAddFilter={onAddFilter}
       />
     </Drawer>
   );
@@ -33,6 +32,7 @@ type Props = {
   open: boolean;
   dependancies: any;
   filterOptions: Array<any>;
+  onAddFilter: Function;
 };
 const styles: any = (theme: any) => ({
   root: {

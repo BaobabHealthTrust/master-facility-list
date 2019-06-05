@@ -3,15 +3,15 @@ import styled from "styled-components";
 import Chip from "@material-ui/core/Chip";
 
 function DashboardFilterTags(props: Props) {
-  const { districts, onRemove } = props;
+  const { filterOptions, onRemove } = props;
   return (
     <Container>
-      {districts.map(district => (
+      {filterOptions.map(option => (
         <Chip
           style={{ margin: "0px 5px" }}
-          key={district}
-          label={district}
-          onDelete={() => onRemove(district)}
+          key={JSON.stringify(option)}
+          label={option.label}
+          onDelete={() => onRemove(option)}
         />
       ))}
     </Container>
@@ -21,7 +21,7 @@ function DashboardFilterTags(props: Props) {
 export default DashboardFilterTags;
 
 type Props = {
-  districts: Array<string>;
+  filterOptions: Array<any>;
   onRemove: Function;
 };
 const Container = styled.div`

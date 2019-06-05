@@ -30,8 +30,8 @@ function FacilityServicesFilterTab(props: Props) {
     value == -1 ? { type, id: -1 } : model[value];
 
   const onChange = (e: any, model: Array<any>, modelName: string) => {
-    let value = getValue(model, modelName, e.target.value);
-    props.onAddFilter(value);
+    let value = getValue(model, "services", e.target.value);
+    props.onAddFilter(value, model.map(val => val.id));
     setValues({ ...values, [modelName]: e.target.value });
   };
   return (

@@ -71,28 +71,28 @@ class SearchTabs extends React.Component<Props> {
             <BasicFilter
               dependancies={this.props.dependancies}
               filterOptions={this.props.filterOptions}
-              onAddFilter={(value: any) => this.props.onAddFilter(value)}
+              onAddFilter={this.props.onAddFilter}
             />
           )}
           {value === 1 && (
             <ResourcesFilter
               dependancies={this.props.dependancies}
               filterOptions={this.props.filterOptions}
-              onAddFilter={(value: any) => this.props.onAddFilter(value)}
+              onAddFilter={this.props.onAddFilter}
             />
           )}
           {value === 2 && (
             <UtilitiesFilter
               dependancies={this.props.dependancies}
               filterOptions={this.props.filterOptions}
-              onAddFilter={(value: any) => this.props.onAddFilter(value)}
+              onAddFilter={this.props.onAddFilter}
             />
           )}
           {value === 3 && (
             <ServicesFilter
               dependancies={this.props.dependancies}
               filterOptions={this.props.filterOptions}
-              onAddFilter={(value: any) => this.props.onAddFilter(value)}
+              onAddFilter={this.props.onAddFilter}
             />
           )}
         </TabContainer>
