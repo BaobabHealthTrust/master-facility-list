@@ -5,6 +5,7 @@ import { Alert } from "../common";
 import footerResizer from "../helpers/footerResize";
 import { Redirect } from "react-router-dom";
 import { checkCredentials, getUserDetails, setUserDetails } from "../actions";
+import { setActivePage } from "../actions/ui";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Icon } from "react-materialize";
@@ -66,6 +67,7 @@ class MflLogin extends Component<Props, State> {
         id: userId,
         ...this.props.loginResponse.userDetails
       });
+      this.props.setActivePage("home");
     }
   };
 
@@ -160,5 +162,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { checkCredentials, getUserDetails, setUserDetails }
+  { checkCredentials, getUserDetails, setUserDetails, setActivePage }
 )(MflLogin);

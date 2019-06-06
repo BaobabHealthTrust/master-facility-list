@@ -23,6 +23,7 @@ import FacilityDetail from "./components/FacilityDetail";
 import { isLoggedIn } from "../helpers/utilities";
 import { DetailsCard } from "./components/DetailsCard";
 import { redirectToEdit } from "./helpers";
+import EmptyState from "../../common/EmptyState";
 
 const CardContent = styled.div.attrs({
   className: "row"
@@ -142,6 +143,11 @@ class Utilities extends Component {
 
   _renderCardsRows = (cardsChunks, utilities) => (
     <Fragment>
+      {cardsChunks.length == 0 && (
+        <Col m={12} s={12} className="mb-5">
+          {<EmptyState resource="Utilities" />}
+        </Col>
+      )}
       {cardsChunks.map((card, index) => {
         return (
           <Row key={index}>

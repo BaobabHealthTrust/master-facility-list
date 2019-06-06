@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Preloader } from "./common";
 import styled from "styled-components";
-import { timingSafeEqual } from "crypto";
+import Notification from "./common/Notification";
 
 class App extends Component {
   state = {
@@ -43,7 +43,7 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.checkWindowWidith);
-    this.setState({ minHeight: window.innerHeight - 150 });
+    this.setState({ minHeight: window.innerHeight - 140 });
     this.checkWindowWidith();
     this.isRouteVisible();
   }

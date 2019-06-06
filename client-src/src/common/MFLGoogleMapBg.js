@@ -50,7 +50,7 @@ const MFLGoogleMapBg = compose(
   const { position, isMarkerShown } = props;
   return (
     <GoogleMap
-      onClick={pro => alert(JSON.stringify(pro))}
+      //onClick={pro => alert(JSON.stringify(pro))}
       defaultZoom={15}
       defaultCenter={{ lat: position.lat, lng: position.lng + 0.016 }}
     >

@@ -61,7 +61,7 @@ class Navbar extends Component {
             style={{ fontSize: "28px" }}
           >
             <a href="/" className="center hide-on-med-and-up mfl-nav-title">
-              Master Health Facility Registry
+              MHFR
             </a>
 
             <div className="left hide-on-med-and-down mfl-pl-10">

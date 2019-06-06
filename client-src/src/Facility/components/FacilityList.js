@@ -20,6 +20,7 @@ import { Progress } from "../../common/Progress";
 import { isEqual } from "lodash";
 import { Paper } from "@material-ui/core";
 import SearchChips from "./Search/SearchChipsContainer";
+import MobileView from "../components/FacilityMobileList";
 
 const drawerWidth = 320;
 
@@ -127,6 +128,35 @@ class FacilityList extends React.Component<Props, State> {
   onAddFilter = val => {
     const { type, id } = val;
     const isRange = val.range;
+    if (id == -1) {
+      let filterOptions =
+        type == "utilities" || type == "services"
+          ? this.state.filterOptions.filter(
+              option =>
+                option.type != type ||
+                (option.type == type && !val.options.includes(option.id))
+            )
+          : this.state.filterOptions.filter(option => option.type != type);
+
+      let filterOptionsToRemove =
+        type == "utilities" || type == "services"
+          ? this.state.filterOptions.filter(
+              option => option.type == type && val.options.includes(option.id)
+            )
+          : this.state.filterOptions.filter(option => option.type == type);
+
+      for (let valueForType of filterOptionsToRemove) {
+        this.props.removeSearchValues(
+          valueForType,
+          "REMOVE_ADVANCED_SEARCH_VALUE"
+        );
+      }
+      this.setState({
+        filterOptions
+      });
+      this.props.onFilter();
+      return;
+    }
 
     const entryCount = this.state.filterOptions.filter(
       option => option.type == type && Number(option.id) == Number(id)
@@ -242,15 +272,25 @@ class FacilityList extends React.Component<Props, State> {
                 <Progress />
               </div>
             ) : (
-              <MflGrid
-                isLoading={true}
-                rows={tableRecords}
-                columns={columns}
-                pageSize={10}
-                defaultSorting={defaultSorting}
-                rowSelected={facility => this._redirect(facility.id)}
-                title={this.props.title}
-              />
+              <div>
+                <div className="hide-on-small-only">
+                  <MflGrid
+                    isLoading={true}
+                    rows={tableRecords}
+                    columns={columns}
+                    pageSize={10}
+                    defaultSorting={defaultSorting}
+                    rowSelected={facility => this._redirect(facility.id)}
+                    title={this.props.title}
+                  />
+                </div>
+                <div className="hide-on-med-and-up">
+                  <MobileView
+                    facilities={tableRecords}
+                    onClick={facility => this._redirect(facility.id)}
+                  />
+                </div>
+              </div>
             )}
           </TableContainer>
         </LandingPageWrapper>

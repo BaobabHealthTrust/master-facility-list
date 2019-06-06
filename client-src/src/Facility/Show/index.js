@@ -299,7 +299,8 @@ const mapStateToProps = state => {
     current: state.facilities.currentDetails,
     error: state.facilities.error,
     response: state.facilities.patchResponse,
-    isLoading: state.facilities.isLoading
+    isLoading: state.facilities.isLoading,
+    activePage: state.ui.activePage
   };
 };
 

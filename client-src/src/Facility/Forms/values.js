@@ -54,7 +54,13 @@ export const setInitialValues = (nextProp, fromAdd = false) => {
 
       publishedDate: fromAdd
         ? null
-        : nextProp.currentFacility.published_date || Date.now
+        : nextProp.currentFacility.published_date || Date.now,
+
+      facility_code_mapping:
+        nextProp.currentFacility.facility_code_mapping &&
+        nextProp.currentFacility.facility_code_mapping.length > 0
+          ? nextProp.currentFacility.facility_code_mapping
+          : [{ system: "", code: "", url: "" }]
     },
 
     contact: {

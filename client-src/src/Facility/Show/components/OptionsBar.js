@@ -93,7 +93,7 @@ export default function OptionsBar(props) {
         <div>
           <div className={"pb-2"}>
             <b style={{ fontSize: "1.2rem" }}>
-              {current.facility_code} (Formerly CPo9291),{" "}
+              {current.facility_code} ,{" "}
               {current.district && current.district.district_name}
             </b>
             {current.operationalStatus && (

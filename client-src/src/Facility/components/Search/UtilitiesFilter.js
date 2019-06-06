@@ -22,6 +22,17 @@ export function UtilitiesFilter(props) {
       options: utilitiesForType
     };
   });
+  const selectHasValue = (type, opts) => {
+    let options = props.filterOptions.filter(
+      val => val.type == type && opts.map(opt => opt.id).includes(val.id)
+    );
+    return options.length > 0;
+  };
+
+  const getValue = (options, value) =>
+    value == -1
+      ? { type: "utilities", id: -1, options: options.map(op => op.id) }
+      : options[value];
 
   return (
     <Container>
@@ -31,9 +42,15 @@ export function UtilitiesFilter(props) {
           type="select"
           label={`Filter By ${field.label}`}
           onChange={(e, value) => {
-            props.onAddFilter(field.options[value]);
+            props.onAddFilter(getValue(field.options, value));
           }}
         >
+          <option
+            selected={!selectHasValue("utilities", field.options)}
+            value={-1}
+          >
+            {`All ${field.label}s`}
+          </option>
           {field.options.map((option, index) => (
             <option key={option.id} value={index}>
               {option.label}

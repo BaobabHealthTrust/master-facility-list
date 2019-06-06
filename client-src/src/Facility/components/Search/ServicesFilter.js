@@ -23,6 +23,18 @@ export function ServicesFilter(props) {
     };
   });
 
+  const selectHasValue = (type, opts) => {
+    let options = props.filterOptions.filter(
+      val => val.type == type && opts.map(opt => opt.id).includes(val.id)
+    );
+    return options.length > 0;
+  };
+
+  const getValue = (options, value) =>
+    value == -1
+      ? { type: "services", id: -1, options: options.map(op => op.id) }
+      : options[value];
+
   return (
     <Container>
       {servicesFields.map(field => (
@@ -31,9 +43,15 @@ export function ServicesFilter(props) {
           type="select"
           label={`Filter By ${field.label}`}
           onChange={(e, value) => {
-            props.onAddFilter(field.options[value]);
+            props.onAddFilter(getValue(field.options, value));
           }}
         >
+          <option
+            selected={!selectHasValue("services", field.options)}
+            value={-1}
+          >
+            {`All ${field.label}`}
+          </option>
           {field.options.map((option, index) => (
             <option key={option.id} value={index}>
               {option.label}

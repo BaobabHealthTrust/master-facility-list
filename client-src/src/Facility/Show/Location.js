@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import MFLGoogleMap from "../../common/MFLGoogleMap";
 import styled from "styled-components";
 import { Paper } from "@material-ui/core";
+import EmptyState from "../../common/EmptyState";
 import { Row, Col } from "react-materialize";
 import { Link } from "react-router-dom";
 import FacilityDetail from "./components/FacilityDetail";
@@ -24,42 +25,49 @@ class Location extends Component<State> {
     this.props.fetchCurrentDetails(id);
   }
 
-  _renderContactSections = (locationData, addressData, contactPersonData) => (
-    <Fragment>
-      <Col m={4} s={12} className="mb-5">
-        <SectionTitle icon="person" text="Contact Person" />
-        {contactPersonData.map(contact => (
-          <FacilityDetail
-            key={contact[0]}
-            label={contact[0]}
-            text={contact[1]}
-          />
-        ))}
+  _renderContactSections = (locationData, addressData, contactPersonData) =>
+    contactPersonData.length == 0 &&
+    locationData.length == 0 &&
+    addressData.length == 0 ? (
+      <Col m={12} s={12} className="mb-5">
+        {<EmptyState resource="Contact Details" />}
       </Col>
+    ) : (
+      <Fragment>
+        <Col m={4} s={12} className="mb-5">
+          <SectionTitle icon="person" text="Contact Person" />
+          {contactPersonData.map(contact => (
+            <FacilityDetail
+              key={contact[0]}
+              label={contact[0]}
+              text={contact[1]}
+            />
+          ))}
+        </Col>
 
-      <Col m={4} s={12} className="mb-5">
-        <SectionTitle icon="location_on" text="Location" />
-        {locationData.map(contact => (
-          <FacilityDetail
-            key={contact[0]}
-            label={contact[0]}
-            text={contact[1]}
-          />
-        ))}
-      </Col>
+        <Col m={4} s={12} className="mb-5">
+          <SectionTitle icon="location_on" text="Location" />
+          {locationData.map(contact => (
+            <FacilityDetail
+              key={contact[0]}
+              label={contact[0]}
+              text={contact[1]}
+            />
+          ))}
+        </Col>
 
-      <Col m={4} s={12} className="mb-5">
-        <SectionTitle icon="contact_mail" text="Contact Address" />
-        {addressData.map(contact => (
-          <FacilityDetail
-            key={contact[0]}
-            label={contact[0]}
-            text={contact[1]}
-          />
-        ))}
-      </Col>
-    </Fragment>
-  );
+        <Col m={4} s={12} className="mb-5">
+          <SectionTitle icon="contact_mail" text="Contact Address" />
+          {addressData.map(contact => (
+            <FacilityDetail
+              key={contact[0]}
+              label={contact[0]}
+              text={contact[1]}
+            />
+          ))}
+        </Col>
+      </Fragment>
+    );
 
   render() {
     const locationData = this.props.current.locations

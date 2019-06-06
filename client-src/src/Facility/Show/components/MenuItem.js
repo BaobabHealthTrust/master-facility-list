@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 
 const CustomLink = styled(Link).attrs({
-  className: "col m12 s6"
+  className: "col m12 s3"
 })`
   margin-bottom: 0.5rem;
   border-left: 4px solid #94afd0;
@@ -25,7 +26,9 @@ export default function MenuItem(props) {
       onClick={() => props.handleClick(link.name, link.clickHandler)}
     >
       <i style={{ paddingRight: "15px" }}>{link.icon}</i>
-      {link.displayName}
+      <div className="hide-on-small-only" style={{ display: "inline" }}>
+        {link.displayName}
+      </div>
     </CustomLink>
   );
 }

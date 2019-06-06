@@ -11,7 +11,11 @@ import {
 import { Paper } from "@material-ui/core";
 import { setInitialValues } from "../../Forms/values";
 import { connect } from "react-redux";
-import { postFormData, fetchCurrentDetails } from "../../../actions";
+import {
+  postFormData,
+  fetchCurrentDetails,
+  fetchFacilities
+} from "../../../actions";
 import WizardHeader from "./WizardHeader";
 import { Redirect } from "react-router-dom";
 import swal from "@sweetalert/with-react";
@@ -102,6 +106,7 @@ class CreateFacilityWizard extends React.Component<{}> {
           );
           return;
         }
+        this.props.fetchFacilities;
         clearStorage();
       });
     }
@@ -300,6 +305,7 @@ export default connect(
   mapStateToProps,
   {
     postFormData,
-    fetchCurrentDetails
+    fetchCurrentDetails,
+    fetchFacilities
   }
 )(CreateFacilityWizard);
