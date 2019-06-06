@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table } from "react-materialize";
 import { Redirect } from "react-router-dom";
 import { hideSearchContainer } from "../actions";
+import { setActivePage } from "../actions/ui";
 import { connect } from "react-redux";
 
 class MflTable extends Component {
@@ -13,12 +14,13 @@ class MflTable extends Component {
     };
   }
 
-  handleRedirect(id) {
+  handleRedirect = id => {
     this.setState(prevState => ({
       redirect: !prevState.redirect,
       redirectLink: `/facilities/${id}/summary`
     }));
-  }
+    this.props.setActivePage("facilities");
+  };
 
   render() {
     const headerRows = this.props.data.headers.map(header => {
@@ -30,7 +32,7 @@ class MflTable extends Component {
       {
         if (!this.state.redirect) {
           return (
-            <tr key={id} onClick={this.handleRedirect.bind(this, id)}>
+            <tr key={id} onClick={() => this.handleRedirect(id)}>
               {record
                 .filter((cell, index) => index !== 0)
                 .map((cell, index) => {
@@ -69,5 +71,5 @@ const mapStateToProps = store => {
 };
 export default connect(
   mapStateToProps,
-  { hideSearchContainer }
+  { hideSearchContainer, setActivePage }
 )(MflTable);

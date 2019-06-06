@@ -3,3 +3,10 @@ export const toggleAdvancedSearch = () => {
     type: "TOGGLE_ADVANCED_SEARCH"
   };
 };
+
+export const setActivePage = page => {
+  return {
+    type: "SET_ACTIVE_PAGE",
+    payload: page
+  };
+};

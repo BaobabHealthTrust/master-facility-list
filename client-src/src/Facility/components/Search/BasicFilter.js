@@ -48,6 +48,14 @@ function BasicFilter(props) {
     };
   });
 
+  const selectHasValue = type => {
+    let options = props.filterOptions.filter(val => val.type == type);
+    return options.length > 0;
+  };
+
+  const getValue = (model, type, value) =>
+    value == -1 ? { type, id: -1 } : model[value];
+
   return (
     <Container>
       <Input
@@ -55,9 +63,13 @@ function BasicFilter(props) {
         label="Filter By District"
         name="district"
         onChange={(e, value) => {
-          props.onAddFilter(districts[value]);
+          value = getValue(districts, "district", value);
+          props.onAddFilter(value);
         }}
       >
+        <option selected={!selectHasValue("district")} value={-1}>
+          {"All Districts"}
+        </option>
         {districts.map((option, index) => (
           <option key={option.id} value={index}>
             {option.label}
@@ -69,9 +81,16 @@ function BasicFilter(props) {
         type="select"
         label="Filter By Types"
         onChange={(e, value) => {
-          props.onAddFilter(facilityTypes[value]);
+          value = getValue(facilityTypes, "facilityTypes", value);
+          props.onAddFilter(value);
         }}
       >
+        <option
+          selected={!selectHasValue("facilityTypes") ? true : false}
+          value={-1}
+        >
+          {"All Types"}
+        </option>
         {facilityTypes.map((option, index) => (
           <option key={option.id} value={index}>
             {option.label}
@@ -83,9 +102,16 @@ function BasicFilter(props) {
         type="select"
         label="Filter By Regulatory Status"
         onChange={(e, value) => {
-          props.onAddFilter(regulatoryStatuses[value]);
+          value = getValue(regulatoryStatuses, "regulatoryStatuses", value);
+          props.onAddFilter(value);
         }}
       >
+        <option
+          selected={!selectHasValue("regulatoryStatuses") ? true : false}
+          value={-1}
+        >
+          {"All Regulatory Statuses"}
+        </option>
         {regulatoryStatuses.map((option, index) => (
           <option key={option.id} value={index}>
             {option.label}
@@ -97,9 +123,16 @@ function BasicFilter(props) {
         type="select"
         label="Filter By Operational Status"
         onChange={(e, value) => {
-          props.onAddFilter(operationalStatuses[value]);
+          value = getValue(operationalStatuses, "operationalStatuses", value);
+          props.onAddFilter(value);
         }}
       >
+        <option
+          selected={!selectHasValue("operationalStatuses") ? true : false}
+          value={-1}
+        >
+          {"All Operational Statuses"}
+        </option>
         {operationalStatuses.map((option, index) => (
           <option key={option.id} value={index}>
             {option.label}
@@ -111,9 +144,16 @@ function BasicFilter(props) {
         type="select"
         label="Filter By Ownership"
         onChange={(e, value) => {
-          props.onAddFilter(facilityOwners[value]);
+          value = getValue(facilityOwners, "facilityOwner", value);
+          props.onAddFilter(value);
         }}
       >
+        <option
+          selected={!selectHasValue("facilityOwner") ? true : false}
+          value={-1}
+        >
+          {"All Facility Owners"}
+        </option>
         {facilityOwners.map((option, index) => (
           <option key={option.id} value={index}>
             {option.label}

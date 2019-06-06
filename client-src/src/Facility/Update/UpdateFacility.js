@@ -67,7 +67,8 @@ class UpdateFacility extends React.Component<{}> {
         facilityOwner: null,
         dateOpened: null,
         registrationNumber: null,
-        publishedDate: Date.now
+        publishedDate: Date.now,
+        facility_code_mapping: [{ system: "", code: "", url: "" }]
       },
 
       contact: {

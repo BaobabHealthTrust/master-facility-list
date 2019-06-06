@@ -155,14 +155,16 @@ class FacilitiesHome extends React.Component<Props, State> {
   _renderFacilityList = () => {
     const facilities = this.props.facilities ? this.fetchFacilities() : [];
     return (
-      <FacilityList
-        onFilter={() => {
-          this.filterFacilities();
-        }}
-        dataSource={facilities}
-        title={this.getFacilityListTitle()}
-        filter={facilities}
-      />
+      <React.Fragment>
+        <FacilityList
+          onFilter={() => {
+            this.filterFacilities();
+          }}
+          dataSource={facilities}
+          title={this.getFacilityListTitle()}
+          filter={facilities}
+        />
+      </React.Fragment>
     );
   };
 

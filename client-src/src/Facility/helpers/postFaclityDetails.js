@@ -9,6 +9,7 @@ export const postBasicDetails = async (data, postFormData, id = null) => {
     facility_operational_status_id: data.operationalStatus,
     facility_regulatory_status_id: data.regulatoryStatus,
     district_id: data.district,
+    facility_code_mapping: data.facility_code_mapping,
     client_id: 1,
     updated_at: Date.now()
   };

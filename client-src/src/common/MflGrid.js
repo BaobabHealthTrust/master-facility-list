@@ -90,7 +90,7 @@ class MflGrid extends React.Component {
 
     return (
       <React.Fragment>
-        <Paper>
+        <Paper style={{ marginBottom: "20px" }}>
           <Title className="hide-on-small-only">{this.props.title}</Title>
           <Grid rows={this.props.rows} columns={this.props.columns}>
             <SortingState defaultSorting={this.props.defaultSorting} />

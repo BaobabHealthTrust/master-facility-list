@@ -109,7 +109,10 @@ class SearchTabs extends React.Component {
         </Tabs>
         <TabContainer>
           {value === 0 && (
-            <BasicFilter onAddFilter={value => this.props.onAddFilter(value)} />
+            <BasicFilter
+              filterOptions={this.props.filterOptions}
+              onAddFilter={value => this.props.onAddFilter(value)}
+            />
           )}
           {value === 1 && (
             <ResourcesFilter
@@ -119,11 +122,13 @@ class SearchTabs extends React.Component {
           )}
           {value === 2 && (
             <UtilitiesFilter
+              filterOptions={this.props.filterOptions}
               onAddFilter={value => this.props.onAddFilter(value)}
             />
           )}
           {value === 3 && (
             <ServicesFilter
+              filterOptions={this.props.filterOptions}
               onAddFilter={value => this.props.onAddFilter(value)}
             />
           )}

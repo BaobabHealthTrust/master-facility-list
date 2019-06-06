@@ -10,7 +10,7 @@ export default props => {
           floating
           small="true"
           className="absolute mr-4 pin-r blue"
-          style={{ bottom: "10px", right: "10px" }}
+          style={{ bottom: "10px", right: "10px", position: "fixed" }}
         >
           <i className="material-icons">keyboard_arrow_up</i>
         </Button>

@@ -22,7 +22,8 @@ class FacilityBasicDetails extends Component<BasicDetailsFormProps> {
     facilityOwner: null,
     dateOpened: "1975-01-01",
     registrationNumber: null,
-    publishedDate: null
+    publishedDate: null,
+    facility_code_mapping: [{ system: "", code: "", url: "" }]
   };
 
   _onNext = async (values, { setSubmitting, setErrors }) => {

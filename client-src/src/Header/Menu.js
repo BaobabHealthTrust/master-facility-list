@@ -4,13 +4,19 @@ import { connect } from "react-redux";
 import { resetUserDetails } from "../actions";
 import { Dropdown, NavItem, Button, Icon, Divider } from "react-materialize";
 import { Redirect } from "react-router-dom";
+import { setActivePage } from "../actions/ui";
 
 class Menu extends Component {
   state = {
-    activePage: "",
     redirect: false
   };
 
+  componentDidMount() {
+    const windowLocation = window.location.href.split("/")[3];
+    console.log(windowLocation);
+    const url = windowLocation || "home";
+    this.props.setActivePage(url);
+  }
   logout = async e => {
     e.preventDefault();
     await sessionStorage.removeItem("token");
@@ -21,13 +27,12 @@ class Menu extends Component {
   };
 
   setClassName = (page: string) => {
-    const windowLocation = window.location.href.split("/")[3];
-    const url = windowLocation || "home";
-    return this.state.activePage == page || url == page ? "active" : "";
+    return this.props.activePage == page ? "active" : "";
   };
 
-  navigateTo = (activePage: string) =>
-    this.setState({ activePage, redirect: false });
+  navigateTo = (activePage: string) => {
+    this.props.setActivePage(activePage);
+  };
 
   renderMenuItem = (page: string, url: string) => (
     <li className={this.setClassName(page)}>
@@ -61,9 +66,9 @@ class Menu extends Component {
 
   renderMore = () => {
     let className =
-      this.setClassName("feedback") == "active" ||
-      this.setClassName("help") == "active" ||
-      this.setClassName("about") == "active"
+      "feedback" == this.props.activePage ||
+      "help" == this.props.activePage ||
+      "about" == this.props.activePage
         ? "active"
         : "";
     return (
@@ -136,11 +141,12 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
   return {
-    userDetails: state.users.loggedInUser
+    userDetails: state.users.loggedInUser,
+    activePage: state.ui.activePage
   };
 };
 
 export default connect(
   mapStateToProps,
-  { resetUserDetails }
+  { resetUserDetails, setActivePage }
 )(Menu);

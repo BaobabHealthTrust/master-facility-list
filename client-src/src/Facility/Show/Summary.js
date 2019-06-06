@@ -14,6 +14,7 @@ import { relative } from "path";
 import { isLoggedIn } from "../helpers/utilities";
 import { DetailsCard } from "./components/DetailsCard";
 import { redirectToEdit } from "./helpers";
+import { withRouter } from "react-router-dom";
 
 const CardContent = styled.div.attrs({
   className: "row"
@@ -28,12 +29,22 @@ const CardTitle = styled.div.attrs({
 class Summary extends Component<{ current: CurrentFacility }> {
   state = {
     error: {},
-    loading: true
+    loading: true,
+    id: null
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
+    this.setState({ id });
     this.props.fetchCurrentDetails(id);
+  }
+
+  componentWillReceiveProps(nextProp) {
+    if (nextProp.match.params.id && nextProp.match.params.id != this.state.id) {
+      let id = nextProp.match.params.id;
+      this.setState({ id });
+      this.props.fetchCurrentDetails(id);
+    }
   }
 
   _renderFacilityDetailsSections = ({
@@ -42,7 +53,7 @@ class Summary extends Component<{ current: CurrentFacility }> {
     facilityType,
     operationalStatus,
     facility_date_opened,
-    district
+    facility_code_mapping
   }) => (
     <div>
       <Col m={4} s={12} className="mb-10">
@@ -82,9 +93,11 @@ class Summary extends Component<{ current: CurrentFacility }> {
 
       <Col m={4} s={12} className="mb-10">
         <SectionTitle icon="info" text="System Details" />
-        <FacilityDetail label="MoH Code" text="CDRZD" />
-        <FacilityDetail label="DHIS2 Code" text="DFGGZD" />
-        <FacilityDetail label="old Code" text="CDo0RZD" />
+        <FacilityDetail label="MoH" text={this.props.current.facility_code} />
+        {facility_code_mapping &&
+          facility_code_mapping.map(system => (
+            <FacilityDetail label={system.system} text={system.code} />
+          ))}
       </Col>
     </div>
   );
@@ -117,13 +130,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    setCurrentDetails,
-    fetchCurrentDetails
-  }
-)(Summary);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      setCurrentDetails,
+      fetchCurrentDetails
+    }
+  )(Summary)
+);
 
 function SectionTitle(props) {
   return (

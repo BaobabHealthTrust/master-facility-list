@@ -26,6 +26,7 @@ import {
   addSearchValues,
   toggleAdvancedSearch
 } from "../actions";
+import { setActivePage } from "../actions/ui";
 
 type Props = {
   fetchDashboardFacilityServices: Function,
@@ -245,6 +246,7 @@ class DashboardHome extends Component<Props, State> {
     }
 
     this.props.history.push("/facilities");
+    this.props.setActivePage("facilities");
   };
 
   onMapClick = async event => {
@@ -409,5 +411,5 @@ const mapStateToProps = store => {
 
 export default connect(
   mapStateToProps,
-  { removeSearchValues, addSearchValues, toggleAdvancedSearch }
+  { removeSearchValues, addSearchValues, toggleAdvancedSearch, setActivePage }
 )(DashboardHome);

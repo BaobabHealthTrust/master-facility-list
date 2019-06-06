@@ -19,7 +19,7 @@ import { DetailsCard } from "./components/DetailsCard";
 import { redirectToEdit } from "./helpers";
 import { ServicesContainer } from "./components/ServicesContainer";
 import { chunk } from "lodash";
-
+import EmptyState from "../../common/EmptyState";
 type Props = {
   services: Array<{ service: Service }>,
   serviceTypes: any,
@@ -84,18 +84,24 @@ class Services extends React.Component<Props> {
   );
 
   _renderServices = servicesChunks =>
-    servicesChunks.map(serviceChunk => (
-      <Row>
-        {serviceChunk.map(serviceHierachy => (
-          <Col m={6} s={12}>
-            <ServicesContainer
-              key={serviceChunk.id}
-              serviceHierachy={serviceHierachy}
-            />
-          </Col>
-        ))}
-      </Row>
-    ));
+    servicesChunks.length == 0 ? (
+      <Col m={12} s={12} className="mb-5">
+        {<EmptyState resource="Services" />}
+      </Col>
+    ) : (
+      servicesChunks.map(serviceChunk => (
+        <Row>
+          {serviceChunk.map(serviceHierachy => (
+            <Col m={6} s={12}>
+              <ServicesContainer
+                key={serviceChunk.id}
+                serviceHierachy={serviceHierachy}
+              />
+            </Col>
+          ))}
+        </Row>
+      ))
+    );
 
   _getServicesHierachy = () =>
     this.props.services && this.props.serviceTypes
