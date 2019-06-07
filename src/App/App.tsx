@@ -2,6 +2,7 @@ import React from "react";
 import { Switch } from "react-router-dom";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { Header, Footer } from "../components/organisms";
 import Content from "../components/organisms/Content";
 import Dashboard from "../scenes/Dashboard";
@@ -26,7 +27,13 @@ import {
   fetchFacilityTypes
 } from "../services/redux/actions/dependancies";
 import { fetchFacilities } from "../services/redux/actions/facilities";
+import { ToastContainer, cssTransition } from "react-toastify";
 
+const Slide = cssTransition({
+  enter: "slideIn",
+  exit: "slideOut",
+  duration: 750
+});
 const App: React.FC = (props: any) => {
   const {
     fetchUtilities,
@@ -82,11 +89,24 @@ const App: React.FC = (props: any) => {
   fetchFacilities().catch(() => {});
 
   fetchFacilityTypes().catch(() => {});
-
   return (
     <>
+      <ToastContainer
+        autoClose={6000}
+        closeButton={false}
+        style={{
+          zIndex: "1800",
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "100vw",
+          padding: "0px"
+        }}
+        transition={Slide}
+      />
       <Router>
         <Header />
+
         <Content>
           <Switch>
             <Route exact path="/" component={Dashboard} />

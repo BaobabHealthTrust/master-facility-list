@@ -659,3 +659,43 @@ th {
 .waves-effect .waves-ripple {
   z-index: -1;
 }
+
+/* style.css*/
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    margin-top: -100%;
+  }
+
+  50% {
+    opacity: 1;
+    margin-top: -50%;
+  }
+  to {
+    margin-top: -100%;
+  }
+}
+
+.slideIn {
+  animation-name: slideIn;
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    margin-top: 0px;
+  }
+
+  50% {
+    margin-top: -50%;
+  }
+
+  to {
+    opacity: 0;
+    margin-top: -100%;
+  }
+}
+
+.slideOut {
+  animation-name: slideOut;
+}

@@ -8,7 +8,8 @@ import {
   postFacilityResources,
   postFacilityUtilities,
   postFacilityServices,
-  publishFacility
+  publishFacility,
+  fetchFacilities
 } from "../../../services/redux/actions/facilities";
 import {
   getBasicDetails,
@@ -17,7 +18,8 @@ import {
   getUtilities,
   getServices
 } from "./helpers";
-import { statement } from "@babel/template";
+import { toast } from "react-toastify";
+import Notification from "../../../components/atoms/Notification";
 export class index extends Component<Props> {
   state = {
     active: "Basic Details",
@@ -76,7 +78,7 @@ export class index extends Component<Props> {
         this.setState({
           networkErrorSavingDetails: [
             ...this.state.networkErrorSavingDetails,
-            "Resorces"
+            "Resources"
           ]
         });
       });
@@ -131,7 +133,6 @@ export class index extends Component<Props> {
         return true;
       })
       .catch((e: any) => {
-        alert(e);
         this.setState({ networkError: true });
         return false;
       });
@@ -139,13 +140,19 @@ export class index extends Component<Props> {
     if (facility != null) {
       this.postDetails(data, facility, token);
     }
+    this.props.fetchFacilities();
     return addFacility;
   };
 
   onSubmit = async (values: any, key: string, nextTab: string) => {
     this.setFacilityDetails(key, values);
     if (nextTab == "Finish") {
-      if (!(await this.handleSubmit())) return;
+      if (!(await this.handleSubmit())) {
+        toast.info(
+          <Notification error message="Failed To Create Facility, Try Again" />
+        );
+        return;
+      }
     }
     this.setNextActiveTab(nextTab);
   };
@@ -207,6 +214,7 @@ type Props = {
   postFacilityUtilities: Function;
   postFacilityServices: Function;
   publishFacility: Function;
+  fetchFacilities: Function;
 };
 export default connect(
   mapStateToProps,
@@ -217,6 +225,7 @@ export default connect(
     postFacilityResources,
     postFacilityUtilities,
     postFacilityServices,
-    publishFacility
+    publishFacility,
+    fetchFacilities
   }
 )(index);

@@ -13,6 +13,8 @@ import {
 } from "../../services/redux/actions/facilities";
 import Facility from "./Facility";
 import { hasFilterValuesForType } from "../../services/helpers";
+import { toast } from "react-toastify";
+import Notification from "../../components/atoms/Notification";
 
 export class index extends Component<Props> {
   handleFacilityClick = (facilityId: number) => {
@@ -82,6 +84,7 @@ export class index extends Component<Props> {
 
     const facilitiesData =
       filterOptions.length > 0 ? filteredFacilities : facilities;
+
     return (
       <Facility
         onFacilityClicked={(facilityId: number) =>
