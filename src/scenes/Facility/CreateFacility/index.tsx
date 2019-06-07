@@ -19,14 +19,15 @@ import {
 } from "./helpers";
 export class index extends Component<Props> {
   state = {
-    active: "Basic Details",
+    active: "Finish",
     facility: {
       details: {},
       contact: {},
       resources: [],
       utilities: [],
       services: []
-    }
+    },
+    newFacility: { id: 1 } as any
   };
 
   formSections = [
@@ -34,7 +35,8 @@ export class index extends Component<Props> {
     "Contacts & Location",
     "Resources",
     "Utilities",
-    "Services"
+    "Services",
+    "Finish"
   ];
 
   componentDidMount() {
@@ -100,6 +102,7 @@ export class index extends Component<Props> {
           },
           token
         );
+        this.setState({ newFacility: facility });
       })
       .catch(() => {});
 
@@ -114,7 +117,6 @@ export class index extends Component<Props> {
     this.setFacilityDetails(key, values);
     if (nextTab == "Finish") {
       await this.handleSubmit();
-      return;
     }
     this.setNextActiveTab(nextTab);
   };
@@ -145,6 +147,7 @@ export class index extends Component<Props> {
         onSubmit={this.onSubmit}
         onCancel={this.onCancel}
         dependancies={this.props.dependancies}
+        facility={this.state.newFacility}
       />
     );
   }

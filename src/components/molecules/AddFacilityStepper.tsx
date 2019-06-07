@@ -39,28 +39,32 @@ function WizardHeader(props: Props) {
     <React.Fragment>
       <WizardBackground>
         <LabelsContainer>
-          {sections.map((label: string, index: number) => (
-            <Label
-              key={label}
-              style={{
-                color: currentIndex > index ? "#a0ea50" : "white"
-              }}
-            >
-              {label}
-            </Label>
-          ))}
+          {sections
+            .filter(sec => sec != "Finish")
+            .map((label: string, index: number) => (
+              <Label
+                key={label}
+                style={{
+                  color: currentIndex > index ? "#a0ea50" : "white"
+                }}
+              >
+                {label}
+              </Label>
+            ))}
         </LabelsContainer>
       </WizardBackground>
       <WizardContainer>
         <WizardHeaderContainer>
-          {sections.map((label: string, index: number) => (
-            <FormWizardTabHeading
-              key={index}
-              title={label}
-              active={active}
-              completed={currentIndex > index}
-            />
-          ))}
+          {sections
+            .filter(sec => sec != "Finish")
+            .map((label: string, index: number) => (
+              <FormWizardTabHeading
+                key={index}
+                title={label}
+                active={active}
+                completed={currentIndex > index}
+              />
+            ))}
         </WizardHeaderContainer>
       </WizardContainer>
     </React.Fragment>

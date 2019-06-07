@@ -22,12 +22,20 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHospital } from "@fortawesome/free-solid-svg-icons";
 import Stepper from "../../../components/molecules/AddFacilityStepper";
-import { FacilityPages as pages } from "../../../services/utils";
+import FinishWindow from "../../../components/molecules/FacilityAddFinish";
+import Facility from "../Facility";
 
 library.add(faHospital);
 
 function CreateFacility(props: Props) {
-  const { sections, dependancies, active, onSubmit, onCancel } = props;
+  const {
+    sections,
+    dependancies,
+    active,
+    onSubmit,
+    onCancel,
+    facility
+  } = props;
   return (
     <div>
       <Container style={{ paddingTop: "40px", marginBottom: "20px" }}>
@@ -87,6 +95,9 @@ function CreateFacility(props: Props) {
               onCancel={onCancel}
             />
           )}
+          {active == "Finish" && facility.id && (
+            <FinishWindow facility={facility} error={true} />
+          )}
         </Container>
       }
     </div>
@@ -99,5 +110,6 @@ type Props = {
   onSubmit: Function;
   dependancies: any;
   onCancel: Function;
+  facility: any;
 };
 export default CreateFacility;
