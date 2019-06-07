@@ -5,8 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PageTitle from "../../components/molecules/PageTitle";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import CreateUserModal from "./CreateUser";
+import OptionsBar from "../../components/molecules/UsersOptionsBar";
+import UsersList from "../../components/organisms/UsersList";
 
 function Users(props: Props) {
+  const { users, onFilter, onSort } = props;
   return (
     <Container style={{ paddingTop: "25px" }}>
       <Grid container spacing={32}>
@@ -21,6 +24,12 @@ function Users(props: Props) {
             icon={<FontAwesomeIcon icon={faUsers} />}
           />
         </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <OptionsBar onFilter={onFilter} onSort={onSort} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <UsersList users={users} />
+        </Grid>
       </Grid>
     </Container>
   );
@@ -28,5 +37,7 @@ function Users(props: Props) {
 
 type Props = {
   users: Array<any>;
+  onFilter: Function;
+  onSort: Function;
 };
 export default Users;

@@ -5,13 +5,14 @@ import { Paper } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import SearchTable from "../../molecules/SearchResultsList";
-// @ts-ignore
-import { debounce } from "lodash";
 
 export class SearchContainer extends Component<Props> {
-  handleQuickSearch = () => {
-    //  @ts-ignore
-    this.props.onChange(this.refs.searchInput.value);
+  state = {
+    search: ""
+  };
+  handleQuickSearch = (e: any) => {
+    this.props.onChange(e.target.value);
+    this.setState({ search: e.target.value });
   };
 
   componentDidMount() {
@@ -19,14 +20,15 @@ export class SearchContainer extends Component<Props> {
   }
 
   filterFacilities = () => {
-    return this.props.facilities.filter(
-      facility =>
-        facility.code.toLowerCase().includes(this.props.value.toLowerCase()) ||
-        facility.name.toLowerCase().includes(this.props.value.toLowerCase())
+    return this.props.facilities.filter(facility =>
+      JSON.stringify(facility)
+        .toLowerCase()
+        .includes(this.props.value.toLowerCase())
     );
   };
   render() {
-    const facilities = this.filterFacilities().slice(0, 5);
+    const facilities =
+      this.props.value.length == 0 ? [] : this.filterFacilities().slice(0, 5);
     return (
       <Container>
         <Paper style={{ height: "100%" }}>
@@ -34,6 +36,7 @@ export class SearchContainer extends Component<Props> {
             <SearchForm>
               {
                 <Input
+                  value={this.state.search}
                   // @ts-ignore
                   ref="searchInput"
                   type="text"
@@ -43,7 +46,7 @@ export class SearchContainer extends Component<Props> {
                       ? this.props.value
                       : "Enter Facility Name or Code"
                   }
-                  onKeyUp={debounce(this.handleQuickSearch, 1000)}
+                  onChange={e => this.handleQuickSearch(e)}
                   autoFocus
                 />
               }
