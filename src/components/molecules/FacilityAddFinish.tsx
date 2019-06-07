@@ -5,15 +5,19 @@ import Button from "../atoms/Button";
 import { Link } from "react-router-dom";
 
 function FacilityAddFinish(props: Props) {
-  const { facility, error } = props;
+  const { facility, errors } = props;
   return (
     <Card bodyStyle={{ padding: "0px" }}>
       <Body>
-        {error ? (
+        {errors.length > 0 ? (
           <>
             <Img src="/static/images/warning.svg" />
             <Text>
-              Facility Saved. However, some details were not saved. <br />
+              Facility Saved. However, (
+              {errors.map((error, index) =>
+                index > 0 ? `, ${error}` : ` ${error}`
+              )}
+              ) were not saved. <br />
               View the facility and edit the details to complete.
             </Text>
           </>
@@ -38,7 +42,7 @@ function FacilityAddFinish(props: Props) {
 
 type Props = {
   facility: any;
-  error?: boolean;
+  errors: Array<any>;
 };
 
 export default FacilityAddFinish;

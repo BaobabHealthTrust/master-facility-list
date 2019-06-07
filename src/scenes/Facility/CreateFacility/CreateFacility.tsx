@@ -34,7 +34,8 @@ function CreateFacility(props: Props) {
     active,
     onSubmit,
     onCancel,
-    facility
+    facility,
+    errors
   } = props;
   return (
     <div>
@@ -96,7 +97,10 @@ function CreateFacility(props: Props) {
             />
           )}
           {active == "Finish" && facility.id && (
-            <FinishWindow facility={facility} error={true} />
+            <FinishWindow
+              facility={facility}
+              errors={errors.networkErrorSavingDetails}
+            />
           )}
         </Container>
       }
@@ -111,5 +115,9 @@ type Props = {
   dependancies: any;
   onCancel: Function;
   facility: any;
+  errors: {
+    networkError: boolean;
+    networkErrorSavingDetails: Array<any>;
+  };
 };
 export default CreateFacility;

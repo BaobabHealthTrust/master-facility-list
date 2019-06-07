@@ -17,9 +17,10 @@ import {
   getUtilities,
   getServices
 } from "./helpers";
+import { statement } from "@babel/template";
 export class index extends Component<Props> {
   state = {
-    active: "Finish",
+    active: "Basic Details",
     facility: {
       details: {},
       contact: {},
@@ -27,7 +28,9 @@ export class index extends Component<Props> {
       utilities: [],
       services: []
     },
-    newFacility: { id: 1 } as any
+    newFacility: { id: 1 } as any,
+    networkError: false,
+    networkErrorSavingDetails: [] as Array<any>
   };
 
   formSections = [
@@ -52,7 +55,12 @@ export class index extends Component<Props> {
         token
       )
       .catch(() => {
-        throw "Failed To Save Contact Details";
+        this.setState({
+          networkErrorSavingDetails: [
+            ...this.state.networkErrorSavingDetails,
+            "Contact Details"
+          ]
+        });
       });
 
     this.props
@@ -64,8 +72,13 @@ export class index extends Component<Props> {
         ),
         token
       )
-      .catch(() => {
-        throw "Failed To Save Resources";
+      .catch((e: any) => {
+        this.setState({
+          networkErrorSavingDetails: [
+            ...this.state.networkErrorSavingDetails,
+            "Resorces"
+          ]
+        });
       });
 
     this.props
@@ -73,8 +86,13 @@ export class index extends Component<Props> {
         getUtilities(data.utilities, Number(facility.id)),
         token
       )
-      .catch(() => {
-        throw "Failed To Save Utilities";
+      .catch((e: any) => {
+        this.setState({
+          networkErrorSavingDetails: [
+            ...this.state.networkErrorSavingDetails,
+            "Utilities"
+          ]
+        });
       });
 
     this.props
@@ -82,41 +100,52 @@ export class index extends Component<Props> {
         getServices(data.services, Number(facility.id)),
         token
       )
-      .catch(() => {
-        throw "Failed To Save Services";
+      .catch((e: any) => {
+        this.setState({
+          networkErrorSavingDetails: [
+            ...this.state.networkErrorSavingDetails,
+            "Services"
+          ]
+        });
       });
   }
 
   handleSubmit = async () => {
     let data = JSON.parse((await localStorage.getItem("new_facility")) || "{}");
     let token = sessionStorage.getItem("token");
-    let facility = null;
-    await this.props
+    let facility: any = null;
+    this.setState({ networkError: false, networkErrorSavingDetails: [] });
+    let addFacility = await this.props
       .postFacilityBasicDetails(getBasicDetails(data.details), token)
       .then((res: any) => {
-        facility = res.action.payload.data;
+        let tempFacility = res.action.payload.data;
         this.props.publishFacility(
           {
-            id: facility.id,
-            district_id: facility.district_id
+            id: tempFacility.id,
+            district_id: tempFacility.district_id
           },
           token
         );
+        facility = tempFacility;
         this.setState({ newFacility: facility });
+        return true;
       })
-      .catch(() => {});
+      .catch((e: any) => {
+        alert(e);
+        this.setState({ networkError: true });
+        return false;
+      });
 
     if (facility != null) {
-      try {
-        this.postDetails(data, facility, token);
-      } catch (e) {}
+      this.postDetails(data, facility, token);
     }
+    return addFacility;
   };
 
   onSubmit = async (values: any, key: string, nextTab: string) => {
     this.setFacilityDetails(key, values);
     if (nextTab == "Finish") {
-      await this.handleSubmit();
+      if (!(await this.handleSubmit())) return;
     }
     this.setNextActiveTab(nextTab);
   };
@@ -148,6 +177,10 @@ export class index extends Component<Props> {
         onCancel={this.onCancel}
         dependancies={this.props.dependancies}
         facility={this.state.newFacility}
+        errors={{
+          networkError: this.state.networkError,
+          networkErrorSavingDetails: this.state.networkErrorSavingDetails
+        }}
       />
     );
   }
