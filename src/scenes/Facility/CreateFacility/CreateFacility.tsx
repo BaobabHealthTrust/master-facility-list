@@ -23,7 +23,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHospital } from "@fortawesome/free-solid-svg-icons";
 import Stepper from "../../../components/molecules/AddFacilityStepper";
 import FinishWindow from "../../../components/molecules/FacilityAddFinish";
-import Facility from "../Facility";
 
 library.add(faHospital);
 
@@ -56,6 +55,7 @@ function CreateFacility(props: Props) {
               networkError={[]}
               dependancies={dependancies}
               onCancel={onCancel}
+              fromAdd
             />
           )}
           {active == sections[1] && (
@@ -76,6 +76,7 @@ function CreateFacility(props: Props) {
               networkError={[]}
               dependancies={dependancies}
               onCancel={onCancel}
+              fromAdd
             />
           )}
           {active == sections[3] && (
@@ -85,6 +86,7 @@ function CreateFacility(props: Props) {
               networkError={[]}
               dependancies={dependancies}
               onCancel={onCancel}
+              fromAdd
             />
           )}
           {active == sections[4] && (
@@ -94,6 +96,7 @@ function CreateFacility(props: Props) {
               networkError={[]}
               dependancies={dependancies}
               onCancel={onCancel}
+              fromAdd
             />
           )}
           {active == "Finish" && facility.id && (

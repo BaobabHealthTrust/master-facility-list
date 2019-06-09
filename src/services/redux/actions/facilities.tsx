@@ -11,7 +11,13 @@ import {
   postUtilities,
   postServices,
   publishFacility as publish,
-  putBasicDetails
+  putBasicDetails,
+  putContactDetails,
+  putResources,
+  putUtilities,
+  deleteUtilities,
+  putServices,
+  deleteServices
 } from "../../api";
 import { groupIntersect, hasFilterValuesForType } from "../../helpers";
 
@@ -77,8 +83,15 @@ export const patchFacilityBasicDetails = (
 
 export const postFacilityContactDetails = (data: any, token: string) => {
   return {
-    type: actions.postFacilityContactDetails,
-    payload: postContactDetails(data, token)
+    type: actions.putFacilityContactDetails,
+    payload: putContactDetails(data, token)
+  };
+};
+
+export const patchFacilityContactDetails = (data: any, token: string) => {
+  return {
+    type: actions.putFacilityContactDetails,
+    payload: putContactDetails(data, token)
   };
 };
 
@@ -89,6 +102,13 @@ export const postFacilityResources = (data: any, token: string) => {
   };
 };
 
+export const patchFacilityResources = (data: any, token: string) => {
+  return {
+    type: actions.putFacilityResources,
+    payload: putResources(data, token)
+  };
+};
+
 export const postFacilityUtilities = (data: any, token: string) => {
   return {
     type: actions.postFacilityUtilities,
@@ -96,10 +116,38 @@ export const postFacilityUtilities = (data: any, token: string) => {
   };
 };
 
+export const patchFacilityUtilities = (data: any, token: string) => {
+  return {
+    type: actions.putFacilityUtilities,
+    payload: putUtilities(data, token)
+  };
+};
+
+export const deleteFacilityUtilities = (utilityId: number, token: string) => {
+  return {
+    type: actions.deleteFacilityUtilities,
+    payload: deleteUtilities(utilityId, token)
+  };
+};
+
 export const postFacilityServices = (data: any, token: string) => {
   return {
     type: actions.postFacilityServices,
     payload: postServices(data, token)
+  };
+};
+
+export const patchFacilityServices = (data: any, token: string) => {
+  return {
+    type: actions.putFacilityServices,
+    payload: putServices(data, token)
+  };
+};
+
+export const deleteFacilityServices = (serviceId: number, token: string) => {
+  return {
+    type: actions.deleteFacilityServices,
+    payload: deleteServices(serviceId, token)
   };
 };
 

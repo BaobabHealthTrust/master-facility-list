@@ -13,8 +13,6 @@ import {
 import styled from "styled-components";
 import { renderOptions } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
-// @ts-ignore
-import { isEmpty } from "lodash";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -52,10 +50,11 @@ export function Form(props: any) {
     isSubmitting,
     setFieldValue,
     dependancies,
-    onCancel
+    onCancel,
+    fromAdd
   } = props;
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <FormWrapper>
         <Grid container spacing={24}>
           <Grid item sm={12} md={6}>
@@ -265,12 +264,12 @@ export function Form(props: any) {
           <FormButtons
             handleSubmit={handleSubmit}
             handleCancel={onCancel}
-            saveBtnText="Next"
+            saveBtnText={fromAdd ? "Next" : "Save"}
             isSubmitting={isSubmitting}
           />
         </Grid>
       </Grid>
-    </form>
+    </>
   );
 }
 
@@ -281,6 +280,7 @@ type Props = {
   networkError: Array<any>;
   dependancies: any;
   onCancel: Function;
+  fromAdd?: boolean;
 };
 
 const FormWrapper = styled.div`

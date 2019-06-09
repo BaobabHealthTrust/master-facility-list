@@ -10,8 +10,8 @@ export default (props: Props) => {
         <Button
           type="submit"
           style={{ backgroundColor: "#5a90dc" }}
-          onClick={handleSubmit}
           disabled={isSubmitting}
+          onClick={handleSubmit}
         >
           {isSubmitting ? "Saving..." : saveBtnText}
         </Button>

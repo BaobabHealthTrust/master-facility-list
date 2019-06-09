@@ -254,7 +254,7 @@ class ServicesForm extends React.Component<Props> {
   };
 
   onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    this.props.onSubmit(values.services, "services", "Finish");
+    this.props.onSubmit(this.state.services, "services", "Finish");
     setSubmitting(false);
   };
   render() {
@@ -299,7 +299,8 @@ export function Form(props: any) {
     onChange,
     addService,
     renderSelectedServices,
-    onCancel
+    onCancel,
+    fromAdd
   } = props;
 
   return (
@@ -399,7 +400,7 @@ export function Form(props: any) {
           <FormButtons
             handleSubmit={handleSubmit}
             handleCancel={onCancel}
-            saveBtnText="Next"
+            saveBtnText={fromAdd ? "Next" : "Save"}
             isSubmitting={isSubmitting}
           />
         </Grid>
@@ -414,6 +415,7 @@ type Props = {
   networkError: Array<any>;
   dependancies: any;
   onCancel: Function;
+  fromAdd?: boolean;
 };
 
 const FormWrapper = styled.div`

@@ -14,25 +14,12 @@ export const getBasicDetails = (data: any) => ({
   updated_at: Date.now()
 });
 
-export const getContactDetails = (data: any, facilityId: number) => ({
-  data: {
-    ...data,
-    client: 1,
-    updated_at: Date.now()
-  },
-  id: facilityId
-});
-
-export const getResources = (
-  data: any,
-  allResources: any,
-  facilityId: number
-) =>
-  allResources.map((resource: any) => ({
+export const getResources = (data: any, resources: any, facilityId: number) =>
+  resources.map((resource: any) => ({
     facility_id: facilityId,
     client_id: 1,
     resource_id: resource.id,
-    quantity: Number(data[`resource_${resource.id}`]),
+    quantity: Number(data[`resource_${resource.id}`]) || 0,
     description: "",
     created_date: new Date()
   }));
@@ -45,22 +32,95 @@ export const getUtilities = (data: any, facilityId: number) =>
     created_date: new Date()
   }));
 
-export const getServices = (data: any, facilityId: number) => {
+export const getUtilitiesToDelete = (data: any, currentUtilities: any) =>
+  currentUtilities
+    .filter((val: any) => !data.includes(val.utility_id))
+    .map((val: any) => val.id);
+
+export const getServicesToDelete = (data: any, currentServices: any) =>
+  currentServices
+    .filter((val: any) => !data.includes(val.service_id))
+    .map((val: any) => val.id);
+
+export const getServices = (
+  data: any,
+  facilityId: number,
+  currentServices: Array<any>
+) => {
   const services = [];
   for (let service of data) {
-    if (Number(service.firstLevelService) > 0)
-      services.push(service.firstLevelService);
+    if (Number(service.firstLevelService) > 0) {
+      let facilityService = currentServices.filter(
+        ser => ser.service_id == service.firstLevelService
+      );
+      let id = facilityService.length > 0 ? facilityService[0].id : null;
+      services.push({
+        service_id: service.firstLevelService,
+        facility_id: facilityId,
+        client_id: 1,
+        id
+      });
+    }
 
-    if (Number(service.secondLevelService) > 0)
-      services.push(service.secondLevelService);
+    if (Number(service.secondLevelService) > 0) {
+      let facilityService = currentServices.filter(
+        ser => ser.service_id == service.secondLevelService
+      );
+      let id = facilityService.length > 0 ? facilityService[0].id : null;
+      services.push({
+        service_id: service.secondLevelService,
+        facility_id: facilityId,
+        client_id: 1,
+        id
+      });
+    }
 
-    if (Number(service.thirdLevelService) > 0)
-      services.push(service.thirdLevelService);
+    if (Number(service.thirdLevelService) > 0) {
+      let facilityService = currentServices.filter(
+        ser => ser.service_id == service.thirdLevelService
+      );
+      let id = facilityService.length > 0 ? facilityService[0].id : null;
+      services.push({
+        service_id: service.thirdLevelService,
+        facility_id: facilityId,
+        client_id: 1,
+        id
+      });
+    }
   }
 
-  return services.map((service: any) => ({
-    service_id: service,
-    facility_id: facilityId,
-    client_id: 1
-  }));
+  return services;
+};
+
+export const getCurrentServices = (currentServices: Array<any> = []) => {
+  let services: Array<any> = [];
+  currentServices.map(ser => {
+    // has three levels
+    if (
+      ser.children &&
+      ser.children.length > 0 &&
+      ser.children[0].children &&
+      ser.children[0].children.length > 0
+    ) {
+      services.push(ser.facilityService);
+      ser.children.map((childService: any) => {
+        services.push(childService.facilityService);
+        childService.children.map((thirdLevelService: any) => {
+          services.push(thirdLevelService.facilityService);
+        });
+      });
+    }
+    // has two levels
+    else if (ser.children && ser.children.length > 0) {
+      services.push(ser.facilityService);
+      ser.children.map((childService: any) => {
+        services.push(childService.facilityService);
+      });
+    }
+    // has one level
+    else {
+      services.push(ser.facilityService);
+    }
+  });
+  return services;
 };

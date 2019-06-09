@@ -14,7 +14,15 @@ import { fetchOwners } from "../../../services/redux/actions/dependancies";
 import { FacilityPages as pages } from "../../../services/utils";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { patchFacilityBasicDetails } from "../../../services/redux/actions/facilities";
+import {
+  patchFacilityBasicDetails,
+  patchFacilityContactDetails,
+  patchFacilityResources,
+  patchFacilityUtilities,
+  deleteFacilityUtilities,
+  patchFacilityServices,
+  deleteFacilityServices
+} from "../../../services/redux/actions/facilities";
 import {
   faHospital,
   faEnvelope,
@@ -22,11 +30,22 @@ import {
   faWifi,
   faStethoscope
 } from "@fortawesome/free-solid-svg-icons";
-import { getBasicDetails } from "./helpers";
+import {
+  getBasicDetails,
+  getResources,
+  getUtilitiesToDelete,
+  getUtilities,
+  getServicesToDelete,
+  getServices,
+  getCurrentServices
+} from "./helpers";
+import { toast } from "react-toastify";
+import Notification from "../../../components/atoms/Notification";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
-export class index extends Component<Props> {
+export class index extends Component<Props & RouteComponentProps<{}>> {
   state = {
     facilityId: null
   };
@@ -86,18 +105,21 @@ export class index extends Component<Props> {
       this.props.fetchCurrentUtilities(facilityId);
     }
   }
+
   onSubmit = (values: any) => {
     switch (this.props.facilityPage) {
       case "summary":
-        return this.onSubmitBasicDetails(values);
-      // case "locations":
-      //   return this.onSubmitContactDetails(values);
-      // case "resources":
-      //   return this.onSubmitResourcesDetails(values);
-      // case "utilities":
-      //   return this.onSubmitUtilitiesDetails(values);
-      // case "services":
-      //   return this.onSubmitServicesDetails(values);
+        this.onSubmitBasicDetails(values);
+        break;
+      case "contact":
+        this.onSubmitContactDetails(values);
+        break;
+      case "resources":
+        return this.onSubmitResourcesDetails(values);
+      case "utilities":
+        return this.onSubmitUtilityDetails(values);
+      case "services":
+        return this.onSubmitServiceDetails(values);
     }
   };
 
@@ -109,19 +131,156 @@ export class index extends Component<Props> {
     };
     if (token == "") return;
 
-    return this.props
+    this.props
       .patchFacilityBasicDetails(
         getBasicDetails(val),
-        this.props.facility.id,
+        Number(this.props.facility.id),
         token
       )
       .then(() => {
-        return;
+        this.onSuccess();
       })
       .catch(() => {
-        return;
+        this.onError();
       });
   };
+
+  onSubmitContactDetails = async (values: any) => {
+    let token = (await sessionStorage.getItem("token")) || "";
+    let val = {
+      data: {
+        ...values,
+        client: 1,
+        updated_at: Date.now()
+      },
+      id: Number(this.props.facility.id)
+    };
+    if (token == "") return;
+
+    return this.props
+      .patchFacilityContactDetails(val, token)
+      .then(() => {
+        this.onSuccess();
+      })
+      .catch(() => {
+        this.onError();
+      });
+  };
+
+  onSubmitResourcesDetails = async (values: any) => {
+    let token = (await sessionStorage.getItem("token")) || "";
+
+    if (token == "") return;
+
+    let data = getResources(
+      values,
+      this.props.dependancies.resources.list,
+      this.props.facility.id
+    );
+    let error = false;
+
+    for (let val of data) {
+      await this.props.patchFacilityResources(val, token).catch(() => {
+        error = true;
+      });
+    }
+
+    if (error) {
+      this.onError();
+      return;
+    }
+    this.onSuccess();
+  };
+
+  onSubmitUtilityDetails = async (values: any) => {
+    let token = (await sessionStorage.getItem("token")) || "";
+
+    if (token == "") return;
+
+    let utilitiesToDelete = getUtilitiesToDelete(
+      values,
+      this.props.facility.utilities
+    );
+
+    let data = getUtilities(values, this.props.facility.id);
+
+    let error = false;
+
+    for (let utilityId of utilitiesToDelete) {
+      await this.props.deleteFacilityUtilities(utilityId, token).catch(() => {
+        error = true;
+      });
+    }
+
+    for (let val of data) {
+      await this.props.patchFacilityUtilities(val, token).catch(() => {
+        error = true;
+      });
+    }
+
+    if (error) {
+      this.onError();
+      return;
+    }
+    this.onSuccess();
+  };
+
+  onSubmitServiceDetails = async (values: any) => {
+    let token = (await sessionStorage.getItem("token")) || "";
+
+    if (token == "") return;
+
+    let currentServices = getCurrentServices(this.props.facility.services);
+    let data = getServices(values, this.props.facility.id, currentServices);
+
+    let servicesToDelete = getServicesToDelete(
+      data.map(val => val.service_id),
+      currentServices
+    );
+
+    let error = false;
+
+    for (let serviceId of servicesToDelete) {
+      await this.props.deleteFacilityServices(serviceId, token).catch(() => {
+        error = true;
+      });
+    }
+
+    for (let val of data) {
+      await this.props.patchFacilityServices(val, token).catch(() => {
+        error = true;
+      });
+    }
+
+    if (error) {
+      this.onError();
+      return;
+    }
+    this.onSuccess();
+  };
+
+  onError = () => {
+    toast.info(
+      <Notification
+        error
+        message={`Failed To Update Facility ${
+          this.props.facilityPage
+        }, Please Try Again`}
+      />
+    );
+  };
+
+  onSuccess = () => {
+    toast.info(
+      <Notification
+        message={`Facility ${this.props.facilityPage} Updated!!!`}
+      />
+    );
+    this.props.history.push(
+      `/facilities/${this.props.facility.id}/${this.props.facilityPage}`
+    );
+  };
+
   render() {
     const { facility, loading } = this.props;
 
@@ -166,18 +325,32 @@ type Props = {
   fetchCurrentUtilities: Function;
   setActiveFacilityPage: Function;
   patchFacilityBasicDetails: Function;
+  patchFacilityContactDetails: Function;
+  patchFacilityResources: Function;
+  patchFacilityUtilities: Function;
+  deleteFacilityUtilities: Function;
+  patchFacilityServices: Function;
+  deleteFacilityServices: Function;
   history?: any;
   loading: any;
 };
-export default connect(
-  mapStateToProps,
-  {
-    fetchOwners,
-    fetchCurrentResources,
-    fetchCurrentBasic,
-    fetchCurrentServices,
-    fetchCurrentUtilities,
-    setActiveFacilityPage,
-    patchFacilityBasicDetails
-  }
-)(index);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      fetchOwners,
+      fetchCurrentResources,
+      fetchCurrentBasic,
+      fetchCurrentServices,
+      fetchCurrentUtilities,
+      setActiveFacilityPage,
+      patchFacilityBasicDetails,
+      patchFacilityContactDetails,
+      patchFacilityResources,
+      patchFacilityUtilities,
+      deleteFacilityUtilities,
+      deleteFacilityServices,
+      patchFacilityServices
+    }
+  )(index)
+);

@@ -1,5 +1,5 @@
 import actions from "./actions";
-import { authenticateUser, getUserDetails, getUsers } from "../../api";
+import { authenticateUser, getUserDetails, getUsers, addUser } from "../../api";
 
 export const userLogin = (credencials: {
   username: string;
@@ -42,5 +42,12 @@ export const fetchUsers = (token: string) => {
   return {
     type: actions.fetchUsers,
     payload: getUsers(token)
+  };
+};
+
+export const createUser = (data: any, token: string) => {
+  return {
+    type: actions.addUser,
+    payload: addUser(data, token)
   };
 };

@@ -144,6 +144,16 @@ export const getUsers = (token: string) => {
   return axios.get(url, header);
 };
 
+export const addUser = (data: any, token: string) => {
+  const url = `${settings.API}/clients/createAdmin`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
 export const publishFacility = (data: any, token: string) => {
   const url = `${settings.API}/Facilities/publish`;
   const header = {
@@ -178,6 +188,16 @@ export const putBasicDetails = (
   return axios.put(url, data, header);
 };
 
+export const putContactDetails = (data: any, token: string) => {
+  const url = `${settings.API}/Facilities/updateContactDetails`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
 export const postContactDetails = (data: any, token: string) => {
   const url = `${settings.API}/Facilities/contactDetails`;
   const header = {
@@ -198,6 +218,16 @@ export const postResources = (data: any, token: string) => {
   return axios.post(url, data, header);
 };
 
+export const putResources = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityResources/replaceOrCreate`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
 export const postUtilities = (data: any, token: string) => {
   const url = `${settings.API}/FacilityUtilities`;
   const header = {
@@ -208,6 +238,26 @@ export const postUtilities = (data: any, token: string) => {
   return axios.post(url, data, header);
 };
 
+export const putUtilities = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityUtilities/replaceOrCreate`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const deleteUtilities = (utilityId: any, token: string) => {
+  const url = `${settings.API}/FacilityUtilities/${utilityId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.delete(url, header);
+};
+
 export const postServices = (data: any, token: string) => {
   const url = `${settings.API}/FacilityServices`;
   const header = {
@@ -216,4 +266,24 @@ export const postServices = (data: any, token: string) => {
     }
   };
   return axios.post(url, data, header);
+};
+
+export const putServices = (data: any, token: string) => {
+  const url = `${settings.API}/FacilityServices/replaceOrCreate`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
+export const deleteServices = (serviceId: any, token: string) => {
+  const url = `${settings.API}/FacilityServices/${serviceId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.delete(url, header);
 };

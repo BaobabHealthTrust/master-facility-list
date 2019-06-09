@@ -46,7 +46,8 @@ export function Form(props: any) {
     isSubmitting,
     setFieldValue,
     dependancies,
-    onCancel
+    onCancel,
+    fromAdd
   } = props;
 
   const onUtilityClick = async (utility: any) => {
@@ -61,7 +62,7 @@ export function Form(props: any) {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <FormWrapper>
         <Grid container spacing={24}>
           {dependancies.utilities.types.map((type: any) => (
@@ -90,12 +91,12 @@ export function Form(props: any) {
           <FormButtons
             handleSubmit={handleSubmit}
             handleCancel={onCancel}
-            saveBtnText="Next"
+            saveBtnText={fromAdd ? "Next" : "Save"}
             isSubmitting={isSubmitting}
           />
         </Grid>
       </Grid>
-    </form>
+    </>
   );
 }
 
@@ -105,6 +106,7 @@ type Props = {
   networkError: Array<any>;
   dependancies: any;
   onCancel: Function;
+  fromAdd?: boolean;
 };
 
 const FormWrapper = styled.div`
