@@ -1,0 +1,13 @@
+{
+  "error": {
+    "statusCode": 422,
+    "name": "ValidationError",
+    "message":
+      "The `Client` instance is not valid. Details: `email` Email already exists (value: \"chiy@gmail.com\").",
+    "details": {
+      "context": "Client",
+      "codes": { "email": ["uniqueness"] },
+      "messages": { "email": ["Email already exists"] }
+    }
+  }
+}

@@ -45,6 +45,7 @@ type Props = {
   theme?: "primary" | "secondary" | "warning" | "success" | "default";
   disabled?: boolean;
   type?: string;
+  id?: any;
 };
 
 const Btn = styled.button`

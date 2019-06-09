@@ -1,0 +1,10 @@
+{
+  "wrongCredentials": {
+    "username": "someuser",
+    "password": "somepassword"
+  },
+  "correctCredentials": {
+    "username": "mfladminuser",
+    "password": "admin"
+  }
+}

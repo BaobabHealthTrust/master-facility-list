@@ -9,8 +9,12 @@ import { userSchema } from "../../components/organisms/UsersForms/schema";
 import { userInitialValues } from "../../components/organisms/UsersForms/initialValues";
 import AddForm from "../../components/organisms/UsersForms/AddUserForm";
 import { Formik } from "formik";
+import { createUser, fetchUsers } from "../../services/redux/actions/users";
+import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import Notification from "../../components/atoms/Notification";
 
-class SystemsModal extends React.Component {
+class SystemsModal extends React.Component<Props> {
   state = {
     open: true
   };
@@ -23,8 +27,35 @@ class SystemsModal extends React.Component {
     this.setState({ open: false });
   }
 
-  onSubmit = (value: any, { setSubmitting }: any) => {
-    console.log(value);
+  onSubmit = (value: any, { setSubmitting, setErrors, resetForm }: any) => {
+    let data = {
+      ...value,
+      firstname: value.name.split(" ")[0],
+      lastname: value.name.split(" ").length > 0 ? value.name.split(" ")[1] : ""
+    };
+
+    let token = sessionStorage.getItem("token");
+    this.props
+      .createUser({ data }, token)
+      .then(() => {
+        toast.info(<Notification message="User Created Successfully!!!" />);
+        this.props.fetchUsers(token);
+        resetForm();
+        this.setOpen(false);
+      })
+      .catch(() => {
+        let errors = this.props.errors.addUser;
+        setErrors({
+          username: errors.username ? errors.username : "",
+          email: errors.email ? errors.email : ""
+        });
+        toast.info(
+          <Notification
+            error
+            message="Failed To Create User. Please Try Again"
+          />
+        );
+      });
     setSubmitting(false);
   };
 
@@ -83,8 +114,20 @@ class SystemsModal extends React.Component {
     );
   }
 }
-export default SystemsModal;
 
+const mapStateToProps = (state: any) => ({
+  errors: state.errors
+});
+export default connect(
+  mapStateToProps,
+  { createUser, fetchUsers }
+)(SystemsModal);
+
+type Props = {
+  createUser: Function;
+  fetchUsers: Function;
+  errors?: any;
+};
 const StyledModal = withStyles({
   root: {
     zIndex: 1500,
