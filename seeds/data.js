@@ -156,11 +156,11 @@ const zoneData = [
 module.exports.zoneData = zoneData;
 
 module.exports.users = {
-  username: 'mfladminuser',
+  username: 'mmalumbo',
   password: 'admin',
-  firstname: 'CMED',
-  lastname: 'Malawi',
-  email: 'administrator@gmail.com',
+  firstname: 'Malumbo',
+  lastname: 'Mkandawire',
+  email: 'mmalumbo@gmail.com',
 };
 
 const utilityTypes = [
@@ -262,7 +262,7 @@ const districtZoneMapping = {
   [refs.ZONES.NORTH]: [
     {
       district_name: 'Nkhata Bay',
-      distict_code: 'KB',
+      district_code: 'KB',
     },
     {
       district_name: 'Chitipa',
@@ -446,6 +446,10 @@ const resourceResourceTypeMapping = {
     },
     {
       resource_name: 'Delivery beds',
+      description: 'This facility needs more delivery beds',
+    },
+    {
+      resource_name: 'Total overningt beds',
       description: 'This facility needs more delivery beds',
     },
     {
@@ -846,6 +850,46 @@ const serviceServiceTypeMapping = {
         {
           service_name: 'Implant',
           service_description: 'This is Implant service',
+        },
+        {
+          service_name: 'Pill',
+          service_description: 'This is pill Service',
+        },
+        {
+          service_name: 'Progesterone only injectable',
+          service_description: 'This is Progesterone only injectable Service',
+        },
+        {
+          service_name: 'Male condoms',
+          service_description: 'This is Male condoms Service',
+        },
+        {
+          service_name: 'Female condoms',
+          service_description: 'This is Female condoms',
+        },
+        {
+          service_name: 'Intrauterine Device (IUD)',
+          service_description: 'This is Intrauterine Device (IUD) Service',
+        },
+        {
+          service_name: 'Cycle Beads',
+          service_description: 'This is Cycle Beads Service',
+        },
+        {
+          service_name: 'Emergency Contraception',
+          service_description: 'This is Emergency Contraception Service',
+        },
+        {
+          service_name: 'Male Sterilisation',
+          service_description: 'This is Male Sterilisation Service',
+        },
+        {
+          service_name: 'Male Sterilisation',
+          service_description: 'This is Male Sterilisation Service',
+        },
+        {
+          service_name: 'Depoprovera',
+          service_description: 'This is Depoprovera Service',
         },
       ],
     },
