@@ -1,5 +1,4 @@
 /// <reference types="Cypress" />
-import { default as Settings } from "../../../src/settings";
 
 describe("Test that menu items are visible and display the required view on click for public", () => {
   const FRONTEND_URL = "http://localhost:3000";

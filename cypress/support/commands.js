@@ -10,8 +10,8 @@
 //
 //
 
-import settings from "../../src/settings";
-const END_POINT = `${settings.hostname}/api/`;
+import settings from "../../src/App/settings";
+const END_POINT = `${settings.API}/`;
 
 Cypress.Commands.add("login", credentials => {
   const RESOURCE = `Clients/login/`;
