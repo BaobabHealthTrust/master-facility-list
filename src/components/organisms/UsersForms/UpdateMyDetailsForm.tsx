@@ -90,50 +90,47 @@ export function Form(props: any) {
               )}
             </FormControl>
           </Grid>
-          {fromAdd && (
-            <>
-              <Grid item sm={12} md={12}>
-                <FormControl className="mfl-max-width">
-                  <TextField
-                    type="password"
-                    value={values.password}
-                    name="password"
-                    label="Password"
-                    placeholder="Enter Password"
-                    error={errors.password && touched.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-describedby="component-error-text"
-                  />
-                  {errors.password && touched.password && (
-                    <FormHelperText id="component-error-text">
-                      {errors.password}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
-              <Grid item sm={12} md={12}>
-                <FormControl className="mfl-max-width">
-                  <TextField
-                    type="password"
-                    value={values.confirmPassword}
-                    name="confirmPassword"
-                    label="Password"
-                    placeholder="Confirm Password"
-                    error={errors.confirmPassword && touched.confirmPassword}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-describedby="component-error-text"
-                  />
-                  {errors.confirmPassword && touched.confirmPassword && (
-                    <FormHelperText id="component-error-text">
-                      {errors.confirmPassword}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
-            </>
-          )}
+
+          <Grid item sm={12} md={12}>
+            <FormControl className="mfl-max-width">
+              <TextField
+                type="password"
+                value={values.password}
+                name="password"
+                label="Password"
+                placeholder="Enter New Password"
+                error={errors.password && touched.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-describedby="component-error-text"
+              />
+              {errors.password && touched.password && (
+                <FormHelperText id="component-error-text">
+                  {errors.password}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+          <Grid item sm={12} md={12}>
+            <FormControl className="mfl-max-width">
+              <TextField
+                type="password"
+                value={values.confirmPassword}
+                name="confirmPassword"
+                label="Password"
+                placeholder="Confirm Password"
+                error={errors.confirmPassword && touched.confirmPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-describedby="component-error-text"
+              />
+              {errors.confirmPassword && touched.confirmPassword && (
+                <FormHelperText id="component-error-text">
+                  {errors.confirmPassword}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
         </Grid>
       </FormWrapper>
     </form>

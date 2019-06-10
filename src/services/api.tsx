@@ -154,6 +154,16 @@ export const addUser = (data: any, token: string) => {
   return axios.post(url, data, header);
 };
 
+export const putUser = (userId: number, data: any, token: string) => {
+  const url = `${settings.API}/clients/${userId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.patch(url, data, header);
+};
+
 export const publishFacility = (data: any, token: string) => {
   const url = `${settings.API}/Facilities/publish`;
   const header = {
@@ -280,6 +290,16 @@ export const putServices = (data: any, token: string) => {
 
 export const deleteServices = (serviceId: any, token: string) => {
   const url = `${settings.API}/FacilityServices/${serviceId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.delete(url, header);
+};
+
+export const deleteUser = (userId: any, token: string) => {
+  const url = `${settings.API}/Clients/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`

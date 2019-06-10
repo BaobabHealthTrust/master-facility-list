@@ -6,6 +6,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Card from "../atoms/Card";
 import SortField from "../atoms/UsersSortField";
 import SearchField from "../atoms/UsersSearch";
+import UpdateMyDetails from "../../scenes/Users/UpdateMyDetails";
 
 function UsersToolbar(props: Props) {
   const { onFilter, onSort } = props;
@@ -17,9 +18,10 @@ function UsersToolbar(props: Props) {
           <SearchField onFilter={onFilter} />
         </div>
         <div>
-          <Button theme="secondary" icon={<FontAwesomeIcon icon={faEdit} />}>
+          <UpdateMyDetails />
+          {/* <Button theme="secondary" icon={<FontAwesomeIcon icon={faEdit} />}>
             Edit My Details
-          </Button>
+          </Button> */}
         </div>
       </Container>
     </Card>

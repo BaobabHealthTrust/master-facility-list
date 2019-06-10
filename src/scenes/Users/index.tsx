@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Users from "./Users";
-import { fetchUsers } from "../../services/redux/actions/users";
+import { fetchUsers, delUser } from "../../services/redux/actions/users";
 // @ts-ignore
 import { sortBy } from "lodash";
+import { toast } from "react-toastify";
+import Notification from "../../components/atoms/Notification";
+import swal from "sweetalert";
 
 export class index extends Component<Props> {
   state = {
@@ -16,6 +19,37 @@ export class index extends Component<Props> {
 
   onSort = (sort: any) => {
     this.setState({ sort });
+  };
+
+  onDeleteUser = (userId: number) => {
+    let token = sessionStorage.getItem("token") || "";
+    // @ts-ignore
+    swal({
+      icon: "warning",
+      title: `Are You Sure You Want To Delete the user ?`,
+      buttons: {
+        cancel: "No",
+        confirm: "Yes"
+      },
+      closeOnClickOutside: false
+    }).then(async (response: any) => {
+      if (response) {
+        this.props
+          .delUser(userId, token)
+          .then(() => {
+            toast.info(<Notification message="User Deleted" />);
+            this.props.fetchUsers(token);
+          })
+          .catch(() => {
+            toast.info(
+              <Notification
+                error
+                message="Failed To Delete Details. Please Try Again"
+              />
+            );
+          });
+      }
+    });
   };
 
   getUsers = () =>
@@ -41,7 +75,12 @@ export class index extends Component<Props> {
   render() {
     const users = this.getUsers();
     return (
-      <Users users={users} onFilter={this.onFilter} onSort={this.onSort} />
+      <Users
+        users={users}
+        onFilter={this.onFilter}
+        onSort={this.onSort}
+        onDeleteUser={this.onDeleteUser}
+      />
     );
   }
 }
@@ -49,6 +88,7 @@ export class index extends Component<Props> {
 type Props = {
   users: Array<any>;
   fetchUsers: Function;
+  delUser: Function;
 };
 
 const mapStateToProps = (state: any) => ({
@@ -57,5 +97,5 @@ const mapStateToProps = (state: any) => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUsers }
+  { fetchUsers, delUser }
 )(index);

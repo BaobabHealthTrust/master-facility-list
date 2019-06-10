@@ -39,3 +39,21 @@ export const userSchema = yup.object().shape({
     )
     .required("Password confirm is required")
 });
+
+export const updateSchema = yup.object().shape({
+  name: yup
+    .string()
+    .typeError("First name is required")
+    .min(3)
+    .required("First name is required"),
+  username: yup
+    .string()
+    .typeError("username is required")
+    .min(6)
+    .required("username is required"),
+  email: yup
+    .string()
+    .typeError("enter a valid email address")
+    .email("enter a valid email address")
+    .required("email is required")
+});

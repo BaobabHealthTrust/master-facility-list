@@ -1,5 +1,12 @@
 import actions from "./actions";
-import { authenticateUser, getUserDetails, getUsers, addUser } from "../../api";
+import {
+  authenticateUser,
+  getUserDetails,
+  getUsers,
+  addUser,
+  putUser,
+  deleteUser
+} from "../../api";
 
 export const userLogin = (credencials: {
   username: string;
@@ -49,5 +56,19 @@ export const createUser = (data: any, token: string) => {
   return {
     type: actions.addUser,
     payload: addUser(data, token)
+  };
+};
+
+export const updateUser = (userId: number, data: any, token: string) => {
+  return {
+    type: actions.putUser,
+    payload: putUser(userId, data, token)
+  };
+};
+
+export const delUser = (userId: number, token: string) => {
+  return {
+    type: actions.deleteUser,
+    payload: deleteUser(userId, token)
   };
 };

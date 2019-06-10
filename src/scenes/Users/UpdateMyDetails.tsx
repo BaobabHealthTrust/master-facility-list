@@ -9,10 +9,14 @@ import { updateSchema } from "../../components/organisms/UsersForms/schema";
 import { userInitialValues } from "../../components/organisms/UsersForms/initialValues";
 import AddForm from "../../components/organisms/UsersForms/AddUserForm";
 import { Formik } from "formik";
-import { updateUser, fetchUsers } from "../../services/redux/actions/users";
+import { connect } from "react-redux";
+import {
+  updateUser,
+  fetchUsers,
+  fetchUserDetails
+} from "../../services/redux/actions/users";
 import { toast } from "react-toastify";
 import Notification from "../../components/atoms/Notification";
-import { connect } from "react-redux";
 
 class SystemsModal extends React.Component<Props> {
   state = {
@@ -38,8 +42,9 @@ class SystemsModal extends React.Component<Props> {
     this.props
       .updateUser(this.props.user.id, data, token)
       .then(() => {
-        toast.info(<Notification message="User Updated Successfully!!!" />);
+        toast.info(<Notification message="Details Updated Successfully!!!" />);
         this.props.fetchUsers(token);
+        this.props.fetchUserDetails(this.props.user.id, token);
         resetForm();
         this.setOpen(false);
       })
@@ -52,7 +57,7 @@ class SystemsModal extends React.Component<Props> {
         toast.info(
           <Notification
             error
-            message="Failed To Update User. Please Try Again"
+            message="Failed To Update Details. Please Try Again"
           />
         );
       });
@@ -67,8 +72,9 @@ class SystemsModal extends React.Component<Props> {
           onClick={() => {
             this.setOpen(true);
           }}
+          theme="success"
         >
-          Update
+          Update My Details
         </Button>
         <StyledModal open={this.state.open}>
           <ModalContainer>
@@ -116,17 +122,19 @@ class SystemsModal extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
+  user: state.users.currentUser.details,
   errors: state.errors.putUser
 });
 export default connect(
   mapStateToProps,
-  { updateUser, fetchUsers }
+  { updateUser, fetchUsers, fetchUserDetails }
 )(SystemsModal);
 
 type Props = {
   user: any;
   updateUser: Function;
   fetchUsers: Function;
+  fetchUserDetails: Function;
   errors?: any;
 };
 

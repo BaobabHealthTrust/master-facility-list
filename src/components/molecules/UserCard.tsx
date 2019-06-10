@@ -9,9 +9,10 @@ import {
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../atoms/Card";
+import UpdateUser from "../../scenes/Users/UpdateUser";
 
 function UserCard(props: Props) {
-  const { user } = props;
+  const { user, onDelete } = props;
   return (
     <Card style={{ padding: "10px" }}>
       <UserDetailsContainer>
@@ -33,14 +34,13 @@ function UserCard(props: Props) {
         <FontAwesomeIcon icon={faEnvelope} /> {user.email}
       </Contacts>
       <Footer>
-        <Button style={{ margin: "0px" }} theme="secondary">
-          <FontAwesomeIcon icon={faEdit} />
-          Edit User
-        </Button>
-        <FontAwesomeIcon
-          style={{ margin: "0px 10px", cursor: "pointer" }}
-          icon={faTrashAlt}
-        />
+        <UpdateUser user={user} />
+        <i onClick={() => onDelete(user.id)}>
+          <FontAwesomeIcon
+            style={{ margin: "0px 10px", cursor: "pointer" }}
+            icon={faTrashAlt}
+          />
+        </i>
       </Footer>
     </Card>
   );
@@ -50,6 +50,7 @@ export default UserCard;
 
 type Props = {
   user: any;
+  onDelete: Function;
 };
 const UserDetailsContainer = styled.div`
   display: flex;

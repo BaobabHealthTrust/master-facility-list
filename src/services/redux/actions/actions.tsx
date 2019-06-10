@@ -61,6 +61,8 @@ export default {
 
   fetchUsers: "FETCH_USERS",
   addUser: "ADD_USER",
+  putUser: "PUT_USER",
+  deleteUser: "DELETE_USER",
   userLogin: "USER_LOGIN",
   userLogout: "USER_LOGOUT",
   fetchUserDetails: "FETCH_USER_DETAILS",

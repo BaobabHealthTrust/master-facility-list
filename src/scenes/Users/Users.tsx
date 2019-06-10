@@ -9,7 +9,7 @@ import OptionsBar from "../../components/molecules/UsersOptionsBar";
 import UsersList from "../../components/organisms/UsersList";
 
 function Users(props: Props) {
-  const { users, onFilter, onSort } = props;
+  const { users, onFilter, onSort, onDeleteUser } = props;
   return (
     <Container style={{ paddingTop: "25px" }}>
       <Grid container spacing={32}>
@@ -28,7 +28,7 @@ function Users(props: Props) {
           <OptionsBar onFilter={onFilter} onSort={onSort} />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
-          <UsersList users={users} />
+          <UsersList users={users} onDeleteUser={onDeleteUser} />
         </Grid>
       </Grid>
     </Container>
@@ -39,5 +39,6 @@ type Props = {
   users: Array<any>;
   onFilter: Function;
   onSort: Function;
+  onDeleteUser: Function;
 };
 export default Users;

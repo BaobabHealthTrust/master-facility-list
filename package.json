@@ -30,7 +30,6 @@
     "formik": "^1.5.7",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "npm": "^6.9.0",
     "react": "^16.8.6",
     "react-compound-slider": "^1.2.1",
     "react-dom": "^16.8.6",
@@ -46,6 +45,7 @@
     "redux": "^4.0.1",
     "redux-promise-middleware": "^6.1.0",
     "styled-components": "^4.2.0",
+    "sweetalert": "^2.1.2",
     "typescript": "3.4.5",
     "yup": "^0.27.0"
   },

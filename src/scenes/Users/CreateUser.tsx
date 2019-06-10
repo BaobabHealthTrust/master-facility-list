@@ -85,7 +85,7 @@ class SystemsModal extends React.Component<Props> {
                       bodyStyle={{ marginBottom: "0px" }}
                       heading="Add New User"
                     >
-                      <AddForm {...this.props} {...formikProps} />{" "}
+                      <AddForm {...this.props} {...formikProps} fromAdd />{" "}
                     </Card>
                     <ModalFooter>
                       <Button
