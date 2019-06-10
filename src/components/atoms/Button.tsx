@@ -19,9 +19,9 @@ const Button = (props: Props) => {
     <ThemeProvider theme={btnTheme}>
       <Btn
         {...type}
+        style={style}
         disabled={disabled}
         className={buttonClass}
-        style={style}
         onClick={e => onClick && onClick()}
       >
         {(iconPosition == "left" || !iconPosition) &&
