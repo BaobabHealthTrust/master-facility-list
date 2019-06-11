@@ -8,6 +8,7 @@ function index(props: Props) {
     <Container>
       {menu.map(item => (
         <MenuItem
+          key={item.name}
           active={item.link == activePage}
           label={item.name}
           onClickValue={item.link}

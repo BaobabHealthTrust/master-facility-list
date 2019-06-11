@@ -22,11 +22,13 @@ const SearchDrawer = (props: Props) => {
         {items.map((item, index) =>
           item.options ? (
             <ExpandableListItem
+              key={item.text}
               onItemClick={() => setActivePage(item.name)}
               item={item}
             />
           ) : (
             <Link
+              key={item.text}
               to={item.link ? item.link : ""}
               onClick={() => setActivePage(item.name)}
             >

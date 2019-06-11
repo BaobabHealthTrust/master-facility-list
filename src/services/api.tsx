@@ -307,3 +307,15 @@ export const deleteUser = (userId: any, token: string) => {
   };
   return axios.delete(url, header);
 };
+
+export const getFeedbackTypes = () => {
+  const url = `${settings.API}/FeedbackTypes`;
+
+  return axios.get(url);
+};
+
+export const postFeedback = (data: any) => {
+  const url = `${settings.API}/Feedbacks/feedback`;
+
+  return axios.post(url, data);
+};

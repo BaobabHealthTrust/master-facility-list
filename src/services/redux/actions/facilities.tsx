@@ -6,7 +6,6 @@ import {
   getFacilityServices,
   getFacilityUtilities,
   postBasicDetails,
-  postContactDetails,
   postResources,
   postUtilities,
   postServices,

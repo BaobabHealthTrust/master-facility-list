@@ -5,6 +5,7 @@ import errorsReducer from "./errors_reducer";
 import statusReducer from "./status_reducer";
 import facilitiesReducer from "./facilities-reducer";
 import usersReducer from "./users-reducer";
+import feedback from "./feedback-reducer";
 
 const rootReducer = combineReducers({
   ui: uiReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   errors: errorsReducer,
   status: statusReducer,
   facilities: facilitiesReducer,
-  users: usersReducer
+  users: usersReducer,
+  feedback
 });
 
 export default rootReducer;

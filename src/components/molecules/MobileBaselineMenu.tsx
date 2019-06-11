@@ -13,6 +13,7 @@ function MobileBaselineMenu(props: Props) {
         <MenuContainer>
           {items.map(item => (
             <MenuItem
+              key={item.text}
               item={item}
               active={item.active}
               setActivePage={setActivePage}

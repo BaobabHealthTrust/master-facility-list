@@ -67,5 +67,8 @@ export default {
   userLogout: "USER_LOGOUT",
   fetchUserDetails: "FETCH_USER_DETAILS",
 
+  fetchFeedbackTypes: "FETCH_FEEDBACK_TYPES",
+  sendFeedback: "SEND_FEEDBACK",
+
   dependacyError: "DEPENDANCY_ERROR"
 };

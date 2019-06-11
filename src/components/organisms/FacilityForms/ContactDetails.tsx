@@ -3,19 +3,9 @@ import { Formik } from "formik";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 // @ts-ignore
-import {
-  TextField,
-  FormControl,
-  FormHelperText,
-  Select,
-  InputLabel,
-  Input
-} from "@material-ui/core";
+import { TextField, FormControl, FormHelperText } from "@material-ui/core";
 import styled from "styled-components";
-import { renderOptions } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
-// @ts-ignore
-import { isEmpty } from "lodash";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -51,8 +41,6 @@ export function Form(props: any) {
     handleSubmit,
     handleBlur,
     isSubmitting,
-    setFieldValue,
-    dependancies,
     onCancel,
     fromAdd
   } = props;

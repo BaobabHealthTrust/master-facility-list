@@ -4,6 +4,7 @@ import { Grid } from "@material-ui/core";
 import Pagination from "../atoms/Pagination";
 // @ts-ignore
 import { chunk } from "lodash";
+import Facility from "../../scenes/Facility/Facility";
 
 const FacilityMobileList = (props: Props) => {
   const [page, setPage] = useState(1);
@@ -14,7 +15,7 @@ const FacilityMobileList = (props: Props) => {
       <Grid item xs={12} md={12}>
         {facilities.length > 0 &&
           facilities[page - 1].map((d: any) => (
-            <MobileListItem facility={d} onClick={onSelected} />
+            <MobileListItem key={d.id} facility={d} onClick={onSelected} />
           ))}
       </Grid>
       <Grid item xs={12} md={12}>

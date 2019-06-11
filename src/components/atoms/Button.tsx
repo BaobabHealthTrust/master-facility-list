@@ -51,7 +51,7 @@ type Props = {
 const Btn = styled.button`
   cursor: pointer;
   vertical-align: middle;
-  text-transform: none;
+  /* text-transform: none; */
   display: inline-block;
   font-weight: 400;
   min-width: 100px;

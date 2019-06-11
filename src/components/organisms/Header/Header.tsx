@@ -159,7 +159,7 @@ const Header = (props: Props) => {
       name: "Feedback",
       link: `/feedback`,
       active: isActivePage("feedback"),
-      icon: <FontAwesomeIcon icon={faBullhorn} />
+      icon: <FontAwesomeIcon style={{ fontSize: "24px" }} icon={faBullhorn} />
     }
   ];
 

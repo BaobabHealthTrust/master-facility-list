@@ -11,6 +11,7 @@ export default () => {
             <img
               style={{ width: 90, height: 30 }}
               src="/static/images/kuunika_logo.png"
+              alt="Kuunika"
             />
           </Grid>
 
@@ -37,4 +38,3 @@ const Container = styled.div`
     font-size: 12px;
   }
 `;
-
