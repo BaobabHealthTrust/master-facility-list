@@ -90,9 +90,6 @@ const index = (props: Props) => {
         >
           <Grid container spacing={16}>
             <Grid item xs={12} md={12}>
-              <FacilityToolBar />
-            </Grid>
-            <Grid item xs={12} md={12}>
               <FacilityList onSelect={onFacilityClicked} data={facilities} />
             </Grid>
           </Grid>
