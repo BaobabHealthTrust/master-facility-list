@@ -4,6 +4,7 @@ import Card from "../../../components/atoms/Card";
 import Container from "../../../components/atoms/Container";
 import FacilitySubMenu from "../../../components/organisms/FacilitySubmenu";
 import FacilityView from "../../../components/organisms/FacilityViewPage";
+import styled from "styled-components";
 
 function ViewFacility(props: Props) {
   const {
@@ -18,7 +19,7 @@ function ViewFacility(props: Props) {
   } = props;
   const pageHeader = facilitySubMenu.filter(val => val.link == activePage);
   return (
-    <Container style={{ paddingTop: "20px" }}>
+    <DesktopView style={{ paddingTop: "20px" }}>
       <Grid container spacing={24}>
         <Grid item xs={12} sm={12} md={3}>
           <Card heading="Facility menu">
@@ -43,7 +44,7 @@ function ViewFacility(props: Props) {
           </Grid>
         </Grid>
       </Grid>
-    </Container>
+    </DesktopView>
   );
 }
 
@@ -58,3 +59,7 @@ type Props = {
   facilitySubMenu: Array<any>;
 };
 export default ViewFacility;
+
+const DesktopView = styled(Container).attrs({
+  className: "hide-on-med-and-down"
+})``;

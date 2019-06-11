@@ -4,7 +4,7 @@ import styled from "styled-components";
 function FacilityMobileListItem(props: Props) {
   const { facility, onClick } = props;
   return (
-    <Container onClick={e => onClick(facility.id)}>
+    <Container onClick={e => onClick(facility)}>
       <div style={{ fontWeight: "bold", fontSize: "18px" }}>
         {facility.name}
       </div>
