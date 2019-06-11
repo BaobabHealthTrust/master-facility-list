@@ -1,0 +1,8 @@
+{
+  "viewportWidth": 1280,
+  "viewportHeight": 900,
+  "pageLoadTimeout": 6000000,
+  "env": {
+    "FRONT_END_URL": "http://localhost:3000"
+  }
+}
