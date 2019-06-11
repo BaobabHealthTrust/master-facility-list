@@ -4,7 +4,7 @@ import styled from "styled-components";
 import StatCard from "../../molecules/StatCard";
 
 const StatCards = (props: Props) => {
-  const { statistics } = props;
+  const { statistics, onSummaryCardClick } = props;
   return (
     <Grid container spacing={32}>
       {statistics.map((stat, index: number) => (
@@ -14,7 +14,9 @@ const StatCards = (props: Props) => {
             icon={stat.icon}
             count={stat.count}
             title={stat.title}
-            onClick={() => {}}
+            onClick={() => {
+              onSummaryCardClick(stat.type);
+            }}
           />
         </Grid>
       ))}
@@ -26,4 +28,5 @@ export default StatCards;
 
 type Props = {
   statistics: Array<any>;
+  onSummaryCardClick: Function;
 };

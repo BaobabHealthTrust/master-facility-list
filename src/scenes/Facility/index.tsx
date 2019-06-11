@@ -24,6 +24,9 @@ export class index extends Component<Props> {
     if (this.props.owners.length == 0) {
       this.props.fetchOwners();
     }
+    if (this.props.filterOptions && this.props.filterOptions.length > 0) {
+      this.filterFacilities();
+    }
   }
 
   onAddFilter = async (

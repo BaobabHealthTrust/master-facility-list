@@ -1,5 +1,6 @@
 import React from "react";
 import FacilityTable from "../../molecules/FacilityTable";
+import MobileFacilityList from "../../molecules/FacilityMobileList";
 import { Paper } from "@material-ui/core";
 
 const FacilityList = (props: Props) => {
@@ -18,17 +19,33 @@ const FacilityList = (props: Props) => {
   const facilitiesGridSorting = [{ columnName: "name", direction: "asc" }];
 
   return (
-    <Paper style={{ width: "100%" }} className={className}>
-      {
-        <FacilityTable
-          data={data}
-          columns={facilitiesGridColumns}
-          pageSize={10}
-          defaultSorting={facilitiesGridSorting}
-          onSelected={(facility: any) => onSelect(facility.id)}
-        />
-      }
-    </Paper>
+    <>
+      <Paper
+        style={{ width: "100%" }}
+        className={`${className} hide-on-med-and-down`}
+      >
+        {
+          <FacilityTable
+            data={data}
+            columns={facilitiesGridColumns}
+            pageSize={10}
+            defaultSorting={facilitiesGridSorting}
+            onSelected={(facility: any) => onSelect(facility.id)}
+          />
+        }
+      </Paper>
+      <Paper
+        style={{ width: "100%" }}
+        className={`${className} hide-on-large-only`}
+      >
+        {
+          <MobileFacilityList
+            data={data}
+            onSelected={(facility: any) => onSelect(facility.id)}
+          />
+        }
+      </Paper>
+    </>
   );
 };
 

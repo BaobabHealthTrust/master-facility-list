@@ -16,16 +16,28 @@ function FacilityToolbar() {
   return (
     <ButtonsContainer>
       <DownloadButtonsContainer>
-        <Button theme="success" icon={<FontAwesomeIcon icon={faFileExcel} />}>
+        <Button
+          style={{ marginLeft: "0px" }}
+          theme="success"
+          icon={<FontAwesomeIcon icon={faFileExcel} />}
+        >
           Download EXCEL
         </Button>
-        <Button theme="warning" icon={<FontAwesomeIcon icon={faFilePdf} />}>
+        <Button
+          style={{ marginRight: "0px" }}
+          theme="warning"
+          icon={<FontAwesomeIcon icon={faFilePdf} />}
+        >
           Download PDF
         </Button>
       </DownloadButtonsContainer>
       <AddButtonContainer>
         <Link to="/facilities/add">
-          <Button theme="primary" icon={<FontAwesomeIcon icon={faPlus} />}>
+          <Button
+            style={{ marginRight: "0px" }}
+            theme="primary"
+            icon={<FontAwesomeIcon icon={faPlus} />}
+          >
             Add Facility
           </Button>
         </Link>
@@ -39,9 +51,13 @@ export default FacilityToolbar;
 const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
+  font-size: 16px;
 `;
 const DownloadButtonsContainer = styled.div``;
 
-const AddButtonContainer = styled.div`
+const AddButtonContainer = styled.div.attrs({
+  className: "hide-on-med-and-down"
+})`
   text-align: right;
 `;

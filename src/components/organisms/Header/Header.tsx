@@ -7,19 +7,25 @@ import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faAlignJustify, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAlignJustify,
+  faLock,
+  faBullhorn
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Home,
   AddBox,
   People,
   Shuffle,
-  AccountCircle
+  AccountCircle,
+  InfoRounded
 } from "@material-ui/icons";
 import Menu from "../../molecules/Menu";
 import Search from "../../molecules/Search";
 import MobileMenu from "../../molecules/MobileMenu";
 import SearchContainer from "./SearchContainer";
+import BaselineMenu from "../../molecules/MobileBaselineMenu";
 
 library.add(faAlignJustify);
 
@@ -124,6 +130,39 @@ const Header = (props: Props) => {
     }
   ];
 
+  const mobileMenu = publicMenuItems.filter(m => m.text != "Login");
+
+  const baselineMenu = [
+    {
+      text: "Home",
+      name: "Home",
+      active: isActivePage("Home"),
+      icon: <Home />,
+      link: `/`
+    },
+    {
+      text: "Facilities",
+      name: "Facilities",
+      active: isActivePage("Facilities"),
+      icon: <AddBox />,
+      link: `/facilities`
+    },
+    {
+      text: "About MHFR",
+      name: "About",
+      active: isActivePage("about"),
+      link: `/about`,
+      icon: <InfoRounded />
+    },
+    {
+      text: "Feedback",
+      name: "Feedback",
+      link: `/feedback`,
+      active: isActivePage("feedback"),
+      icon: <FontAwesomeIcon icon={faBullhorn} />
+    }
+  ];
+
   const menuItems = auth.authenticated ? adminMenuItems : publicMenuItems;
 
   return (
@@ -132,22 +171,24 @@ const Header = (props: Props) => {
         <StyledToolbar>
           <MenuContainer>
             <ToolsContainer>
-              <StyledMenuIcon
-                className="hide-on-large-only waves-effect waves-light"
+              <Logo src="/static/images/logo.png" />
+              <Typography
+                variant="h5"
                 color="inherit"
-                aria-label="Open drawer"
-                onClick={() => setMenuOpen(!isMenuOpen)}
-              >
-                <MenuIcon />
-              </StyledMenuIcon>
-              <Logo
+                noWrap
                 className="hide-on-small-only"
-                src="/static/images/logo.png"
-              />
-              <Typography variant="h5" color="inherit" noWrap>
+              >
                 {`Master Health Facility Registry`.toUpperCase()}
               </Typography>
-              <Search onClick={toggleSearch} className="hide-on-small-only" />
+              <Typography
+                variant="h5"
+                color="inherit"
+                noWrap
+                className="hide-on-med-and-up"
+              >
+                {`MHFR`.toUpperCase()}
+              </Typography>
+              <Search onClick={toggleSearch} className="hide-on-med-and-down" />
               {searchOpen && (
                 <SearchContainer
                   onClickSearchItem={onClickSearchItem}
@@ -158,10 +199,26 @@ const Header = (props: Props) => {
             </ToolsContainer>
             <Menu items={menuItems} />
             <MobileMenu
-              items={menuItems}
+              items={mobileMenu}
               open={isMenuOpen}
               onClose={() => setMenuOpen(!isMenuOpen)}
             />
+            <BaselineMenu items={baselineMenu} />
+            <div style={{ display: "flex" }}>
+              <Search
+                onClick={toggleSearch}
+                className="hide-on-large-only"
+                style={{ margin: "15px 0px", backgroundColor: "transparent" }}
+              />
+              <StyledMenuIcon
+                className="hide-on-large-only waves-effect waves-light"
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={() => setMenuOpen(!isMenuOpen)}
+              >
+                <MenuIcon />
+              </StyledMenuIcon>
+            </div>
           </MenuContainer>
         </StyledToolbar>
       </AppBar>

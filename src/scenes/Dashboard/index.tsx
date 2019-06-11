@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import Dashboard from "./Dashboard";
 import { connect } from "react-redux";
+import {
+  removeAllFilterValue,
+  addFilterValue
+} from "../../services/redux/actions/facilities";
+import { setActivePage } from "../../services/redux/actions/ui";
 
 class index extends Component<any> {
   initialState: Array<string> = [];
@@ -66,6 +71,42 @@ class index extends Component<any> {
     return [];
   };
 
+  onSummaryCardClick = (facilityType: any) => {
+    this.props.removeAllFilterValue();
+
+    facilityType =
+      facilityType != "All"
+        ? this.props.facilityTypes
+            .filter((ft: any) => ft.facility_type == facilityType)
+            .map((ft: any) => ({
+              type: "facilityTypes",
+              id: ft.id,
+              label: ft.facility_type
+            }))[0]
+        : "All";
+
+    let districts: Array<any> = this.state.districtsFilter.map(dis => {
+      return this.props.districts
+        .filter((d: any) => d.district_name === dis)
+        .map((d: any) => ({
+          type: "districts",
+          id: d.id,
+          label: d.district_name
+        }));
+    });
+
+    if (facilityType != "All") {
+      this.props.addFilterValue(facilityType);
+    }
+    if (districts.length > 0) {
+      for (let district of districts) {
+        this.props.addFilterValue(district[0]);
+      }
+    }
+    this.props.history.push("/facilities");
+    this.props.setActivePage("facilities");
+  };
+
   getRegulatoryBarData = () => {
     const data = this.generateBarChartData(
       "regulatoryStatuses",
@@ -127,30 +168,35 @@ class index extends Component<any> {
     {
       count: this.getFilteredFacilities().length,
       title: "Total Facilities",
+      type: "All",
       icon: "hospital.svg",
       onClick: () => {}
     },
     {
       count: this.getFacilitiesOfType("District Hospital"),
       title: "Dist Hospitals",
+      type: "District Hospital",
       icon: "district.svg",
       onClick: () => {}
     },
     {
       count: this.getFacilitiesOfType("Health Centre"),
       title: "Health Centers",
+      type: "Health Centre",
       icon: "clinic.svg",
       onClick: () => {}
     },
     {
       count: this.getFacilitiesOfType("Dispensary"),
       title: "Dispensaries",
+      type: "Dispensary",
       icon: "normal-hospital.svg",
       onClick: () => {}
     },
     {
       count: this.getFacilitiesOfType("Health Post"),
       title: "Health Posts",
+      type: "Health Post",
       icon: "tent.svg",
       onClick: () => {}
     }
@@ -168,6 +214,7 @@ class index extends Component<any> {
         onMapClick={(district: string) => {
           this.handleMapClick(district);
         }}
+        onSummaryCardClick={this.onSummaryCardClick}
       />
     );
   }
@@ -178,7 +225,11 @@ const mapStateToProps = (state: any) => ({
   districts: state.dependancies.districts.list,
   operationalStatuses: state.dependancies.operationalStatuses.list,
   regulatoryStatuses: state.dependancies.regulatoryStatuses.list,
-  facilities: state.facilities.list
+  facilities: state.facilities.list,
+  facilityTypes: state.dependancies.facilityTypes.list
 });
 
-export default connect(mapStateToProps)(index);
+export default connect(
+  mapStateToProps,
+  { removeAllFilterValue, addFilterValue, setActivePage }
+)(index);

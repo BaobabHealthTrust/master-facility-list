@@ -16,7 +16,8 @@ const index = (props: Props) => {
     operationalStatusGraphData,
     selectedDistricts,
     onRemoveDistrictFilter,
-    onMapClick
+    onMapClick,
+    onSummaryCardClick
   } = props;
 
   const map = (
@@ -46,7 +47,10 @@ const index = (props: Props) => {
               />
             </Grid>
             <Grid item xs={12} md={12}>
-              <StatCards statistics={cardsData} />
+              <StatCards
+                statistics={cardsData}
+                onSummaryCardClick={onSummaryCardClick}
+              />
             </Grid>
             <Grid item xs={12} md={12}>
               <Charts
@@ -69,6 +73,7 @@ type Props = {
   selectedDistricts: Array<any>;
   onRemoveDistrictFilter: Function;
   onMapClick: Function;
+  onSummaryCardClick: Function;
 };
 const MapContainer = styled.div`
   width: 100%;

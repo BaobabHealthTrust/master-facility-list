@@ -46,39 +46,59 @@ const index = (props: Props) => {
   } = props;
 
   return (
-    <div className="hide-on-med-and-down">
-      <FilterButton open={drawerOpen} onClick={onToggleDrawer} />
-      <FacilityFilterDrawer open={drawerOpen} onAddFilter={onAddFilter} />
-      <Container
-        style={{
-          minHeight: "100%",
-          paddingTop: "25px",
-          flexGrow: "1"
-        }}
-        className={classNames(classes.content, {
-          [classes.contentShift]: drawerOpen
-        })}
-      >
-        <Grid className="hide-on-small-only" container spacing={16}>
-          <Grid item xs={12} md={12}>
-            <FacilityToolBar />
-          </Grid>
-          {filterOptions.length > 0 && (
+    <>
+      <DesktopView>
+        <FilterButton open={drawerOpen} onClick={onToggleDrawer} />
+        <FacilityFilterDrawer open={drawerOpen} onAddFilter={onAddFilter} />
+        <Container
+          style={{
+            minHeight: "100%",
+            paddingTop: "25px",
+            flexGrow: "1"
+          }}
+          className={classNames(classes.content, {
+            [classes.contentShift]: drawerOpen
+          })}
+        >
+          <Grid container spacing={16}>
             <Grid item xs={12} md={12}>
-              <Card>
-                <FilterCards
-                  filterOptions={filterOptions}
-                  onRemove={onRemoveFilter}
-                />
-              </Card>
+              <FacilityToolBar />
             </Grid>
-          )}
-          <Grid item xs={12} md={12}>
-            <FacilityList onSelect={onFacilityClicked} data={facilities} />
+            {filterOptions.length > 0 && (
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <FilterCards
+                    filterOptions={filterOptions}
+                    onRemove={onRemoveFilter}
+                  />
+                </Card>
+              </Grid>
+            )}
+            <Grid item xs={12} md={12}>
+              <FacilityList onSelect={onFacilityClicked} data={facilities} />
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </div>
+        </Container>
+      </DesktopView>
+      <MobileView>
+        <Container
+          style={{
+            minHeight: "100%",
+            paddingTop: "25px",
+            flexGrow: "1"
+          }}
+        >
+          <Grid container spacing={16}>
+            <Grid item xs={12} md={12}>
+              <FacilityToolBar />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <FacilityList onSelect={onFacilityClicked} data={facilities} />
+            </Grid>
+          </Grid>
+        </Container>
+      </MobileView>
+    </>
   );
 };
 
@@ -93,3 +113,10 @@ type Props = {
   filterOptions: Array<any>;
 };
 export default withStyles(styles, { withTheme: true })(index);
+
+const DesktopView = styled.div.attrs({
+  className: "hide-on-med-and-down"
+})``;
+const MobileView = styled.div.attrs({
+  className: "hide-on-large-only"
+})``;
