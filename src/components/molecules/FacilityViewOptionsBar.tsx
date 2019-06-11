@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/Button";
 import { Link } from "react-router-dom";
+import { Grid } from "@material-ui/core";
 
 library.add(faPlusCircle, faFilePdf);
 
@@ -14,8 +15,14 @@ function FacilityViewOptionsBar(props: Props) {
   const { facility } = props;
   return (
     <Container>
-      <Details facility={facility} />
-      <ActionButtons facility={facility} />
+      <Grid container>
+        <Grid item xs={12} sm={12} md={6}>
+          <Details facility={facility} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <ActionButtons facility={facility} />
+        </Grid>
+      </Grid>
     </Container>
   );
 }
@@ -43,7 +50,7 @@ export function Details(props: Props) {
 
 export function ActionButtons(props: Props) {
   return (
-    <div className="hide-on-med-and-down" style={{ whiteSpace: "nowrap" }}>
+    <div style={{ whiteSpace: "nowrap", textAlign: "right" }}>
       <Button
         style={{ marginLeft: "0px" }}
         theme="warning"

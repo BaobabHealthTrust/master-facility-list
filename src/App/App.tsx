@@ -12,6 +12,10 @@ import ViewFacility from "../scenes/Facility/ViewFacility";
 import UpdateFacility from "../scenes/Facility/UpdateFacility";
 import UserLogin from "../scenes/Login";
 import Users from "../scenes/Users";
+import Feedback from "../scenes/Feedback";
+import About from "../scenes/About";
+import Help from "../scenes/Help";
+import Preloader from "../components/atoms/Preloader";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -89,7 +93,9 @@ const App: React.FC = (props: any) => {
   fetchFacilities().catch(() => {});
 
   fetchFacilityTypes().catch(() => {});
-  return (
+  return false ? (
+    <Preloader />
+  ) : (
     <>
       <ToastContainer
         autoClose={6000}
@@ -125,6 +131,9 @@ const App: React.FC = (props: any) => {
             />
             <Route exact path="/login" component={UserLogin} />
             <Route exact path="/users" component={Users} />
+            <Route exact path="/feedback" component={Feedback} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/help" component={Help} />
           </Switch>
         </Content>
         <Footer />

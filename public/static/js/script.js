@@ -1,5 +1,5 @@
-$(document).ready(function() {
-  // $('.select').material_select();
+$(document).load(function() {
+  $(".select").material_select();
   $(".button-collapse").sideNav();
   $(".tooltipped").tooltip({ delay: 10 });
 
@@ -26,11 +26,13 @@ $(document).ready(function() {
   }
 });
 
-$(window).load(function() {
-  $(".loader")
-    .delay(2000)
-    .fadeOut("slow");
-  $("#overlayer")
-    .delay(2000)
-    .fadeOut("slow");
+$(window).on("load", function() {
+  // makes sure the whole site is loaded
+  $("#status").fadeOut(); // will first fade out the loading animation
+  $("#preloader")
+    .delay(350)
+    .fadeOut("slow"); // will fade out the white DIV that covers the website.
+  $("body")
+    .delay(350)
+    .css({ overflow: "visible" });
 });
