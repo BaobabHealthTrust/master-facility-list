@@ -11,12 +11,19 @@ function SearchResultsList(props: Props) {
         <tbody>
           {facilities.map(facility => (
             <TableRow onClick={() => onClick(facility)}>
-              <TableCell style={{ textAlign: "center" }}>
+              <TableCell
+                style={{ textAlign: "center" }}
+                className="hide-on-small-only"
+              >
                 {facility.code}
               </TableCell>
               <TableCell>{facility.name}</TableCell>
-              <TableCell>{facility.district}</TableCell>
-              <TableCell>{facility.regulatoryStatus}</TableCell>
+              <TableCell className="hide-on-med-and-down">
+                {facility.district}
+              </TableCell>
+              <TableCell className="hide-on-med-and-down">
+                {facility.regulatoryStatus}
+              </TableCell>
             </TableRow>
           ))}
         </tbody>
