@@ -48,3 +48,5 @@ export const hasFilterValuesForType = (type: string, values: Array<any>) => {
       return values.filter(val => val.type === type).length > 0;
   }
 };
+
+export const isAdmin = () => sessionStorage.getItem("token");

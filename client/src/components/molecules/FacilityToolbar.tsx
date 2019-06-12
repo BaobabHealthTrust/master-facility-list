@@ -9,6 +9,7 @@ import {
   faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { isAdmin } from "../../services/helpers";
 
 library.add(faPlus, faFilePdf, faFileExcel);
 
@@ -31,17 +32,19 @@ function FacilityToolbar() {
           Download PDF
         </Button>
       </DownloadButtonsContainer>
-      <AddButtonContainer>
-        <Link to="/facilities/add">
-          <Button
-            style={{ marginRight: "0px" }}
-            theme="primary"
-            icon={<FontAwesomeIcon icon={faPlus} />}
-          >
-            Add Facility
-          </Button>
-        </Link>
-      </AddButtonContainer>
+      {isAdmin() && (
+        <AddButtonContainer>
+          <Link to="/facilities/add">
+            <Button
+              style={{ marginRight: "0px" }}
+              theme="primary"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+            >
+              Add Facility
+            </Button>
+          </Link>
+        </AddButtonContainer>
+      )}
     </ButtonsContainer>
   );
 }

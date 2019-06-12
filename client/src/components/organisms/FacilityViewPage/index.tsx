@@ -21,6 +21,7 @@ import styled from "styled-components";
 import { FacilityPages } from "../../../services/utils";
 import Button from "../../atoms/Button";
 import { Link } from "react-router-dom";
+import { isAdmin } from "../../../services/helpers";
 library.add(faHospital, faEdit);
 
 function index(props: Props) {
@@ -48,11 +49,13 @@ function index(props: Props) {
             title={basic.facility_name}
             icon={<FontAwesomeIcon icon={faHospital} />}
             options={
-              <Link to="/facilities/add">
-                <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
-                  Add Facility
-                </Button>
-              </Link>
+              isAdmin() && (
+                <Link to="/facilities/add">
+                  <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
+                    Add Facility
+                  </Button>
+                </Link>
+              )
             }
           />
         </Grid>
@@ -71,14 +74,16 @@ function index(props: Props) {
                   heading={
                     <CardTitle>
                       <div>{pageHeader}</div>
-                      <Link to={`/facilities/${basic.id}/${activePage}/edit`}>
-                        <Button
-                          theme="secondary"
-                          icon={<FontAwesomeIcon icon={faEdit} />}
-                        >
-                          Update Facility
-                        </Button>
-                      </Link>
+                      {isAdmin() && (
+                        <Link to={`/facilities/${basic.id}/${activePage}/edit`}>
+                          <Button
+                            theme="secondary"
+                            icon={<FontAwesomeIcon icon={faEdit} />}
+                          >
+                            Update Facility
+                          </Button>
+                        </Link>
+                      )}
                     </CardTitle>
                   }
                   style={{ zIndex: "1", position: "relative" }}
