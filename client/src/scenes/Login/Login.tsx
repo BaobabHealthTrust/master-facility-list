@@ -1,33 +1,54 @@
 import React from "react";
 import styled from "styled-components";
-import { TextField, FormControl, withStyles } from "@material-ui/core";
+import { TextField, withStyles } from "@material-ui/core";
 import Button from "../../components/atoms/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Formik } from "formik";
+import * as yup from "yup";
 
 function Login(props: Props) {
+  const { error } = props;
   const initialValues: any = { username: null, password: null };
   const onSubmit = async (values: any, { setSubmitting }: any) => {
     await props.onSubmit(values);
     setSubmitting(false);
   };
+
+  const schema: yup.ObjectSchema<any> = yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().required()
+  });
   return (
     <Formik
       onSubmit={onSubmit}
       initialValues={initialValues}
-      render={({ handleSubmit, values, handleChange, isSubmitting }) => (
+      validationSchema={schema}
+      render={({
+        handleSubmit,
+        values,
+        handleChange,
+        isSubmitting,
+        errors,
+        touched
+      }) => (
         <Container>
           <LoginContainer>
             <Title>
               <FontAwesomeIcon icon={faLock} style={{ marginRight: "10px" }} />{" "}
               Login Here
             </Title>
+            <NotificationContainer>
+              {error.length > 0 && <Notification warning>{error}</Notification>}
+            </NotificationContainer>
             <InputContainer>
               <InputIconContainer>
                 <FontAwesomeIcon style={{ margin: "auto" }} icon={faUser} />
               </InputIconContainer>
               <StyledTextField
+                error={
+                  touched.username && typeof errors.username != "undefined"
+                }
                 name="username"
                 placeholder="Enter Username"
                 variant="outlined"
@@ -40,6 +61,9 @@ function Login(props: Props) {
                 <FontAwesomeIcon style={{ margin: "auto" }} icon={faLock} />
               </InputIconContainer>
               <StyledTextField
+                error={
+                  touched.password && typeof errors.password != "undefined"
+                }
                 name="password"
                 placeholder="Enter Password"
                 variant="outlined"
@@ -73,6 +97,7 @@ export default Login;
 
 type Props = {
   onSubmit: Function;
+  error: string;
 };
 
 const Container = styled.div`
@@ -129,4 +154,24 @@ const InputIconContainer = styled.div`
   align-items: center;
   font-size: 26px;
   border-radius: 4px 0px 0px 4px;
+`;
+
+const Notification = styled<any>("div")`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 4px;
+  padding: 0.3rem;
+  font-size: 1rem;
+  background-color: ${props => (props.warning ? "khaki" : "powderblue")};
+  color: ${props => (props.warning ? "olive" : "midnightblue")};
+  i {
+    cursor: pointer;
+  }
+`;
+
+const NotificationContainer = styled.div`
+  height: 40px;
+  display: flex;
+  align-items: center;
 `;
