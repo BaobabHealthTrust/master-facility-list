@@ -13,8 +13,7 @@ import {
 } from "../../services/redux/actions/facilities";
 import Facility from "./Facility";
 import { hasFilterValuesForType } from "../../services/helpers";
-import { toast } from "react-toastify";
-import Notification from "../../components/atoms/Notification";
+import settings from "../../App/settings";
 
 export class index extends Component<Props> {
   handleFacilityClick = (facilityId: number) => {
@@ -28,6 +27,23 @@ export class index extends Component<Props> {
       this.filterFacilities();
     }
   }
+
+  downloadFileIn = (format: "pdf" | "csv" | "excel") => {
+    const { filterOptions } = this.props;
+    const facilityIds =
+      filterOptions.length > 0
+        ? this.props.filteredFacilities.map(f => f.id)
+        : [];
+    const whereClause =
+      filterOptions.length > 0 ? { id: { inq: facilityIds } } : {};
+    window.open(
+      `${settings.API}/facilities/download?data=` +
+        JSON.stringify({
+          where: whereClause,
+          format
+        })
+    );
+  };
 
   onAddFilter = async (
     value: { type: string; id: number; label: string; range?: any },
@@ -99,6 +115,7 @@ export class index extends Component<Props> {
         onRemoveFilter={this.removeFilter}
         facilities={facilitiesData}
         filterOptions={filterOptions}
+        downloadList={this.downloadFileIn}
       />
     );
   }

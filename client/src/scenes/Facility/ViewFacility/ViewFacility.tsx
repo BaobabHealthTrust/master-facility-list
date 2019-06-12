@@ -17,7 +17,8 @@ function ViewFacility(props: Props) {
     resources,
     services,
     utilities,
-    onEditDetails
+    onEditDetails,
+    downloadFacility
   } = props;
   const pageHeader = facilitySubMenu.filter(val => val.link == activePage);
   return (
@@ -43,6 +44,7 @@ function ViewFacility(props: Props) {
                 services={services}
                 utilities={utilities}
                 onEditDetails={onEditDetails}
+                downloadFacility={downloadFacility}
               />
             </Grid>
           </Grid>
@@ -84,6 +86,7 @@ type Props = {
   onChangePage: Function;
   onEditDetails: Function;
   facilitySubMenu: Array<any>;
+  downloadFacility: Function;
 };
 export default ViewFacility;
 

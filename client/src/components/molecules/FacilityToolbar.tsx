@@ -13,7 +13,8 @@ import { isAdmin } from "../../services/helpers";
 
 library.add(faPlus, faFilePdf, faFileExcel);
 
-function FacilityToolbar() {
+function FacilityToolbar(props: Props) {
+  const { downloadList } = props;
   return (
     <ButtonsContainer>
       <DownloadButtonsContainer>
@@ -21,6 +22,7 @@ function FacilityToolbar() {
           style={{ marginLeft: "0px" }}
           theme="success"
           icon={<FontAwesomeIcon icon={faFileExcel} />}
+          onClick={() => downloadList("excel")}
         >
           Download EXCEL
         </Button>
@@ -28,6 +30,7 @@ function FacilityToolbar() {
           style={{ marginRight: "0px" }}
           theme="warning"
           icon={<FontAwesomeIcon icon={faFilePdf} />}
+          onClick={() => downloadList("pdf")}
         >
           Download PDF
         </Button>
@@ -48,6 +51,9 @@ function FacilityToolbar() {
     </ButtonsContainer>
   );
 }
+type Props = {
+  downloadList: Function;
+};
 
 export default FacilityToolbar;
 

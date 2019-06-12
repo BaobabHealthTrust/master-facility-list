@@ -42,7 +42,8 @@ const index = (props: Props) => {
     onFacilityClicked,
     onRemoveFilter,
     onAddFilter,
-    filterOptions
+    filterOptions,
+    downloadList
   } = props;
 
   return (
@@ -62,7 +63,7 @@ const index = (props: Props) => {
         >
           <Grid container spacing={16}>
             <Grid item xs={12} md={12}>
-              <FacilityToolBar />
+              <FacilityToolBar downloadList={downloadList} />
             </Grid>
             {filterOptions.length > 0 && (
               <Grid item xs={12} md={12}>
@@ -108,6 +109,7 @@ type Props = {
   onAddFilter: Function;
   onRemoveFilter: Function;
   filterOptions: Array<any>;
+  downloadList: Function;
 };
 export default withStyles(styles, { withTheme: true })(index);
 

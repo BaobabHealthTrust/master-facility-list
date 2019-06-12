@@ -31,7 +31,8 @@ function index(props: Props) {
     utilities,
     services,
     pageHeader,
-    activePage
+    activePage,
+    downloadFacility
   } = props;
   const position =
     basic.geolocations && basic.geolocations.latitude != ""
@@ -61,7 +62,7 @@ function index(props: Props) {
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
           <Card>
-            <OptionsBar facility={basic} />
+            <OptionsBar facility={basic} downloadFacility={downloadFacility} />
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -124,6 +125,7 @@ type Props = {
   services: Array<any>;
   utilities: Array<any>;
   onEditDetails: Function;
+  downloadFacility: Function;
 };
 export default index;
 
