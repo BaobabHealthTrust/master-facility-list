@@ -42,6 +42,7 @@ import {
 import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import settings from "../../../App/settings";
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -80,6 +81,12 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
 
   onCancel = () => {
     this.props.history.goBack();
+  };
+
+  downloadFacility = () => {
+    window.open(
+      `${settings.API}/facilities/download/${this.props.facility.id}`
+    );
   };
 
   handlePageChange = (page: any) => {
@@ -263,9 +270,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     toast.info(
       <Notification
         error
-        message={`Failed To Update Facility ${
-          this.props.facilityPage
-        }, Please Try Again`}
+        message={`Failed To Update Facility ${this.props.facilityPage}, Please Try Again`}
       />
     );
   };
@@ -297,6 +302,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
           this.handlePageChange(page);
         }}
         facilitySubMenu={this.facilitySubMenu}
+        downloadFacility={this.downloadFacility}
       />
     );
   }
