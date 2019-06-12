@@ -132,7 +132,7 @@ const App: React.FC = (props: any) => {
             <Route exact path="/help" component={Help} />
 
             {props.isAuthenticated && (
-              <>
+              <div className="hide-on-med-and-down">
                 <Route
                   exact
                   path="/Facilities/:id/:page/edit"
@@ -140,7 +140,7 @@ const App: React.FC = (props: any) => {
                 />
                 <Route exact path="/Facilities/add" component={AddFacility} />
                 <Route exact path="/users" component={Users} />
-              </>
+              </div>
             )}
             <Route path="*" component={NotFound} />
           </Switch>
