@@ -21,6 +21,8 @@ import styled from "styled-components";
 import { FacilityPages } from "../../../services/utils";
 import Button from "../../atoms/Button";
 import { Link } from "react-router-dom";
+import EmptyState from "../../atoms/FacilityDetailsEmptyState";
+
 library.add(faHospital, faEdit);
 
 function index(props: Props) {
@@ -69,15 +71,24 @@ function index(props: Props) {
                     {activePage == FacilityPages.contact && (
                       <ContactsPage facility={basic} />
                     )}
-                    {activePage == FacilityPages.resources && (
-                      <ResourcesPage resources={resources} />
-                    )}
-                    {activePage == FacilityPages.utilities && (
-                      <UtilitiesPage utilities={utilities} />
-                    )}
-                    {activePage == FacilityPages.services && (
-                      <ServicesPage services={services} />
-                    )}
+                    {activePage == FacilityPages.resources &&
+                      (resources.length == 0 ? (
+                        <EmptyState resource="resources" />
+                      ) : (
+                        <ResourcesPage resources={resources} />
+                      ))}
+                    {activePage == FacilityPages.utilities &&
+                      (utilities.length == 0 ? (
+                        <EmptyState resource="utilities" />
+                      ) : (
+                        <UtilitiesPage utilities={utilities} />
+                      ))}
+                    {activePage == FacilityPages.services &&
+                      (services.length == 0 ? (
+                        <EmptyState resource="services" />
+                      ) : (
+                        <ServicesPage services={services} />
+                      ))}
                   </FacilityPage>
                 </Card>
               </Grid>
