@@ -6,13 +6,12 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/Button";
-import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 
 library.add(faPlusCircle, faFilePdf);
 
 function FacilityViewOptionsBar(props: Props) {
-  const { facility } = props;
+  const { facility, downloadFacility } = props;
   return (
     <Container>
       <Grid container>
@@ -20,7 +19,10 @@ function FacilityViewOptionsBar(props: Props) {
           <Details facility={facility} />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
-          <ActionButtons facility={facility} />
+          <ActionButtons
+            facility={facility}
+            downloadFacility={downloadFacility}
+          />
         </Grid>
       </Grid>
     </Container>
@@ -28,10 +30,11 @@ function FacilityViewOptionsBar(props: Props) {
 }
 type Props = {
   facility: any;
+  downloadFacility: Function;
 };
 export default FacilityViewOptionsBar;
 
-export function Details(props: Props) {
+export function Details(props: { facility: any }) {
   const { facility } = props;
   return (
     <div>
@@ -49,12 +52,14 @@ export function Details(props: Props) {
 }
 
 export function ActionButtons(props: Props) {
+  const { downloadFacility } = props;
   return (
     <div style={{ whiteSpace: "nowrap", textAlign: "right" }}>
       <Button
         style={{ marginLeft: "0px" }}
         theme="warning"
         icon={<FontAwesomeIcon icon={faFilePdf} />}
+        onClick={downloadFacility}
       >
         Download Pdf
       </Button>

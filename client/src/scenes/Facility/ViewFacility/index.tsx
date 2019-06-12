@@ -21,6 +21,7 @@ import {
   faStethoscope
 } from "@fortawesome/free-solid-svg-icons";
 import { FacilityPages as pages } from "../../../services/utils";
+import settings from "../../../App/settings";
 
 library.add(faPlus, faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -56,6 +57,10 @@ export class index extends Component<any> {
       icon: <FontAwesomeIcon icon={faStethoscope} />
     }
   ];
+
+  downloadFacility = () => {
+    window.open(`${settings.API}/facilities/download/${this.state.facilityId}`);
+  };
 
   handlePageChange = (page: any) => {
     this.props.setActiveFacilityPage(page);
@@ -109,6 +114,7 @@ export class index extends Component<any> {
         }}
         onEditDetails={() => {}}
         facilitySubMenu={this.facilitySubMenu}
+        downloadFacility={this.downloadFacility}
       />
     );
   }
