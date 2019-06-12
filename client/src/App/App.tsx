@@ -15,6 +15,7 @@ import Users from "../scenes/Users";
 import Feedback from "../scenes/Feedback";
 import About from "../scenes/About";
 import Help from "../scenes/Help";
+import NotFound from "../scenes/Error/404";
 import Preloader from "../components/atoms/Preloader";
 import { connect } from "react-redux";
 import {
@@ -32,6 +33,7 @@ import {
 } from "../services/redux/actions/dependancies";
 import { fetchFacilities } from "../services/redux/actions/facilities";
 import { ToastContainer, cssTransition } from "react-toastify";
+import { isAdmin } from "../services/helpers";
 
 const Slide = cssTransition({
   enter: "slideIn",
@@ -117,23 +119,30 @@ const App: React.FC = (props: any) => {
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/Facilities" component={Facilities} />
-            <Route exact path="/Facilities/add" component={AddFacility} />
+
             <Route exact path="/Facilities/:id" component={ViewFacility} />
             <Route
               exact
               path="/Facilities/:id/:page"
               component={ViewFacility}
             />
-            <Route
-              exact
-              path="/Facilities/:id/:page/edit"
-              component={UpdateFacility}
-            />
             <Route exact path="/login" component={UserLogin} />
-            <Route exact path="/users" component={Users} />
             <Route exact path="/feedback" component={Feedback} />
             <Route exact path="/about" component={About} />
             <Route exact path="/help" component={Help} />
+
+            {props.isAuthenticated && (
+              <>
+                <Route
+                  exact
+                  path="/Facilities/:id/:page/edit"
+                  component={UpdateFacility}
+                />
+                <Route exact path="/Facilities/add" component={AddFacility} />
+                <Route exact path="/users" component={Users} />
+              </>
+            )}
+            <Route path="*" component={NotFound} />
           </Switch>
         </Content>
         <Footer />
@@ -142,8 +151,11 @@ const App: React.FC = (props: any) => {
   );
 };
 
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.users.currentUser.authenticated
+});
 export default connect(
-  null,
+  mapStateToProps,
   {
     fetchUtilities,
     fetchUtilityTypes,

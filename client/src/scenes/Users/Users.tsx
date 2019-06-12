@@ -7,6 +7,7 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import CreateUserModal from "./CreateUser";
 import OptionsBar from "../../components/molecules/UsersOptionsBar";
 import UsersList from "../../components/organisms/UsersList";
+import { isAdmin } from "../../services/helpers";
 
 function Users(props: Props) {
   const { users, onFilter, onSort, onDeleteUser } = props;
@@ -16,11 +17,7 @@ function Users(props: Props) {
         <Grid item xs={12} sm={12} md={12}>
           <PageTitle
             title="User Management"
-            options={
-              <div>
-                <CreateUserModal />
-              </div>
-            }
+            options={<div>{isAdmin() && <CreateUserModal />}</div>}
             icon={<FontAwesomeIcon icon={faUsers} />}
           />
         </Grid>
