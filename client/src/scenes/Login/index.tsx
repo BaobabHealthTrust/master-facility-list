@@ -8,12 +8,16 @@ import Login from "./Login";
 import { connect } from "react-redux";
 
 export class index extends Component<Props> {
+  state = {
+    error: ""
+  };
   attemptLogin = async (values: { username: string; password: string }) => {
+    this.setState({ error: "" });
     const log = await this.props.userLogin(values).catch((error: any) => {
       return false;
     });
     if (!log) {
-      alert("failed");
+      this.setState({ error: "Invalid username or password" });
       return;
     }
 
@@ -37,7 +41,7 @@ export class index extends Component<Props> {
   };
 
   render() {
-    return <Login onSubmit={this.attemptLogin} />;
+    return <Login onSubmit={this.attemptLogin} error={this.state.error} />;
   }
 }
 
