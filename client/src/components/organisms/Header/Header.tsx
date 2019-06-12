@@ -197,7 +197,7 @@ const Header = (props: Props) => {
                 />
               )}
             </ToolsContainer>
-            <Menu items={menuItems} />
+
             <MobileMenu
               items={mobileMenu}
               open={isMenuOpen}
@@ -219,6 +219,7 @@ const Header = (props: Props) => {
                 <MenuIcon />
               </StyledMenuIcon>
             </div>
+            <Menu items={menuItems} />
           </MenuContainer>
         </StyledToolbar>
       </AppBar>
