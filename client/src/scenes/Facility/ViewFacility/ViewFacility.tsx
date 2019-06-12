@@ -68,6 +68,7 @@ function ViewFacility(props: Props) {
                 services={services}
                 utilities={utilities}
                 onEditDetails={onEditDetails}
+                downloadFacility={downloadFacility}
               />
             </Grid>
           </Grid>

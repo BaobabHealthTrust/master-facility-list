@@ -39,7 +39,8 @@ function UpdateFacility(props: Props) {
     onChangePage,
     facility,
     loadingStates,
-    onCancel
+    onCancel,
+    downloadFacility
   } = props;
   return (
     <>
@@ -64,7 +65,10 @@ function UpdateFacility(props: Props) {
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <Card>
-                  <OptionsBar facility={facility} />
+                  <OptionsBar
+                    facility={facility}
+                    downloadFacility={downloadFacility}
+                  />
                 </Card>
               </Grid>
               {activePage == pages.summary && (
@@ -137,5 +141,6 @@ type Props = {
   facilitySubMenu: Array<any>;
   loadingStates: any;
   onCancel: Function;
+  downloadFacility: Function;
 };
 export default UpdateFacility;
