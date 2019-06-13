@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Tab, Tabs } from "@material-ui/core";
+import { Tab, Tabs, withStyles } from "@material-ui/core";
 
 function index(props: Props) {
   const { menu, activePage, onClick } = props;
@@ -14,17 +14,15 @@ function index(props: Props) {
     .indexOf(activePage.toLowerCase());
 
   return (
-    <Tabs
+    <StyledTabs
       value={value < 0 ? 0 : value}
       onChange={handleChange}
-      indicatorColor="primary"
-      textColor="primary"
       variant="scrollable"
     >
       {menu.map(item => (
-        <Tab key={item.name} label={item.name} icon={item.icon} />
+        <Tab key={item.name} label={item.name} />
       ))}
-    </Tabs>
+    </StyledTabs>
   );
 }
 
@@ -35,4 +33,15 @@ type Props = {
   activePage: any;
   onClick: Function;
 };
-const Container = styled.div``;
+
+const StyledTabs = withStyles({
+  root: {
+    borderBottom: "1px solid #e8e8e8",
+    backgroundColor: "#5a90dc",
+    color: "white"
+  },
+  indicator: {
+    backgroundColor: "#fffe9b",
+    color: "white"
+  }
+})(Tabs);
