@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MobileListItem from "../atoms/MobileListItem";
 import { Grid } from "@material-ui/core";
 import Pagination from "../atoms/Pagination";
@@ -8,7 +8,13 @@ import Facility from "../../scenes/Facility/Facility";
 
 const FacilityMobileList = (props: Props) => {
   const [page, setPage] = useState(1);
+
   const { data, onSelected } = props;
+
+  useEffect(() => {
+    setPage(1);
+  }, [data]);
+
   const facilities: Array<any> = chunk(data, 10);
   return (
     <Grid container spacing={24}>

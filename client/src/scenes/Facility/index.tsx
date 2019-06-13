@@ -71,6 +71,9 @@ export class index extends Component<Props> {
   removeFilter = async (value: any) => {
     await this.props.removeFilterValue(value);
     this.filterFacilities();
+    if (this.props.filterOptions.length == 0) {
+      this.props.toggleFacilityFilter();
+    }
   };
 
   filterFacilities = async () => {
