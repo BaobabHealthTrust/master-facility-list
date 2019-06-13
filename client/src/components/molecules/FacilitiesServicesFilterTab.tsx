@@ -38,7 +38,7 @@ function FacilityServicesFilterTab(props: Props) {
     <Container>
       <Grid container spacing={24}>
         {servicesFields.map((serType: any) => (
-          <Grid item sm={12} md={12}>
+          <Grid item xs={12} sm={12} md={12}>
             <SelectField
               label={`Filter By ${serType.label}`}
               values={values}

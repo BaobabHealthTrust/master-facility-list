@@ -67,7 +67,7 @@ function FacilityBasicFilterTab(props: Props) {
   return (
     <Container>
       <Grid container spacing={24}>
-        <Grid item sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <SelectField
             label="Filter By District"
             values={values}
@@ -76,7 +76,7 @@ function FacilityBasicFilterTab(props: Props) {
             onChange={onChange}
           />
         </Grid>
-        <Grid item sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <SelectField
             label="Filter By Type"
             values={values}
@@ -85,7 +85,7 @@ function FacilityBasicFilterTab(props: Props) {
             onChange={onChange}
           />
         </Grid>
-        <Grid item sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <SelectField
             label="Filter By Regulatory Status"
             values={values}
@@ -94,7 +94,7 @@ function FacilityBasicFilterTab(props: Props) {
             onChange={onChange}
           />
         </Grid>
-        <Grid item sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <SelectField
             label="Filter By Operational Status"
             values={values}
@@ -103,7 +103,7 @@ function FacilityBasicFilterTab(props: Props) {
             onChange={onChange}
           />
         </Grid>
-        <Grid item sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <SelectField
             label="Filter By Ownership"
             values={values}

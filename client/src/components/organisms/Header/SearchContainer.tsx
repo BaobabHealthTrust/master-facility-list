@@ -99,11 +99,11 @@ const SearchResultsContainer = styled.div`
   font-size: 16px;
 `;
 const Container = styled.div`
-  height: 100%;
+  height: 80px;
   width: 100vw;
   top: 0;
   left: 0;
-  z-index: 1600;
+  z-index: 1400;
   background: white;
   position: absolute;
   color: black;

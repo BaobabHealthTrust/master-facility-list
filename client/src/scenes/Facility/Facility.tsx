@@ -7,8 +7,11 @@ import Container from "../../components/atoms/Container";
 import FacilityList from "../../components/organisms/FacilityList";
 import FacilityToolBar from "../../components/molecules/FacilityToolbar";
 import FacilityFilterDrawer from "../../components/organisms/FacilityFilter";
+import MobileFilterDrawer from "../../components/organisms/FacilityFilter/MobileFilter";
 import FilterButton from "../../components/atoms/FacilityFilterButton";
+import MobileFilterButton from "../../components/atoms/FacilityMobileFilterButton";
 import FilterCards from "../../components/molecules/FacilityFilterCards";
+import MobilePageTitle from "../../components/molecules/MobilePageTitle";
 
 const drawerWidth = 360;
 const styles = (theme: any) => ({
@@ -82,10 +85,23 @@ const index = (props: Props) => {
         </Container>
       </DesktopView>
       <MobileView>
+        <MobilePageTitle>
+          <Container>
+            <MobileTitle>
+              {filterOptions.length > 0 ? "Filtered Facilities" : "Facilities"}
+              <MobileFilterButton open={drawerOpen} onClick={onToggleDrawer} />
+            </MobileTitle>
+          </Container>
+        </MobilePageTitle>
+        <MobileFilterDrawer
+          open={drawerOpen}
+          onAddFilter={onAddFilter}
+          onRemoveFilter={onRemoveFilter}
+        />
         <Container
           style={{
             minHeight: "100%",
-            paddingTop: "25px",
+            paddingTop: "70px",
             flexGrow: "1"
           }}
         >
@@ -119,3 +135,9 @@ const DesktopView = styled.div.attrs({
 const MobileView = styled.div.attrs({
   className: "hide-on-large-only"
 })``;
+const MobileTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+`;

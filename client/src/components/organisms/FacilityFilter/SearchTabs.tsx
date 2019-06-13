@@ -27,7 +27,7 @@ class SearchTabs extends React.Component<Props> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, mobile } = this.props;
     const { value } = this.state;
 
     return (
@@ -66,7 +66,7 @@ class SearchTabs extends React.Component<Props> {
             />
           </Tooltip>
         </Tabs>
-        <TabContainer>
+        <TabContainer mobile={mobile}>
           {value === 0 && (
             <BasicFilter
               dependancies={this.props.dependancies}
@@ -106,9 +106,10 @@ type Props = {
   onAddFilter: Function;
   filterOptions: Array<any>;
   dependancies: any;
+  mobile?: boolean;
 };
-const TabContainer = styled.div`
-  height: 35.5rem;
+const TabContainer = styled<any>("div")`
+  height: ${props => (props.mobile ? "calc(100vh - 250px)" : "35.5rem")};
   overflow: scroll;
 `;
 

@@ -34,6 +34,7 @@ const FacilityList = (props: Props) => {
           />
         }
       </Paper>
+
       <Paper
         style={{ width: "100%" }}
         className={`${className} hide-on-large-only`}

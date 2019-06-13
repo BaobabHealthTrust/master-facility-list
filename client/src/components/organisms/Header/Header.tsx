@@ -189,13 +189,6 @@ const Header = (props: Props) => {
                 {`MHFR`.toUpperCase()}
               </Typography>
               <Search onClick={toggleSearch} className="hide-on-med-and-down" />
-              {searchOpen && (
-                <SearchContainer
-                  onClickSearchItem={onClickSearchItem}
-                  onChange={onSearchValueChange}
-                  onClose={toggleSearch}
-                />
-              )}
             </ToolsContainer>
 
             <MobileMenu
@@ -223,6 +216,13 @@ const Header = (props: Props) => {
           </MenuContainer>
         </StyledToolbar>
       </AppBar>
+      {searchOpen && (
+        <SearchContainer
+          onClickSearchItem={onClickSearchItem}
+          onChange={onSearchValueChange}
+          onClose={toggleSearch}
+        />
+      )}
     </Container>
   );
 };
