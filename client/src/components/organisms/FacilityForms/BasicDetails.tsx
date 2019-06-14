@@ -13,6 +13,7 @@ import {
 import styled from "styled-components";
 import { renderOptions } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
+import FacilityCodesForm from "./FacilityCodes";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -256,6 +257,14 @@ export function Form(props: any) {
                 onBlur={handleBlur}
               />
             </FormControl>
+          </Grid>
+          <Grid item sm={12} md={3}>
+            {!fromAdd && (
+              <FacilityCodesForm
+                systems={values.facility_code_mapping}
+                setFieldValue={setFieldValue}
+              />
+            )}
           </Grid>
         </Grid>
       </FormWrapper>

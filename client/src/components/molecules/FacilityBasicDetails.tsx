@@ -69,18 +69,10 @@ function FacilityDetails(props: Props) {
           label="MoH Code"
           text={facility.facility_code && facility.facility_code}
         />
-        {facility.facility_code_dhis2 && (
-          <FacilityDetail
-            label="DHIS2 Code"
-            text={facility.facility_code_dhis2}
-          />
-        )}
-        {facility.facility_code_openlmis && (
-          <FacilityDetail
-            label="OpenLMIS"
-            text={facility.facility_code_openlmis}
-          />
-        )}
+        {facility.facility_code_mapping &&
+          facility.facility_code_mapping.map((sys: any) => (
+            <FacilityDetail label={sys.system} text={sys.code} />
+          ))}
       </Grid>
     </Grid>
   );
