@@ -81,7 +81,18 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
   ];
 
   onCancel = () => {
-    this.props.history.goBack();
+    // @ts-ignore
+    swal({
+      icon: "warning",
+      title: `Are you sure you want cancel?`,
+      buttons: {
+        cancel: "No",
+        confirm: "Yes"
+      },
+      closeOnClickOutside: false
+    }).then((res: any) => {
+      if (res) this.props.history.goBack();
+    });
   };
 
   downloadFacility = () => {
