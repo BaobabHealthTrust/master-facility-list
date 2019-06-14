@@ -43,6 +43,7 @@ import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import settings from "../../../App/settings";
+import swal from "sweetalert";
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -114,20 +115,33 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
   }
 
   onSubmit = (values: any) => {
-    switch (this.props.facilityPage) {
-      case "summary":
-        this.onSubmitBasicDetails(values);
-        break;
-      case "contact":
-        this.onSubmitContactDetails(values);
-        break;
-      case "resources":
-        return this.onSubmitResourcesDetails(values);
-      case "utilities":
-        return this.onSubmitUtilityDetails(values);
-      case "services":
-        return this.onSubmitServiceDetails(values);
-    }
+    // @ts-ignore
+    swal({
+      icon: "warning",
+      title: `Are you sure you want save these changes?`,
+      buttons: {
+        cancel: "Cancel",
+        confirm: "Save"
+      },
+      closeOnClickOutside: false
+    }).then((res: any) => {
+      if (res) {
+        switch (this.props.facilityPage) {
+          case "summary":
+            this.onSubmitBasicDetails(values);
+            break;
+          case "contact":
+            this.onSubmitContactDetails(values);
+            break;
+          case "resources":
+            return this.onSubmitResourcesDetails(values);
+          case "utilities":
+            return this.onSubmitUtilityDetails(values);
+          case "services":
+            return this.onSubmitServiceDetails(values);
+        }
+      }
+    });
   };
 
   onSubmitBasicDetails = async (values: any) => {
