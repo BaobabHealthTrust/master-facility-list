@@ -15,7 +15,9 @@ export const basic = (facility: any = null) => {
         ? "1975-01-01"
         : moment(new Date(facility.published_date)).format("YYYY-MM-DD"),
     registrationNumber: facility == null ? null : facility.registration_number,
-    publishedDate: facility == null ? null : facility.published_date
+    publishedDate: facility == null ? null : facility.published_date,
+    facility_code_mapping:
+      facility == null ? null : facility.facility_code_mapping
   };
 };
 
