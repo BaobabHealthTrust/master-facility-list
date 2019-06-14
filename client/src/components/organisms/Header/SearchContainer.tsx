@@ -56,12 +56,18 @@ export class SearchContainer extends Component<Props> {
               </CloseIcon>
             </SearchForm>
           </SearchFormContainer>
-          <SearchResultsContainer>
-            <SearchTable
-              facilities={facilities}
-              onClick={this.props.onClickSearchItem}
-            />
-          </SearchResultsContainer>
+          {this.props.value.length > 0 && (
+            <SearchResultsContainer>
+              {facilities.length == 0 && this.props.value.length > 0 ? (
+                "No results for search"
+              ) : (
+                <SearchTable
+                  facilities={facilities}
+                  onClick={this.props.onClickSearchItem}
+                />
+              )}
+            </SearchResultsContainer>
+          )}
         </Paper>
       </Container>
     );
@@ -120,6 +126,9 @@ const CloseIcon = styled.div`
 const Input = styled.input`
   height: 100%;
   width: 90%;
-  font-size: 24px;
+  font-size: 22px;
   padding: 0px 5%;
+  @media screen and (max-width: 800px) {
+    font-size: 20px;
+  }
 `;
