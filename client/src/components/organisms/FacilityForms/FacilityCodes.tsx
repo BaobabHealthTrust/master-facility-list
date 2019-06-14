@@ -60,7 +60,7 @@ function FacilityCodes(props: Props) {
               <Card
                 style={{ minHeight: "300px" }}
                 bodyStyle={{ marginBottom: "0px" }}
-                heading="Add New User"
+                heading="Map Codes"
               >
                 <Grid container spacing={24}>
                   {systems.map((sys, index) => (
