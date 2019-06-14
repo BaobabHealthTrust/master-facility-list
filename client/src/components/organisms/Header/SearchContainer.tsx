@@ -111,7 +111,7 @@ const Container = styled.div`
   left: 0;
   z-index: 1400;
   background: white;
-  position: absolute;
+  position: fixed;
   color: black;
 `;
 
