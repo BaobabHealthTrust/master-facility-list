@@ -5,7 +5,7 @@ function Preloader() {
   return (
     <Container>
       <div style={{ textAlign: "center" }}>
-        <img src="./static/images/Loading.gif" />
+        <img src="./static/images/Loading.gif" style={{ margin: "auto" }} />
         <Message>
           SETTING UP YOUR ENVIRONMENT <br />
           THIS COULD TAKE A WHILE...

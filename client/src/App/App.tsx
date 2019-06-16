@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch } from "react-router-dom";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
@@ -17,6 +17,7 @@ import About from "../scenes/About";
 import Help from "../scenes/Help";
 import NotFound from "../scenes/Error/404";
 import Preloader from "../components/atoms/Preloader";
+import ErrorScreen from "../scenes/Error/500";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -33,7 +34,6 @@ import {
 } from "../services/redux/actions/dependancies";
 import { fetchFacilities } from "../services/redux/actions/facilities";
 import { ToastContainer, cssTransition } from "react-toastify";
-import { isAdmin } from "../services/helpers";
 
 const Slide = cssTransition({
   enter: "slideIn",
@@ -42,6 +42,8 @@ const Slide = cssTransition({
 });
 const App: React.FC = (props: any) => {
   const {
+    loading,
+    facilities,
     fetchUtilities,
     fetchUtilityTypes,
     fetchServiceTypes,
@@ -56,47 +58,58 @@ const App: React.FC = (props: any) => {
     fetchFacilityTypes
   } = props;
 
-  fetchUtilities().catch(() => {
-    dispatchDependancyError();
-  });
+  useEffect(() => {
+    fetchUtilities().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchUtilityTypes().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchUtilityTypes().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchServices().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchServices().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchServiceTypes().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchServiceTypes().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchResources().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchResources().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchResourceTypes().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchResourceTypes().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchRegulatoryStatuses().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchRegulatoryStatuses().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchOperationalStatuses().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchOperationalStatuses().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchDistricts().catch(() => {
-    dispatchDependancyError();
-  });
+    fetchDistricts().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchFacilities().catch(() => {});
+    fetchFacilities().catch(() => {
+      dispatchDependancyError();
+    });
 
-  fetchFacilityTypes().catch(() => {});
-  return false ? (
+    fetchFacilityTypes().catch(() => {
+      dispatchDependancyError();
+    });
+  }, []);
+
+  const isLoading = () => facilities.length == 0 && loading.fetchFacilities;
+
+  return isLoading() ? (
     <Preloader />
+  ) : props.error ? (
+    <ErrorScreen />
   ) : (
     <>
       <ToastContainer
@@ -152,7 +165,10 @@ const App: React.FC = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => ({
-  isAuthenticated: state.users.currentUser.authenticated
+  isAuthenticated: state.users.currentUser.authenticated,
+  loading: state.status,
+  error: state.errors.dependancyError,
+  facilities: state.facilities.list
 });
 export default connect(
   mapStateToProps,

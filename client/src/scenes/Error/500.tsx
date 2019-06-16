@@ -2,25 +2,27 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../../components/atoms/Button";
 
-function Unauthorized() {
+function Preloader() {
   const onReload = () => {
-    window.history.back();
+    window.location.reload();
   };
   return (
     <Container>
       <div style={{ textAlign: "center" }}>
         <Img src="./static/images/networkError.svg" />
-        <Code>401</Code>
-        <Message>UNAUTHORIZED</Message>
+        <Message>
+          THERE WAS AN ERROR WHILE FETCHING DATA. <br />
+          PLEASE TRY AGAIN.
+        </Message>
         <Button onClick={onReload} theme="secondary">
-          Back
+          Try Again
         </Button>
       </div>
     </Container>
   );
 }
 
-export default Unauthorized;
+export default Preloader;
 
 const Container = styled.div`
   display: flex;
@@ -34,13 +36,7 @@ const Container = styled.div`
   background-color: #fff;
   z-index: 2000;
 `;
-const Code = styled.div`
-  margin: auto;
-  width: 200px;
-  @media (max-width: 700px) {
-    width: 100px;
-  }
-`;
+
 const Message = styled.div`
   font-size: 28px;
   color: #222222;
