@@ -9,7 +9,7 @@ function Unauthorized() {
   return (
     <Container>
       <div style={{ textAlign: "center" }}>
-        <Img src="./static/images/networkError.svg" />
+        <Img src="/static/images/networkError.svg" />
         <Code>401</Code>
         <Message>UNAUTHORIZED</Message>
         <Button onClick={onReload} theme="secondary">

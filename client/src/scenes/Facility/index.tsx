@@ -28,6 +28,13 @@ export class index extends Component<Props> {
     }
   }
 
+  isLoading = () =>
+    this.props.loading.basicAdvancedFilter ||
+    this.props.loading.utilitiesAdvancedFilter ||
+    this.props.loading.resourcesAdvancedFilter ||
+    this.props.loading.servicesAdvancedFilter ||
+    this.props.loading.fetchFacilities;
+
   downloadFileIn = (format: "pdf" | "csv" | "excel") => {
     const { filterOptions } = this.props;
     const facilityIds =
@@ -119,6 +126,7 @@ export class index extends Component<Props> {
         facilities={facilitiesData}
         filterOptions={filterOptions}
         downloadList={this.downloadFileIn}
+        isLoading={this.isLoading()}
       />
     );
   }
@@ -131,7 +139,8 @@ const mapStateToProps = (state: any) => {
     filterResults: state.facilities.advancedFilter.filterResults,
     facilities: state.facilities.list,
     filteredFacilities: state.facilities.filteredList,
-    owners: state.dependancies.owners.list
+    owners: state.dependancies.owners.list,
+    loading: state.status
   };
 };
 
@@ -152,6 +161,7 @@ type Props = {
   utilitiesAdvancedFilter: Function;
   servicesAdvancedFilter: Function;
   fetchFilteredFacilities: Function;
+  loading: any;
 };
 export default connect(
   mapStateToProps,

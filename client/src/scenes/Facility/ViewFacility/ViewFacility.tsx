@@ -8,6 +8,8 @@ import FacilityMobileView from "../../../components/organisms/FacilityViewPage/M
 import FacilityMobileSubmenu from "../../../components/organisms/FacilitySubmenu/MobileSubMenu";
 import styled from "styled-components";
 import MobilePageTitle from "../../../components/molecules/MobilePageTitle";
+import Loader from "../../../components/atoms/Loader";
+import NotFound from "../../Error/404";
 
 function ViewFacility(props: Props) {
   const {
@@ -19,7 +21,8 @@ function ViewFacility(props: Props) {
     services,
     utilities,
     onEditDetails,
-    downloadFacility
+    downloadFacility,
+    isLoading
   } = props;
   const pageHeader = facilitySubMenu.filter(val => val.link == activePage);
   return (
@@ -37,16 +40,22 @@ function ViewFacility(props: Props) {
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={24}>
-              <FacilityView
-                activePage={activePage}
-                pageHeader={pageHeader.length > 0 && pageHeader[0].name}
-                basic={basic}
-                resources={resources}
-                services={services}
-                utilities={utilities}
-                onEditDetails={onEditDetails}
-                downloadFacility={downloadFacility}
-              />
+              {isLoading ? (
+                <Loader style={{ height: "60vh" }} />
+              ) : !basic.id ? (
+                <NotFound />
+              ) : (
+                <FacilityView
+                  activePage={activePage}
+                  pageHeader={pageHeader.length > 0 && pageHeader[0].name}
+                  basic={basic}
+                  resources={resources}
+                  services={services}
+                  utilities={utilities}
+                  onEditDetails={onEditDetails}
+                  downloadFacility={downloadFacility}
+                />
+              )}
             </Grid>
           </Grid>
         </Grid>
@@ -67,16 +76,22 @@ function ViewFacility(props: Props) {
             <Grid item xs={12} sm={12} md={3} />
             <Grid item xs={12} sm={12} md={9}>
               <Grid container spacing={24}>
-                <FacilityMobileView
-                  activePage={activePage}
-                  pageHeader={pageHeader.length > 0 && pageHeader[0].name}
-                  basic={basic}
-                  resources={resources}
-                  services={services}
-                  utilities={utilities}
-                  onEditDetails={onEditDetails}
-                  downloadFacility={downloadFacility}
-                />
+                {isLoading ? (
+                  <Loader style={{ height: "60vh" }} />
+                ) : !basic.id ? (
+                  <NotFound />
+                ) : (
+                  <FacilityMobileView
+                    activePage={activePage}
+                    pageHeader={pageHeader.length > 0 && pageHeader[0].name}
+                    basic={basic}
+                    resources={resources}
+                    services={services}
+                    utilities={utilities}
+                    onEditDetails={onEditDetails}
+                    downloadFacility={downloadFacility}
+                  />
+                )}
               </Grid>
             </Grid>
           </Grid>
@@ -96,6 +111,7 @@ type Props = {
   onEditDetails: Function;
   facilitySubMenu: Array<any>;
   downloadFacility: Function;
+  isLoading: boolean;
 };
 export default ViewFacility;
 
