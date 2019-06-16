@@ -45,18 +45,17 @@ function NestedList(props: any) {
           //@ts-ignore
           <List component="div" disablePadding>
             {item.options.map((option: any) => (
-              <ListItem button className={classes.nested}>
-                <Link
-                  style={{ color: "#0d47a1" }}
-                  to={option.link}
-                  onClick={() => {
-                    onItemClick();
-                  }}
-                >
+              <Link
+                to={option.link}
+                onClick={() => {
+                  onItemClick();
+                }}
+              >
+                <ListItem button className={classes.nested}>
                   <ListItemIcon>{option.icon && option.icon}</ListItemIcon>
                   {option.text}
-                </Link>
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
           </List>
         }
