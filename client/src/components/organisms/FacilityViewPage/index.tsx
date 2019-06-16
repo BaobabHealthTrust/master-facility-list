@@ -68,60 +68,64 @@ function index(props: Props) {
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
-          <FacilityGoogleMap position={position} isMarkerShown />
-          <DetailsContainer>
-            <Grid container>
-              <Grid item md={4} className="hide-on-small-only" />
-              <Grid item xs={12} sm={12} md={8}>
-                <Card
-                  heading={
-                    <CardTitle>
-                      <div>{pageHeader}</div>
-                      {isAdmin() && (
-                        <Link to={`/facilities/${basic.id}/${activePage}/edit`}>
-                          <Button
-                            theme="secondary"
-                            icon={<FontAwesomeIcon icon={faEdit} />}
+          <div style={{ height: "57vh" }}>
+            <FacilityGoogleMap position={position} isMarkerShown />
+            <DetailsContainer>
+              <Grid container>
+                <Grid item md={4} className="hide-on-small-only" />
+                <Grid item xs={12} sm={12} md={8}>
+                  <Card
+                    heading={
+                      <CardTitle>
+                        <div>{pageHeader}</div>
+                        {isAdmin() && (
+                          <Link
+                            to={`/facilities/${basic.id}/${activePage}/edit`}
                           >
-                            Update Facility
-                          </Button>
-                        </Link>
+                            <Button
+                              theme="secondary"
+                              icon={<FontAwesomeIcon icon={faEdit} />}
+                            >
+                              Update Facility
+                            </Button>
+                          </Link>
+                        )}
+                      </CardTitle>
+                    }
+                    style={{ zIndex: "1", position: "relative" }}
+                    bodyStyle={{ padding: "20px" }}
+                  >
+                    <FacilityPage>
+                      {activePage == FacilityPages.summary && (
+                        <BasicDetailsPage facility={basic} />
                       )}
-                    </CardTitle>
-                  }
-                  style={{ zIndex: "1", position: "relative" }}
-                  bodyStyle={{ padding: "20px" }}
-                >
-                  <FacilityPage>
-                    {activePage == FacilityPages.summary && (
-                      <BasicDetailsPage facility={basic} />
-                    )}
-                    {activePage == FacilityPages.contact && (
-                      <ContactsPage facility={basic} />
-                    )}
-                    {activePage == FacilityPages.resources &&
-                      (resources.length == 0 ? (
-                        <EmptyState resource="resources" />
-                      ) : (
-                        <ResourcesPage resources={resources} />
-                      ))}
-                    {activePage == FacilityPages.utilities &&
-                      (utilities.length == 0 ? (
-                        <EmptyState resource="utilities" />
-                      ) : (
-                        <UtilitiesPage utilities={utilities} />
-                      ))}
-                    {activePage == FacilityPages.services &&
-                      (services.length == 0 ? (
-                        <EmptyState resource="services" />
-                      ) : (
-                        <ServicesPage services={services} />
-                      ))}
-                  </FacilityPage>
-                </Card>
+                      {activePage == FacilityPages.contact && (
+                        <ContactsPage facility={basic} />
+                      )}
+                      {activePage == FacilityPages.resources &&
+                        (resources.length == 0 ? (
+                          <EmptyState resource="resources" />
+                        ) : (
+                          <ResourcesPage resources={resources} />
+                        ))}
+                      {activePage == FacilityPages.utilities &&
+                        (utilities.length == 0 ? (
+                          <EmptyState resource="utilities" />
+                        ) : (
+                          <UtilitiesPage utilities={utilities} />
+                        ))}
+                      {activePage == FacilityPages.services &&
+                        (services.length == 0 ? (
+                          <EmptyState resource="services" />
+                        ) : (
+                          <ServicesPage services={services} />
+                        ))}
+                    </FacilityPage>
+                  </Card>
+                </Grid>
               </Grid>
-            </Grid>
-          </DetailsContainer>
+            </DetailsContainer>
+          </div>
         </Grid>
       </Grid>
     </Container>
