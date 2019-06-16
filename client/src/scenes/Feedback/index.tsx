@@ -20,13 +20,15 @@ import {
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 
-function index(props: any) {
-  if (props.feedbackTypes.length == 0) {
-    props.fetchFeedbackTypes();
+class index extends React.Component<any> {
+  componentDidMount() {
+    if (this.props.feedbackTypes.length == 0) {
+      this.props.fetchFeedbackTypes();
+    }
   }
 
-  const onSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
-    await props
+  onSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
+    await this.props
       .sendFeedback({
         data: {
           ...values,
@@ -48,54 +50,56 @@ function index(props: any) {
     resetForm();
   };
 
-  return (
-    <>
-      <Banner title="Get in Touch With Us" />
-      <Container style={{ paddingTop: "20px" }}>
-        <Grid container spacing={40}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Card bodyStyle={{ padding: "20px" }}>
-              <Heading>Feedback Form</Heading>
-              <FeedbackForm
-                onSubmit={onSubmit}
-                feedbackTypes={props.feedbackTypes}
-              />
-            </Card>
+  render() {
+    return (
+      <>
+        <Banner title="Get in Touch With Us" />
+        <Container style={{ paddingTop: "20px" }}>
+          <Grid container spacing={40}>
+            <Grid item xs={12} sm={12} md={6}>
+              <Card bodyStyle={{ padding: "20px" }}>
+                <Heading>Feedback Form</Heading>
+                <FeedbackForm
+                  onSubmit={this.onSubmit}
+                  feedbackTypes={this.props.feedbackTypes}
+                />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Heading>Instructions</Heading>
+              <TextContainer>
+                Please give us your feedback on the experience you have using
+                this system. We will be glad to assist with any problems you may
+                be having. Comments and recommendations for future improvements
+                are also welcome.
+              </TextContainer>
+              <Heading>Useful Links</Heading>
+              <TextContainer>
+                <div>
+                  <a href="/">
+                    <Icon icon={faDownload} />
+                    Download Guides
+                  </a>
+                </div>
+                <div>
+                  <a href="/">
+                    <Icon icon={faInfoCircle} />
+                    About Ministry of Health
+                  </a>
+                </div>
+                <div>
+                  <a href="/">
+                    <Icon icon={faQuestionCircle} />
+                    Help
+                  </a>
+                </div>
+              </TextContainer>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Heading>Instructions</Heading>
-            <TextContainer>
-              Please give us your feedback on the experience you have using this
-              system. We will be glad to assist with any problems you may be
-              having. Comments and recommendations for future improvements are
-              also welcome.
-            </TextContainer>
-            <Heading>Useful Links</Heading>
-            <TextContainer>
-              <div>
-                <a href="/">
-                  <Icon icon={faDownload} />
-                  Download Guides
-                </a>
-              </div>
-              <div>
-                <a href="/">
-                  <Icon icon={faInfoCircle} />
-                  About Ministry of Health
-                </a>
-              </div>
-              <div>
-                <a href="/">
-                  <Icon icon={faQuestionCircle} />
-                  Help
-                </a>
-              </div>
-            </TextContainer>
-          </Grid>
-        </Grid>
-      </Container>
-    </>
-  );
+        </Container>
+      </>
+    );
+  }
 }
 const mapStateToProps = (state: any) => ({
   feedbackTypes: state.feedback.feedbackTypes

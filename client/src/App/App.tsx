@@ -132,13 +132,6 @@ const App: React.FC = (props: any) => {
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/Facilities" component={Facilities} />
-
-            <Route exact path="/Facilities/:id" component={ViewFacility} />
-            <Route
-              exact
-              path="/Facilities/:id/:page"
-              component={ViewFacility}
-            />
             <Route exact path="/login" component={UserLogin} />
             <Route exact path="/feedback" component={Feedback} />
             <Route exact path="/about" component={About} />
@@ -155,6 +148,12 @@ const App: React.FC = (props: any) => {
                 <Route exact path="/users" component={Users} />
               </div>
             )}
+            <Route exact path="/Facilities/:id" component={ViewFacility} />
+            <Route
+              exact
+              path="/Facilities/:id/:page"
+              component={ViewFacility}
+            />
             <Route path="*" component={NotFound} />
           </Switch>
         </Content>
