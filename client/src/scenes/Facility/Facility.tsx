@@ -12,6 +12,7 @@ import FilterButton from "../../components/atoms/FacilityFilterButton";
 import MobileFilterButton from "../../components/atoms/FacilityMobileFilterButton";
 import FilterCards from "../../components/molecules/FacilityFilterCards";
 import MobilePageTitle from "../../components/molecules/MobilePageTitle";
+import Loader from "../../components/atoms/Loader";
 
 const drawerWidth = 360;
 const styles = (theme: any) => ({
@@ -46,7 +47,8 @@ const index = (props: Props) => {
     onRemoveFilter,
     onAddFilter,
     filterOptions,
-    downloadList
+    downloadList,
+    isLoading
   } = props;
 
   return (
@@ -79,7 +81,11 @@ const index = (props: Props) => {
               </Grid>
             )}
             <Grid item xs={12} md={12}>
-              <FacilityList onSelect={onFacilityClicked} data={facilities} />
+              {isLoading ? (
+                <Loader style={{ height: "50vh" }} />
+              ) : (
+                <FacilityList onSelect={onFacilityClicked} data={facilities} />
+              )}
             </Grid>
           </Grid>
         </Container>
@@ -107,7 +113,11 @@ const index = (props: Props) => {
         >
           <Grid container spacing={16}>
             <Grid item xs={12} md={12}>
-              <FacilityList onSelect={onFacilityClicked} data={facilities} />
+              {isLoading ? (
+                <Loader style={{ height: "50vh" }} />
+              ) : (
+                <FacilityList onSelect={onFacilityClicked} data={facilities} />
+              )}
             </Grid>
           </Grid>
         </Container>
@@ -126,6 +136,7 @@ type Props = {
   onRemoveFilter: Function;
   filterOptions: Array<any>;
   downloadList: Function;
+  isLoading: boolean;
 };
 export default withStyles(styles, { withTheme: true })(index);
 

@@ -9,7 +9,7 @@ function Preloader() {
   return (
     <Container>
       <div style={{ textAlign: "center" }}>
-        <Img src="./static/images/networkError.svg" />
+        <Img src="/static/images/networkError.svg" />
         <Code>404</Code>
         <Message>Page Not Found</Message>
         <Button onClick={onReload} theme="secondary">

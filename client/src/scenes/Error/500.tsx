@@ -9,7 +9,7 @@ function Preloader() {
   return (
     <Container>
       <div style={{ textAlign: "center" }}>
-        <Img src="./static/images/networkError.svg" />
+        <Img src="/static/images/networkError.svg" />
         <Message>
           THERE WAS AN ERROR WHILE FETCHING DATA. <br />
           PLEASE TRY AGAIN.

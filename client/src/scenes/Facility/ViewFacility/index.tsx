@@ -98,6 +98,14 @@ export class index extends Component<any> {
       this.props.fetchCurrentUtilities(facilityId);
     }
   }
+
+  isLoading = () =>
+    this.props.loading.fetchCurrentBasic ||
+    this.props.loading.fetchCurrentResources ||
+    this.props.loading.fetchCurrentServices ||
+    this.props.loading.fetchCurrentServices ||
+    this.props.loading.fetchCurrentUtilities;
+
   render() {
     const { facility } = this.props;
     const { services, utilities, resources } = facility;
@@ -115,6 +123,7 @@ export class index extends Component<any> {
         onEditDetails={() => {}}
         facilitySubMenu={this.facilitySubMenu}
         downloadFacility={this.downloadFacility}
+        isLoading={this.isLoading()}
       />
     );
   }
@@ -122,7 +131,8 @@ export class index extends Component<any> {
 
 const mapStateToProps = (state: any) => ({
   ui: state.ui,
-  facility: state.facilities.current
+  facility: state.facilities.current,
+  loading: state.status
 });
 
 export default connect(
