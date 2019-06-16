@@ -82,18 +82,18 @@ class ClickAway extends React.Component<Props> {
               <Paper className={classes.paper}>
                 <MenuList>
                   {options.map((option: any) => (
-                    <MenuItem
-                      style={{ justifyContent: "center" }}
-                      onClick={() => {
-                        onClickOption(option.name);
-                        this.handleClickAway();
-                        option.onClick && option.onClick();
-                      }}
-                    >
-                      <Link style={{ color: "#0d47a1" }} to={option.link}>
+                    <Link key={option.link} to={option.link}>
+                      <MenuItem
+                        style={{ justifyContent: "center", color: "#0d47a1" }}
+                        onClick={() => {
+                          onClickOption(option.name);
+                          this.handleClickAway();
+                          option.onClick && option.onClick();
+                        }}
+                      >
                         {option.text}
-                      </Link>
-                    </MenuItem>
+                      </MenuItem>
+                    </Link>
                   ))}
                 </MenuList>
               </Paper>
