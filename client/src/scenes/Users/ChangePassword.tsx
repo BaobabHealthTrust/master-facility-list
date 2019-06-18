@@ -41,7 +41,7 @@ function ChangePassword(props: Props) {
                       onClick={formikProps.handleSubmit}
                       disabled={formikProps.isSubmitting}
                     >
-                      Change Password
+                      Save Password
                     </Button>
                     <Button
                       theme="default"
