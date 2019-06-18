@@ -18,6 +18,8 @@ import Help from "../scenes/Help";
 import NotFound from "../scenes/Error/404";
 import Preloader from "../components/atoms/Preloader";
 import ErrorScreen from "../scenes/Error/500";
+import ForgotPassword from "../scenes/Users/ForgotPassword";
+import ResetPassword from "../scenes/Users/ResetPassword";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -137,17 +139,26 @@ const App: React.FC = (props: any) => {
             <Route exact path="/about" component={About} />
             <Route exact path="/help" component={Help} />
 
-            {props.isAuthenticated && (
-              <div className="hide-on-med-and-down">
-                <Route
-                  exact
-                  path="/Facilities/:id/:page/edit"
-                  component={UpdateFacility}
-                />
-                <Route exact path="/Facilities/add" component={AddFacility} />
-                <Route exact path="/users" component={Users} />
-              </div>
-            )}
+            <div className="hide-on-med-and-down">
+              {props.isAuthenticated && (
+                <>
+                  <Route
+                    exact
+                    path="/Facilities/:id/:page/edit"
+                    component={UpdateFacility}
+                  />
+                  <Route exact path="/Facilities/add" component={AddFacility} />
+                  <Route exact path="/users" component={Users} />
+                </>
+              )}
+              <Route exact path="/forgotPassword" component={ForgotPassword} />
+              <Route
+                exact
+                path="/resetPassword/:token"
+                component={ResetPassword}
+              />
+            </div>
+
             <Route exact path="/Facilities/:id" component={ViewFacility} />
             <Route
               exact

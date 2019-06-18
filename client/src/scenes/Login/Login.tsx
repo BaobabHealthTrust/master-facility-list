@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { Link } from "react-router-dom";
 
 function Login(props: Props) {
   const { error } = props;
@@ -86,6 +87,9 @@ function Login(props: Props) {
             >
               Login
             </Button>
+            <Link to="/forgotPassword" style={{ color: "white" }}>
+              Forgot Password?
+            </Link>
           </LoginContainer>
         </Container>
       )}
