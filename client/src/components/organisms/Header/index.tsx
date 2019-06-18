@@ -24,6 +24,13 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     this.props.toggleSearch();
   };
 
+  onPasswordChange = (
+    value: any,
+    { setSubmitting, setErrors, resetForm }: any
+  ) => {
+    console.log(value);
+  };
+
   render() {
     return (
       <Header
@@ -34,6 +41,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
         onSearchValueChange={this.props.setQuickSearchValue}
         toggleSearch={this.props.toggleSearch}
         searchOpen={this.props.searchOpen}
+        onPasswordChange={this.onPasswordChange}
       />
     );
   }

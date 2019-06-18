@@ -26,6 +26,7 @@ import Search from "../../molecules/Search";
 import MobileMenu from "../../molecules/MobileMenu";
 import SearchContainer from "./SearchContainer";
 import BaselineMenu from "../../molecules/MobileBaselineMenu";
+import ChangePassword from "../../../scenes/Users/ChangePassword";
 
 library.add(faAlignJustify);
 
@@ -37,9 +38,12 @@ const Header = (props: Props) => {
     onClickSearchItem,
     onSearchValueChange,
     searchOpen,
-    toggleSearch
+    toggleSearch,
+    onPasswordChange
   } = props;
+
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const isActivePage = (page: string) =>
     page.toLowerCase() == activePage.toLowerCase();
@@ -86,7 +90,10 @@ const Header = (props: Props) => {
       name: "Home",
       active: isActivePage("Profile"),
       icon: <AccountCircle />,
-      options: [{ text: "Logout", link: `/`, onClick: logout }]
+      options: [
+        { text: "Logout", link: `/`, onClick: logout },
+        { text: "Change Password", onClick: () => setModalOpen(true) }
+      ]
     }
   ];
 
@@ -213,6 +220,11 @@ const Header = (props: Props) => {
               </StyledMenuIcon>
             </div>
             <Menu items={menuItems} />
+            <ChangePassword
+              open={modalOpen}
+              setOpen={setModalOpen}
+              onSubmit={onPasswordChange}
+            />
           </MenuContainer>
         </StyledToolbar>
       </AppBar>
@@ -237,6 +249,7 @@ type Props = {
   onSearchValueChange: Function;
   toggleSearch: Function;
   searchOpen: boolean;
+  onPasswordChange: Function;
 };
 const Container = styled.div`
   flex-grow: 1;

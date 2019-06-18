@@ -319,3 +319,13 @@ export const postFeedback = (data: any) => {
 
   return axios.post(url, data);
 };
+
+export const changePassword = (data: any, userId: number, token: string) => {
+  const url = `${settings.API}/Client/${userId}`;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
