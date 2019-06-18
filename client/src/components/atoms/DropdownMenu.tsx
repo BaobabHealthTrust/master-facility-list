@@ -33,7 +33,8 @@ const styles: any = (theme: any) => ({
 
 class ClickAway extends React.Component<Props> {
   state = {
-    open: false
+    open: false,
+    isModal: false
   };
 
   handleClick = () => {
@@ -86,9 +87,13 @@ class ClickAway extends React.Component<Props> {
                       <MenuItem
                         style={{ justifyContent: "center", color: "#0d47a1" }}
                         onClick={() => {
-                          onClickOption(option.name);
-                          this.handleClickAway();
                           option.onClick && option.onClick();
+                          if (!option.link) {
+                            return;
+                          }
+
+                          this.handleClickAway();
+                          onClickOption(option.name);
                         }}
                       >
                         {option.text}

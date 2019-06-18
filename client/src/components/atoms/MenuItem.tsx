@@ -22,8 +22,10 @@ function MenuItem(props: Props) {
       style={{ height: "100%" }}
       to={item.link && item.link}
       onClick={() => {
-        setActivePage(item.name);
-        item.onClick && item.onClick();
+        if (item.link) {
+          setActivePage(item.name);
+          item.onClick && item.onClick();
+        }
       }}
     >
       <Container active={active}>{body}</Container>
