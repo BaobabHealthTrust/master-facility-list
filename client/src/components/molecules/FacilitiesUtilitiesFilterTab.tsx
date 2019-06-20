@@ -38,7 +38,7 @@ function FacilityUtilitiesFilterTab(props: Props) {
   };
   return (
     <Container>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         {utilitiesFields.map((utilType: any) => (
           <Grid item xs={12} sm={12} md={12}>
             <SelectField

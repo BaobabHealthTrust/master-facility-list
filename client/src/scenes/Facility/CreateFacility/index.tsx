@@ -20,6 +20,7 @@ import {
 } from "./helpers";
 import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
+import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
 export class index extends Component<Props> {
   state = {
     active: "Basic Details",
@@ -177,18 +178,21 @@ export class index extends Component<Props> {
 
   render() {
     return (
-      <CreateFacility
-        sections={this.formSections}
-        active={this.state.active}
-        onSubmit={this.onSubmit}
-        onCancel={this.onCancel}
-        dependancies={this.props.dependancies}
-        facility={this.state.newFacility}
-        errors={{
-          networkError: this.state.networkError,
-          networkErrorSavingDetails: this.state.networkErrorSavingDetails
-        }}
-      />
+      <>
+        <RedirectOnMobile />
+        <CreateFacility
+          sections={this.formSections}
+          active={this.state.active}
+          onSubmit={this.onSubmit}
+          onCancel={this.onCancel}
+          dependancies={this.props.dependancies}
+          facility={this.state.newFacility}
+          errors={{
+            networkError: this.state.networkError,
+            networkErrorSavingDetails: this.state.networkErrorSavingDetails
+          }}
+        />
+      </>
     );
   }
 }

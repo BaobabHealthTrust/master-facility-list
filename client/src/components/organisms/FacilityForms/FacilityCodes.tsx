@@ -62,7 +62,7 @@ function FacilityCodes(props: Props) {
                 bodyStyle={{ marginBottom: "0px" }}
                 heading="Map Codes"
               >
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   {systems.map((sys, index) => (
                     <>
                       <Grid item xs={3} sm={3} md={3} lg={3}>

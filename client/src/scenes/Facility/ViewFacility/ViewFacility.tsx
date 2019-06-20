@@ -28,7 +28,7 @@ function ViewFacility(props: Props) {
   return (
     <>
       <DesktopView style={{ paddingTop: "20px" }}>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={3}>
             <Card heading="Facility menu">
               <FacilitySubMenu
@@ -39,7 +39,7 @@ function ViewFacility(props: Props) {
             </Card>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
               {isLoading ? (
                 <Loader style={{ height: "60vh" }} />
               ) : !basic.id ? (
@@ -72,10 +72,10 @@ function ViewFacility(props: Props) {
           />
         </MobilePageTitle>
         <Container style={{ paddingTop: "100px" }}>
-          <Grid container spacing={24}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={3} />
             <Grid item xs={12} sm={12} md={9}>
-              <Grid container spacing={24}>
+              <Grid container spacing={3}>
                 {isLoading ? (
                   <Loader style={{ height: "60vh" }} />
                 ) : !basic.id ? (

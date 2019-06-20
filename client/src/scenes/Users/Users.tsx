@@ -8,12 +8,13 @@ import CreateUserModal from "./CreateUser";
 import OptionsBar from "../../components/molecules/UsersOptionsBar";
 import UsersList from "../../components/organisms/UsersList";
 import { isAdmin } from "../../services/helpers";
+import RedirectOnMobile from "../../components/atoms/RedirectOnMobile";
 
 function Users(props: Props) {
   const { users, onFilter, onSort, onDeleteUser } = props;
   return (
     <Container style={{ paddingTop: "25px" }}>
-      <Grid container spacing={32}>
+      <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12}>
           <PageTitle
             title="User Management"

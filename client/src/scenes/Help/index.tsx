@@ -90,7 +90,7 @@ function index() {
     <>
       <Banner title="Let Us Help You" />
       <Container style={{ paddingTop: "20px" }}>
-        <Grid container spacing={40}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={6}>
             <Heading>FAQs</Heading>
             <Card bodyStyle={{ padding: "20px" }}>

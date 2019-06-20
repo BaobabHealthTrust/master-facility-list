@@ -64,11 +64,11 @@ export function Form(props: any) {
   return (
     <>
       <FormWrapper>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           {dependancies.utilities.types.map((type: any) => (
             <Grid item sm={12} md={6}>
               {type.utility_type}
-              <Grid container spacing={24}>
+              <Grid container spacing={3}>
                 {dependancies.utilities.list
                   .filter((util: any) => util.utility_type_id === type.id)
                   .map((utility: any) => (
@@ -86,7 +86,7 @@ export function Form(props: any) {
           ))}
         </Grid>
       </FormWrapper>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}

@@ -6,7 +6,7 @@ import StatCard from "../../molecules/StatCard";
 const StatCards = (props: Props) => {
   const { statistics, onSummaryCardClick } = props;
   return (
-    <Grid container spacing={32}>
+    <Grid container spacing={3}>
       {statistics.map((stat, index: number) => (
         <Grid item md={true} xs={12} sm={6} key={stat.title}>
           <StatCard

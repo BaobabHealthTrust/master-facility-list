@@ -20,10 +20,25 @@ button:active {
   overflow: auto;
   display: block;
 }
+.table .MuiTableSortLabel-root.MuiTableSortLabel-active {
+  color: #ededed;
+}
+.table
+  .MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active
+  .MuiTableSortLabel-icon {
+  color: #ededed;
+}
+.table .MuiTableSortLabel-root:hover {
+  color: #ededed;
+}
 .table div[class*="Toolbar-toolbar-"] {
   background-color: #375a8c !important;
   color: #ffffff !important;
   border-bottom: 0px !important;
+}
+
+.table div[class*="SearchPanelInputBase-root"] {
+  background: white;
 }
 
 .table input[class*="MuiInput-input-"] {

@@ -20,7 +20,7 @@ export function Form(props: any) {
   let { values, errors, touched, handleChange, handleBlur } = props;
   return (
     <FormWrapper>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <FormControl className="mfl-max-width">
             <TextField

@@ -48,7 +48,7 @@ export function Form(props: any) {
   return (
     <>
       <FormWrapper>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           {dependancies.resources.list.map((resource: any) => (
             <Grid item sm={12} md={3}>
               <FormControl className="mfl-max-width">
@@ -77,7 +77,7 @@ export function Form(props: any) {
           ))}
         </Grid>
       </FormWrapper>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}
