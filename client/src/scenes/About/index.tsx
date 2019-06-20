@@ -17,7 +17,7 @@ function index() {
     <>
       <Banner title="About the Master Health Facility Registry of Malawi" />
       <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-        <Grid container spacing={40}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={8}>
             <Heading>Purpose</Heading>
             <TextContainer>
@@ -83,7 +83,7 @@ function index() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <TextContainer>
-              <Grid container spacing={40}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} sm={6} md={true}>
                   <Card bodyStyle={{ height: "200px" }}>
                     <img

@@ -134,37 +134,34 @@ const App: React.FC = (props: any) => {
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/Facilities" component={Facilities} />
+            <Route exact path="/login" component={UserLogin} />
+            <Route exact path="/feedback" component={Feedback} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/help" component={Help} />
+            <Route exact path="/forgotPassword" component={ForgotPassword} />
+            <Route
+              exact
+              path="/resetPassword/:token"
+              component={ResetPassword}
+            />
+            {props.isAuthenticated && (
+              <Route exact path="/Facilities/add" component={AddFacility} />
+            )}
             <Route exact path="/Facilities/:id" component={ViewFacility} />
             <Route
               exact
               path="/Facilities/:id/:page"
               component={ViewFacility}
             />
-            <Route exact path="/login" component={UserLogin} />
-            <Route exact path="/feedback" component={Feedback} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/help" component={Help} />
-
-            <div className="hide-on-med-and-down">
-              {props.isAuthenticated && (
-                <>
-                  <Route
-                    exact
-                    path="/Facilities/:id/:page/edit"
-                    component={UpdateFacility}
-                  />
-                  <Route exact path="/Facilities/add" component={AddFacility} />
-                  <Route exact path="/users" component={Users} />
-                </>
-              )}
-              <Route exact path="/forgotPassword" component={ForgotPassword} />
+            {props.isAuthenticated && (
               <Route
-                exact
-                path="/resetPassword/:token"
-                component={ResetPassword}
+                path="/Facilities/:id/:page/edit"
+                component={UpdateFacility}
               />
-            </div>
-
+            )}
+            {props.isAuthenticated && (
+              <Route exact path="/users" component={Users} />
+            )}
             <Route path="*" component={NotFound} />
           </Switch>
         </Content>

@@ -57,7 +57,7 @@ export function Form(props: any) {
   return (
     <>
       <FormWrapper>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           <Grid item sm={12} md={6}>
             <FormControl className="mfl-max-width">
               <TextField
@@ -268,7 +268,7 @@ export function Form(props: any) {
           </Grid>
         </Grid>
       </FormWrapper>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <FormButtons
             handleSubmit={handleSubmit}

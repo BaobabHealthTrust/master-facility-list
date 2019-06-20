@@ -55,7 +55,7 @@ class index extends React.Component<any> {
       <>
         <Banner title="Get in Touch With Us" />
         <Container style={{ paddingTop: "20px" }}>
-          <Grid container spacing={40}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6}>
               <Card bodyStyle={{ padding: "20px" }}>
                 <Heading>Feedback Form</Heading>

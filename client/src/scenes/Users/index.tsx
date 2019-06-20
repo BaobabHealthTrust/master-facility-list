@@ -7,6 +7,7 @@ import { sortBy } from "lodash";
 import { toast } from "react-toastify";
 import Notification from "../../components/atoms/Notification";
 import swal from "sweetalert";
+import RedirectOnMobile from "../../components/atoms/RedirectOnMobile";
 
 export class index extends Component<Props> {
   state = {
@@ -75,12 +76,15 @@ export class index extends Component<Props> {
   render() {
     const users = this.getUsers();
     return (
-      <Users
-        users={users}
-        onFilter={this.onFilter}
-        onSort={this.onSort}
-        onDeleteUser={this.onDeleteUser}
-      />
+      <>
+        <RedirectOnMobile />
+        <Users
+          users={users}
+          onFilter={this.onFilter}
+          onSort={this.onSort}
+          onDeleteUser={this.onDeleteUser}
+        />
+      </>
     );
   }
 }

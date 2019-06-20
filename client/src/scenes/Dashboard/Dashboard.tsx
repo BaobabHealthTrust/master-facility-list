@@ -33,13 +33,13 @@ const index = (props: Props) => {
   );
   return (
     <Container style={{ minHeight: "100%", padding: "25px", flexGrow: "1" }}>
-      <Grid container spacing={32}>
+      <Grid container spacing={3}>
         <Grid className="hide-on-med-and-down" item xs={12} md={3}>
           <Card heading="Select District">{map}</Card>
         </Grid>
 
         <Grid item xs={12} md={9}>
-          <Grid container spacing={24}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
               <WelcomeBanner
                 districts={selectedDistricts}

@@ -31,7 +31,7 @@ export function Form(props: any) {
   return (
     <form onSubmit={handleSubmit}>
       <FormWrapper>
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           <Grid item sm={12} md={12}>
             <FormControl className="mfl-max-width">
               <TextField

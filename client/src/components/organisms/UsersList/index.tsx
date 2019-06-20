@@ -16,7 +16,7 @@ function UsersList(props: Props) {
 
   const currentUsers: Array<any> = chunks.length > 0 ? chunks[page - 1] : [];
   return (
-    <Grid container spacing={24}>
+    <Grid container spacing={3}>
       {currentUsers.map(user => (
         <Grid item sm={12} xs={12} md={3}>
           <User user={user} onDelete={onDeleteUser} />

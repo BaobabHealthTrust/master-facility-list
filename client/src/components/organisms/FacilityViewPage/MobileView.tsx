@@ -45,7 +45,7 @@ function index(props: Props) {
 
   return (
     <Container style={{ padding: "16px" }}>
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12}>
           <Card>
             <OptionsBar facility={basic} downloadFacility={downloadFacility} />

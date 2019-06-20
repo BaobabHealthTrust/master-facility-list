@@ -17,7 +17,7 @@ const FacilityMobileList = (props: Props) => {
 
   const facilities: Array<any> = chunk(data, 10);
   return (
-    <Grid container spacing={24}>
+    <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
         {facilities.length > 0 &&
           facilities[page - 1].map((d: any) => (

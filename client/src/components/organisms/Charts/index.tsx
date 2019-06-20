@@ -7,7 +7,7 @@ import PieChart from "../../molecules/PieChar";
 const StatCards = (props: Props) => {
   const { licenseStatusData, operationalStatusData } = props;
   return (
-    <Grid container spacing={32}>
+    <Grid container spacing={3}>
       <Grid item md={6} xs={12} sm={6}>
         <Card
           style={{ minHeight: "430px" }}

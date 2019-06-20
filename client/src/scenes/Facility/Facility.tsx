@@ -66,7 +66,7 @@ const index = (props: Props) => {
             [classes.contentShift]: drawerOpen
           })}
         >
-          <Grid container spacing={16}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
               <FacilityToolBar downloadList={downloadList} />
             </Grid>
@@ -111,7 +111,7 @@ const index = (props: Props) => {
             flexGrow: "1"
           }}
         >
-          <Grid container spacing={16}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
               {isLoading ? (
                 <Loader style={{ height: "50vh" }} />

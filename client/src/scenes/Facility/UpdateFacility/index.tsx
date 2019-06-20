@@ -44,6 +44,7 @@ import Notification from "../../../components/atoms/Notification";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import settings from "../../../App/settings";
 import swal from "sweetalert";
+import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -315,20 +316,23 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     const { facility, loading } = this.props;
 
     return (
-      <UpdateFacility
-        onCancel={this.onCancel}
-        loadingStates={loading}
-        sections={pages}
-        activePage={this.props.facilityPage}
-        onSubmit={this.onSubmit}
-        facility={facility}
-        dependancies={this.props.dependancies}
-        onChangePage={(page: any) => {
-          this.handlePageChange(page);
-        }}
-        facilitySubMenu={this.facilitySubMenu}
-        downloadFacility={this.downloadFacility}
-      />
+      <>
+        <RedirectOnMobile />
+        <UpdateFacility
+          onCancel={this.onCancel}
+          loadingStates={loading}
+          sections={pages}
+          activePage={this.props.facilityPage}
+          onSubmit={this.onSubmit}
+          facility={facility}
+          dependancies={this.props.dependancies}
+          onChangePage={(page: any) => {
+            this.handlePageChange(page);
+          }}
+          facilitySubMenu={this.facilitySubMenu}
+          downloadFacility={this.downloadFacility}
+        />
+      </>
     );
   }
 }
