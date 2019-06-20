@@ -8,16 +8,25 @@ import { Link } from "react-router-dom";
 import { setActivePage } from "../../services/redux/actions/ui";
 import { connect } from "react-redux";
 import ExpandableListItem from "../atoms/ExpandableListItem";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
 
 const SearchDrawer = (props: Props) => {
   const { open, onClose, items, setActivePage } = props;
 
   return (
     <SwipeableDrawer
+      anchor="right"
       open={open}
       onOpen={() => {}}
       onClose={() => onClose(false)}
     >
+      <CloseButtonContainer>
+        <span onClick={() => onClose(false)} style={{ cursor: "pointer" }}>
+          <FontAwesomeIcon icon={faTimes} />
+        </span>
+      </CloseButtonContainer>
       <List>
         {items.map((item, index) =>
           item.options ? (
@@ -63,3 +72,11 @@ type Props = {
   }>;
   setActivePage: Function;
 };
+
+const CloseButtonContainer = styled.div`
+  text-align: right;
+  padding: 10px 20px 0px;
+  font-size: 26px;
+  font-weight: lighter;
+  color: #868686;
+`;
