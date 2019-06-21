@@ -35,8 +35,6 @@
       "required": false
     }
   },
-  "restrictResetPasswordTokenScope": true,
-  "emailVerificationRequired": true,
   "validations": [],
   "relations": {
     "facilities": {
