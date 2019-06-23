@@ -42,9 +42,10 @@ import {
 import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import settings from "../../../App/settings";
 import swal from "sweetalert";
 import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
+
+const API = process.env.REACT_APP_API_URL;
 
 library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -97,9 +98,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
   };
 
   downloadFacility = () => {
-    window.open(
-      `${settings.API}/facilities/download/${this.props.facility.id}`
-    );
+    window.open(`${API}/facilities/download/${this.props.facility.id}`);
   };
 
   handlePageChange = (page: any) => {

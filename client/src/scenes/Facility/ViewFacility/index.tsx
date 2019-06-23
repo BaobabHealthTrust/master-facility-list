@@ -21,7 +21,8 @@ import {
   faStethoscope
 } from "@fortawesome/free-solid-svg-icons";
 import { FacilityPages as pages } from "../../../services/utils";
-import settings from "../../../App/settings";
+
+const API = process.env.REACT_APP_API_URL;
 
 library.add(faPlus, faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
@@ -59,7 +60,7 @@ export class index extends Component<any> {
   ];
 
   downloadFacility = () => {
-    window.open(`${settings.API}/facilities/download/${this.state.facilityId}`);
+    window.open(`${API}/facilities/download/${this.state.facilityId}`);
   };
 
   handlePageChange = (page: any) => {
