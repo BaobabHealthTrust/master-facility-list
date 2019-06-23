@@ -1,66 +1,67 @@
 import axios from "axios";
-import settings from "../App/settings";
+
+const API = process.env.REACT_APP_API_URL;
 
 export const getUtilities = () => {
-  const url = `${settings.API}/Utilities`;
+  const url = `${API}/Utilities`;
   return axios.get(url);
 };
 
 export const getUtilityTypes = () => {
-  const url = `${settings.API}/UtilityTypes`;
+  const url = `${API}/UtilityTypes`;
   return axios.get(url);
 };
 
 export const getServices = () => {
-  const url = `${settings.API}/Services`;
+  const url = `${API}/Services`;
   return axios.get(url);
 };
 
 export const getServiceTypes = () => {
-  const url = `${settings.API}/ServiceTypes`;
+  const url = `${API}/ServiceTypes`;
   return axios.get(url);
 };
 
 export const getResources = () => {
-  const url = `${settings.API}/Resources`;
+  const url = `${API}/Resources`;
   return axios.get(url);
 };
 
 export const getResourceTypes = () => {
-  const url = `${settings.API}/ResourceTypes`;
+  const url = `${API}/ResourceTypes`;
   return axios.get(url);
 };
 
 export const getRegulatoryStatuses = () => {
-  const url = `${settings.API}/RegulatoryStatuses`;
+  const url = `${API}/RegulatoryStatuses`;
   return axios.get(url);
 };
 
 export const getOperationalStatuses = () => {
-  const url = `${settings.API}/OperationalStatuses`;
+  const url = `${API}/OperationalStatuses`;
   return axios.get(url);
 };
 
 export const getOwners = () => {
-  const url = `${settings.API}/Owners`;
+  const url = `${API}/Owners`;
   return axios.get(url);
 };
 
 export const getDistricts = () => {
-  const url = `${settings.API}/districts`;
+  const url = `${API}/districts`;
   return axios.get(url);
 };
 
 export const getFacilityTypes = () => {
-  const url = `${settings.API}/FacilityTypes`;
+  const url = `${API}/FacilityTypes`;
   return axios.get(url);
 };
 
 export const getFacilities = (filter: any = null) => {
   const url =
     filter == null
-      ? `${settings.API}/facilities/list`
-      : `${settings.API}/facilities/list?filter=${JSON.stringify(filter)}`;
+      ? `${API}/facilities/list`
+      : `${API}/facilities/list?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
@@ -70,8 +71,8 @@ export const getFacilityResources = (
 ) => {
   const url =
     filter === null
-      ? `${settings.API}/FacilityResources/latest?id=${facilityId}`
-      : `${settings.API}/FacilityResources?filter=${JSON.stringify(filter)}`;
+      ? `${API}/FacilityResources/latest?id=${facilityId}`
+      : `${API}/FacilityResources?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
@@ -89,7 +90,7 @@ export const getFacilityBasicDetails = (facilityId: number) => {
       { district: "zone" }
     ]
   };
-  const url = `${settings.API}/Facilities/${facilityId}?filter=${JSON.stringify(
+  const url = `${API}/Facilities/${facilityId}?filter=${JSON.stringify(
     FILTER
   )}`;
   return axios.get(url);
@@ -101,8 +102,8 @@ export const getFacilityServices = (
 ) => {
   const url =
     filter === null
-      ? `${settings.API}/FacilityServices/hierarchy?facility_id=${facilityId}`
-      : `${settings.API}/FacilityServices?filter=${JSON.stringify(filter)}`;
+      ? `${API}/FacilityServices/hierarchy?facility_id=${facilityId}`
+      : `${API}/FacilityServices?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
@@ -112,8 +113,8 @@ export const getFacilityUtilities = (
 ) => {
   const url =
     filter === null
-      ? `${settings.API}/FacilityUtilities/latest?id=${facilityId}`
-      : `${settings.API}/FacilityUtilities?filter=${JSON.stringify(filter)}`;
+      ? `${API}/FacilityUtilities/latest?id=${facilityId}`
+      : `${API}/FacilityUtilities?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };
 
@@ -121,12 +122,12 @@ export const authenticateUser = (credentials: {
   username: string;
   password: string;
 }) => {
-  const url = `${settings.API}/clients/login`;
+  const url = `${API}/clients/login`;
   return axios.post(url, credentials);
 };
 
 export const getUserDetails = (userId: number, token: string) => {
-  const url = `${settings.API}/clients/${userId}`;
+  const url = `${API}/clients/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -135,7 +136,7 @@ export const getUserDetails = (userId: number, token: string) => {
   return axios.get(url, header);
 };
 export const getUsers = (token: string) => {
-  const url = `${settings.API}/clients`;
+  const url = `${API}/clients`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -145,7 +146,7 @@ export const getUsers = (token: string) => {
 };
 
 export const addUser = (data: any, token: string) => {
-  const url = `${settings.API}/clients/createAdmin`;
+  const url = `${API}/clients/createAdmin`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -155,7 +156,7 @@ export const addUser = (data: any, token: string) => {
 };
 
 export const putUser = (userId: number, data: any, token: string) => {
-  const url = `${settings.API}/clients/${userId}`;
+  const url = `${API}/clients/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -165,7 +166,7 @@ export const putUser = (userId: number, data: any, token: string) => {
 };
 
 export const publishFacility = (data: any, token: string) => {
-  const url = `${settings.API}/Facilities/publish`;
+  const url = `${API}/Facilities/publish`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -175,7 +176,7 @@ export const publishFacility = (data: any, token: string) => {
 };
 
 export const postBasicDetails = (data: any, token: string) => {
-  const url = `${settings.API}/Facilities`;
+  const url = `${API}/Facilities`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -189,7 +190,7 @@ export const putBasicDetails = (
   facilityId: number,
   token: string
 ) => {
-  const url = `${settings.API}/Facilities/${facilityId}`;
+  const url = `${API}/Facilities/${facilityId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -199,7 +200,7 @@ export const putBasicDetails = (
 };
 
 export const putContactDetails = (data: any, token: string) => {
-  const url = `${settings.API}/Facilities/updateContactDetails`;
+  const url = `${API}/Facilities/updateContactDetails`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -209,7 +210,7 @@ export const putContactDetails = (data: any, token: string) => {
 };
 
 export const postContactDetails = (data: any, token: string) => {
-  const url = `${settings.API}/Facilities/contactDetails`;
+  const url = `${API}/Facilities/contactDetails`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -219,7 +220,7 @@ export const postContactDetails = (data: any, token: string) => {
 };
 
 export const postResources = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityResources`;
+  const url = `${API}/FacilityResources`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -229,7 +230,7 @@ export const postResources = (data: any, token: string) => {
 };
 
 export const putResources = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityResources/replaceOrCreate`;
+  const url = `${API}/FacilityResources/replaceOrCreate`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -239,7 +240,7 @@ export const putResources = (data: any, token: string) => {
 };
 
 export const postUtilities = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityUtilities`;
+  const url = `${API}/FacilityUtilities`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -249,7 +250,7 @@ export const postUtilities = (data: any, token: string) => {
 };
 
 export const putUtilities = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityUtilities/replaceOrCreate`;
+  const url = `${API}/FacilityUtilities/replaceOrCreate`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -259,7 +260,7 @@ export const putUtilities = (data: any, token: string) => {
 };
 
 export const deleteUtilities = (utilityId: any, token: string) => {
-  const url = `${settings.API}/FacilityUtilities/${utilityId}`;
+  const url = `${API}/FacilityUtilities/${utilityId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -269,7 +270,7 @@ export const deleteUtilities = (utilityId: any, token: string) => {
 };
 
 export const postServices = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityServices`;
+  const url = `${API}/FacilityServices`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -279,7 +280,7 @@ export const postServices = (data: any, token: string) => {
 };
 
 export const putServices = (data: any, token: string) => {
-  const url = `${settings.API}/FacilityServices/replaceOrCreate`;
+  const url = `${API}/FacilityServices/replaceOrCreate`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -289,7 +290,7 @@ export const putServices = (data: any, token: string) => {
 };
 
 export const deleteServices = (serviceId: any, token: string) => {
-  const url = `${settings.API}/FacilityServices/${serviceId}`;
+  const url = `${API}/FacilityServices/${serviceId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -299,7 +300,7 @@ export const deleteServices = (serviceId: any, token: string) => {
 };
 
 export const deleteUser = (userId: any, token: string) => {
-  const url = `${settings.API}/Clients/${userId}`;
+  const url = `${API}/Clients/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -309,19 +310,19 @@ export const deleteUser = (userId: any, token: string) => {
 };
 
 export const getFeedbackTypes = () => {
-  const url = `${settings.API}/FeedbackTypes`;
+  const url = `${API}/FeedbackTypes`;
 
   return axios.get(url);
 };
 
 export const postFeedback = (data: any) => {
-  const url = `${settings.API}/Feedbacks/feedback`;
+  const url = `${API}/Feedbacks/feedback`;
 
   return axios.post(url, data);
 };
 
 export const changePassword = (data: any, userId: number, token: string) => {
-  const url = `${settings.API}/Client/${userId}`;
+  const url = `${API}/Client/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`

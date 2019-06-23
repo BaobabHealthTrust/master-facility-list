@@ -13,8 +13,8 @@ import {
 } from "../../services/redux/actions/facilities";
 import Facility from "./Facility";
 import { hasFilterValuesForType } from "../../services/helpers";
-import settings from "../../App/settings";
 
+const API = process.env.REACT_APP_API_URL;
 export class index extends Component<Props> {
   handleFacilityClick = (facilityId: number) => {
     this.props.history.push(`facilities/${facilityId}`);
@@ -44,7 +44,7 @@ export class index extends Component<Props> {
     const whereClause =
       filterOptions.length > 0 ? { id: { inq: facilityIds } } : {};
     window.open(
-      `${settings.API}/facilities/download?data=` +
+      `${API}/facilities/download?data=` +
         JSON.stringify({
           where: whereClause,
           format
