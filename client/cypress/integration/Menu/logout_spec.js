@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe("Test that User Can Logout using the Menu", () => {
-  let firstName;
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   before(() => {
     const credentials = {
@@ -9,33 +9,21 @@ describe("Test that User Can Logout using the Menu", () => {
       password: "admin"
     };
     cy.login(credentials);
-    cy.window().then(
-      win => (firstName = win.sessionStorage.getItem("firstname"))
-    );
-    cy.visit("http://localhost:3000/");
+    cy.visit(`${FRONTEND_URL}/`);
   });
 
   it("shows the username", () => {
-    cy.get("li.dropdown-button")
-      .first()
-      .should("contain", firstName);
+    cy.get(`[data-test=menuProfile]`);
   });
 
-  it("allows user to click on the logout button", () => {
-    cy.get("li.dropdown-button")
-      .first()
-      .click()
-      .get("ul.dropdown-content li")
-      .first()
-      .click();
+  it("Allows user to click on the logout button", () => {
+    cy.get(`[data-test=menuProfile]`).click();
+    cy.get(`[data-test=menuLogout]`).click();
   });
 
-  it("logs the user out and hides their username", () => {
+  it("Logs the user out and hides their username", () => {
     cy.window().then(
       win => expect(win.sessionStorage.getItem("token")).to.be.null
     );
-    cy.get("ul#nav-mobile")
-      .first()
-      .should("contain", "LOGIN");
   });
 });

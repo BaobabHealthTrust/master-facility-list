@@ -1,47 +1,69 @@
 /// <reference types="Cypress" />
 describe("Navigates to the view of the clicked menu", () => {
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
+
+  const correctCredentials = {
+    username: "mfladminuser",
+    password: "admin"
+  };
 
   const adminMenu = [
     {
-      name: "HOME",
+      name: "Home",
       url: `${FRONTEND_URL}/`
     },
     {
-      name: "ABOUT",
-      url: `${FRONTEND_URL}/about`
-    },
-
-    {
-      name: "FACILITIES",
+      name: "Facilities",
       url: `${FRONTEND_URL}/facilities`
     },
     {
-      name: "USERS",
+      name: "Users",
       url: `${FRONTEND_URL}/users`
     },
     {
-      name: "FEEDBACK",
-      url: `${FRONTEND_URL}/feedback`
+      name: "More",
+      options: [
+        {
+          name: "About",
+          url: `${FRONTEND_URL}/about`
+        },
+        {
+          name: "Feedback",
+          url: `${FRONTEND_URL}/feedback`
+        },
+        {
+          name: "Help",
+          url: `${FRONTEND_URL}/help`
+        }
+      ]
     }
   ];
 
   const publicMenu = [
     {
-      name: "HOME",
+      name: "Home",
       url: `${FRONTEND_URL}/`
     },
     {
-      name: "ABOUT",
-      url: `${FRONTEND_URL}/about`
-    },
-    {
-      name: "FACILITIES",
+      name: "Facilities",
       url: `${FRONTEND_URL}/facilities`
     },
     {
-      name: "FEEDBACK",
-      url: `${FRONTEND_URL}/feedback`
+      name: "More",
+      options: [
+        {
+          name: "About",
+          url: `${FRONTEND_URL}/about`
+        },
+        {
+          name: "Feedback",
+          url: `${FRONTEND_URL}/feedback`
+        },
+        {
+          name: "Help",
+          url: `${FRONTEND_URL}/help`
+        }
+      ]
     }
   ];
 
@@ -53,32 +75,53 @@ describe("Navigates to the view of the clicked menu", () => {
   it("Performs public menu navigation", () => {
     cy.visit(FRONTEND_URL);
     publicMenu.map(menuItem => {
-      cy.get("#nav-mobile li a")
-        .contains(menuItem.name)
-        .click();
+      if (menuItem.options && menuItem.options.length > 0) {
+        for (let opt of menuItem.options) {
+          cy.get(`[data-test=menu${menuItem.name}]`).click();
+          cy.get(`[data-test=menu${opt.name}]`).click();
+          cy.location().should(loc => {
+            expect(loc.href).to.eq(opt.url);
+          });
+        }
+        return;
+      }
+      cy.get(`[data-test=menu${menuItem.name}]`).click();
       cy.location().should(loc => {
         expect(loc.href).to.eq(menuItem.url);
       });
-      cy.wait(2000);
     });
   });
 
   //admin nav test
   it("Performs admin menu navigation", () => {
-    const credentials = {
-      username: "mfladminuser",
-      password: "admin"
-    };
-    cy.login(credentials);
     cy.visit(FRONTEND_URL);
+    cy.get(`[data-test=menuLogin]`).click();
+
+    cy.get("input[name=username]").clear();
+    cy.get("input[name=password]").clear();
+
+    cy.get("input[name=username]").type(correctCredentials.username);
+    cy.get("input[name=password]").type(correctCredentials.password);
+
+    cy.get("button")
+      .first()
+      .click();
+
     adminMenu.map(menuItem => {
-      cy.get("#nav-mobile li a")
-        .contains(menuItem.name)
-        .click();
+      if (menuItem.options && menuItem.options.length > 0) {
+        for (let opt of menuItem.options) {
+          cy.get(`[data-test=menu${menuItem.name}]`).click();
+          cy.get(`[data-test=menu${opt.name}]`).click();
+          cy.location().should(loc => {
+            expect(loc.href).to.eq(opt.url);
+          });
+        }
+        return;
+      }
+      cy.get(`[data-test=menu${menuItem.name}]`).click();
       cy.location().should(loc => {
-        expect(loc.href).to.equal(menuItem.url);
+        expect(loc.href).to.eq(menuItem.url);
       });
-      cy.wait(2000);
     });
   });
 });

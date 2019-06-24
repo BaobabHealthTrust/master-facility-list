@@ -87,7 +87,7 @@ const Header = (props: Props) => {
     },
     {
       text: `${auth.details.firstname || "Profile"}`,
-      name: "Home",
+      name: "Profile",
       active: isActivePage("Profile"),
       icon: <AccountCircle />,
       options: [
