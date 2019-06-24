@@ -17,6 +17,7 @@ const Path = props => {
       title={name}
       xlinkTitle={name}
       id={name}
+      data-test={name.replace(" ", "")}
     />
   );
 };

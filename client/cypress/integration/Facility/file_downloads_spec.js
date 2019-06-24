@@ -4,30 +4,11 @@ describe("Facility List Spec", () => {
 
   it("Navigates to facility list page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
-    cy.get("#nav-mobile > li[class=active]")
-      .first()
-      .should("contain", "FACILITIES");
   });
 
-  it("Shows Download", () => {
-    cy.get(".fixed-action-btn.horizontal.mfl-download")
-      .first()
-      .should("be.visible");
-  });
-
-  it("Reveals Download buttons for all formats on hover", () => {
-    cy.get(".fixed-action-btn.horizontal.mfl-download")
-      .first()
-      .trigger("mouseover");
-    cy.get(".fixed-action-btn.horizontal.mfl-download ul li a")
-      .first()
-      .should("be.visible");
-    cy.get(".fixed-action-btn.horizontal.mfl-download ul li a")
-      .eq(1)
-      .should("be.visible");
-    cy.get(".fixed-action-btn.horizontal.mfl-download ul li a")
-      .eq(2)
-      .should("be.visible");
+  it("Shows Buttons", () => {
+    cy.get("[data-test=downloadExcelBtn]").should("be.visible");
+    cy.get("[data-test=downloadPdfBtn]").should("be.visible");
   });
 
   it("Downloads CSV", () => {

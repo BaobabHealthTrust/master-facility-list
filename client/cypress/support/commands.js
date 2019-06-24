@@ -10,7 +10,7 @@
 //
 //
 
-const END_POINT = `127.0.0.1/api`;
+const END_POINT = `${Cypress.env("API_URL")}/`;
 
 Cypress.Commands.add("login", credentials => {
   const RESOURCE = `Clients/login/`;

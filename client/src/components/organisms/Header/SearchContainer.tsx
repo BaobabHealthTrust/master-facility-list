@@ -57,7 +57,7 @@ export class SearchContainer extends Component<Props> {
             </SearchForm>
           </SearchFormContainer>
           {this.props.value.length > 0 && (
-            <SearchResultsContainer>
+            <SearchResultsContainer data-test="quickSearchContainer">
               {facilities.length == 0 && this.props.value.length > 0 ? (
                 "No results for search"
               ) : (

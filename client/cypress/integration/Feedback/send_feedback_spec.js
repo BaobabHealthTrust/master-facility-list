@@ -5,7 +5,7 @@ describe("Feedback Page Test", () => {
     cy.window().then(win => win.sessionStorage.clear());
   });
 
-  const FRONTEND_URL = "http://localhost:3000";
+  const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   const errors = {
     email: "email is a required field",
     message: "message is a required field"
@@ -13,14 +13,12 @@ describe("Feedback Page Test", () => {
 
   it("Navigates to feedback page", () => {
     cy.visit(FRONTEND_URL);
-    cy.get("#nav-mobile li a[href='/feedback']").click();
-    cy.location().should(loc => {
-      expect(loc.href).to.equal(`${FRONTEND_URL}/feedback`);
-    });
+    cy.get("[data-test=menuMore]").click();
+    cy.get("[data-test=menuFeedback]").click();
   });
 
   it("Validates Required Fields on submit", () => {
-    cy.get("button[test-id='feedbackBtn']").click();
+    cy.get("[data-test=feedbackBtn]").click();
 
     cy.get(`label[data-error='${errors.email}']`)
       .first()

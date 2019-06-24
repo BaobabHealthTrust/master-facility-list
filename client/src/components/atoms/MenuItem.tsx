@@ -16,6 +16,7 @@ function MenuItem(props: Props) {
       onClickOption={() => {
         setActivePage(item.name);
       }}
+      data-test={`menu${item.name}`}
     />
   ) : (
     <Link
@@ -27,6 +28,7 @@ function MenuItem(props: Props) {
           item.onClick && item.onClick();
         }
       }}
+      data-test={`menu${item.name}`}
     >
       <Container active={active}>{body}</Container>
     </Link>

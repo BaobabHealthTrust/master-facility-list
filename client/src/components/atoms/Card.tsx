@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Paper } from "@material-ui/core";
 
-export default ({ heading, children, style, bodyStyle }: Props) => {
+export default (props: Props) => {
+  const { heading, children, style, bodyStyle } = props;
   return (
     <Paper>
       <CardContainer style={style}>

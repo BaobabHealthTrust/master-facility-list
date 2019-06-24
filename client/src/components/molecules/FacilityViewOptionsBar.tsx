@@ -37,11 +37,11 @@ export default FacilityViewOptionsBar;
 export function Details(props: { facility: any }) {
   const { facility } = props;
   return (
-    <div>
+    <div data-test="facilityHeader">
       {<Code>{`${facility.facility_code && facility.facility_code}, `}</Code>}
       {`${facility.district && facility.district.district_name}`}
       <br />
-      aka {<b>{facility.common_name}</b>}
+      {<b>{facility.common_name}</b>}
       {
         <LastUpdated>{` Last Updated - ${moment(facility.updated_at).format(
           "LLLL"

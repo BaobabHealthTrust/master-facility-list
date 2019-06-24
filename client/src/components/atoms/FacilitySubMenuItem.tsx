@@ -20,6 +20,7 @@ export default function MenuItem(props: Props) {
     <Container
       style={{ background: active ? "#dee9f6" : "white" }}
       onClick={() => onClick(onClickValue)}
+      data-test={label.replace(" ", "")}
     >
       <i>{icon}</i>
       {label}

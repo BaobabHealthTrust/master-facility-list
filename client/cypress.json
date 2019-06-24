@@ -3,6 +3,7 @@
   "viewportHeight": 900,
   "pageLoadTimeout": 6000000,
   "env": {
-    "FRONT_END_URL": "http://localhost:3000"
+    "FRONT_END_URL": "http://localhost:3000",
+    "API_URL": "http://localhost:4000/api"
   }
 }

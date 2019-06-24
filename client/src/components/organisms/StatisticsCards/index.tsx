@@ -8,7 +8,14 @@ const StatCards = (props: Props) => {
   return (
     <Grid container spacing={3}>
       {statistics.map((stat, index: number) => (
-        <Grid item md={true} xs={12} sm={6} key={stat.title}>
+        <Grid
+          item
+          md={true}
+          xs={12}
+          sm={6}
+          key={stat.title}
+          data-test={stat.title.replace(" ", "")}
+        >
           <StatCard
             highlight={index == 0}
             icon={stat.icon}
