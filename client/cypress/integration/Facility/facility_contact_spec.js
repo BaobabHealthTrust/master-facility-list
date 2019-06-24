@@ -5,9 +5,10 @@ describe("Tests Facility Contacts Page", () => {
   var facility;
   it("Renders facility contacts page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
-    // get random facility index
+
     var facilityIndex = 0;
     cy.fetch_facilieties_list().then(res => {
+      // get random facility index
       facilityIndex =
         res.length >= 10
           ? Math.floor(Math.random() * 9)
@@ -19,73 +20,65 @@ describe("Tests Facility Contacts Page", () => {
     });
   });
   it("Renders the facility contacts page", () => {
-    var ref = `/facilities/${facility.id}/locations`;
-    cy.get(`[class*='MuiPaper'] a[href='${ref}']`)
-      .first()
-      .click();
+    cy.get(`[data-test=FacilityContacts]`).click();
+
     cy.location().should(loc => {
       expect(loc.href).to.equal(
-        `${FRONTEND_URL}/facilities/${facility.id}/locations`
+        `${FRONTEND_URL}/facilities/${facility.id}/contact`
       );
     });
-    cy.get(".container.mfl-titles")
+  });
+
+  it("Shows Valid Facility Code", () => {
+    cy.get("[data-test=facilityHeader]")
       .first()
       .should("contain", facility.code);
-    cy.fetch_current_facility(facility.id).then(locationDetails => {
+  });
+
+  it("Shows Valid Basic Details", () => {
+    cy.fetch_current_facility(facility.id).then(curFacility => {
       // catchment area
-      cy.get("[test_id='location']")
-        .find(".mfl-summary-subtext")
-        .first()
-        .should("contain", locationDetails.body.locations.catchment_area);
+      cy.get("[data-test=detailLabelCatchmentarea]").should(
+        "contain",
+        curFacility.body.locations.catchment_area
+      );
       // population
-      cy.get("[test_id='location']")
-        .find(".mfl-summary-subtext")
-        .eq(1)
-        .should("contain", locationDetails.body.locations.catchment_population);
+      cy.get("[data-test=detailLabelPopulation]").should(
+        "contain",
+        curFacility.body.locations.catchment_population
+      );
       // district
-      cy.get("[test_id='location']")
-        .find(".mfl-summary-subtext")
-        .eq(2)
-        .should("contain", locationDetails.body.district.district_name);
+      cy.get("[data-test=detailLabelDistrict]").should(
+        "contain",
+        curFacility.body.district.district_name
+      );
       // physical address
-      cy.get("[test_id='address']")
-        .find(".mfl-summary-subtext")
-        .first()
-        .should("contain", locationDetails.body.addresses.physical_address);
+      cy.get("[data-test='detailLabel']")
+        .eq(3)
+        .should("contain", curFacility.body.addresses.physical_address);
       // postal address
-      cy.get("[test_id='address']")
-        .find(".mfl-summary-subtext")
-        .eq(1)
-        .should("contain", locationDetails.body.addresses.postal_address);
+      cy.get("[data-test='detailLabel']")
+        .eq(4)
+        .should("contain", curFacility.body.addresses.postal_address);
       // zone
-      cy.get("[test_id='address']")
-        .find(".mfl-summary-subtext")
-        .eq(2)
-        .should("contain", locationDetails.body.district.zone.zone_name);
+      cy.get("[data-test='detailLabel']")
+        .eq(5)
+        .should("contain", curFacility.body.district.zone.zone_name);
       // contact person name
-      cy.get("[test_id='person']")
-        .find(".mfl-summary-subtext")
+      cy.get("[data-test='detailLabel']")
         .first()
         .should(
           "contain",
-          locationDetails.body.contactPeople.contact_person_fullname
+          curFacility.body.contactPeople.contact_person_fullname
         );
       // contact person email
-      cy.get("[test_id='person']")
-        .find(".mfl-summary-subtext")
+      cy.get("[data-test='detailLabel']")
         .eq(1)
-        .should(
-          "contain",
-          locationDetails.body.contactPeople.contact_person_email
-        );
+        .should("contain", curFacility.body.contactPeople.contact_person_email);
       // contact person phone
-      cy.get("[test_id='person']")
-        .find(".mfl-summary-subtext")
+      cy.get("[data-test='detailLabel']")
         .eq(2)
-        .should(
-          "contain",
-          locationDetails.body.contactPeople.contact_person_phone
-        );
+        .should("contain", curFacility.body.contactPeople.contact_person_phone);
     });
   });
 });

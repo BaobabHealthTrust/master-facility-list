@@ -4,9 +4,6 @@ describe("Facility List Spec", () => {
 
   it("Navigates to facility list page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
-    cy.get("#nav-mobile > li[class=active]")
-      .first()
-      .should("contain", "FACILITIES");
   });
   it("Shows Facilities Table", () => {
     cy.get("[class*='MuiTable']")

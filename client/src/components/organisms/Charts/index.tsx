@@ -8,7 +8,7 @@ const StatCards = (props: Props) => {
   const { licenseStatusData, operationalStatusData } = props;
   return (
     <Grid container spacing={3}>
-      <Grid item md={6} xs={12} sm={6}>
+      <Grid item md={6} xs={12} sm={6} data-test="licenseStatus">
         <Card
           style={{ minHeight: "430px" }}
           heading="Facilities By License Status"
@@ -16,7 +16,7 @@ const StatCards = (props: Props) => {
           {<PieChart data={licenseStatusData} />}
         </Card>
       </Grid>
-      <Grid item md={6} xs={12} sm={6}>
+      <Grid item md={6} xs={12} sm={6} data-test="regulatoryStatus">
         <Card
           style={{ minHeight: "430px" }}
           heading="Facilities By Operational Status"

@@ -11,7 +11,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[test-id=${district.district_name.replace(" ", "-")}]`)
+            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
             .should("be.visible");
       });
     });
@@ -25,7 +25,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[test-id=${district.district_name.replace(" ", "-")}]`)
+            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
             .click()
             .then(source => {
               selectedDistricts.push(source.attr("id"));
@@ -39,8 +39,7 @@ describe("Test Filter Map Charts", () => {
                     null,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .first()
+                    cy.get("[data-test=TotalFacilities]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -51,8 +50,7 @@ describe("Test Filter Map Charts", () => {
                     5,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(1)
+                    cy.get("[data-test=DistHospitals]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -63,8 +61,7 @@ describe("Test Filter Map Charts", () => {
                     1,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(2)
+                    cy.get("[data-test=HealthCenters]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -75,8 +72,7 @@ describe("Test Filter Map Charts", () => {
                     2,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(3)
+                    cy.get("[data-test=Dispensaries]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -87,47 +83,11 @@ describe("Test Filter Map Charts", () => {
                     4,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(4)
+                    cy.get("[data-test=HealthPosts]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
                   });
-
-                  //   validate graphs
-                  cy.fetch_facilieties_aggre_by_reg_status(
-                    selectedDistricts
-                  ).then(res => {
-                    res.map((graphData, index) => {
-                      cy.get("#regulatoryStatusContainer")
-                        .find(".recharts-bar-rectangle")
-                        .eq(index)
-                        .trigger("mouseover");
-                      cy.get(".recharts-tooltip-wrapper")
-                        .first()
-                        .get(".recharts-tooltip-item-list")
-                        .get(".recharts-tooltip-item-value")
-                        .first()
-                        .should("have.html", `${graphData.count}`);
-                    });
-                  });
-
-                  cy.fetch_facilieties_aggre_by_owner(selectedDistricts).then(
-                    res => {
-                      res.map((graphData, index) => {
-                        cy.get("#typeOwnershipContainer")
-                          .find(".recharts-bar-rectangle")
-                          .eq(index)
-                          .trigger("mouseover");
-                        cy.get(".recharts-tooltip-wrapper")
-                          .eq(1)
-                          .get(".recharts-tooltip-item-list")
-                          .get(".recharts-tooltip-item-value")
-                          .eq(1)
-                          .should("have.html", `${graphData.count}`);
-                      });
-                    }
-                  );
                 }
               );
             });
@@ -142,7 +102,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[test-id=${district.district_name.replace(" ", "-")}]`)
+            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
             .click()
             .then(source => {
               selectedDistricts = selectedDistricts.filter(
@@ -158,8 +118,7 @@ describe("Test Filter Map Charts", () => {
                     null,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .first()
+                    cy.get("[data-test=TotalFacilities]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -170,8 +129,7 @@ describe("Test Filter Map Charts", () => {
                     5,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(1)
+                    cy.get("[data-test=DistHospitals]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -182,8 +140,7 @@ describe("Test Filter Map Charts", () => {
                     1,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(2)
+                    cy.get("[data-test=HealthCenters]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -194,8 +151,7 @@ describe("Test Filter Map Charts", () => {
                     2,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(3)
+                    cy.get("[data-test=Dispensaries]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
@@ -206,47 +162,11 @@ describe("Test Filter Map Charts", () => {
                     4,
                     districtsData
                   ).then(res => {
-                    cy.get(".card")
-                      .eq(4)
+                    cy.get("[data-test=HealthPosts]")
                       .find("p")
                       .first()
                       .should("have.html", `${res.length}`);
                   });
-
-                  //   validate graphs
-                  cy.fetch_facilieties_aggre_by_reg_status(
-                    selectedDistricts
-                  ).then(res => {
-                    res.map((graphData, index) => {
-                      cy.get("#regulatoryStatusContainer")
-                        .find(".recharts-bar-rectangle")
-                        .eq(index)
-                        .trigger("mouseover");
-                      cy.get(".recharts-tooltip-wrapper")
-                        .first()
-                        .get(".recharts-tooltip-item-list")
-                        .get(".recharts-tooltip-item-value")
-                        .first()
-                        .should("have.html", `${graphData.count}`);
-                    });
-                  });
-
-                  cy.fetch_facilieties_aggre_by_owner(selectedDistricts).then(
-                    res => {
-                      res.map((graphData, index) => {
-                        cy.get("#typeOwnershipContainer")
-                          .find(".recharts-bar-rectangle")
-                          .eq(index)
-                          .trigger("mouseover");
-                        cy.get(".recharts-tooltip-wrapper")
-                          .eq(1)
-                          .get(".recharts-tooltip-item-list")
-                          .get(".recharts-tooltip-item-value")
-                          .eq(1)
-                          .should("have.html", `${graphData.count}`);
-                      });
-                    }
-                  );
                 }
               );
             });

@@ -10,8 +10,7 @@ describe("Login Test", () => {
     password: "admin"
   };
 
-  const errorMessage =
-    "Looks like there is something wrong with your credentials. Try again";
+  const errorMessage = "Invalid username or password";
 
   const enterCredentials = (credentials, description, clear = false) => {
     it(description, () => {
@@ -27,11 +26,6 @@ describe("Login Test", () => {
   before(() => {
     cy.window().then(win => win.sessionStorage.clear());
     cy.visit("http://localhost:3000/login");
-  });
-
-  // Renders
-  it("should show the login title", () => {
-    cy.get("h4").should("contain", "Login Here");
   });
 
   it("should show email and password fields", () => {
@@ -76,6 +70,6 @@ describe("Login Test", () => {
     cy.get("button")
       .first()
       .click();
-    cy.url().should("equal", "http://localhost:3000/");
+    cy.url().should("equal", `${Cypress.env("FRONT_END_URL")}/`);
   });
 });

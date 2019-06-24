@@ -3,48 +3,46 @@ describe("Tests Facility Utilities Page", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   var facility;
-  it("Renders facility utilities page", () => {
+  it("Renders facility contacts page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
-    // get random facility index
 
+    var facilityIndex = 0;
     cy.fetch_facilieties_list().then(res => {
-      var facilityIndex =
+      // get random facility index
+      facilityIndex =
         res.length >= 10
           ? Math.floor(Math.random() * 9)
           : Math.floor(Math.random() * (res.length - 1));
       facility = res[facilityIndex];
-      cy.get("table tbody .MuiTableRow-root-32")
+      cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
         .eq(facilityIndex)
         .click();
     });
   });
-  it("Renders the facility utilities page", () => {
-    var ref = `/facilities/${facility.id}/utilities`;
-    cy.get(`.nav-wrapper ul li a[href='${ref}']`)
-      .first()
-      .click();
+  it("Renders the facility contacts page", () => {
+    cy.get(`[data-test=FacilityUtilities]`).click();
+
     cy.location().should(loc => {
       expect(loc.href).to.equal(
         `${FRONTEND_URL}/facilities/${facility.id}/utilities`
       );
     });
-    cy.get(".container.mfl-titles")
+  });
+
+  it("Shows Valid Facility Code", () => {
+    cy.get("[data-test=facilityHeader]")
       .first()
       .should("contain", facility.code);
   });
+
   it("Renders facility utilities", () => {
     cy.fetch_current_utilities(facility.id).then(res => {
       const data = res.body.data;
-      if (data.length == 0) {
-        cy.get("div.card-panel.yellow").should(
-          "contain",
-          "Utilities are not available for this facility"
-        );
-      } else {
+      if (data.length > 0) {
         var renderedUtilities = [];
-        cy.get("table .mfl-card-row .mfl-summary-subheader")
+        cy.get("[data-test='detailLabel']")
           .each(el => {
-            renderedUtilities.push(el.context.innerHTML.toUpperCase());
+            renderedUtilities.push(el.context.innerText.toUpperCase());
           })
           .then(() => {
             expect(renderedUtilities).to.include.members(

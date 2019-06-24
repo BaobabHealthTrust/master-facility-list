@@ -13,6 +13,7 @@ const Search = (props: Props) => {
         onClick={e => props.onClick()}
         className={props.className}
         style={props.style}
+        data-test="quickSearch"
       >
         <FontAwesomeIcon icon={faSearch} />
       </SearchButton>

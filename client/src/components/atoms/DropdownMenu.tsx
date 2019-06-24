@@ -54,7 +54,11 @@ class ClickAway extends React.Component<Props> {
     const { open } = this.state;
 
     return (
-      <div className={classes.root}>
+      <div
+        className={classes.root}
+        // @ts-ignore
+        data-test={this.props["data-test"].replace(" ", "")}
+      >
         <ClickAwayListener onClickAway={this.handleClickAway}>
           <div
             style={{
@@ -95,6 +99,7 @@ class ClickAway extends React.Component<Props> {
                           this.handleClickAway();
                           onClickOption(option.name);
                         }}
+                        data-test={`menu${option.text.replace(" ", "")}`}
                       >
                         {option.text}
                       </MenuItem>

@@ -23,6 +23,7 @@ function FacilityToolbar(props: Props) {
           theme="success"
           icon={<FontAwesomeIcon icon={faFileExcel} />}
           onClick={() => downloadList("excel")}
+          data-test="downloadExcelBtn"
         >
           Download EXCEL
         </Button>
@@ -31,6 +32,7 @@ function FacilityToolbar(props: Props) {
           theme="warning"
           icon={<FontAwesomeIcon icon={faFilePdf} />}
           onClick={() => downloadList("pdf")}
+          data-test="downloadPdfBtn"
         >
           Download PDF
         </Button>
@@ -42,6 +44,7 @@ function FacilityToolbar(props: Props) {
               style={{ marginRight: "0px" }}
               theme="primary"
               icon={<FontAwesomeIcon icon={faPlus} />}
+              data-test="addFacilityBtn"
             >
               Add Facility
             </Button>

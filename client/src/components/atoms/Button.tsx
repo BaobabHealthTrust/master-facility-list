@@ -23,6 +23,8 @@ const Button = (props: Props) => {
         disabled={disabled}
         className={buttonClass}
         onClick={e => onClick && onClick()}
+        // @ts-ignore
+        data-test={props["data-test"]}
       >
         {(iconPosition == "left" || !iconPosition) &&
           (icon && <IconContainer>{icon}</IconContainer>)}

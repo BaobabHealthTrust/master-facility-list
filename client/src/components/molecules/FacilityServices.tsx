@@ -84,11 +84,13 @@ function FacilityDetails(props: Props) {
       service.children.length === 0
     ) {
       return (
-        <div style={levelStyles[level]}>{service.service.service_name}</div>
+        <div data-test={`serviceDetail${level}`} style={levelStyles[level]}>
+          {service.service.service_name}
+        </div>
       );
     }
     return (
-      <div style={levelStyles[level]}>
+      <div data-test={`serviceDetail${level}`} style={levelStyles[level]}>
         {service.service.service_name}
         {service.children.map((ser: any) =>
           renderService(ser, levelStyles, level + 1)
@@ -102,7 +104,7 @@ function FacilityDetails(props: Props) {
   const typeChunks = chunk(presentTypes, 3);
 
   return (
-    <Grid container>
+    <Grid container data-test="servicesContainer">
       {typeChunks.map((chunk: any) => {
         return (
           <>

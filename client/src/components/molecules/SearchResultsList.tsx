@@ -22,7 +22,7 @@ function SearchResultsList(props: Props) {
                 {facility.district}
               </TableCell>
               <TableCell className="hide-on-med-and-down">
-                {facility.regulatoryStatus}
+                {facility.status}
               </TableCell>
             </TableRow>
           ))}
