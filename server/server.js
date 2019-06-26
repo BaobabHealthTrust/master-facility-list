@@ -4,7 +4,7 @@ const json2xls = require('json2xls');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
-var app = module.exports = loopback();
+var app = (module.exports = loopback());
 
 app.use(json2xls.middleware);
 
@@ -27,6 +27,7 @@ boot(app, __dirname, function(err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
-  if (require.main === module)
+  if (require.main === module) {
     app.start();
+  }
 });
