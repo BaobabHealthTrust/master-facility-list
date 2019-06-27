@@ -13,7 +13,7 @@ import {
   faCogs
 } from "@fortawesome/free-solid-svg-icons";
 // @ts-ignore
-import { uniq, chunk } from "lodash";
+import { uniq, uniqWith, isEqual } from "lodash";
 
 library.add(faBolt, faFilter, faMobile, faTrash, faCogs);
 
@@ -58,7 +58,9 @@ function FacilityDetails(props: Props) {
   };
 
   const getServiceTypes = () =>
-    services ? services.map((ser: any) => ser.serviceType) : [];
+    services
+      ? uniqWith(services.map((ser: any) => ser.serviceType), isEqual)
+      : [];
 
   const getServicesByType = (type: any, services: any) =>
     services.filter((ser: any) => ser.service.service_type_id === type.id);
@@ -79,18 +81,22 @@ function FacilityDetails(props: Props) {
   };
 
   const renderService = (service: any, levelStyles: any, level = 0) => {
+    const style =
+      level > levelStyles.length - 1
+        ? { ...levelStyles[2], marginLeft: `${level + 12}px` }
+        : levelStyles[level];
     if (
       typeof service.children === "undefined" ||
       service.children.length === 0
     ) {
       return (
-        <div data-test={`serviceDetail${level}`} style={levelStyles[level]}>
+        <div data-test={`serviceDetail${level}`} style={style}>
           {service.service.service_name}
         </div>
       );
     }
     return (
-      <div data-test={`serviceDetail${level}`} style={levelStyles[level]}>
+      <div data-test={`serviceDetail${level}`} style={style}>
         {service.service.service_name}
         {service.children.map((ser: any) =>
           renderService(ser, levelStyles, level + 1)
@@ -101,19 +107,14 @@ function FacilityDetails(props: Props) {
 
   const presentTypes = services ? getServiceTypes() : [];
 
-  const typeChunks = chunk(presentTypes, 3);
-
+  console.log(presentTypes);
   return (
     <Grid container data-test="servicesContainer">
-      {typeChunks.map((chunk: any) => {
+      {presentTypes.map((type: any) => {
         return (
-          <>
-            {chunk.map((type: any) => (
-              <Grid key={type} xs={12} sm={6} md={6}>
-                {renderServicesForType(type, services)}
-              </Grid>
-            ))}
-          </>
+          <Grid key={type.id} xs={12} sm={6} md={6}>
+            {renderServicesForType(type, services)}
+          </Grid>
         );
       })}
     </Grid>
