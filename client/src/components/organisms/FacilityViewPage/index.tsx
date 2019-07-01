@@ -69,7 +69,7 @@ function index(props: Props) {
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
           <div style={{ height: "57vh" }}>
-            <FacilityGoogleMap position={position} isMarkerShown />
+            {/* <FacilityGoogleMap position={position} isMarkerShown /> */}
             <DetailsContainer>
               <Grid container>
                 <Grid item md={4} className="hide-on-small-only" />
@@ -147,7 +147,7 @@ export default index;
 const DetailsContainer = styled.div`
   margin-top: 10px;
   @media (min-width: 390px) {
-    margin-top: -50vh;
+    /* margin-top: -50vh; */
   }
 `;
 

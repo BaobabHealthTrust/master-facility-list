@@ -121,7 +121,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
 
       this.props.fetchCurrentBasic(facilityId);
       this.props.fetchCurrentResources(facilityId);
-      this.props.fetchCurrentServices(facilityId);
+      this.props.fetchCurrentServices(facilityId, this.props.dependancies);
       this.props.fetchCurrentUtilities(facilityId);
     }
   }

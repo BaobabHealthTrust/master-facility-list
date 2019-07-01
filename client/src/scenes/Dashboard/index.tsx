@@ -47,7 +47,7 @@ class index extends Component<any> {
   getFacilitiesOfType = (type: string) => {
     return this.getFilteredFacilities()
       ? this.getFilteredFacilities().filter(
-          (facility: any) => facility.type == type
+          (facility: any) => facility.type.toLowerCase() == type.toLowerCase()
         ).length
       : 0;
   };

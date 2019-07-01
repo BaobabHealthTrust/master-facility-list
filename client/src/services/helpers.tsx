@@ -60,6 +60,53 @@ export const getServicesHierachy: any = (
   }));
 };
 
+export const getServicesHierachyForRedux: any = (
+  services: Array<any>,
+  allServices: Array<any> = [],
+  serviceTypes: Array<any> = [],
+  level: number = 0
+) => {
+  console.log(services);
+  allServices =
+    level == 0
+      ? services.map((ser: any) => {
+          const service = allServices.filter(
+            (serv: any) => serv.id == ser.service_id
+          )[0];
+          return {
+            service,
+            serviceType: serviceTypes.filter(
+              (type: any) => type.id == service.service_type_id
+            )[0],
+            facilityService: ser
+          };
+        })
+      : [...allServices];
+
+  const curServices =
+    level == 0
+      ? allServices.filter(
+          ser => ser.service && ser.service.service_category_id == 0
+        )
+      : [...services];
+
+  if (curServices.length == 0) {
+    return [];
+  }
+
+  return curServices.map(service => ({
+    ...service,
+    children: getServicesHierachyForRedux(
+      allServices.filter(
+        ser => ser.service.service_category_id == service.service.id
+      ),
+      allServices,
+      serviceTypes,
+      level + 1
+    )
+  }));
+};
+
 export const getServicesFromLeaves = (
   leaves: Array<any>,
   allServices: Array<any> = [],

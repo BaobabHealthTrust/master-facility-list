@@ -82,7 +82,7 @@ export class index extends Component<any> {
 
     this.props.fetchCurrentBasic(facilityId);
     this.props.fetchCurrentResources(facilityId);
-    this.props.fetchCurrentServices(facilityId);
+    this.props.fetchCurrentServices(facilityId, this.props.dependancies);
     this.props.fetchCurrentUtilities(facilityId);
   }
 
@@ -95,7 +95,7 @@ export class index extends Component<any> {
       this.setState({ facilityId });
       this.props.fetchCurrentBasic(facilityId);
       this.props.fetchCurrentResources(facilityId);
-      this.props.fetchCurrentServices(facilityId);
+      this.props.fetchCurrentServices(facilityId, this.props.dependancies);
       this.props.fetchCurrentUtilities(facilityId);
     }
   }
@@ -133,7 +133,8 @@ export class index extends Component<any> {
 const mapStateToProps = (state: any) => ({
   ui: state.ui,
   facility: state.facilities.current,
-  loading: state.status
+  loading: state.status,
+  dependancies: state.dependancies
 });
 
 export default connect(

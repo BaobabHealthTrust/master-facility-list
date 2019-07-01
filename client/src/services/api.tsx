@@ -102,7 +102,9 @@ export const getFacilityServices = (
 ) => {
   const url =
     filter === null
-      ? `${API}/FacilityServices/hierarchy?facility_id=${facilityId}`
+      ? `${API}/FacilityServices?filter=${JSON.stringify({
+          where: { facility_id: facilityId }
+        })}`
       : `${API}/FacilityServices?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
 };

@@ -49,10 +49,11 @@ export const fetchCurrentResources = (facilityId: number) => {
   };
 };
 
-export const fetchCurrentServices = (facilityId: number) => {
+export const fetchCurrentServices = (facilityId: number, dependancies: any) => {
   return {
     type: actions.fetchCurrentServices,
-    payload: getFacilityServices(facilityId)
+    payload: getFacilityServices(facilityId),
+    meta: dependancies
   };
 };
 
