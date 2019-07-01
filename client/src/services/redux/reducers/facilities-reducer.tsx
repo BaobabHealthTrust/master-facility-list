@@ -1,4 +1,5 @@
 import actions from "../actions/actions";
+import { getServicesHierachyForRedux } from "../../helpers";
 // @ts-ignore
 import { isEqual, uniqWith } from "lodash";
 
@@ -23,7 +24,7 @@ const initialState = {
 };
 export default (
   state = initialState,
-  action: { type: string; payload?: any }
+  action: { type: string; payload?: any; meta: any }
 ) => {
   switch (action.type) {
     case actions.fetchFacilities + "_FULFILLED":
@@ -64,7 +65,11 @@ export default (
         ...state,
         current: {
           ...state.current,
-          services: action.payload.data.hierarchy
+          services: getServicesHierachyForRedux(
+            action.payload.data,
+            action.meta.services.list,
+            action.meta.services.types
+          )
         }
       };
 

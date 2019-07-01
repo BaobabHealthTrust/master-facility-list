@@ -22,6 +22,9 @@ import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
 import swal from "sweetalert";
+// @ts-ignore
+import { uniqWith, isEqual } from "lodash";
+
 export class index extends Component<Props> {
   state = {
     active: "Basic Details",
@@ -131,10 +134,13 @@ export class index extends Component<Props> {
 
     this.props
       .postFacilityServices(
-        getServices(
-          data.services,
-          Number(facility.id),
-          this.props.dependancies.services.list
+        uniqWith(
+          getServices(
+            data.services,
+            Number(facility.id),
+            this.props.dependancies.services.list
+          ),
+          isEqual
         ),
         token
       )
