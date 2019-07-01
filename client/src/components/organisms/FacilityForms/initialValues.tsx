@@ -1,4 +1,6 @@
 import moment from "moment";
+import { getServicesLeaves } from "../../../services/helpers";
+
 export const basic = (facility: any = null) => {
   return {
     facilityName: facility == null ? null : facility.facility_name,
@@ -13,7 +15,7 @@ export const basic = (facility: any = null) => {
     dateOpened:
       facility == null
         ? "1975-01-01"
-        : moment(new Date(facility.published_date)).format("YYYY-MM-DD"),
+        : moment(new Date(facility.facility_date_opened)).format("YYYY-MM-DD"),
     registrationNumber: facility == null ? null : facility.registration_number,
     publishedDate: facility == null ? null : facility.published_date,
     facility_code_mapping:
@@ -141,60 +143,8 @@ export const services = (currentServices: Array<any> = []) => {
 };
 
 export const getServicesDefaults = (currentServices: Array<any> = []) => {
-  let services: Array<any> = [];
-  currentServices.map(ser => {
-    // has three levels
-    if (
-      ser.children &&
-      ser.children.length > 0 &&
-      ser.children[0].children &&
-      ser.children[0].children.length > 0
-    ) {
-      let service = {
-        selectedServiceType: ser.serviceType.id,
-        firstLevelService: ser.facilityService.service_id,
-        secondLevelService: -1,
-        thirdLevelService: -1
-      };
-      ser.children.map((childService: any) => {
-        service = {
-          ...service,
-          secondLevelService: childService.facilityService.service_id,
-          thirdLevelService: -1
-        };
-        childService.children.map((thirdLevelService: any) => {
-          services.push({
-            ...service,
-            thirdLevelService: thirdLevelService.facilityService.service_id
-          });
-        });
-      });
-    }
-    // has two levels
-    else if (ser.children && ser.children.length > 0) {
-      let service = {
-        selectedServiceType: ser.serviceType.id,
-        firstLevelService: ser.facilityService.service_id,
-        secondLevelService: -1,
-        thirdLevelService: -1
-      };
-      ser.children.map((childService: any) => {
-        services.push({
-          ...service,
-          secondLevelService: childService.facilityService.service_id,
-          thirdLevelService: -1
-        });
-      });
-    }
-    // has one level
-    else {
-      services.push({
-        selectedServiceType: ser.serviceType.id,
-        firstLevelService: ser.facilityService.service_id,
-        secondLevelService: -1,
-        thirdLevelService: -1
-      });
-    }
-  });
-  return services;
+  return getServicesLeaves(currentServices).map((ser: any) => ({
+    ...ser.service,
+    serviceType: {}
+  }));
 };

@@ -21,6 +21,7 @@ import {
 import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
+import swal from "sweetalert";
 export class index extends Component<Props> {
   state = {
     active: "Basic Details",
@@ -46,10 +47,40 @@ export class index extends Component<Props> {
   ];
 
   componentDidMount() {
+    this.setInitialState();
     if (this.props.dependancies.owners.list.length == 0) {
       this.props.fetchOwners();
     }
   }
+
+  setInitialState = async () => {
+    if (await localStorage.getItem("new_facility")) {
+      let facility: any = JSON.parse((await localStorage.getItem(
+        "new_facility"
+      )) as any);
+      // @ts-ignore
+      swal({
+        icon: "info",
+        title: `You Did Not Finish Adding the Facility with name ${facility.details.facilityName}`,
+        text:
+          "Press Continue to continue from where you stopped or cancel to restart",
+        buttons: {
+          cancel: "Cancel",
+          confirm: "Continue"
+        },
+        closeOnClickOutside: false
+      }).then(async (response: any) => {
+        if (response) {
+          this.setNextActiveTab((await localStorage.getItem(
+            "new_facility_active_tab"
+          )) as any);
+          this.setState({ facility });
+          return;
+        }
+        localStorage.clear();
+      });
+    }
+  };
 
   postDetails(data: any, facility: any, token: string | null) {
     this.props
@@ -100,7 +131,11 @@ export class index extends Component<Props> {
 
     this.props
       .postFacilityServices(
-        getServices(data.services, Number(facility.id)),
+        getServices(
+          data.services,
+          Number(facility.id),
+          this.props.dependancies.services.list
+        ),
         token
       )
       .catch((e: any) => {
@@ -114,7 +149,7 @@ export class index extends Component<Props> {
   }
 
   handleSubmit = async () => {
-    let data = JSON.parse((await localStorage.getItem("new_facility")) || "{}");
+    let data = JSON.parse((await localStorage.getItem("new_facility")) as any);
     let token = sessionStorage.getItem("token");
     let facility: any = null;
     this.setState({ networkError: false, networkErrorSavingDetails: [] });
@@ -154,6 +189,7 @@ export class index extends Component<Props> {
         );
         return;
       }
+      localStorage.clear();
     }
     this.setNextActiveTab(nextTab);
   };
@@ -173,7 +209,20 @@ export class index extends Component<Props> {
   };
 
   onCancel = () => {
-    this.props.history.goBack();
+    // @ts-ignore
+    swal({
+      icon: "warning",
+      title: "Are You Sure You Want To Cancel Facility Add ?",
+      text: "All data filled in will be lost",
+      buttons: {
+        cancel: "No",
+        confirm: "Yes"
+      },
+      closeOnClickOutside: false
+    }).then(async (response: any) => {
+      this.props.history.goBack();
+      localStorage.clear();
+    });
   };
 
   render() {

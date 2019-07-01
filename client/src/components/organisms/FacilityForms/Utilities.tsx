@@ -10,11 +10,36 @@ import FormButtons from "../../atoms/FacilityFormButtons";
 // @ts-ignore
 import { isEmpty } from "lodash";
 import { resources } from "./initialValues";
+import InputError from "../../atoms/InputError";
 
 function Basic(props: Props) {
-  const { initialValues, onSubmit } = props;
+  const { initialValues, onSubmit, dependancies } = props;
+
+  const validate = (value: Array<any>) => {
+    let errors: Array<any> = [];
+    dependancies.utilities.types.forEach((type: any) => {
+      const utilitiesOfAType = dependancies.utilities.list.filter(
+        (util: any) => util.utility_type_id == type.id
+      );
+
+      if (!utilitiesOfAType.some((util: any) => value.includes(util.id))) {
+        errors.push(type.utility_type);
+      }
+    });
+    return errors;
+  };
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
+    const errors = validate(values.utilities);
+    if (errors.length > 0) {
+      setErrors({
+        utilities: `Please Select Atleast One Utility for types ${errors.join(
+          ","
+        )}`
+      });
+      setSubmitting(false);
+      return;
+    }
     onSubmit(values.utilities, "utilities", "Services");
     setSubmitting(false);
   };
@@ -67,7 +92,15 @@ export function Form(props: any) {
         <Grid container spacing={3}>
           {dependancies.utilities.types.map((type: any) => (
             <Grid item sm={12} md={6}>
-              {type.utility_type}
+              <h3
+                style={{
+                  fontWeight: "bold",
+                  borderBottom: "1px solid black",
+                  paddingBottom: "5px"
+                }}
+              >
+                {type.utility_type}
+              </h3>
               <Grid container spacing={3}>
                 {dependancies.utilities.list
                   .filter((util: any) => util.utility_type_id === type.id)
@@ -78,12 +111,18 @@ export function Form(props: any) {
                         checked={values.utilities.includes(utility.id)}
                         onChange={() => onUtilityClick(utility)}
                         color="primary"
-                      />
+                      />{" "}
+                      {utility.utility_name}
                     </Grid>
                   ))}
               </Grid>
             </Grid>
           ))}
+          <Grid item sm={12} md={12}>
+            {errors.utilities && errors.utilities.length > 0 && (
+              <InputError error={errors.utilities}></InputError>
+            )}
+          </Grid>
         </Grid>
       </FormWrapper>
       <Grid container spacing={3}>

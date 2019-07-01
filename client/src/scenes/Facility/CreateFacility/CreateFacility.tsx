@@ -66,6 +66,7 @@ function CreateFacility(props: Props) {
               networkError={[]}
               dependancies={dependancies}
               onCancel={onCancel}
+              fromAdd
             />
           )}
           {active == sections[2] && (

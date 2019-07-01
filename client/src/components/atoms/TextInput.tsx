@@ -1,5 +1,6 @@
 import React from "react";
 import { FormControl, TextField, FormHelperText } from "@material-ui/core";
+import InputError from "./InputError";
 
 function TextInput(props: Props) {
   const {
@@ -24,7 +25,9 @@ function TextInput(props: Props) {
         onBlur={onBlur}
       />
       {error && touched && (
-        <FormHelperText data-test={`fieldError${name}`}>{error}</FormHelperText>
+        <FormHelperText data-test={`fieldError${name}`}>
+          <InputError error={error}></InputError>
+        </FormHelperText>
       )}
     </FormControl>
   );

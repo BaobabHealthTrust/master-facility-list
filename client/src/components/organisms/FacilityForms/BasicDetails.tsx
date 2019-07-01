@@ -14,6 +14,8 @@ import styled from "styled-components";
 import { renderOptions } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
 import FacilityCodesForm from "./FacilityCodes";
+import TextInput from "../../atoms/TextInput";
+import InputError from "../../atoms/InputError";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -59,42 +61,28 @@ export function Form(props: any) {
       <FormWrapper>
         <Grid container spacing={3}>
           <Grid item sm={12} md={6}>
-            <FormControl className="mfl-max-width">
-              <TextField
-                value={values.facilityName}
-                name="facilityName"
-                label="Facility Name"
-                placeholder="Enter Facility Name"
-                error={errors.facilityName && touched.facilityName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                aria-describedby="component-error-text"
-              />
-              {errors.facilityName && touched.facilityName && (
-                <FormHelperText id="component-error-text">
-                  {errors.facilityName}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <TextInput
+              value={values.facilityName}
+              label="Facility Name"
+              placeholder="Enter Facility Name"
+              error={errors.facilityName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              touched={touched.facilityName}
+              name="facilityName"
+            />
           </Grid>
           <Grid item sm={12} md={6}>
-            <FormControl className="mfl-max-width">
-              <TextField
-                value={values.commonName}
-                name="commonName"
-                label="Common Name"
-                placeholder="Enter Common Name"
-                error={errors.commonName && touched.commonName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                aria-describedby="component-error-text"
-              />
-              {errors.commonName && touched.commonName && (
-                <FormHelperText id="component-error-text">
-                  {errors.commonName}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <TextInput
+              value={values.commonName}
+              name="commonName"
+              label="Common Name"
+              placeholder="Enter Common Name"
+              error={errors.commonName}
+              touched={touched.commonName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
           </Grid>
           <Grid item sm={12} md={6}>
             <InputLabel htmlFor="facilityType">Facility Type</InputLabel>
@@ -117,7 +105,7 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.facilityType && touched.facilityType && (
-                <FormHelperText>{errors.facilityType}</FormHelperText>
+                <InputError error={errors.facilityType} />
               )}
             </FormControl>
           </Grid>
@@ -147,7 +135,7 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.operationalStatus && touched.operationalStatus && (
-                <FormHelperText>{errors.operationalStatus}</FormHelperText>
+                <InputError error={errors.operationalStatus} />
               )}
             </FormControl>
           </Grid>
@@ -175,7 +163,7 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.operationalStatus && touched.regulatoryStatus && (
-                <FormHelperText>{errors.regulatoryStatus}</FormHelperText>
+                <InputError error={errors.regulatoryStatus} />
               )}
             </FormControl>
           </Grid>
@@ -201,7 +189,7 @@ export function Form(props: any) {
                 {renderOptions(dependancies.owners.list, "facility_owner")}
               </Select>
               {errors.facilityOwner && touched.facilityOwner && (
-                <FormHelperText>{errors.facilityOwner}</FormHelperText>
+                <InputError error={errors.facilityOwner} />
               )}
             </FormControl>
           </Grid>
@@ -224,25 +212,21 @@ export function Form(props: any) {
                 {renderOptions(dependancies.districts.list, "district_name")}
               </Select>
               {errors.district && touched.district && (
-                <FormHelperText>{errors.district}</FormHelperText>
+                <InputError error={errors.district} />
               )}
             </FormControl>
           </Grid>
           <Grid item sm={12} md={3}>
-            <FormControl className="mfl-max-width">
-              <TextField
-                value={values.registrationNumber}
-                name="registrationNumber"
-                label="Registration Number"
-                placeholder="Enter Registration Number"
-                error={errors.registrationNumber && touched.registrationNumber}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.registrationNumber && touched.registrationNumber && (
-                <FormHelperText>{errors.registrationNumber}</FormHelperText>
-              )}
-            </FormControl>
+            <TextInput
+              value={values.registrationNumber}
+              name="registrationNumber"
+              label="Registration Number"
+              placeholder="Enter Registration Number"
+              error={errors.registrationNumber}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              touched={touched.registrationNumber}
+            />
           </Grid>
           <Grid item sm={12} md={3}>
             <FormControl className="mfl-max-width">

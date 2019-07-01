@@ -1,4 +1,5 @@
 import actions from "../actions/actions";
+import { getServicesHierachy } from "../../helpers";
 
 const initialState = {
   utilities: {
@@ -7,6 +8,7 @@ const initialState = {
   },
   services: {
     list: [],
+    hierachy: [],
     types: []
   },
   resources: {
@@ -56,7 +58,8 @@ export default (
         ...state,
         services: {
           ...state.services,
-          list: action.payload.data
+          list: action.payload.data,
+          hierachy: getServicesHierachy(action.payload.data)
         }
       };
     case actions.fetchServiceTypes + "_FULFILLED":

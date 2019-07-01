@@ -12,6 +12,7 @@ import {
   publishFacility as publish,
   putBasicDetails,
   putContactDetails,
+  postContactDetails,
   putResources,
   putUtilities,
   deleteUtilities,
@@ -82,8 +83,8 @@ export const patchFacilityBasicDetails = (
 
 export const postFacilityContactDetails = (data: any, token: string) => {
   return {
-    type: actions.putFacilityContactDetails,
-    payload: putContactDetails(data, token)
+    type: actions.postFacilityContactDetails,
+    payload: postContactDetails(data, token)
   };
 };
 
