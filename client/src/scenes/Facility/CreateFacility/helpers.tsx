@@ -1,3 +1,8 @@
+import {
+  getServicesLeaves,
+  getServicesFromLeaves
+} from "../../../services/helpers";
+
 export const getBasicDetails = (data: any) => ({
   registration_number: data.registrationNumber,
   facility_name: data.facilityName,
@@ -44,22 +49,21 @@ export const getUtilities = (data: any, facilityId: number) =>
     created_date: new Date()
   }));
 
-export const getServices = (data: any, facilityId: number) => {
-  const services = [];
-  for (let service of data) {
-    if (Number(service.firstLevelService) > 0)
-      services.push(service.firstLevelService);
-
-    if (Number(service.secondLevelService) > 0)
-      services.push(service.secondLevelService);
-
-    if (Number(service.thirdLevelService) > 0)
-      services.push(service.thirdLevelService);
-  }
-
-  return services.map((service: any) => ({
-    service_id: service,
+export const getServices = (
+  data: any,
+  facilityId: number,
+  allServices: Array<any>
+) => {
+  return getServicesFromLeaves(data, allServices).map((ser: any) => ({
+    service_id: ser.id,
     facility_id: facilityId,
     client_id: 1
   }));
+};
+
+export const getSelectedServicesFromLeaves = (
+  currentServices: Array<any>,
+  allServices: Array<any>
+) => {
+  return getServicesFromLeaves(currentServices, allServices);
 };

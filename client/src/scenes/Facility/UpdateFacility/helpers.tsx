@@ -1,3 +1,9 @@
+import {
+  getServicesHierachy,
+  getServicesLeaves,
+  getServicesFromLeaves
+} from "../../../services/helpers";
+
 export const getBasicDetails = (data: any) => ({
   registration_number: data.registrationNumber,
   facility_name: data.facilityName,
@@ -37,90 +43,36 @@ export const getUtilitiesToDelete = (data: any, currentUtilities: any) =>
     .filter((val: any) => !data.includes(val.utility_id))
     .map((val: any) => val.id);
 
-export const getServicesToDelete = (data: any, currentServices: any) =>
-  currentServices
-    .filter((val: any) => !data.includes(val.service_id))
-    .map((val: any) => val.id);
+export const getServicesToDelete = (data: any, currentServices: any) => {
+  data = data.map((val: any) => val.service_id);
+  return currentServices
+    .filter((val: any) => !data.includes(val.facilityService.service_id))
+    .map((val: any) => val.facilityService.id);
+};
 
 export const getServices = (
   data: any,
   facilityId: number,
-  currentServices: Array<any>
+  allServices: Array<any>
 ) => {
-  const services = [];
-  for (let service of data) {
-    if (Number(service.firstLevelService) > 0) {
-      let facilityService = currentServices.filter(
-        ser => ser.service_id == service.firstLevelService
-      );
-      let id = facilityService.length > 0 ? facilityService[0].id : null;
-      services.push({
-        service_id: service.firstLevelService,
-        facility_id: facilityId,
-        client_id: 1,
-        id
-      });
-    }
-
-    if (Number(service.secondLevelService) > 0) {
-      let facilityService = currentServices.filter(
-        ser => ser.service_id == service.secondLevelService
-      );
-      let id = facilityService.length > 0 ? facilityService[0].id : null;
-      services.push({
-        service_id: service.secondLevelService,
-        facility_id: facilityId,
-        client_id: 1,
-        id
-      });
-    }
-
-    if (Number(service.thirdLevelService) > 0) {
-      let facilityService = currentServices.filter(
-        ser => ser.service_id == service.thirdLevelService
-      );
-      let id = facilityService.length > 0 ? facilityService[0].id : null;
-      services.push({
-        service_id: service.thirdLevelService,
-        facility_id: facilityId,
-        client_id: 1,
-        id
-      });
-    }
-  }
-
-  return services;
+  return getServicesFromLeaves(data, allServices).map((ser: any) => ({
+    service_id: ser.id,
+    facility_id: facilityId,
+    client_id: 1
+  }));
 };
 
 export const getCurrentServices = (currentServices: Array<any> = []) => {
-  let services: Array<any> = [];
-  currentServices.map(ser => {
-    // has three levels
-    if (
-      ser.children &&
-      ser.children.length > 0 &&
-      ser.children[0].children &&
-      ser.children[0].children.length > 0
-    ) {
-      services.push(ser.facilityService);
-      ser.children.map((childService: any) => {
-        services.push(childService.facilityService);
-        childService.children.map((thirdLevelService: any) => {
-          services.push(thirdLevelService.facilityService);
-        });
-      });
-    }
-    // has two levels
-    else if (ser.children && ser.children.length > 0) {
-      services.push(ser.facilityService);
-      ser.children.map((childService: any) => {
-        services.push(childService.facilityService);
-      });
-    }
-    // has one level
-    else {
-      services.push(ser.facilityService);
-    }
-  });
-  return services;
+  return getServicesLeaves(currentServices).map((ser: any) => ({
+    ...ser.service,
+    facilityService: ser.facilityService,
+    serviceType: {}
+  }));
+};
+
+export const getSelectedServicesFromLeaves = (
+  currentServices: Array<any>,
+  allServices: Array<any>
+) => {
+  return getServicesFromLeaves(currentServices, allServices);
 };

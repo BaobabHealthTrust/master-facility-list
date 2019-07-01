@@ -13,6 +13,7 @@ import { renderOptions } from "../../../services/helpers";
 import Button from "../../atoms/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import TextInput from "../../atoms/TextInput";
 
 function index(props: Props) {
   const { onSubmit, feedbackTypes } = props;
@@ -40,23 +41,16 @@ function index(props: Props) {
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12}>
-              <FormControl className="mfl-max-width">
-                <TextField
-                  value={values.name}
-                  name="name"
-                  label="Name"
-                  placeholder="Enter Your Name"
-                  error={touched.name && typeof errors.name != "undefined"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-describedby="component-error-text"
-                />
-                {errors.name && touched.name && (
-                  <FormHelperText id="component-error-text">
-                    {errors.name}
-                  </FormHelperText>
-                )}
-              </FormControl>
+              <TextInput
+                label="Name"
+                value={values.name}
+                name="name"
+                placeholder="Enter Your Name"
+                error={errors.name}
+                touched={touched.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <FormControl className="mfl-max-width">

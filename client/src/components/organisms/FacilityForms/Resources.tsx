@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import { TextField, FormControl, FormHelperText } from "@material-ui/core";
 import styled from "styled-components";
 import FormButtons from "../../atoms/FacilityFormButtons";
+import InputError from "../../atoms/InputError";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -68,9 +69,7 @@ export function Form(props: any) {
                 {values &&
                   touched[`resource_${resource.id}`] &&
                   errors[`resource_${resource.id}`] && (
-                    <FormHelperText id="component-error-text">
-                      {errors[`resource_${resource.id}`]}
-                    </FormHelperText>
+                    <InputError error={errors[`resource_${resource.id}`]} />
                   )}
               </FormControl>
             </Grid>

@@ -106,7 +106,7 @@ export const getResourcesSchema: any = (resources: any) => {
     validationFields[`resource_${resource.id}`] = yup
       .number()
       .typeError(INVALID_NUM_MESSAGE)
-      .positive("Must be a positive number")
+      .moreThan(-1, "Must be a number")
       .required(REQUIRED_MESSAGE);
   }
   return yup.object().shape(validationFields);

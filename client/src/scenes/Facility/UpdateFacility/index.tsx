@@ -37,7 +37,8 @@ import {
   getUtilities,
   getServicesToDelete,
   getServices,
-  getCurrentServices
+  getCurrentServices,
+  getSelectedServicesFromLeaves
 } from "./helpers";
 import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
@@ -263,12 +264,13 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     if (token == "") return;
 
     let currentServices = getCurrentServices(this.props.facility.services);
-    let data = getServices(values, this.props.facility.id, currentServices);
-
-    let servicesToDelete = getServicesToDelete(
-      data.map(val => val.service_id),
-      currentServices
+    let data = getServices(
+      values,
+      this.props.facility.id,
+      this.props.dependancies.services.list
     );
+
+    let servicesToDelete = getServicesToDelete(data, currentServices);
 
     let error = false;
 
