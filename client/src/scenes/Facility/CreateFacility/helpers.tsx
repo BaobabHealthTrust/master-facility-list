@@ -2,6 +2,8 @@ import {
   getServicesLeaves,
   getServicesFromLeaves
 } from "../../../services/helpers";
+// @ts-ignore
+import { uniqWith, isEqual } from "lodash";
 
 export const getBasicDetails = (data: any) => ({
   registration_number: data.registrationNumber,
@@ -54,11 +56,14 @@ export const getServices = (
   facilityId: number,
   allServices: Array<any>
 ) => {
-  return getServicesFromLeaves(data, allServices).map((ser: any) => ({
-    service_id: ser.id,
-    facility_id: facilityId,
-    client_id: 1
-  }));
+  return uniqWith(
+    getServicesFromLeaves(data, allServices).map((ser: any) => ({
+      service_id: ser.id,
+      facility_id: facilityId,
+      client_id: 1
+    })),
+    isEqual
+  );
 };
 
 export const getSelectedServicesFromLeaves = (

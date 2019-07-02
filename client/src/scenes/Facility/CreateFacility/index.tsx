@@ -22,8 +22,6 @@ import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
 import swal from "sweetalert";
-// @ts-ignore
-import { uniqWith, isEqual } from "lodash";
 
 export class index extends Component<Props> {
   state = {
@@ -134,13 +132,10 @@ export class index extends Component<Props> {
 
     this.props
       .postFacilityServices(
-        uniqWith(
-          getServices(
-            data.services,
-            Number(facility.id),
-            this.props.dependancies.services.list
-          ),
-          isEqual
+        getServices(
+          data.services,
+          Number(facility.id),
+          this.props.dependancies.services.list
         ),
         token
       )
