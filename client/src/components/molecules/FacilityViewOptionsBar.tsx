@@ -11,12 +11,12 @@ import { Grid } from "@material-ui/core";
 library.add(faPlusCircle, faFilePdf);
 
 function FacilityViewOptionsBar(props: Props) {
-  const { facility, downloadFacility } = props;
+  const { facility, downloadFacility, badge } = props;
   return (
     <Container>
       <Grid container>
         <Grid item xs={12} sm={12} md={6}>
-          <Details facility={facility} />
+          <Details facility={facility} badge={badge} />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <ActionButtons
@@ -31,17 +31,20 @@ function FacilityViewOptionsBar(props: Props) {
 type Props = {
   facility: any;
   downloadFacility: Function;
+  badge?: any;
 };
 export default FacilityViewOptionsBar;
 
-export function Details(props: { facility: any }) {
-  const { facility } = props;
+export function Details(props: { facility: any; badge: any }) {
+  const { facility, badge } = props;
   return (
     <div data-test="facilityHeader">
       {<Code>{`${facility.facility_code && facility.facility_code}, `}</Code>}
-      {`${facility.district && facility.district.district_name}`}
+      {`${facility.district && facility.district.district_name}.   `}
+      {<>{badge}</>}
       <br />
       {<b>{facility.common_name}</b>}
+
       {
         <LastUpdated>{` Last Updated - ${moment(facility.updated_at).format(
           "LLLL"

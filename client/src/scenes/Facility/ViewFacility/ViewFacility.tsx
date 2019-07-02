@@ -22,7 +22,8 @@ function ViewFacility(props: Props) {
     utilities,
     onEditDetails,
     downloadFacility,
-    isLoading
+    isLoading,
+    badge
   } = props;
   const pageHeader = facilitySubMenu.filter(val => val.link == activePage);
   return (
@@ -54,6 +55,7 @@ function ViewFacility(props: Props) {
                   utilities={utilities}
                   onEditDetails={onEditDetails}
                   downloadFacility={downloadFacility}
+                  badge={badge}
                 />
               )}
             </Grid>
@@ -90,6 +92,7 @@ function ViewFacility(props: Props) {
                     utilities={utilities}
                     onEditDetails={onEditDetails}
                     downloadFacility={downloadFacility}
+                    badge={badge}
                   />
                 )}
               </Grid>
@@ -112,6 +115,7 @@ type Props = {
   facilitySubMenu: Array<any>;
   downloadFacility: Function;
   isLoading: boolean;
+  badge: any;
 };
 export default ViewFacility;
 

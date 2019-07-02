@@ -21,6 +21,8 @@ import {
   faStethoscope
 } from "@fortawesome/free-solid-svg-icons";
 import { FacilityPages as pages } from "../../../services/utils";
+import { basic } from "../../../components/organisms/FacilityForms/initialValues";
+import StatusBadge from "../../../components/atoms/StatusBadge";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -30,6 +32,29 @@ export class index extends Component<any> {
   state = {
     facilityId: null
   };
+
+  badges = [
+    {
+      label: "Closed",
+      color: "#B80F0A"
+    },
+    {
+      label: "Closed (Temporary)",
+      color: "#EF7215"
+    },
+    {
+      label: "Functional",
+      color: "#00A86B"
+    },
+    {
+      label: "Pending Operation (Under construction)",
+      color: "#FC6600"
+    },
+    {
+      label: "Pending Operation (Construction Complete)",
+      color: "#964000"
+    }
+  ];
 
   facilitySubMenu = [
     {
@@ -100,6 +125,22 @@ export class index extends Component<any> {
     }
   }
 
+  getBadge = () => {
+    if (!this.props.facility.operationalStatus) {
+      return <span />;
+    }
+    const badge = this.badges.filter(
+      (badge: any) =>
+        badge.label ==
+        this.props.facility.operationalStatus.facility_operational_status
+    );
+    return badge.length == 0 ? (
+      <span />
+    ) : (
+      <StatusBadge label={badge[0].label} color={badge[0].color} />
+    );
+  };
+
   isLoading = () =>
     this.props.loading.fetchCurrentBasic ||
     this.props.loading.fetchCurrentResources ||
@@ -125,6 +166,7 @@ export class index extends Component<any> {
         facilitySubMenu={this.facilitySubMenu}
         downloadFacility={this.downloadFacility}
         isLoading={this.isLoading()}
+        badge={this.getBadge()}
       />
     );
   }
