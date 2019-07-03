@@ -2,8 +2,7 @@ import React from "react";
 import { Formik } from "formik";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-// @ts-ignore
-import { TextField, FormControl, FormHelperText } from "@material-ui/core";
+import LocationPickerModal from "../../molecules/LocationPickerModal";
 import styled from "styled-components";
 import FormButtons from "../../atoms/FacilityFormButtons";
 import TextInput from "../../atoms/TextInput";
@@ -43,8 +42,15 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     onCancel,
-    fromAdd
+    fromAdd,
+    setFieldValue
   } = props;
+
+  const setCoordinates = (position: { lat: any; lng: any }) => {
+    setFieldValue("latitude", position.lat);
+    setFieldValue("longitude", position.lng);
+  };
+
   return (
     <>
       <FormWrapper>
@@ -133,29 +139,36 @@ export function Form(props: any) {
               touched={touched.catchmentPopulation}
             />
           </Grid>
-          <Grid item sm={12} md={3}>
-            <TextInput
-              value={values.latitude}
-              name="latitude"
-              label="Facility Latitude"
-              placeholder="Facility Latitude"
-              error={errors.latitude}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              touched={touched.latitude}
-            />
-          </Grid>
-          <Grid item sm={12} md={3}>
-            <TextInput
-              value={values.longitude}
-              name="longitude"
-              label="Facility Longitude"
-              placeholder="Facility Longitude"
-              error={errors.longitude}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              touched={touched.longitude}
-            />
+          <Grid item sm={12} md={6}>
+            <Grid container spacing={2}>
+              <Grid item sm={12} md={6}>
+                <TextInput
+                  value={values.latitude}
+                  name="latitude"
+                  label="Facility Latitude"
+                  placeholder="Facility Latitude"
+                  error={errors.latitude}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  touched={touched.latitude}
+                />
+              </Grid>
+              <Grid item sm={12} md={6}>
+                <TextInput
+                  value={values.longitude}
+                  name="longitude"
+                  label="Facility Longitude"
+                  placeholder="Facility Longitude"
+                  error={errors.longitude}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  touched={touched.longitude}
+                />
+              </Grid>
+              <Grid item sm={12} md={12}>
+                <LocationPickerModal onSave={setCoordinates} />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </FormWrapper>
