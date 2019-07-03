@@ -19,7 +19,9 @@ function FacilityDetails(props: Props) {
     ? [
         ["Catchment area", facility.locations.catchment_area],
         ["Population", facility.locations.catchment_population],
-        ["District", facility.district.district_name]
+        ["District", facility.district.district_name],
+        ["Latitude", facility.geolocations.latitude],
+        ["Longitude", facility.geolocations.longitude]
       ]
     : [];
 
