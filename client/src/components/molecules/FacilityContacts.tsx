@@ -17,11 +17,17 @@ function FacilityDetails(props: Props) {
 
   const locationData = facility.locations
     ? [
+        ["District", facility.district.district_name],
         ["Catchment area", facility.locations.catchment_area],
         ["Population", facility.locations.catchment_population],
-        ["District", facility.district.district_name],
-        ["Latitude", facility.geolocations.latitude],
-        ["Longitude", facility.geolocations.longitude]
+        [
+          "Latitude",
+          facility.geolocations ? facility.geolocations.latitude : ""
+        ],
+        [
+          "Longitude",
+          facility.geolocations ? facility.geolocations.longitude : ""
+        ]
       ]
     : [];
 
