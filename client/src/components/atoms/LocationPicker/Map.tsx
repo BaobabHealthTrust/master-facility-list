@@ -36,14 +36,30 @@ const MFLGoogleMapBg = compose(
       />
     )
   }),
+  withHandlers(() => {
+    const refs = {
+      map: undefined
+    };
+
+    return {
+      onMapMounted: () => (ref: any) => {
+        refs.map = ref;
+      },
+      onClick: ({ onClick }: any) => () => {
+        //   @ts-ignore
+        onClick(refs.map.getProjection());
+      }
+    };
+  }),
   withScriptjs,
   withGoogleMap
 )((props: Props) => {
-  const { position, isMarkerShown } = props;
+  const { position, isMarkerShown, onLocationClick } = props;
   return (
     <GoogleMap
-      defaultZoom={15}
-      defaultCenter={{ lat: position.lat, lng: position.lng + 0.016 }}
+      onClick={pro => onLocationClick(pro)}
+      defaultZoom={6.5}
+      defaultCenter={{ lat: position.lat, lng: position.lng }}
     >
       {isMarkerShown && <Marker position={position} />}
     </GoogleMap>
@@ -56,5 +72,6 @@ type Props = {
     lng: any;
   };
   isMarkerShown?: boolean;
+  onLocationClick: Function;
 };
 export default MFLGoogleMapBg;
