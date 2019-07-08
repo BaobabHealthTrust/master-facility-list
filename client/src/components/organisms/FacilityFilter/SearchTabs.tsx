@@ -8,6 +8,7 @@ import ResourcesFilter from "../../molecules/FacilityResourcesFilterTab";
 import UtilitiesFilter from "../../molecules/FacilitiesUtilitiesFilterTab";
 import ServicesFilter from "../../molecules/FacilitiesServicesFilterTab";
 import styled from "styled-components";
+import FilterCards from "../../molecules/FacilityFilterCards";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,7 +28,7 @@ class SearchTabs extends React.Component<Props> {
   };
 
   render() {
-    const { classes, mobile } = this.props;
+    const { classes, mobile, onRemoveFilter, filterOptions } = this.props;
     const { value } = this.state;
 
     return (
@@ -66,6 +67,14 @@ class SearchTabs extends React.Component<Props> {
             />
           </Tooltip>
         </Tabs>
+        {mobile && (
+          <ChipsContainer>
+            <FilterCards
+              filterOptions={filterOptions}
+              onRemove={onRemoveFilter ? onRemoveFilter : () => {}}
+            />
+          </ChipsContainer>
+        )}
         <TabContainer mobile={mobile}>
           {value === 0 && (
             <BasicFilter
@@ -107,10 +116,17 @@ type Props = {
   filterOptions: Array<any>;
   dependancies: any;
   mobile?: boolean;
+  onRemoveFilter?: Function;
 };
 const TabContainer = styled<any>("div")`
-  height: ${props => (props.mobile ? "calc(100vh - 250px)" : "35.5rem")};
+  height: ${props => (props.mobile ? "calc(100vh - 272px)" : "35.5rem")};
   overflow: scroll;
+`;
+
+const ChipsContainer = styled.div`
+  height: 7vh;
+  display: flex;
+  align-items: center;
 `;
 
 const styles: any = (theme: any) => ({
@@ -120,7 +136,7 @@ const styles: any = (theme: any) => ({
   },
   tabsRoot: {
     borderBottom: "1px solid #e8e8e8",
-    margin: "10px 0px"
+    margin: "0px"
   },
   tabsIndicator: {
     height: "0px"
