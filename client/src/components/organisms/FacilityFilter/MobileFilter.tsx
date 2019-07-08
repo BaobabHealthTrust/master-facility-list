@@ -4,7 +4,7 @@ import Drawer from "@material-ui/core/Drawer";
 import SearchTabs from "./SearchTabs";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import FilterCards from "../../molecules/FacilityFilterCards";
+
 import Card from "../../atoms/Card";
 
 const drawerWidth = 320;
@@ -23,16 +23,9 @@ const FilterDrawer = (props: Props) => {
         dependancies={dependancies}
         filterOptions={filterOptions}
         onAddFilter={onAddFilter}
+        onRemoveFilter={onRemoveFilter}
         mobile
       />
-      {filterOptions.length > 0 && (
-        <Card>
-          <FilterCards
-            filterOptions={filterOptions}
-            onRemove={onRemoveFilter}
-          />
-        </Card>
-      )}
     </FilterContainer>
   );
 };
