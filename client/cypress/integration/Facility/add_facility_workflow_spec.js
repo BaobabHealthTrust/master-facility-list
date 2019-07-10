@@ -1,16 +1,51 @@
 /// <reference types="Cypress" />
 
-const type = (cy, field, value) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const validateSelect = (name, error) => {
+  cy.get(`[data-test=${name}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${name}]`)
+    .first()
+    .click();
+  cy.get("[data-test=formFooter]")
+    .first()
+    .click();
+
+  cy.get(`[data-test=fieldError${name}]`)
+    .first()
+    .should("be.visible")
+    .contains(error);
+};
+
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
     .first()
     .click()
     .clear()
-    .type(`${value}`)
+    .type(value)
     .blur();
 };
 
-const clear = (cy, field) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
+const hasError = (fieldName, error) => {
+  cy.get(`[data-test=fieldError${fieldName}`)
+    .first()
+    .should("be.visible")
+    .contains(error);
+};
+
+const clear = fieldName => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear();
@@ -18,8 +53,10 @@ const clear = (cy, field) => {
 
 describe("Add Facility Workflow", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
+  const BACKEND_URL = Cypress.env("API_URL");
 
   const resourcesFields = [];
+  let serviceTypes = [];
   var utilityCount = 0;
   var details = {
     basics: {
@@ -29,6 +66,7 @@ describe("Add Facility Workflow", () => {
       facilityName: "kuunika",
       facilityOwner: 1,
       facilityType: 1,
+      facility_code_mapping: null,
       operationalStatus: 1,
       publishedDate: null,
       registrationNumber: "11111111",
@@ -45,13 +83,8 @@ describe("Add Facility Workflow", () => {
       longitude: "100",
       latitude: "-100"
     },
-    resources: {},
-    services: {
-      selectedTypes: [],
-      selectedFirstLevelServices: [],
-      selectedSecondLevelServices: [],
-      selectedThirdLevelServices: []
-    }
+    resources: [],
+    services: []
   };
 
   const credentials = {
@@ -63,7 +96,9 @@ describe("Add Facility Workflow", () => {
     basics: {
       facilityName: "Facility name must have atleast 3 characters",
       facilityCommon: "Common name must have atleast 3 characters",
-      registrationNumber: "Invalid Registration Number"
+      registrationNumber: "Invalid Registration Number",
+      registrationNumber: "Invalid Registration Number",
+      empty: "You can't leave this field blank"
     },
     contacts: {
       postalAddress: "Postal Address is too short",
@@ -73,8 +108,8 @@ describe("Add Facility Workflow", () => {
       contactPhoneNumber: "Invalid phone number",
       catchmentArea: "Catchment Area is too short",
       catchmentPopulation: `Invalid number`,
-      longitude: `Invalid number`,
-      latitude: `Invalid number`
+      longitude: `longitude must be a positive number`,
+      latitude: `latitude must be a negative number`
     },
     resources: {
       empty: `Invalid number`
@@ -93,97 +128,93 @@ describe("Add Facility Workflow", () => {
       it("Navigates to the facilities page", () => {
         cy.login(credentials);
         cy.visit(FRONTEND_URL);
-        cy.get("#nav-mobile li a[href='/facilities']").click();
-        cy.get("a[href='/facilities/add']").click();
+        cy.get(`[data-test=menuFacilities]`).click();
+        cy.get("[data-test=addFacilityBtn]").click();
         cy.location().should(loc => {
           expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
         });
       });
-      it("Shows user basics form", () => {
-        cy.get("div .mfl-active-form-wizard").contains("Basic Details");
-      });
     });
 
-    context("Validates input in front-end", () => {
+    context("Validates basic input in front-end", () => {
       it("Validates facility name", () => {
-        cy.get("div[test-id='basicDetailsForm'] div.input-field")
-          .first()
-          .find("label")
-          .first()
-          .click();
+        type("facilityName", "ku");
 
-        cy.get("div.input-field input[name='facilityName']")
+        cy.get(`[data-test=fieldErrorfacilityName`)
           .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
-
-        cy.get(`label[data-error='${errors.basics.facilityName}']`)
-          .first()
-          .should("be.visible");
+          .should("be.visible")
+          .contains(errors.basics.facilityName);
       });
       it("Validates facility common name", () => {
-        cy.get("div[test-id='basicDetailsForm'] div.input-field")
-          .eq(1)
-          .find("label")
-          .first()
-          .click();
+        type("commonName", "ku");
 
-        cy.get("div.input-field input[name='commonName']")
+        cy.get(`[data-test=fieldErrorcommonName]`)
           .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
+          .should("be.visible")
+          .contains(errors.basics.facilityCommon);
+      });
 
-        cy.get(`label[data-error='${errors.basics.facilityCommon}']`)
-          .first()
-          .should("be.visible");
+      it("Validates facility type", () => {
+        validateSelect("facilityType", errors.basics.empty);
+      });
+
+      it("Validates Operational Status", () => {
+        validateSelect("operationalStatus", errors.basics.empty);
+      });
+
+      it("Validates regulatory status", () => {
+        validateSelect("regulatoryStatus", errors.basics.empty);
+      });
+
+      it("Validates facility owner", () => {
+        validateSelect("facilityOwner", errors.basics.empty);
+      });
+
+      it("Validates district", () => {
+        validateSelect("district", errors.basics.empty);
       });
 
       it("Validates Registration", () => {
-        cy.get("div[test-id='basicDetailsForm'] div.input-field")
-          .eq(10)
-          .find("label")
-          .first()
-          .click();
+        type("registrationNumber", "1");
 
-        cy.get("div.input-field input[name='registrationNumber']")
+        cy.get(`[data-test=fieldErrorregistrationNumber]`)
           .first()
-          .click()
-          .clear()
-          .type("1")
-          .blur();
-
-        cy.get(`label[data-error='${errors.basics.registrationNumber}']`)
-          .first()
-          .should("be.visible");
+          .should("be.visible")
+          .contains(errors.basics.registrationNumber);
       });
     });
 
     context("Adds Facility Basics", () => {
       it("Successfully Adds Facility Basics", () => {
-        cy.get("div.input-field input[name='facilityName']")
+        cy.get("input[name='facilityName']")
           .first()
           .click()
           .clear()
           .type("kuunika");
 
-        cy.get("div.input-field input[name='commonName']")
+        cy.get("input[name='commonName']")
           .first()
           .click()
           .clear()
           .type("kuunika");
 
-        cy.get("div.input-field input[name='registrationNumber']")
+        selectFirst("facilityType");
+
+        selectFirst("operationalStatus");
+
+        selectFirst("regulatoryStatus");
+
+        selectFirst("facilityOwner");
+
+        selectFirst("district");
+
+        cy.get("input[name='registrationNumber']")
           .first()
           .click()
           .clear()
           .type("11111111");
 
-        cy.get("div[test-id='basicDetailsForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
         cy.window().then(win => {
@@ -198,205 +229,74 @@ describe("Add Facility Workflow", () => {
   });
 
   context("Adds Contacts and locations", () => {
-    context("Navigates to the contacts form", () => {
-      it("Shows facility contacts form", () => {
-        cy.get("div .mfl-active-form-wizard").contains("Contacts & Location");
+    context("Validates contacts input in front-end", () => {
+      it("Validates postal address", () => {
+        type("postalAddress", "ku");
+
+        hasError("postalAddress", errors.contacts.postalAddress);
       });
-    });
 
-    context("Validates input in front-end", () => {
-      it("Validates address", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .first()
-          .find("label")
-          .first()
-          .click();
+      it("Validates physical address", () => {
+        type("physicalAddress", "ku");
 
-        cy.get("div.input-field input[name='postalAddress']")
-          .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
-
-        cy.get(`label[data-error='${errors.contacts.postalAddress}']`)
-          .first()
-          .should("be.visible");
+        hasError("physicalAddress", errors.contacts.physicalAddress);
       });
-      it("Validates facility physical address", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(1)
-          .find("label")
-          .first()
-          .click();
 
-        cy.get("div.input-field input[name='physicalAddress']")
-          .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
+      it("Validates contact name", () => {
+        type("contactName", "ku");
 
-        cy.get(`label[data-error='${errors.contacts.physicalAddress}']`)
-          .first()
-          .should("be.visible");
+        hasError("contactName", errors.contacts.contactName);
       });
-      it("Validates facility contact name", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(2)
-          .find("label")
-          .first()
-          .click();
 
-        cy.get("div.input-field input[name='contactName']")
-          .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
+      it("Validates phone", () => {
+        type("contactPhoneNumber", "ku");
 
-        cy.get(`label[data-error='${errors.contacts.contactName}']`)
-          .first()
-          .should("be.visible");
+        hasError("contactPhoneNumber", errors.contacts.contactPhoneNumber);
       });
-      it("Validates phone number", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(3)
-          .find("label")
-          .first()
-          .click();
 
-        cy.get("div.input-field input[name='contactPhoneNumber']")
-          .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
-
-        cy.get(`label[data-error='${errors.contacts.contactPhoneNumber}']`)
-          .first()
-          .should("be.visible");
-      });
       it("Validates email", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(4)
-          .find("label")
-          .first()
-          .click();
+        type("contactEmail", "ku");
 
-        cy.get("div.input-field input[name='contactEmail']")
-          .first()
-          .click()
-          .clear()
-          .type("ku")
-          .blur();
-
-        cy.get(`label[data-error='${errors.contacts.contactEmail}']`)
-          .first()
-          .should("be.visible");
+        hasError("contactEmail", errors.contacts.contactEmail);
       });
+
       it("Validates catchment area", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(5)
-          .find("label")
-          .first()
-          .click();
+        type("catchmentArea", "ku");
 
-        cy.get("div.input-field input[name='catchmentArea']")
-          .first()
-          .click()
-          .clear()
-          .type("1")
-          .blur();
-
-        cy.get(`label[data-error="${errors.contacts.catchmentArea}"]`)
-          .first()
-          .should("be.visible");
+        hasError("catchmentArea", errors.contacts.catchmentArea);
       });
-      it("Validates catchment area pupulation", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(6)
-          .find("label")
-          .first()
-          .click();
+      it("Validates catchment area population", () => {
+        type("catchmentPopulation", "ty");
 
-        cy.get("div.input-field input[name='catchmentPopulation']")
-          .first()
-          .click()
-          .clear()
-          .blur();
-
-        cy.get(`label[data-error="${errors.contacts.catchmentPopulation}"]`)
-          .first()
-          .should("be.visible");
-      });
-      it("Validates longitude", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(7)
-          .find("label")
-          .first()
-          .click();
-
-        cy.get("div.input-field input[name='longitude']")
-          .first()
-          .click()
-          .clear()
-          .blur();
-
-        cy.get(`label[data-error="${errors.contacts.longitude}"]`)
-          .first()
-          .should("be.visible");
+        hasError("catchmentPopulation", errors.contacts.catchmentPopulation);
       });
       it("Validates latitude", () => {
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(8)
-          .find("label")
-          .first()
-          .click();
+        type("latitude", "1");
 
-        cy.get("div.input-field input[name='latitude']")
-          .first()
-          .click()
-          .clear()
-          .blur();
+        hasError("latitude", errors.contacts.latitude);
+      });
 
-        cy.get(`label[data-error="${errors.contacts.latitude}"]`)
-          .first()
-          .should("be.visible");
+      it("Validates longitude", () => {
+        type("longitude", "-1");
+
+        hasError("longitude", errors.contacts.longitude);
       });
     });
     context("Adds Facility Contacts And Locations", () => {
       it("Successfully Adds Contacts And Locations", () => {
-        type(cy, "postalAddress", details.contacts.postalAddress);
-        type(cy, "physicalAddress", details.contacts.physicalAddress);
-        type(cy, "contactName", details.contacts.contactName);
-        type(cy, "contactPhoneNumber", details.contacts.contactPhoneNumber);
-        type(cy, "contactEmail", details.contacts.contactEmail);
-        type(cy, "catchmentArea", details.contacts.catchmentArea);
+        type("postalAddress", details.contacts.postalAddress);
+        type("physicalAddress", details.contacts.physicalAddress);
+        type("contactName", details.contacts.contactName);
+        type("contactPhoneNumber", details.contacts.contactPhoneNumber);
+        type("contactEmail", details.contacts.contactEmail);
+        type("catchmentArea", details.contacts.catchmentArea);
+        type("catchmentPopulation", details.contacts.catchmentPopulation);
 
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(6)
-          .find("label")
-          .first()
-          .click();
-        type(cy, "catchmentPopulation", details.contacts.catchmentPopulation);
+        type("longitude", details.contacts.longitude);
 
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(7)
-          .find("label")
-          .first()
-          .click();
-        type(cy, "longitude", details.contacts.longitude);
+        type("latitude", details.contacts.latitude);
 
-        cy.get("div[test-id='contactDetailsForm'] div.input-field")
-          .eq(8)
-          .find("label")
-          .first()
-          .click();
-        type(cy, "latitude", details.contacts.latitude);
-
-        cy.get("div[test-id='contactDetailsForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
 
@@ -413,36 +313,28 @@ describe("Add Facility Workflow", () => {
   context("Adds Facility Resources", () => {
     context("Navigates to the add form", () => {
       it("Shows facility resources form", () => {
-        cy.get("div .mfl-active-form-wizard").contains("Resources");
-        cy.get("div[test-id='resourcesForm'] div.input-field").each(
-          (el, index) => {
-            cy.wrap(el)
-              .find("input")
-              .first()
-              .invoke("attr", "name")
-              .then(val => {
-                resourcesFields.push(val);
-                details.resources[val] = "10";
-                clear(cy, val);
-              });
-          }
-        );
+        cy.get("[data-test='resourcesForm'] input").each((el, index) => {
+          cy.wrap(el)
+            .invoke("attr", "name")
+            .then(val => {
+              resourcesFields.push(val);
+              details.resources[val] = "10";
+              clear(val);
+            });
+        });
       });
     });
-    context("Validates input in front-end", () => {
+    context("Validates resources input in front-end", () => {
       it("Validates resources values", () => {
-        cy.get("div[test-id='resourcesForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
-        for (
-          let fieldIndex = 0;
-          fieldIndex < resourcesFields.length;
-          fieldIndex++
-        ) {
-          cy.get(`label[data-error="${errors.resources.empty}"]`)
-            .first(fieldIndex)
-            .should("be.visible");
+
+        for (let field of resourcesFields) {
+          cy.get(`[data-test="fieldError${field}"]`)
+            .first()
+            .should("be.visible")
+            .contains(errors.resources.empty);
         }
       });
     });
@@ -450,13 +342,12 @@ describe("Add Facility Workflow", () => {
     context("Adds Facility Resources", () => {
       it("Successfully Adds Facility Resources", () => {
         for (let field of resourcesFields) {
-          type(cy, field, details.resources[field]);
+          type(field, details.resources[field]);
         }
       });
 
       it("Successfully Adds Facility Resources", () => {
-        cy.get("div[test-id='resourcesForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
 
@@ -471,33 +362,26 @@ describe("Add Facility Workflow", () => {
   });
 
   context("Adds Facility Utilities", () => {
-    context("Navigates to the add form", () => {
-      it("Shows facility utilities form", () => {
-        cy.get("div .mfl-active-form-wizard").contains("Utilities");
-      });
-    });
-
-    context("Validates input in front-end", () => {
+    context("Validates utilities input in front-end", () => {
       it("Validates utilities values", () => {
-        cy.get("div[test-id='utilitiesForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
 
-        cy.get("div[test-id='utilitiesForm']").contains(
+        cy.get("[data-test='fieldErrorutilities']").contains(
           "Energy Proovider,Water Provider,Waste Disposal,Network Provider"
         );
       });
     });
+
     context("Adds Facility Utilities", () => {
       it("Successfully Adds Facility Utilities", () => {
-        cy.get("div[test-id='utilitiesForm'] div label").each(el => {
+        cy.get("[data-test='utilitiesForm'] input").each(el => {
           cy.wrap(el).click();
           utilityCount++;
         });
 
-        cy.get("div[test-id='utilitiesForm']")
-          .find("button")
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
 
@@ -510,352 +394,19 @@ describe("Add Facility Workflow", () => {
   });
 
   context("Adds Services", () => {
-    context("Navigates to the add form", () => {
-      it("Shows facility services form", () => {
-        cy.get("div .mfl-active-form-wizard").contains("Services");
-      });
-    });
-
-    context("Validates input in front-end", () => {
-      it("Validates services type", () => {
-        cy.get("div[test-id='servicesForm']")
-          .find("button")
+    context("Validates services input in front-end", () => {
+      it("Validates services values", () => {
+        cy.fetch_service_types().then(serviceTypesData => {
+          serviceTypes = serviceTypesData;
+        });
+        cy.get("[data-test='saveBtn']")
           .first()
           .click();
 
-        cy.get("div[test-id='servicesForm']").contains(
-          "Please select a Service Type"
-        );
-
-        cy.get("div[test-id='servicesForm'] input")
+        cy.get(`[data-test="fieldErrorservices"]`)
           .first()
-          .click();
-
-        cy.get("ul.dropdown-content.select-dropdown.active li")
-          .eq(1)
-          .invoke("text")
-          .then(text => {
-            details.services.selectedTypes.push(text);
-          });
-
-        cy.get("ul.dropdown-content.select-dropdown.active li")
-          .eq(1)
-          .click();
-      });
-      it("Validates First Level Service", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 2) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(1)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm']")
-                  .find("button")
-                  .first()
-                  .click();
-
-                cy.get("div[test-id='servicesForm']").contains(
-                  "Please select a Service"
-                );
-
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(1)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedFirstLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-      it("Validates Second level service", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(2)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm']")
-                  .find("button")
-                  .first()
-                  .click();
-
-                cy.get("div[test-id='servicesForm']").contains(
-                  "Please select a Subservice"
-                );
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(2)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedSecondLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-      it("Validates Third level service", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(3)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm']")
-                  .find("button")
-                  .first()
-                  .click();
-
-                cy.get("div[test-id='servicesForm']").contains(
-                  "Please select a Sub Sub Service"
-                );
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(3)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedThirdLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-    });
-    context("Adds Facility Services", () => {
-      it(`Successfully Adds Facility Services (first services set)`, () => {
-        cy.get("div[test-id='servicesForm']")
-          .find("button")
-          .first()
-          .click();
-
-        for (
-          let typeIndex = 0;
-          typeIndex < details.services.selectedTypes.length;
-          typeIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(typeIndex)
-            .find("div.flex.justify-between")
-            .first()
-            .should("contain", details.services.selectedTypes[typeIndex]);
-        }
-
-        for (
-          let firstLevelIndex = 0;
-          firstLevelIndex < details.services.selectedFirstLevelServices.length;
-          firstLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(firstLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-4")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedFirstLevelServices[firstLevelIndex]
-            );
-        }
-
-        for (
-          let secondLevelIndex = 0;
-          secondLevelIndex <
-          details.services.selectedSecondLevelServices.length;
-          secondLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(secondLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-8")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedSecondLevelServices[secondLevelIndex]
-            );
-        }
-
-        for (
-          let thirdLevelIndex = 0;
-          thirdLevelIndex < details.services.selectedThirdLevelServices.length;
-          thirdLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(thirdLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-12")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedThirdLevelServices[thirdLevelIndex]
-            );
-        }
-      });
-      it("Successfully selects Services (category)", () => {
-        cy.get("div[test-id='servicesForm'] input")
-          .first()
-          .click();
-
-        cy.get("ul.dropdown-content.select-dropdown.active li")
-          .eq(2)
-          .invoke("text")
-          .then(text => {
-            details.services.selectedTypes.push(text);
-          });
-
-        cy.get("ul.dropdown-content.select-dropdown.active li")
-          .eq(2)
-          .click();
-      });
-      it("Successfully selects Services (first level)", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 2) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(1)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(1)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedFirstLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-      it("Successfully selects Services (second level)", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(2)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(2)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedSecondLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-      it("Successfully selects Services (third level)", () => {
-        if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-          cy.get("div[test-id='servicesForm'] input")
-            .eq(3)
-            .then(input => {
-              if (input) {
-                cy.get("div[test-id='servicesForm'] input")
-                  .eq(3)
-                  .click();
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .invoke("text")
-                  .then(text => {
-                    details.services.selectedThirdLevelServices.push(text);
-                  });
-
-                cy.get("ul.dropdown-content.select-dropdown.active li")
-                  .eq(1)
-                  .click();
-              }
-            });
-        }
-      });
-      it("Successfully Adds second service", () => {
-        cy.get("div[test-id='servicesForm']")
-          .find("button")
-          .first()
-          .click();
-
-        for (
-          let typeIndex = 0;
-          typeIndex < details.services.selectedTypes.length;
-          typeIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(typeIndex)
-            .find("div.flex.justify-between")
-            .first()
-            .should("contain", details.services.selectedTypes[typeIndex]);
-        }
-
-        for (
-          let firstLevelIndex = 0;
-          firstLevelIndex < details.services.selectedFirstLevelServices.length;
-          firstLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(firstLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-4")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedFirstLevelServices[firstLevelIndex]
-            );
-        }
-
-        for (
-          let secondLevelIndex = 0;
-          secondLevelIndex <
-          details.services.selectedSecondLevelServices.length;
-          secondLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(secondLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-8")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedSecondLevelServices[secondLevelIndex]
-            );
-        }
-
-        for (
-          let thirdLevelIndex = 0;
-          thirdLevelIndex < details.services.selectedThirdLevelServices.length;
-          thirdLevelIndex++
-        ) {
-          cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-            .eq(thirdLevelIndex)
-            .find("div.flex.justify-between.mt-4.ml-12")
-            .first()
-            .should(
-              "contain",
-              details.services.selectedThirdLevelServices[thirdLevelIndex]
-            );
-        }
+          .should("be.visible")
+          .contains("Please Select Atleast One Service");
       });
     });
   });
@@ -867,35 +418,45 @@ describe("Add Facility Workflow", () => {
       });
       cy.route(
         "POST",
-        `http://127.0.0.1:4000/api/Facilities/`,
+        `${BACKEND_URL}/Facilities`,
         "fixture:add_facility_basics_success.json"
       ).as("basics");
 
       cy.route(
         "POST",
-        `http://127.0.0.1:4000/api/Facilities/contactDetails`,
+        `${BACKEND_URL}/Facilities/contactDetails`,
         "fixture:add_facility_basics_success.json"
       ).as("contacts");
 
-      cy.route("POST", `http://127.0.0.1:4000/api/FacilityResources/`, {
+      cy.route("POST", `${BACKEND_URL}/FacilityResources`, {
         success: "done"
       }).as("resources");
 
-      cy.route("POST", `http://127.0.0.1:4000/api/FacilityUtilities/`, {
+      cy.route("POST", `${BACKEND_URL}/FacilityUtilities`, {
         success: "done"
       }).as("utilities");
 
-      cy.route("POST", `http://127.0.0.1:4000/api/FacilityServices/`, {
+      cy.route("POST", `${BACKEND_URL}/FacilityServices`, {
         success: "done"
       }).as("services");
 
-      cy.route("POST", `http://127.0.0.1:4000/api/Facilities/publish`, {
+      cy.route("POST", `${BACKEND_URL}/Facilities/publish`, {
         success: "done"
       }).as("publish");
 
-      cy.get("div[test-id='servicesForm']")
-        .find("button")
-        .eq(1)
+      for (let serviceType of serviceTypes) {
+        selectFirst(serviceType.service_type.replace(/ /g, ""));
+
+        cy.get(`[id=menu-${serviceType.service_type.replace(/ /g, "")}]`)
+          .first()
+          .click();
+        cy.get("[data-test=formFooter]")
+          .first()
+          .click();
+      }
+
+      cy.get("[data-test='saveBtn']")
+        .first()
         .click();
 
       cy.wait("@basics");
@@ -935,7 +496,7 @@ describe("Add Facility Workflow", () => {
           cy.expect(utility).to.have.deep.keys({
             client_id: 1,
             created_date: "2019-04-02T12:16:28.577Z",
-            facility_id: 1035,
+            facility_id: 1,
             utility_id: 4
           });
         }
@@ -947,7 +508,7 @@ describe("Add Facility Workflow", () => {
         delete body[0].client;
         cy.expect(body[0]).to.have.deep.keys({
           client_id: 1,
-          facility_id: 0,
+          facility_id: 1,
           service_id: 1
         });
       });

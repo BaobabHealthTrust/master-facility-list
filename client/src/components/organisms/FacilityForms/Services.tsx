@@ -8,7 +8,8 @@ import {
   InputLabel,
   MenuItem,
   Checkbox,
-  ListItemText
+  ListItemText,
+  Input
 } from "@material-ui/core";
 import styled from "styled-components";
 import { getServicesLeaves } from "../../../services/helpers";
@@ -106,8 +107,13 @@ export function Form(props: any) {
                     <InputLabel>Select {serType.service_type}</InputLabel>
                     <FormControl className="mfl-max-width">
                       <Select
-                        data-test={serType.service_type}
+                        data-test={serType.service_type.replace(/ /g, "")}
                         multiple
+                        input={
+                          <Input
+                            name={serType.service_type.replace(/ /g, "")}
+                          />
+                        }
                         onChange={e =>
                           onChange(
                             e,

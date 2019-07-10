@@ -14,7 +14,7 @@ const StatCards = (props: Props) => {
           xs={12}
           sm={6}
           key={stat.title}
-          data-test={stat.title.replace(" ", "")}
+          data-test={stat.title.replace(/ /g, "")}
         >
           <StatCard
             highlight={index == 0}

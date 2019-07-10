@@ -43,7 +43,7 @@ describe("Tests Facility Resources Page", () => {
         for (let resource of data) {
           cy.get(
             `[data-test=detailLabel${resource.resource.resource_name.replace(
-              " ",
+              / /g,
               ""
             )}]`
           ).contains(resource.quantity);

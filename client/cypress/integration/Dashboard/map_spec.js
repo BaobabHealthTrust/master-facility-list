@@ -11,7 +11,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
+            .find(`path[data-test=${district.district_name.replace(/ /g, "")}]`)
             .should("be.visible");
       });
     });
@@ -25,7 +25,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
+            .find(`path[data-test=${district.district_name.replace(/ /g, "")}]`)
             .click()
             .then(source => {
               selectedDistricts.push(source.attr("id"));
@@ -102,7 +102,7 @@ describe("Test Filter Map Charts", () => {
           district.district_name != "Kapichira" &&
           cy
             .get("#Map-Filter")
-            .find(`path[data-test=${district.district_name.replace(" ", "")}]`)
+            .find(`path[data-test=${district.district_name.replace(/ /g, "")}]`)
             .click()
             .then(source => {
               selectedDistricts = selectedDistricts.filter(

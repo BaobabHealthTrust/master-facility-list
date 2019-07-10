@@ -35,6 +35,7 @@ Cypress.Commands.add("login", credentials => {
     });
   });
 });
+
 Cypress.Commands.add("fetch_current_facility", id => {
   const RESOURCE = `Facilities/${id}`;
   const FILTER = {

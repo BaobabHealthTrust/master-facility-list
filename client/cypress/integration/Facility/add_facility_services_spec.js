@@ -1,17 +1,32 @@
 /// <reference types="Cypress" />
 
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
 describe("Add Facility Services", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
+  const BACKEND_URL = Cypress.env("API_URL");
+
+  var details = {};
+  const fields = [];
+  let serviceTypes = [];
 
   const credentials = {
     username: "mfladminuser",
     password: "admin"
   };
 
-  var selectedTypes = [];
-  var selectedFirstLevelServices = [];
-  var selectedSecondLevelServices = [];
-  var selectedThirdLevelServices = [];
+  const errors = {
+    empty: `Invalid number`
+  };
+
   before(() => {
     cy.window().then(win => {
       win.sessionStorage.clear();
@@ -22,346 +37,116 @@ describe("Add Facility Services", () => {
         `{"details":{"facilityName":"kuunika"}}`
       );
     });
+    cy.fetch_service_types().then(serviceTypesData => {
+      serviceTypes = serviceTypesData;
+    });
   });
+
   beforeEach(() => {
     cy.window().then(win => {
       win.localStorage.setItem("new_facility_active_tab", `Services`);
+      win.localStorage.setItem(
+        "new_facility",
+        `{"details":{"facilityName":"kuunika"}}`
+      );
     });
   });
 
   context("Navigates to the add form", () => {
-    it("Navigates to the services page", () => {
+    it("Navigates to the facilities page", () => {
       cy.login(credentials);
       cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.get("a[href='/facilities/add']").click();
+      cy.get(`[data-test=menuFacilities]`).click();
+      cy.get("[data-test=addFacilityBtn]").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
       });
     });
 
-    it("Shows facility services form", () => {
+    it("Shows facility contacts form", () => {
       cy.get("button.swal-button.swal-button--confirm")
         .first()
         .click();
-
-      cy.get("div .mfl-active-form-wizard").contains("Services");
     });
   });
 
   context("Validates input in front-end", () => {
-    it("Validates services type", () => {
-      cy.get("div[test-id='servicesForm']")
-        .find("button")
+    it("Validates services values", () => {
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 
-      cy.get("div[test-id='servicesForm']").contains(
-        "Please select a Service Type"
-      );
-
-      cy.get("div[test-id='servicesForm'] input")
+      cy.get(`[data-test="fieldErrorservices"]`)
         .first()
-        .click();
-
-      cy.get("ul.dropdown-content.select-dropdown.active li")
-        .eq(1)
-        .invoke("text")
-        .then(text => {
-          selectedTypes.push(text);
-        });
-
-      cy.get("ul.dropdown-content.select-dropdown.active li")
-        .eq(1)
-        .click();
-    });
-    it("Validates First Level Service", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 2) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(1)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm']")
-                .find("button")
-                .first()
-                .click();
-
-              cy.get("div[test-id='servicesForm']").contains(
-                "Please select a Service"
-              );
-
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(1)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedFirstLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
-    });
-    it("Validates Second level service", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(2)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm']")
-                .find("button")
-                .first()
-                .click();
-
-              cy.get("div[test-id='servicesForm']").contains(
-                "Please select a Subservice"
-              );
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(2)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedSecondLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
-    });
-    it("Validates Third level service", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(3)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm']")
-                .find("button")
-                .first()
-                .click();
-
-              cy.get("div[test-id='servicesForm']").contains(
-                "Please select a Sub Sub Service"
-              );
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(3)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedThirdLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
+        .should("be.visible")
+        .contains("Please Select Atleast One Service");
     });
   });
 
   context("Adds Facility Services", () => {
-    it(`Successfully Adds Facility Services (first services set)`, () => {
-      cy.get("div[test-id='servicesForm']")
-        .find("button")
+    let selectedServices;
+    it("Successfully Adds Facility Services", () => {
+      cy.server({
+        status: 200
+      });
+      cy.route(
+        "POST",
+        `${BACKEND_URL}/Facilities`,
+        "fixture:add_facility_basics_success.json"
+      ).as("basics");
+
+      cy.route(
+        "POST",
+        `${BACKEND_URL}/Facilities/contactDetails`,
+        "fixture:add_facility_basics_success.json"
+      ).as("contacts");
+
+      cy.route("POST", `${BACKEND_URL}/FacilityResources`, {
+        success: "done"
+      }).as("resources");
+
+      cy.route("POST", `${BACKEND_URL}/FacilityUtilities`, {
+        success: "done"
+      }).as("utilities");
+
+      cy.route("POST", `${BACKEND_URL}/FacilityServices`, {
+        success: "done"
+      }).as("services");
+
+      cy.route("POST", `${BACKEND_URL}/Facilities/publish`, {
+        success: "done"
+      }).as("publish");
+
+      for (let serviceType of serviceTypes) {
+        selectFirst(serviceType.service_type.replace(/ /g, ""));
+
+        cy.get(`[id=menu-${serviceType.service_type.replace(/ /g, "")}]`)
+          .first()
+          .click();
+        cy.get("[data-test=formFooter]")
+          .first()
+          .click();
+      }
+
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 
-      for (let typeIndex = 0; typeIndex < selectedTypes.length; typeIndex++) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(typeIndex)
-          .find("div.flex.justify-between")
-          .first()
-          .should("contain", selectedTypes[typeIndex]);
-      }
+      cy.wait("@basics");
+      cy.wait("@contacts");
+      cy.wait("@services");
+      cy.wait("@publish");
 
-      for (
-        let firstLevelIndex = 0;
-        firstLevelIndex < selectedFirstLevelServices.length;
-        firstLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(firstLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-4")
-          .first()
-          .should("contain", selectedFirstLevelServices[firstLevelIndex]);
-      }
-
-      for (
-        let secondLevelIndex = 0;
-        secondLevelIndex < selectedSecondLevelServices.length;
-        secondLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(secondLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-8")
-          .first()
-          .should("contain", selectedSecondLevelServices[secondLevelIndex]);
-      }
-
-      for (
-        let thirdLevelIndex = 0;
-        thirdLevelIndex < selectedThirdLevelServices.length;
-        thirdLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(thirdLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-12")
-          .first()
-          .should("contain", selectedThirdLevelServices[thirdLevelIndex]);
-      }
-    });
-    it("Successfully selects Services (category)", () => {
-      cy.get("div[test-id='servicesForm'] input")
-        .first()
-        .click();
-
-      cy.get("ul.dropdown-content.select-dropdown.active li")
-        .eq(2)
-        .invoke("text")
-        .then(text => {
-          selectedTypes.push(text);
+      cy.get("@services").then(xhr => {
+        const { body } = xhr.request;
+        delete body[0].updated_at;
+        delete body[0].client;
+        cy.expect(body[0]).to.have.deep.keys({
+          client_id: 1,
+          facility_id: 1,
+          service_id: 1
         });
-
-      cy.get("ul.dropdown-content.select-dropdown.active li")
-        .eq(2)
-        .click();
-    });
-    it("Successfully selects Services (first level)", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 2) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(1)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(1)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedFirstLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
-    });
-    it("Successfully selects Services (second level)", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(2)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(2)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedSecondLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
-    });
-    it("Successfully selects Services (third level)", () => {
-      if (Cypress.$("div[test-id='servicesForm'] input").length >= 3) {
-        cy.get("div[test-id='servicesForm'] input")
-          .eq(3)
-          .then(input => {
-            if (input) {
-              cy.get("div[test-id='servicesForm'] input")
-                .eq(3)
-                .click();
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .invoke("text")
-                .then(text => {
-                  selectedThirdLevelServices.push(text);
-                });
-
-              cy.get("ul.dropdown-content.select-dropdown.active li")
-                .eq(1)
-                .click();
-            }
-          });
-      }
-    });
-    it("Successfully Adds second service", () => {
-      cy.get("div[test-id='servicesForm']")
-        .find("button")
-        .first()
-        .click();
-
-      for (let typeIndex = 0; typeIndex < selectedTypes.length; typeIndex++) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(typeIndex)
-          .find("div.flex.justify-between")
-          .first()
-          .should("contain", selectedTypes[typeIndex]);
-      }
-
-      for (
-        let firstLevelIndex = 0;
-        firstLevelIndex < selectedFirstLevelServices.length;
-        firstLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(firstLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-4")
-          .first()
-          .should("contain", selectedFirstLevelServices[firstLevelIndex]);
-      }
-
-      for (
-        let secondLevelIndex = 0;
-        secondLevelIndex < selectedSecondLevelServices.length;
-        secondLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(secondLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-8")
-          .first()
-          .should("contain", selectedSecondLevelServices[secondLevelIndex]);
-      }
-
-      for (
-        let thirdLevelIndex = 0;
-        thirdLevelIndex < selectedThirdLevelServices.length;
-        thirdLevelIndex++
-      ) {
-        cy.get("div div.p-4.mb-2.shadow.w-full.cursor-pointer")
-          .eq(thirdLevelIndex)
-          .find("div.flex.justify-between.mt-4.ml-12")
-          .first()
-          .should("contain", selectedThirdLevelServices[thirdLevelIndex]);
-      }
+      });
     });
   });
 });
