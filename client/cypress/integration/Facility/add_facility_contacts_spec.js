@@ -1,11 +1,18 @@
 /// <reference types="Cypress" />
-const type = (cy, field, value) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const type = (fieldName, value) => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear()
     .type(`${value}`)
     .blur();
+};
+
+const hasError = (fieldName, error) => {
+  cy.get(`[data-test=fieldError${fieldName}`)
+    .first()
+    .should("be.visible")
+    .contains(error);
 };
 
 describe("Add Facility Contacts", () => {
@@ -36,8 +43,8 @@ describe("Add Facility Contacts", () => {
     contactPhoneNumber: "Invalid phone number",
     catchmentArea: "Catchment Area is too short",
     catchmentPopulation: `Invalid number`,
-    longitude: `Invalid number`,
-    latitude: `Invalid number`
+    longitude: `longitude must be a positive number`,
+    latitude: `latitude must be a negative number`
   };
 
   before(() => {
@@ -67,8 +74,8 @@ describe("Add Facility Contacts", () => {
     it("Navigates to the facilities page", () => {
       cy.login(credentials);
       cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.get("a[href='/facilities/add']").click();
+      cy.get(`[data-test=menuFacilities]`).click();
+      cy.get("[data-test=addFacilityBtn]").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
       });
@@ -78,205 +85,78 @@ describe("Add Facility Contacts", () => {
       cy.get("button.swal-button.swal-button--confirm")
         .first()
         .click();
-
-      cy.get("div .mfl-active-form-wizard").contains("Contacts & Location");
     });
   });
 
   context("Validates input in front-end", () => {
-    it("Validates address", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .first()
-        .find("label")
-        .first()
-        .click();
+    it("Validates postal address", () => {
+      type("postalAddress", "ku");
 
-      cy.get("div.input-field input[name='postalAddress']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.postalAddress}']`)
-        .first()
-        .should("be.visible");
+      hasError("postalAddress", errors.postalAddress);
     });
-    it("Validates facility physical address", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(1)
-        .find("label")
-        .first()
-        .click();
 
-      cy.get("div.input-field input[name='physicalAddress']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
+    it("Validates physical address", () => {
+      type("physicalAddress", "ku");
 
-      cy.get(`label[data-error='${errors.physicalAddress}']`)
-        .first()
-        .should("be.visible");
+      hasError("physicalAddress", errors.physicalAddress);
     });
-    it("Validates facility contact name", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(2)
-        .find("label")
-        .first()
-        .click();
 
-      cy.get("div.input-field input[name='contactName']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
+    it("Validates contact name", () => {
+      type("contactName", "ku");
 
-      cy.get(`label[data-error='${errors.contactName}']`)
-        .first()
-        .should("be.visible");
+      hasError("contactName", errors.contactName);
     });
-    it("Validates phone number", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(3)
-        .find("label")
-        .first()
-        .click();
 
-      cy.get("div.input-field input[name='contactPhoneNumber']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
+    it("Validates phone", () => {
+      type("contactPhoneNumber", "ku");
 
-      cy.get(`label[data-error='${errors.contactPhoneNumber}']`)
-        .first()
-        .should("be.visible");
+      hasError("contactPhoneNumber", errors.contactPhoneNumber);
     });
+
     it("Validates email", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(4)
-        .find("label")
-        .first()
-        .click();
+      type("contactEmail", "ku");
 
-      cy.get("div.input-field input[name='contactEmail']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.contactEmail}']`)
-        .first()
-        .should("be.visible");
+      hasError("contactEmail", errors.contactEmail);
     });
+
     it("Validates catchment area", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(5)
-        .find("label")
-        .first()
-        .click();
+      type("catchmentArea", "ku");
 
-      cy.get("div.input-field input[name='catchmentArea']")
-        .first()
-        .click()
-        .clear()
-        .type("1")
-        .blur();
-
-      cy.get(`label[data-error="${errors.catchmentArea}"]`)
-        .first()
-        .should("be.visible");
+      hasError("catchmentArea", errors.catchmentArea);
     });
-    it("Validates catchment area pupulation", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(6)
-        .find("label")
-        .first()
-        .click();
+    it("Validates catchment area population", () => {
+      type("catchmentPopulation", "ty");
 
-      cy.get("div.input-field input[name='catchmentPopulation']")
-        .first()
-        .click()
-        .clear()
-        .blur();
-
-      cy.get(`label[data-error="${errors.catchmentPopulation}"]`)
-        .first()
-        .should("be.visible");
-    });
-    it("Validates longitude", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(7)
-        .find("label")
-        .first()
-        .click();
-
-      cy.get("div.input-field input[name='longitude']")
-        .first()
-        .click()
-        .clear()
-        .blur();
-
-      cy.get(`label[data-error="${errors.longitude}"]`)
-        .first()
-        .should("be.visible");
+      hasError("catchmentPopulation", errors.catchmentPopulation);
     });
     it("Validates latitude", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(8)
-        .find("label")
-        .first()
-        .click();
+      type("latitude", "1");
 
-      cy.get("div.input-field input[name='latitude']")
-        .first()
-        .click()
-        .clear()
-        .blur();
+      hasError("latitude", errors.latitude);
+    });
 
-      cy.get(`label[data-error="${errors.latitude}"]`)
-        .first()
-        .should("be.visible");
+    it("Validates longitude", () => {
+      type("longitude", "-1");
+
+      hasError("longitude", errors.longitude);
     });
   });
 
   context("Adds Facility Contacts And Locations", () => {
     it("Successfully Adds Contacts And Locations", () => {
-      type(cy, "postalAddress", details.postalAddress);
-      type(cy, "physicalAddress", details.physicalAddress);
-      type(cy, "contactName", details.contactName);
-      type(cy, "contactPhoneNumber", details.contactPhoneNumber);
-      type(cy, "contactEmail", details.contactEmail);
-      type(cy, "catchmentArea", details.catchmentArea);
+      type("postalAddress", details.postalAddress);
+      type("physicalAddress", details.physicalAddress);
+      type("contactName", details.contactName);
+      type("contactPhoneNumber", details.contactPhoneNumber);
+      type("contactEmail", details.contactEmail);
+      type("catchmentArea", details.catchmentArea);
+      type("catchmentPopulation", details.catchmentPopulation);
 
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(6)
-        .find("label")
-        .first()
-        .click();
-      type(cy, "catchmentPopulation", details.catchmentPopulation);
+      type("longitude", details.longitude);
 
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(7)
-        .find("label")
-        .first()
-        .click();
-      type(cy, "longitude", details.longitude);
+      type("latitude", details.latitude);
 
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(8)
-        .find("label")
-        .first()
-        .click();
-      type(cy, "latitude", details.latitude);
-
-      cy.get("div[test-id='contactDetailsForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 

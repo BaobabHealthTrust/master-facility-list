@@ -106,6 +106,7 @@ export function Form(props: any) {
                     <InputLabel>Select {serType.service_type}</InputLabel>
                     <FormControl className="mfl-max-width">
                       <Select
+                        data-test={serType.service_type}
                         multiple
                         onChange={e =>
                           onChange(
@@ -150,7 +151,7 @@ export function Form(props: any) {
           </Grid>
           <Grid item sm={12} md={12}>
             {errors.services && errors.services.length > 0 && (
-              <InputError error={errors.services}></InputError>
+              <InputError error={errors.services} for="services"></InputError>
             )}
           </Grid>
         </Grid>

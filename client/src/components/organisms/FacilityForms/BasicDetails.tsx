@@ -88,6 +88,7 @@ export function Form(props: any) {
             <InputLabel htmlFor="facilityType">Facility Type</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                data-test="facilityType"
                 value={values.facilityType}
                 onBlur={handleBlur}
                 error={errors.facilityType && touched.facilityType}
@@ -105,7 +106,7 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.facilityType && touched.facilityType && (
-                <InputError error={errors.facilityType} />
+                <InputError error={errors.facilityType} for="facilityType" />
               )}
             </FormControl>
           </Grid>
@@ -113,6 +114,7 @@ export function Form(props: any) {
             <InputLabel>Operational Status</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                data-test="operationalStatus"
                 onBlur={handleBlur}
                 error={errors.operationalStatus && touched.operationalStatus}
                 onChange={(e: any) =>
@@ -135,7 +137,10 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.operationalStatus && touched.operationalStatus && (
-                <InputError error={errors.operationalStatus} />
+                <InputError
+                  error={errors.operationalStatus}
+                  for="operationalStatus"
+                />
               )}
             </FormControl>
           </Grid>
@@ -143,6 +148,7 @@ export function Form(props: any) {
             <InputLabel>Regulatory Status</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                data-test="regulatoryStatus"
                 onBlur={handleBlur}
                 error={errors.regulatoryStatus && touched.regulatoryStatus}
                 onChange={(e: any) =>
@@ -163,7 +169,10 @@ export function Form(props: any) {
                 )}
               </Select>
               {errors.operationalStatus && touched.regulatoryStatus && (
-                <InputError error={errors.regulatoryStatus} />
+                <InputError
+                  error={errors.regulatoryStatus}
+                  for="regulatoryStatus"
+                />
               )}
             </FormControl>
           </Grid>
@@ -172,6 +181,7 @@ export function Form(props: any) {
             <InputLabel>Facility Owner</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                data-test="facilityOwner"
                 onBlur={handleBlur}
                 error={errors.facilityOwner && touched.facilityOwner}
                 onChange={(e: any) =>
@@ -189,7 +199,7 @@ export function Form(props: any) {
                 {renderOptions(dependancies.owners.list, "facility_owner")}
               </Select>
               {errors.facilityOwner && touched.facilityOwner && (
-                <InputError error={errors.facilityOwner} />
+                <InputError error={errors.facilityOwner} for="facilityOwner" />
               )}
             </FormControl>
           </Grid>
@@ -197,6 +207,7 @@ export function Form(props: any) {
             <InputLabel>District</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                data-test="district"
                 onBlur={handleBlur}
                 error={errors.district && touched.district}
                 onChange={(e: any) => setFieldValue("district", e.target.value)}
@@ -212,7 +223,7 @@ export function Form(props: any) {
                 {renderOptions(dependancies.districts.list, "district_name")}
               </Select>
               {errors.district && touched.district && (
-                <InputError error={errors.district} />
+                <InputError error={errors.district} for="district" />
               )}
             </FormControl>
           </Grid>
