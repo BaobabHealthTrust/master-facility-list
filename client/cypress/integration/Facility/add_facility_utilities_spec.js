@@ -31,8 +31,8 @@ describe("Add Facility Utilities", () => {
     it("Navigates to the facilities page", () => {
       cy.login(credentials);
       cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.get("a[href='/facilities/add']").click();
+      cy.get(`[data-test=menuFacilities]`).click();
+      cy.get("[data-test=addFacilityBtn]").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
       });
@@ -42,19 +42,16 @@ describe("Add Facility Utilities", () => {
       cy.get("button.swal-button.swal-button--confirm")
         .first()
         .click();
-
-      cy.get("div .mfl-active-form-wizard").contains("Utilities");
     });
   });
 
   context("Validates input in front-end", () => {
     it("Validates utilities values", () => {
-      cy.get("div[test-id='utilitiesForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 
-      cy.get("div[test-id='utilitiesForm']").contains(
+      cy.get("[data-test='fieldErrorutilities']").contains(
         "Energy Proovider,Water Provider,Waste Disposal,Network Provider"
       );
     });
@@ -62,13 +59,12 @@ describe("Add Facility Utilities", () => {
 
   context("Adds Facility Utilities", () => {
     it("Successfully Adds Facility Utilities", () => {
-      cy.get("div[test-id='utilitiesForm'] div label").each(el => {
+      cy.get("[data-test='utilitiesForm'] input").each(el => {
         cy.wrap(el).click();
         utilityCount++;
       });
 
-      cy.get("div[test-id='utilitiesForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 

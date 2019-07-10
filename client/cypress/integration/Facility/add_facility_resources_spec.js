@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
-const type = (cy, field, value) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const type = (fieldName, value) => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear()
@@ -8,8 +8,8 @@ const type = (cy, field, value) => {
     .blur();
 };
 
-const clear = (cy, field) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const clear = fieldName => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear();
@@ -51,45 +51,41 @@ describe("Add Facility Resources", () => {
     it("Navigates to the facilities page", () => {
       cy.login(credentials);
       cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.get("a[href='/facilities/add']").click();
+      cy.get(`[data-test=menuFacilities]`).click();
+      cy.get("[data-test=addFacilityBtn]").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
       });
     });
 
-    it("Shows facility resources form", () => {
+    it("Shows facility contacts form", () => {
       cy.get("button.swal-button.swal-button--confirm")
         .first()
         .click();
 
-      cy.get("div .mfl-active-form-wizard").contains("Resources");
-      cy.get("div[test-id='resourcesForm'] div.input-field").each(
-        (el, index) => {
-          cy.wrap(el)
-            .find("input")
-            .first()
-            .invoke("attr", "name")
-            .then(val => {
-              fields.push(val);
-              details[val] = "10";
-              clear(cy, val);
-            });
-        }
-      );
+      cy.get("[data-test='resourcesForm'] input").each((el, index) => {
+        cy.wrap(el)
+          .invoke("attr", "name")
+          .then(val => {
+            fields.push(val);
+            details[val] = "10";
+            clear(val);
+          });
+      });
     });
   });
 
   context("Validates input in front-end", () => {
     it("Validates resources values", () => {
-      cy.get("div[test-id='resourcesForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
-      for (let fieldIndex = 0; fieldIndex < fields.length; fieldIndex++) {
-        cy.get(`label[data-error="${errors.empty}"]`)
-          .first(fieldIndex)
-          .should("be.visible");
+
+      for (let field of fields) {
+        cy.get(`[data-test="fieldError${field}"]`)
+          .first()
+          .should("be.visible")
+          .contains("Invalid number");
       }
     });
   });
@@ -97,13 +93,12 @@ describe("Add Facility Resources", () => {
   context("Adds Facility Resources", () => {
     it("Successfully Adds Facility Resources", () => {
       for (let field of fields) {
-        type(cy, field, details[field]);
+        type(field, details[field]);
       }
     });
 
     it("Successfully Adds Facility Resources", () => {
-      cy.get("div[test-id='resourcesForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 

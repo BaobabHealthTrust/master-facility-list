@@ -24,11 +24,7 @@ function TextInput(props: Props) {
         onChange={onChange}
         onBlur={onBlur}
       />
-      {error && touched && (
-        <FormHelperText data-test={`fieldError${name}`}>
-          <InputError error={error}></InputError>
-        </FormHelperText>
-      )}
+      {error && touched && <InputError error={error} for={name}></InputError>}
     </FormControl>
   );
 }

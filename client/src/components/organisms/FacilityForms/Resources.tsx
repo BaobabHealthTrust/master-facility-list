@@ -48,7 +48,7 @@ export function Form(props: any) {
   } = props;
   return (
     <>
-      <FormWrapper>
+      <FormWrapper data-test="resourcesForm">
         <Grid container spacing={3}>
           {dependancies.resources.list.map((resource: any) => (
             <Grid item sm={12} md={3}>
@@ -69,7 +69,10 @@ export function Form(props: any) {
                 {values &&
                   touched[`resource_${resource.id}`] &&
                   errors[`resource_${resource.id}`] && (
-                    <InputError error={errors[`resource_${resource.id}`]} />
+                    <InputError
+                      error={errors[`resource_${resource.id}`]}
+                      for={`resource_${resource.id}`}
+                    />
                   )}
               </FormControl>
             </Grid>

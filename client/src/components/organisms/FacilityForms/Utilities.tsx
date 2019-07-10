@@ -88,7 +88,7 @@ export function Form(props: any) {
   };
   return (
     <>
-      <FormWrapper>
+      <FormWrapper data-test="utilitiesForm">
         <Grid container spacing={3}>
           {dependancies.utilities.types.map((type: any) => (
             <Grid item sm={12} md={6}>
@@ -120,7 +120,7 @@ export function Form(props: any) {
           ))}
           <Grid item sm={12} md={12}>
             {errors.utilities && errors.utilities.length > 0 && (
-              <InputError error={errors.utilities}></InputError>
+              <InputError error={errors.utilities} for="utilities"></InputError>
             )}
           </Grid>
         </Grid>

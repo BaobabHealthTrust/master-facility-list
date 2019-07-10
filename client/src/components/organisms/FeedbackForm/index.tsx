@@ -14,6 +14,7 @@ import Button from "../../atoms/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import TextInput from "../../atoms/TextInput";
+import InputError from "../../atoms/InputError";
 
 function index(props: Props) {
   const { onSubmit, feedbackTypes } = props;
@@ -53,28 +54,22 @@ function index(props: Props) {
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
-              <FormControl className="mfl-max-width">
-                <TextField
-                  value={values.email}
-                  name="email"
-                  label="Email"
-                  placeholder="Enter Your Email"
-                  error={touched.email && typeof errors.email != "undefined"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-describedby="component-error-text"
-                />
-                {errors.email && touched.email && (
-                  <FormHelperText id="component-error-text">
-                    {errors.email}
-                  </FormHelperText>
-                )}
-              </FormControl>
+              <TextInput
+                label="Email"
+                value={values.email}
+                name="email"
+                placeholder="Enter Your Email"
+                error={errors.email}
+                touched={touched.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <InputLabel htmlFor="feedbackType">Feedback Type</InputLabel>
               <FormControl className="mfl-max-width">
                 <Select
+                  data-test="feedbackType"
                   value={values.feedbackType}
                   onBlur={handleBlur}
                   error={
@@ -92,7 +87,7 @@ function index(props: Props) {
                   {renderOptions(feedbackTypes, "feedback_type")}
                 </Select>
                 {errors.feedbackType && touched.feedbackType && (
-                  <FormHelperText>{errors.feedbackType}</FormHelperText>
+                  <InputError error={errors.feedbackType} for="feedbackType" />
                 )}
               </FormControl>
             </Grid>
@@ -113,9 +108,7 @@ function index(props: Props) {
                   aria-describedby="component-error-text"
                 />
                 {errors.message && touched.message && (
-                  <FormHelperText id="component-error-text">
-                    {errors.message}
-                  </FormHelperText>
+                  <InputError error={errors.message} for="message" />
                 )}
               </FormControl>
             </Grid>
@@ -125,6 +118,7 @@ function index(props: Props) {
                 disabled={isSubmitting}
                 theme="secondary"
                 icon={<FontAwesomeIcon icon={faPaperPlane} />}
+                data-test="feedbackBtn"
               >
                 {isSubmitting ? "Submitting" : "Submit Feedback"}
               </Button>

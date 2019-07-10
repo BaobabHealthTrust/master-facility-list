@@ -5,18 +5,24 @@ import styled from "styled-components";
 export default (props: Props) => {
   const { handleSubmit, isSubmitting, handleCancel, saveBtnText } = props;
   return (
-    <Container>
+    <Container data-test="formFooter">
       {saveBtnText && (
         <Button
           type="submit"
           style={{ backgroundColor: "#5a90dc" }}
           disabled={isSubmitting}
           onClick={handleSubmit}
+          data-test="saveBtn"
         >
           {isSubmitting ? "Saving..." : saveBtnText}
         </Button>
       )}
-      <Button disabled={isSubmitting} onClick={handleCancel} theme="default">
+      <Button
+        disabled={isSubmitting}
+        onClick={handleCancel}
+        theme="default"
+        data-test="cancelBtn"
+      >
         or Cancel
       </Button>
     </Container>

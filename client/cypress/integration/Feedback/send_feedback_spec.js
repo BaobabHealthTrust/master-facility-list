@@ -1,5 +1,42 @@
 /// <reference types="Cypress" />
 
+const validateSelect = (name, error) => {
+  cy.get(`[data-test=${name}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${name}]`)
+    .first()
+    .click();
+  cy.get("[data-test=formFooter]")
+    .first()
+    .click();
+
+  cy.get(`[data-test=fieldError${name}]`)
+    .first()
+    .should("be.visible")
+    .contains(error);
+};
+
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
+    .first()
+    .click()
+    .clear()
+    .type(value)
+    .blur();
+};
+
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
 describe("Feedback Page Test", () => {
   before(() => {
     cy.window().then(win => win.sessionStorage.clear());
@@ -20,75 +57,26 @@ describe("Feedback Page Test", () => {
   it("Validates Required Fields on submit", () => {
     cy.get("[data-test=feedbackBtn]").click();
 
-    cy.get(`label[data-error='${errors.email}']`)
+    cy.get(`[data-test='fieldErroremail']`)
       .first()
-      .should("be.visible");
+      .should("be.visible")
+      .contains(errors.email);
 
-    cy.get(`label[data-error='${errors.message}']`)
+    cy.get(`[data-test=fieldErrormessage]`)
       .first()
-      .should("be.visible");
+      .should("be.visible")
+      .contains(errors.message);
   });
 
   it("Submits Request", () => {
-    cy.get("div[class='card']")
+    type("name", "kuunika");
+
+    type("email", "kuunika@gmail.com");
+
+    selectFirst("feedbackType");
+
+    cy.get(`textarea[name=message]`)
       .first()
-      .find("label")
-      .first()
-      .click();
-
-    cy.wait(60);
-
-    cy.get("div[class='card']")
-      .first()
-      .find("input[name='name']")
-      .click()
-      .clear()
-      .type("kuunika")
-      .blur();
-
-    cy.wait(60);
-
-    cy.get("div[class='card']")
-      .first()
-      .find("label")
-      .eq(1)
-      .click();
-
-    cy.get("div[class='card']")
-      .first()
-      .find("input[name='email']")
-      .click()
-      .clear()
-      .type("kuunika@gmail.com")
-      .blur();
-
-    cy.wait(60);
-
-    cy.get("div[class='card']")
-      .first()
-      .find("div[class='col input-field s12']")
-      .eq(2)
-      .click();
-
-    cy.get("div[class='card']")
-      .first()
-      .find("ul")
-      .first()
-      .find("li")
-      .eq(1)
-      .click();
-
-    cy.wait(60);
-
-    cy.get("div[class='card']")
-      .first()
-      .find("label")
-      .eq(2)
-      .click();
-
-    cy.get("div[class='card']")
-      .first()
-      .find("textarea[name='message']")
       .click()
       .clear()
       .type("message")
@@ -99,17 +87,17 @@ describe("Feedback Page Test", () => {
       success: true
     }).as("feedback");
 
-    cy.get("button[test-id='feedbackBtn']").click();
+    cy.get("[data-test=feedbackBtn]").click();
 
     cy.wait("@feedback");
 
     cy.get("@feedback").then(xhr => {
       cy.expect(xhr.request.body.data).to.deep.equal({
         email: "kuunika@gmail.com",
-        feedbackType: "1",
+        feedbackType: 1,
         message: "message",
         name: "kuunika",
-        type_id: "1"
+        type_id: 1
       });
     });
   });
