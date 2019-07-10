@@ -4,6 +4,6 @@
   "pageLoadTimeout": 6000000,
   "env": {
     "FRONT_END_URL": "http://localhost:3000",
-    "API_URL": "http://localhost:4000/api"
+    "API_URL": "http://127.0.0.1:4000/api"
   }
 }

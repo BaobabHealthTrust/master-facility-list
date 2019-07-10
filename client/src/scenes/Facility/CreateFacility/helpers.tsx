@@ -30,7 +30,7 @@ export const getContactDetails = (data: any, facilityId: number) => ({
 });
 
 export const getResources = (
-  data: any,
+  data: any = [],
   allResources: any,
   facilityId: number
 ) =>
@@ -38,12 +38,15 @@ export const getResources = (
     facility_id: facilityId,
     client_id: 1,
     resource_id: resource.id,
-    quantity: Number(data[`resource_${resource.id}`]),
+    quantity:
+      typeof data[`resource_${resource.id}`] !== "undefined"
+        ? Number(data[`resource_${resource.id}`])
+        : 0,
     description: "",
     created_date: new Date()
   }));
 
-export const getUtilities = (data: any, facilityId: number) =>
+export const getUtilities = (data: any = [], facilityId: number) =>
   data.map((utility: any) => ({
     facility_id: facilityId,
     utility_id: utility,

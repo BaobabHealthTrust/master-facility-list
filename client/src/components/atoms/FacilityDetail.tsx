@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 export default function FacilityDetail(props: Props) {
   return (
-    <Wrapper data-test={`detailLabel${props.label.replace(" ", "")}`}>
+    <Wrapper data-test={`detailLabel${props.label.replace(/ /g, "")}`}>
       <Value>{props.text}</Value>
       <Label>{props.label}</Label>
     </Wrapper>
