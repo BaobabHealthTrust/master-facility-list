@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 function index(props: Props) {
-  const { icon, title, options } = props;
+  const { icon, title, options, sub } = props;
   return (
     <Container>
       <TitleContainer>
         <Icon>{icon}</Icon>
         {title && title.toUpperCase()}
+        {sub ? <SubTitle>{` (${sub})`}</SubTitle> : ""}
       </TitleContainer>
       {options && <div>{options}</div>}
     </Container>
@@ -16,6 +17,7 @@ function index(props: Props) {
 
 type Props = {
   title: string;
+  sub?: string;
   icon: any;
   options?: any;
 };
@@ -32,6 +34,12 @@ const Icon = styled.div`
 const TitleContainer = styled.div`
   font-size: 26px;
   display: flex;
+  align-items: center;
+`;
+
+const SubTitle = styled.span`
+  font-size: 18px;
+  padding-left: 5px;
 `;
 
 export default index;
