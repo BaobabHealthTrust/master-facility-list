@@ -59,6 +59,7 @@ function UpdateFacility(props: Props) {
             <Grid item xs={12} sm={12} md={9}>
               <Grid item xs={12} sm={12} md={12}>
                 <Title
+                  sub={facility.common_name ? facility.common_name : ""}
                   title={facility.facility_name}
                   icon={<FontAwesomeIcon icon={faHospital} />}
                 />

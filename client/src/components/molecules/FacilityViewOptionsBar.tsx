@@ -39,12 +39,12 @@ export function Details(props: { facility: any; badge: any }) {
   const { facility, badge } = props;
   return (
     <div data-test="facilityHeader">
-      {<Code>{`${facility.facility_code && facility.facility_code}, `}</Code>}
-      {`${facility.district && facility.district.district_name}.   `}
+      {
+        <District>{`${facility.district &&
+          facility.district.district_name}.   `}</District>
+      }
       {<>{badge}</>}
       <br />
-      {<b>{facility.common_name}</b>}
-
       {
         <LastUpdated>{` Last Updated - ${moment(facility.updated_at).format(
           "LLLL"
@@ -81,6 +81,6 @@ const LastUpdated = styled.small`
   color: #7d7d7d;
 `;
 
-const Code = styled.b`
+const District = styled.b`
   font-size: 18px;
 `;

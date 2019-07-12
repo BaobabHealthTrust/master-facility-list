@@ -51,6 +51,7 @@ function index(props: Props) {
         <Grid item xs={12} sm={12} md={12}>
           <Title
             title={basic.facility_name}
+            sub={basic.common_name ? basic.common_name : ""}
             icon={<FontAwesomeIcon icon={faHospital} />}
             options={
               isAdmin() && (
