@@ -61,7 +61,7 @@ module.exports.facility = {
 };
 
 module.exports.contactPeople = {
-  contact_person_fullname: 'Malu Mzota',
+  contact_person_fullname: 'John Banda',
   contact_person_phone: '+265 999 21 30 85',
   facility_id: 1,
 };
@@ -72,20 +72,20 @@ module.exports.facilityTypes = [
     description: 'These facilities belongs to districts',
   },
   {
-    facility_type: 'Hospital',
-    description: 'These facilities are second to district hospitals',
-  },
-  {
     facility_type: 'Central Hospital',
     description: 'These are governmental largest owned hospitals',
   },
   {
-    facility_type: 'Dispensary',
-    description: 'These are middle class health facilities',
+    facility_type: 'Rural Hospital',
+    description: 'These facilities belongs to a rural area',
   },
   {
-    facility_type: 'Clinic',
-    description: 'These are middle class health facilities',
+    facility_type: 'Community Hospital',
+    description: 'These facilities belongs to a community',
+  },
+  {
+    facility_type: 'Hospital',
+    description: 'These facilities are second to district hospitals',
   },
   {
     facility_type: 'Health Centre',
@@ -96,6 +96,23 @@ module.exports.facilityTypes = [
     description: 'These are Health Post facilities',
   },
   {
+    facility_type: 'Dispensary',
+    description: 'These are middle class health facilities',
+  },
+  {
+    facility_type: 'Clinic',
+    description: 'These are clinic facilities',
+  },
+  {
+    facility_type: 'Pharmacy',
+    description: 'These are pharmacies',
+  },
+  {
+    facility_type: 'Maternity Facility',
+    description: 'These are maternity facilities',
+  },
+  {
+    // TODO: should be put under ownership.
     facility_type: 'Private',
     description: 'These are private health facilities',
   },
