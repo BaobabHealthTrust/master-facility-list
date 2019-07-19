@@ -1,12 +1,12 @@
 'use strict';
 
-const { existsSync } = require('fs');
 const { join } = require('path');
+const { existsSync } = require('fs');
 
-const createFacilities = require('./readFacilitiesFile');
 const seed = require('./seed');
+const createFacilities = require('./readFacilitiesFile');
 
-const { error } = console;
+const { error, log } = console;
 
 module.exports = async () => {
   const facilitiesFilePath = join(__dirname, '..', 'data', './facilities.csv');

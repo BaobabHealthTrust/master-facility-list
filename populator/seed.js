@@ -42,6 +42,8 @@ const {
   zoneData,
 } = data;
 
+const { log, error } = console;
+
 module.exports = async () => {
   try {
     await userSeeder(data.users);
@@ -56,12 +58,16 @@ module.exports = async () => {
     await independentModelFactory(UtilityType, utilityTypes);
     await independentModelFactory(ServiceType, serviceTypes);
 
+    log();
+
     await dependentModelFactory(Zone, District, districts);
     await dependentModelFactory(ResourceType, Resource, resources);
     await dependentModelFactory(UtilityType, Utility, utilities);
     await dependentModelFactory(ServiceType, Service, services);
     await serviceModelSeeder(ServiceType, Service, services);
-  } catch (error) {
-    console.log(error);
+
+    log();
+  } catch (err) {
+    log('😡 ', err.message);
   }
 };

@@ -1,22 +1,18 @@
 'use strict';
 
+const path = require('path');
+
 const server = require('../server/server');
 const { truncate } = require('./seed-helpers');
 
-const User = server.models.Client;
-const Role = server.models.Role;
-const RoleMapping = server.models.RoleMapping;
-var path = require('path');
+const { User, Role, RoleMapping } = server.models;
+const { log, error, clear } = console;
 
 module.exports = async (data) => {
   try {
     await truncate(User);
     await truncate(Role);
     await truncate(RoleMapping);
-
-    await User.destroyAll();
-    await Role.destroyAll();
-    await RoleMapping.destroyAll();
 
     const user = await User.create(data);
     const role = await Role.create({ name: 'admin' });
@@ -27,10 +23,10 @@ module.exports = async (data) => {
     };
     await role.principals.create(userRoleMapping);
 
-    await console.log('Admin user created successfully\n');
-    await console.log(`username: ${user.username}`);
-    await console.log(`password: ${data.password}\n`);
+    log('👤 admin user created\n');
+    log(`\t username: ${user.username}`);
+    log(`\t password: ${data.password}\n`);
   } catch (err) {
-    console.error(err);
+    error(err.message);
   }
 };

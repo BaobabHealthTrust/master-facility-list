@@ -68,16 +68,16 @@ module.exports.contactPeople = {
 
 module.exports.facilityTypes = [
   {
-    facility_type: 'District hospital',
+    facility_type: 'District Hospital',
     description: 'These facilities belongs to districts',
-  },
-  {
-    facility_type: 'Central Hospital',
-    description: 'These are governmental largest owned hospitals',
   },
   {
     facility_type: 'Rural Hospital',
     description: 'These facilities belongs to a rural area',
+  },
+  {
+    facility_type: 'Central Hospital',
+    description: 'These are governmental largest owned hospitals',
   },
   {
     facility_type: 'Community Hospital',
@@ -112,7 +112,6 @@ module.exports.facilityTypes = [
     description: 'These are maternity facilities',
   },
   {
-    // TODO: should be put under ownership.
     facility_type: 'Private',
     description: 'These are private health facilities',
   },
@@ -175,18 +174,23 @@ module.exports.operationalStatuses = [
 const zoneData = [
   {
     zone_name: refs.ZONES.CENTRAL_EAST,
+    description: 'Central East Zone',
   },
   {
     zone_name: refs.ZONES.CENTRAL_WEST,
+    description: 'Centrals West Zone',
   },
   {
     zone_name: refs.ZONES.NORTH,
+    description: 'North Zone',
   },
   {
     zone_name: refs.ZONES.SOUTH_EAST,
+    description: 'South West Zone',
   },
   {
     zone_name: refs.ZONES.SOUTH_WEST,
+    description: 'South East Zone',
   },
 ];
 
