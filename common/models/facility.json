@@ -19,8 +19,12 @@
       "type": "string",
       "required": false
     },
+    "facility_code_mapping": {
+      "type": "json",
+      "required": false
+    },
     "registration_number": {
-      "type": "number",
+      "type": "string",
       "required": false
     },
     "facility_name": {

@@ -1,87 +1,85 @@
-"use strict";
+'use strict';
 
-const moment = require("moment");
-const excel = require("node-excel-export");
+const moment = require('moment');
+const excel = require('node-excel-export');
 
-/** File Data set */
-const dataset = [];
-
-/** Excel file styles */
-const style = {
-  font: {
-    color: {
-      rgb: "00000000"
-    }
-  }
+const styles = {
+  headerDark: {
+    fill: { fgColor: { rgb: 'FFFFFFFF' } },
+    font: {
+      color: { rgb: 'FF000000' },
+      sz: 14,
+      bold: true,
+      underline: true,
+    },
+  },
 };
 
 /**
  * Create header cells for the excel file.
  * @param {string} value Cell value.
  */
-const cell = value => {
+const cell = (displayName, width = 100) => {
+  return { displayName, headerStyle: styles.headerDark, width };
+};
+
+const getSpecifications = () => {
   return {
-    displayName: value,
-    headerStyle: style,
-    cellStyle: style
+    CODE: cell('CODE', 80),
+    NAME: cell('NAME', 300),
+    'COMMON NAME': cell('COMMON NAME', 300),
+    OWNERSHIP: cell('OWNERSHIP', 150),
+    TYPE: cell('TYPE'),
+    STATUS: cell('STATUS', 300),
+    ZONE: cell('ZONE', 150),
+    DISTRICT: cell('DISTRICT'),
+    'DATE OPENED': cell('DATE OPENED'),
   };
 };
 
-/** File column header and style specification */
-const specification = {
-  CODE: cell("CODE"),
-  NAME: cell("NAME"),
-  "COMMON NAME": cell("COMMON NAME"),
-  OWNERSHIP: cell("OWNERSHIP"),
-  TYPE: cell("TYPE"),
-  STATUS: cell("STATUS"),
-  ZONE: cell("ZONE"),
-  DISTRICT: cell("DISTRICT"),
-  "DATE OPENED": cell("DATE OPENED")
-};
-
-/**
- * Process a facility for file generation.
- * @param {object} facility Facility object.
- */
-const processFacility = facility => {
+const processFacility = (facility) => {
   const data = facility.toJSON();
-  dataset.push({
+  return {
     CODE: data.facility_code,
     NAME: data.facility_name,
-    "COMMON NAME": data.common_name,
+    'COMMON NAME': data.common_name,
     OWNERSHIP: data.owner.facility_owner,
     TYPE: data.facilityType.facility_type,
     STATUS: data.operationalStatus.facility_operational_status,
     ZONE: data.district.zone.zone_name,
     DISTRICT: data.district.district_name,
-    "DATE OPENED": moment(data.facility_date_opened).format("MMM Do YY")
-  });
+    'DATE OPENED': moment(data.facility_date_opened).format('MMM Do YY'),
+  };
 };
 
-/**
- * Generate an excel file
- * @param {array} facilities List of facilities.
- * @param {function} callback callback function.
- */
-module.exports = function(facilities, callback) {
+const processFacilities = async (facilities = []) => {
+  const dataSet = [];
+
+  for (const facility of facilities) {
+    await dataSet.push(await processFacility(facility));
+  }
+
+  return dataSet;
+};
+
+module.exports = async (facilities, callback) => {
   if (facilities == null) {
-    const error = new Error("Facilities can not be null.");
-    error.name = "ERROR";
+    const error = new Error('Facilities can not be null.');
+    error.name = 'ERROR';
     error.status = 400;
     callback(error);
   }
 
   try {
-    facilities.forEach(processFacility);
+    const dataset = await processFacilities(facilities);
 
-    const report = excel.buildExport([
-      {
-        name: "Report",
-        specification: specification,
-        data: dataset
-      }
-    ]);
+    const buildExcelFileoptions = {
+      name: 'Facilities',
+      specification: await getSpecifications(),
+      data: dataset,
+    };
+
+    const report = excel.buildExport([buildExcelFileoptions]);
 
     callback(null, report);
   } catch (error) {
