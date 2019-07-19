@@ -32,8 +32,6 @@ module.exports = async (services, facility, facility_id) => {
     });
   }
 
-  console.log(facilityServices);
-
   if (facilityServices.length < 0) return;
   await FacilityService.create(facilityServices).catch(handleError);
 };
