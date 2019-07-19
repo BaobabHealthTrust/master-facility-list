@@ -92,7 +92,6 @@ module.exports = async (facilities = []) => {
     await createFacilityServices(services, facility, id);
 
     log('✅', createdFacility.id, ' => ', createdFacility.facility_name);
-    break;
   }
 
   /**
