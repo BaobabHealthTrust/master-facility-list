@@ -1,33 +1,36 @@
 'use strict';
 
 const server = require('../server/server');
-const dataSource = server.dataSources.db;
+const { truncate } = require('./seed-helpers');
+const { log, error } = console;
+
 const _ = require('lodash');
-
 module.exports = async (ParentModel, ChildModel, dependantData) => {
-  const { foreignKey, referenceName, schema } = dependantData;
+  try {
+    await truncate(ChildModel);
 
-  const dataSource = ChildModel.dataSource;
-  const query = `TRUNCATE TABLE ${ChildModel.definition.name}`;
+    const { foreignKey, referenceName, schema } = dependantData;
+    const ids = await ParentModel.find({
+      where: {
+        referenceName: { inq: schema.map((parent) => parent.reference) },
+      },
+    }).map((entity) => entity.id);
 
-  await dataSource.connector.execute(query, [], function(err, model) {
-    if (err) console.error(err);
-  });
-
-  await ChildModel.deleteAll();
-  const ids = await ParentModel.find({
-    where: { referenceName: { inq: schema.map((parent) => parent.reference) } },
-  }).map((entity) => entity.id);
-
-  const fullData = schema.map((entity, index) => {
-    return entity.data.map((prop) => {
-      return {
-        [foreignKey]: ids[index],
-        ...prop,
-      };
+    const fullData = schema.map((entity, index) => {
+      return entity.data.map((prop) => {
+        return {
+          [foreignKey]: ids[index],
+          ...prop,
+        };
+      });
     });
-  });
-  const flattenedFullData = _.flatten(fullData);
-  const createdChildren = await ChildModel.create(flattenedFullData);
-  return createdChildren;
+    const flattenedFullData = _.flatten(fullData);
+    const createdChildren = await ChildModel.create(flattenedFullData);
+
+    log(`✅ created ${ChildModel.definition.name} Successfully...`);
+
+    return createdChildren;
+  } catch (err) {
+    error(err.message);
+  }
 };

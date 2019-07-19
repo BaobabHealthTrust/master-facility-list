@@ -2,12 +2,12 @@
 
 const main = require('./main');
 
-const log = console.log;
-const env = process.env.NODE_ENV || 'test';
+const {log} = console;
+const env = String(process.env.NODE_ENV);
 
 if (env !== 'staging') {
-  log('Please specify the appropriate node environment variable');
-  log('set it, with this command "export NODE_ENV=staging"');
+  log('😡 set environment variable');
+  log('👉🏽 "export NODE_ENV=staging"');
   process.exit(1);
 }
 
