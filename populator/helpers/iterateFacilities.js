@@ -42,7 +42,7 @@ const createFacilityLocation = require('./createFacilityLocation');
 const createFacilityGeolocation = require('./createFacilityGeolocation');
 const createFacilityContactPeople = require('./createFacilityContactPeople');
 const createFacilityUtilities = require('./createFacilityUtilities');
-const createFacilityResources = require('./createFacilityServices');
+const createFacilityResources = require('./createFacilityResources');
 const createFacilityServices = require('./createFacilityServices');
 
 const truncateTables = require('./truncateTables');
