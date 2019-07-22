@@ -344,10 +344,9 @@ module.exports = (Facility) => {
           resource: 'resourceType',
         });
 
-        const services = await FacilityService.find({
-          where: { facility_id: id },
-          include: { service: ['serviceType', 'category'] },
-        }).catch((err) => cb(err));
+        const services = await getData(FacilityService, id, {
+          service: ['serviceType', 'category'],
+        });
 
         await generateFile(
           facility.toJSON(),
