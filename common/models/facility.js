@@ -313,17 +313,38 @@ module.exports = (Facility) => {
       }).catch((err) => cb(err));
 
       if (facility) {
-        const utilities = await server.models.FacilityUtility.find({
-          where: { facility_id: id },
-          include: { utility: 'utilityType' },
-        }).catch((err) => cb(err));
+        const {
+          FacilityUtility,
+          FacilityResource,
+          FacilityService,
+        } = server.models;
 
-        const resources = await server.models.FacilityResource.find({
-          where: { facility_id: id },
-          include: { resource: 'resourceType' },
-        }).catch((err) => cb(err));
+        const getData = async (model, facility_id, include) => {
+          const where = { facility_id };
+          const order = 'created_date DESC';
 
-        const services = await server.models.FacilityService.find({
+          const result = await model.findOne({ where, order });
+          if (!result) return [];
+
+          return await model
+            .find({
+              where: {
+                and: [{ facility_id }, { created_date: result.created_date }],
+              },
+              include,
+            })
+            .catch((err) => console.log(err.message));
+        };
+
+        const utilities = await getData(FacilityUtility, id, {
+          utility: 'utilityType',
+        });
+
+        const resources = await getData(FacilityResource, id, {
+          resource: 'resourceType',
+        });
+
+        const services = await FacilityService.find({
           where: { facility_id: id },
           include: { service: ['serviceType', 'category'] },
         }).catch((err) => cb(err));
