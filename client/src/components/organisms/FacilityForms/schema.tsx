@@ -93,8 +93,8 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
     .required(REQUIRED_MESSAGE)
     .min(1, "Please select a district"),
   registrationNumber: yup
-    .number()
-    .typeError(INVALID_NUM_MESSAGE)
+    .string()
+    .typeError(INVALID_TEXT)
     .required(REQUIRED_MESSAGE)
     .min(8, "Invalid Registration Number")
 });
