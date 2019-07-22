@@ -41,7 +41,6 @@ export const contactSchema: yup.ObjectSchema<any> = yup.object().shape({
   catchmentPopulation: yup
     .number()
     .typeError(INVALID_NUM_MESSAGE)
-    .positive()
     .integer()
     .required(REQUIRED_MESSAGE),
   longitude: yup
