@@ -29,6 +29,7 @@ module.exports = async (services, facility, facility_id) => {
       service_id,
       facility_id,
       client_id: 1,
+      created_date: new Date(Date.now()),
     });
   }
 
