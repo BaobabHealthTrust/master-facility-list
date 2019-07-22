@@ -7,11 +7,11 @@ const handleError = require('./handleError');
 const { FacilityService } = server.models;
 
 const getServiceId = (services, serviceName) => {
-  const serviceUtility = services.find(
+  const foundService = services.find(
     (service) => service.service_name == serviceName,
   );
 
-  return serviceUtility ? serviceUtility.id : null;
+  return foundService ? foundService.id : null;
 };
 
 module.exports = async (services, facility, facility_id) => {
