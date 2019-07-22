@@ -95,7 +95,7 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
     .string()
     .typeError(INVALID_TEXT)
     .required(REQUIRED_MESSAGE)
-    .min(8, "Invalid Registration Number")
+    .min(4, "Invalid Registration Number")
 });
 
 export const getResourcesSchema: any = (resources: any) => {
