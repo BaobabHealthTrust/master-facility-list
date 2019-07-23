@@ -66,17 +66,13 @@ export const getServicesHierachyForRedux: any = (
   serviceTypes: Array<any> = [],
   level: number = 0
 ) => {
-  console.log(services);
   allServices =
     level == 0
       ? services.map((ser: any) => {
-          const service = allServices.filter(
-            (serv: any) => serv.id == ser.service_id
-          )[0];
           return {
-            service,
+            service: ser.service,
             serviceType: serviceTypes.filter(
-              (type: any) => type.id == service.service_type_id
+              (type: any) => type.id == ser.service.service_type_id
             )[0],
             facilityService: ser
           };

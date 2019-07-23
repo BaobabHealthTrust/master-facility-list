@@ -9,7 +9,6 @@ export default (props: Props) => {
       {saveBtnText && (
         <Button
           type="submit"
-          style={{ backgroundColor: "#5a90dc" }}
           disabled={isSubmitting}
           onClick={handleSubmit}
           data-test="saveBtn"

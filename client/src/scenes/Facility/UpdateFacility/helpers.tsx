@@ -22,24 +22,56 @@ export const getBasicDetails = (data: any) => ({
   updated_at: Date.now()
 });
 
-export const getResources = (data: any, resources: any, facilityId: number) =>
-  resources.map((resource: any) => ({
+export const getResources = (
+  data: any,
+  resources: any,
+  facilityId: number,
+  curResources: any
+) => {
+  const createdAt = new Date();
+  return resources.map((resource: any) => ({
     facility_id: facilityId,
     client_id: 1,
     resource_id: resource.id,
     quantity: Number(data[`resource_${resource.id}`]) || 0,
     description: "",
-    created_date: new Date()
+    created_date: createdAt
   }));
+};
 
-export const getUtilities = (data: any, facilityId: number) =>
-  data.map((utility: any) => ({
+const getResourcesId = (
+  facilityId: number,
+  resource: any,
+  curResources: any
+) => {
+  const res = curResources.filter(
+    (val: any) =>
+      val.facility_id === facilityId && val.resource_id === resource.id
+  );
+  return res.length > 0 ? res[0].id : null;
+};
+
+export const getUtilities = (
+  data: any,
+  facilityId: number,
+  curUtilities: any
+) => {
+  const createdAt = new Date();
+  return data.map((utility: any) => ({
     facility_id: facilityId,
     utility_id: utility,
     client_id: 1,
-    created_date: new Date()
+    created_date: createdAt
   }));
+};
 
+const getUtilityId = (facilityId: number, utility: any, curUtilities: any) => {
+  const util = curUtilities.filter(
+    (val: any) =>
+      val.facility_id === facilityId && val.utility_id === utility.id
+  );
+  return util.length > 0 ? util[0].id : null;
+};
 export const getUtilitiesToDelete = (data: any, currentUtilities: any) =>
   currentUtilities
     .filter((val: any) => !data.includes(val.utility_id))
@@ -55,16 +87,29 @@ export const getServicesToDelete = (data: any, currentServices: any) => {
 export const getServices = (
   data: any,
   facilityId: number,
-  allServices: Array<any>
+  allServices: Array<any>,
+  curServices: any
 ) => {
+  const createdAt = new Date();
   return uniqWith(
     getServicesFromLeaves(data, allServices).map((ser: any) => ({
       service_id: ser.id,
       facility_id: facilityId,
-      client_id: 1
+      client_id: 1,
+      created_date: createdAt
     })),
     isEqual
   );
+};
+
+const getServiceId = (facilityId: number, service: any, curServices: any) => {
+  const ser = curServices.filter(
+    (val: any) =>
+      val.facilityService &&
+      val.facilityService.facility_id === facilityId &&
+      val.facilityService.service_id === service.id
+  );
+  return ser.length > 0 ? ser[0].facilityService.id : null;
 };
 
 export const getCurrentServices = (currentServices: Array<any> = []) => {

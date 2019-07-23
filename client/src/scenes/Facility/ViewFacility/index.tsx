@@ -8,6 +8,7 @@ import {
   fetchCurrentServices,
   fetchCurrentUtilities
 } from "../../../services/redux/actions/facilities";
+import { fetchServiceTypes } from "../../../services/redux/actions/dependancies";
 import { setActiveFacilityPage } from "../../../services/redux/actions/ui";
 import ViewFacility from "./ViewFacility";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -105,9 +106,11 @@ export class index extends Component<any> {
     this.props.setActiveFacilityPage(currentPage);
     this.setState({ facilityId });
 
+    this.props.fetchServiceTypes().then(() => {
+      this.props.fetchCurrentServices(facilityId, this.props.dependancies);
+    });
     this.props.fetchCurrentBasic(facilityId);
     this.props.fetchCurrentResources(facilityId);
-    this.props.fetchCurrentServices(facilityId, this.props.dependancies);
     this.props.fetchCurrentUtilities(facilityId);
   }
 
@@ -186,6 +189,7 @@ export default connect(
     fetchCurrentBasic,
     fetchCurrentServices,
     fetchCurrentUtilities,
+    fetchServiceTypes,
     setActiveFacilityPage
   }
 )(index);

@@ -12,7 +12,12 @@ const Button = (props: Props) => {
     disabled,
     type
   } = props;
-  const btnTheme = theme ? themes[theme] : themes.primary;
+  const btnTheme = disabled
+    ? themes.default
+    : theme
+    ? themes[theme]
+    : themes.primary;
+
   const buttonClass = `waves-effect waves-light btn`;
 
   return (
@@ -22,7 +27,7 @@ const Button = (props: Props) => {
         style={style}
         disabled={disabled}
         className={buttonClass}
-        onClick={e => onClick && onClick()}
+        onClick={e => onClick && !disabled && onClick()}
         // @ts-ignore
         data-test={props["data-test"]}
       >

@@ -105,9 +105,10 @@ function FacilityDetails(props: Props) {
     );
   };
 
+  console.log(services);
+
   const presentTypes = services ? getServiceTypes() : [];
 
-  console.log(presentTypes);
   return (
     <Grid container data-test="servicesContainer">
       {presentTypes.map((type: any) => {

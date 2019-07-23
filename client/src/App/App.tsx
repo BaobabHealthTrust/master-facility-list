@@ -82,11 +82,11 @@ const App: React.FC = (props: any) => {
       dispatchDependancyError();
     });
 
-    fetchServices().catch(() => {
+    fetchServiceTypes().catch(() => {
       dispatchDependancyError();
     });
 
-    fetchServiceTypes().catch(() => {
+    fetchServices().catch(() => {
       dispatchDependancyError();
     });
 

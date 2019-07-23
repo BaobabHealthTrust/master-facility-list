@@ -44,8 +44,7 @@ class ServicesForm extends React.Component<Props> {
       setSubmitting(false);
       return;
     }
-    this.props.onSubmit(values.services, "services", "Finish");
-    setSubmitting(false);
+    this.props.onSubmit(values.services, setSubmitting);
   };
 
   render() {
