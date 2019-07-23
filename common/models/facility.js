@@ -68,13 +68,12 @@ module.exports = (Facility) => {
   });
 
   Facility.contactDetails = async (data, id, cb) => {
-    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => { console.log(err.message);  return cb(err); });
+    }).catch((err) => cb(err));
 
     await server.models.ContactPeople.create({
       contact_person_fullname: data.contactName,
@@ -82,27 +81,26 @@ module.exports = (Facility) => {
       contact_person_email: data.contactEmail,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => { console.log(err.message);  return cb(err); });
+    }).catch((err) => cb(err));
 
     await server.models.Location.create({
       catchment_area: data.catchmentArea,
       catchment_population: data.catchmentPopulation,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => { console.log(err.message);  return cb(err); });
+    }).catch((err) => cb(err));
 
     await server.models.Geolocation.create({
       longitude: data.longitude,
       latitude: data.latitude,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => { console.log(err.message);  return cb(err); });
+    }).catch((err) => cb(err));
 
     return 'Data Successfully Created';
   };
 
   Facility.contactDetails = async (data, id, cb) => {
-    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,
@@ -136,9 +134,77 @@ module.exports = (Facility) => {
   };
 
   Facility.updateContactDetails = async (data, id, cb) => {
-    const { Address } = server.models;
     const where = { facility_id: id };
-    const foundAddress = await findOne({ where });
+    const { Address, ContactPeople, Location, Geolocation } = server.models;
+
+    const foundAddress = await Address.findOne({
+      where,
+    }).catch((err) => cb(err.message));
+
+    if (!foundAddress) {
+      console.log(data, id);
+      return 'Address was not found.';
+    }
+
+    await foundAddress
+      .updateAttributes({
+        physical_address: data.physicalAddress,
+        postal_address: data.postalAddress,
+        client_id: data.client,
+      })
+      .catch((err) => cb(err.message));
+
+    const foundContactPerson = await ContactPeople.findOne({
+      where,
+    }).catch((err) => cb(err));
+
+    if (!foundContactPerson) {
+      console.log(data, id);
+      return 'Contact person was not found.';
+    }
+
+    await foundContactPerson
+      .updateAttributes({
+        contact_person_fullname: data.contactName,
+        contact_person_phone: data.contactPhoneNumber,
+        contact_person_email: data.contactEmail,
+        client_id: data.client,
+      })
+      .catch((err) => cb(err));
+
+    const foundLocation = await Location.findOne({
+      where,
+    }).catch((err) => cb(err));
+
+    if (!foundLocation) {
+      console.log(data, id);
+      return 'Location was not found.';
+    }
+
+    await foundLocation
+      .updateAttributes({
+        catchment_area: data.catchmentArea,
+        catchment_population: data.catchmentPopulation,
+        client_id: data.client,
+      })
+      .catch((err) => cb(err.message));
+
+    const foundGeolocation = await Geolocation.findOne({
+      where,
+    }).catch((err) => cb(err));
+
+    if (!foundGeolocation) {
+      console.log(data, id);
+      return 'Geolocation was not found.';
+    }
+
+    await foundGeolocation
+      .updateAttributes({
+        longitude: data.longitude,
+        latitude: data.latitude,
+        client_id: data.client,
+      })
+      .catch((err) => cb(err.message));
 
     return 'Data Successfully Updated';
   };
