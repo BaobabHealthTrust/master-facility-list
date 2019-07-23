@@ -68,12 +68,13 @@ module.exports = (Facility) => {
   });
 
   Facility.contactDetails = async (data, id, cb) => {
+    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => cb(err));
+    }).catch((err) => { console.log(err.message);  return cb(err); });
 
     await server.models.ContactPeople.create({
       contact_person_fullname: data.contactName,
@@ -81,26 +82,27 @@ module.exports = (Facility) => {
       contact_person_email: data.contactEmail,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => cb(err));
+    }).catch((err) => { console.log(err.message);  return cb(err); });
 
     await server.models.Location.create({
       catchment_area: data.catchmentArea,
       catchment_population: data.catchmentPopulation,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => cb(err));
+    }).catch((err) => { console.log(err.message);  return cb(err); });
 
     await server.models.Geolocation.create({
       longitude: data.longitude,
       latitude: data.latitude,
       client_id: data.client,
       facility_id: id,
-    }).catch((err) => cb(err));
+    }).catch((err) => { console.log(err.message);  return cb(err); });
 
     return 'Data Successfully Created';
   };
 
   Facility.contactDetails = async (data, id, cb) => {
+    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,

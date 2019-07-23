@@ -41,7 +41,6 @@ export const contactSchema: yup.ObjectSchema<any> = yup.object().shape({
   catchmentPopulation: yup
     .number()
     .typeError(INVALID_NUM_MESSAGE)
-    .positive()
     .integer()
     .required(REQUIRED_MESSAGE),
   longitude: yup
@@ -93,10 +92,10 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
     .required(REQUIRED_MESSAGE)
     .min(1, "Please select a district"),
   registrationNumber: yup
-    .number()
-    .typeError(INVALID_NUM_MESSAGE)
+    .string()
+    .typeError(INVALID_TEXT)
     .required(REQUIRED_MESSAGE)
-    .min(8, "Invalid Registration Number")
+    .min(4, "Invalid Registration Number")
 });
 
 export const getResourcesSchema: any = (resources: any) => {
