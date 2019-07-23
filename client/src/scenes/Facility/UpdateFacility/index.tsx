@@ -52,7 +52,8 @@ library.add(faHospital, faEnvelope, faBed, faWifi, faStethoscope);
 
 export class index extends Component<Props & RouteComponentProps<{}>> {
   state = {
-    facilityId: null
+    facilityId: null,
+    submitting: true
   };
 
   facilitySubMenu = [
@@ -126,33 +127,42 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     }
   }
 
-  onSubmit = (values: any) => {
+  onSubmit = (values: any, setSubmitting: Function) => {
     // @ts-ignore
     swal({
       icon: "warning",
       title: `Are you sure you want save these changes?`,
       buttons: {
-        cancel: "Cancel",
-        confirm: "Save"
+        cancel: { text: "Cancel", closeModal: true, visible: true },
+        confirm: { text: "Save" }
       },
       closeOnClickOutside: false
-    }).then((res: any) => {
+    }).then(async (res: any) => {
       if (res) {
+        // @ts-ignore
+        swal({
+          icon: "info",
+          title: `Updating Facility. Please wait...`
+        });
         switch (this.props.facilityPage) {
           case "summary":
-            this.onSubmitBasicDetails(values);
+            await this.onSubmitBasicDetails(values);
             break;
           case "contact":
-            this.onSubmitContactDetails(values);
+            await this.onSubmitContactDetails(values);
             break;
           case "resources":
-            return this.onSubmitResourcesDetails(values);
+            await this.onSubmitResourcesDetails(values);
+            break;
           case "utilities":
-            return this.onSubmitUtilityDetails(values);
+            await this.onSubmitUtilityDetails(values);
+            break;
           case "services":
-            return this.onSubmitServiceDetails(values);
+            await this.onSubmitServiceDetails(values);
+            break;
         }
       }
+      setSubmitting(false);
     });
   };
 
@@ -208,7 +218,8 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     let data = getResources(
       values,
       this.props.dependancies.resources.list,
-      this.props.facility.id
+      this.props.facility.id,
+      this.props.facility.resources
     );
     let error = false;
 
@@ -230,20 +241,23 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
 
     if (token == "") return;
 
-    let utilitiesToDelete = getUtilitiesToDelete(
+    let data = getUtilities(
       values,
+      this.props.facility.id,
       this.props.facility.utilities
     );
 
-    let data = getUtilities(values, this.props.facility.id);
-
     let error = false;
 
-    for (let utilityId of utilitiesToDelete) {
-      await this.props.deleteFacilityUtilities(utilityId, token).catch(() => {
-        error = true;
-      });
-    }
+    // let utilitiesToDelete = getUtilitiesToDelete(
+    //   values,
+    //   this.props.facility.utilities
+    // );
+    // for (let utilityId of utilitiesToDelete) {
+    //   await this.props.deleteFacilityUtilities(utilityId, token).catch(() => {
+    //     error = true;
+    //   });
+    // }
 
     for (let val of data) {
       await this.props.patchFacilityUtilities(val, token).catch(() => {
@@ -267,18 +281,21 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     let data = getServices(
       values,
       this.props.facility.id,
-      this.props.dependancies.services.list
+      this.props.dependancies.services.list,
+      getSelectedServicesFromLeaves(
+        getCurrentServices(this.props.facility.services),
+        this.props.dependancies.services.list
+      )
     );
-
-    let servicesToDelete = getServicesToDelete(data, currentServices);
 
     let error = false;
 
-    for (let serviceId of servicesToDelete) {
-      await this.props.deleteFacilityServices(serviceId, token).catch(() => {
-        error = true;
-      });
-    }
+    // let servicesToDelete = getServicesToDelete(data, currentServices);
+    // for (let serviceId of servicesToDelete) {
+    //   await this.props.deleteFacilityServices(serviceId, token).catch(() => {
+    //     error = true;
+    //   });
+    // }
 
     for (let val of data) {
       await this.props.patchFacilityServices(val, token).catch(() => {
@@ -300,6 +317,14 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
         message={`Failed To Update Facility ${this.props.facilityPage}, Please Try Again`}
       />
     );
+    swal({
+      icon: "error",
+      title: `Failed To Update Facility.`
+    });
+    setTimeout(() => {
+      //@ts-ignore
+      swal.close();
+    }, 4000);
   };
 
   onSuccess = () => {
@@ -308,6 +333,14 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
         message={`Facility ${this.props.facilityPage} Updated!!!`}
       />
     );
+    swal({
+      icon: "success",
+      title: `Facility Updated Successfully.`
+    });
+    setTimeout(() => {
+      //@ts-ignore
+      swal.close();
+    }, 4000);
     this.props.history.push(
       `/facilities/${this.props.facility.id}/${this.props.facilityPage}`
     );

@@ -65,10 +65,14 @@ export default (
         ...state,
         current: {
           ...state.current,
-          services: getServicesHierachyForRedux(
-            action.payload.data,
-            action.meta.services.list,
-            action.meta.services.types
+          services: uniqWith(
+            getServicesHierachyForRedux(
+              action.payload.data.data,
+              action.meta.services.list,
+              action.meta.services.types
+            ),
+            (curSer: any, nextSer: any) =>
+              curSer.service.id == nextSer.service.id
           )
         }
       };

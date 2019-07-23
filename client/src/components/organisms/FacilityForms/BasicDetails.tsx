@@ -21,8 +21,7 @@ function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    onSubmit(values, "details", "Contacts & Location");
-    setSubmitting(false);
+    await onSubmit(values, setSubmitting);
   };
 
   return (

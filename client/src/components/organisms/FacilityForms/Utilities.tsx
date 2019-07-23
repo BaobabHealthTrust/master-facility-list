@@ -40,8 +40,7 @@ function Basic(props: Props) {
       setSubmitting(false);
       return;
     }
-    onSubmit(values.utilities, "utilities", "Services");
-    setSubmitting(false);
+    onSubmit(values.utilities, setSubmitting);
   };
 
   return (

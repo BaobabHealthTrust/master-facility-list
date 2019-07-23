@@ -12,8 +12,7 @@ function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
 
   const onNext = async (values: any, { setSubmitting, setErrors }: any) => {
-    onSubmit(values, "resources", "Utilities");
-    setSubmitting(false);
+    onSubmit(values, setSubmitting);
   };
 
   return (
