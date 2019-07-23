@@ -68,6 +68,7 @@ module.exports = (Facility) => {
   });
 
   Facility.contactDetails = async (data, id, cb) => {
+    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,
@@ -135,6 +136,7 @@ module.exports = (Facility) => {
   };
 
   Facility.updateContactDetails = async (data, id, cb) => {
+    console.log(data);
     await server.models.Address.findOne({ where: { facility_id: id } }).then(
       (address) => {
         address.updateAttributes(
