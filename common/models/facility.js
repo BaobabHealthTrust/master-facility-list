@@ -134,66 +134,9 @@ module.exports = (Facility) => {
   };
 
   Facility.updateContactDetails = async (data, id, cb) => {
-    await server.models.Address.findOne({ where: { facility_id: id } }).then(
-      (address) => {
-        address.updateAttributes(
-          {
-            physical_address: data.physicalAddress,
-            postal_address: data.postalAddress,
-            client_id: data.client,
-          },
-          (err, instance) => {
-            if (err) console.error(err);
-          },
-        );
-      },
-    );
-
-    await server.models.ContactPeople.findOne({
-      where: { facility_id: id },
-    }).then((contactPerson) => {
-      contactPerson.updateAttributes(
-        {
-          contact_person_fullname: data.contactName,
-          contact_person_phone: data.contactPhoneNumber,
-          contact_person_email: data.contactEmail,
-          client_id: data.client,
-        },
-        (err, instance) => {
-          if (err) console.error(err);
-        },
-      );
-    });
-
-    await server.models.Location.findOne({ where: { facility_id: id } }).then(
-      (location) => {
-        location.updateAttributes(
-          {
-            catchment_area: data.catchmentArea,
-            catchment_population: data.catchmentPopulation,
-            client_id: data.client,
-          },
-          (err, instance) => {
-            if (err) console.error(err);
-          },
-        );
-      },
-    );
-
-    await server.models.Geolocation.findOne({
-      where: { facility_id: id },
-    }).then((geolocation) => {
-      geolocation.updateAttributes(
-        {
-          longitude: data.longitude,
-          latitude: data.latitude,
-          client_id: data.client,
-        },
-        (err, instance) => {
-          if (err) console.error(err);
-        },
-      );
-    });
+    const { Address } = server.models;
+    const where = { facility_id: id };
+    const foundAddress = await findOne({ where });
 
     return 'Data Successfully Updated';
   };
