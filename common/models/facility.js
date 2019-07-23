@@ -101,6 +101,7 @@ module.exports = (Facility) => {
   };
 
   Facility.contactDetails = async (data, id, cb) => {
+    console.log(data);
     await server.models.Address.create({
       physical_address: data.physicalAddress,
       postal_address: data.postalAddress,
