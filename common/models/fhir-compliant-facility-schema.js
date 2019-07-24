@@ -6,21 +6,26 @@ module.exports = async (facility) => {
     const extraIdentifiers = [];
     if (facilityCodeMaps && Array.isArray(facilityCodeMaps)) {
         facilityCodeMaps.forEach(facilityCodeMap => {
+            const { system, code, url } = facilityCodeMap;
             extraIdentifiers.push({
-                system: facilityCodeMap.system,
-                value: facilityCodeMap.code,
-                url: facilityCodeMap.url || ''
+                system: system,
+                value: code,
+                url: url || ''
             })
         })
     }
     const url = `http://${process.env.HOST}:${process.env.PORT}/api/facilities/${facility.id}`;
+    const { contact_person_phone = '', contact_person_email = '' } = contactPerson;
+    const { latitude = '', longitude = '' } = geolocation;
+    const { facility_code, facility_name, common_name } = facility;
+    const { postal_address = '', physical_address = '', village = '' } = address;
     return {
         resourceType: 'Location',
         id: facility.id,
         identifier: [
             {
                 "system": "mhfr",
-                value: facility.facility_code,
+                value: facility_code,
                 url
             },
             ...extraIdentifiers
@@ -30,30 +35,30 @@ module.exports = async (facility) => {
             display: operationalStatus.facility_operational_status,
             user_selected: true
         },
-        name: facility.facility_name,
-        alias: facility.common_name,
+        name: facility_name,
+        alias: common_name,
         mode: 'instance',
         telecom: [
             {
                 "system": "phone",
-                "value": contactPerson.contact_person_phone
+                "value": contact_person_phone
             },
             {
                 "system": "email",
-                "value": contactPerson.contact_person_email
+                "value": contact_person_email
             }
         ],
         position: {
-            latitude: geolocation.latitude,
-            longitude: geolocation.longitude,
+            latitude,
+            longitude,
         },
         address: {
             use: 'work',
             type: 'both',
             line: [
-                address.physical_address,
-                address.postal_address,
-                address.village
+                physical_address,
+                postal_address,
+                village
             ]
         },
         endpoint: url
