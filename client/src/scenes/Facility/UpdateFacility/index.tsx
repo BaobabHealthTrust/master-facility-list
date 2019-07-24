@@ -21,7 +21,10 @@ import {
   patchFacilityUtilities,
   deleteFacilityUtilities,
   patchFacilityServices,
-  deleteFacilityServices
+  deleteFacilityServices,
+  postFacilityServices,
+  postFacilityUtilities,
+  postFacilityResources
 } from "../../../services/redux/actions/facilities";
 import {
   faHospital,
@@ -223,11 +226,9 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     );
     let error = false;
 
-    for (let val of data) {
-      await this.props.patchFacilityResources(val, token).catch(() => {
-        error = true;
-      });
-    }
+    await this.props.postFacilityResources(data, token).catch(() => {
+      error = true;
+    });
 
     if (error) {
       this.onError();
@@ -259,11 +260,9 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     //   });
     // }
 
-    for (let val of data) {
-      await this.props.patchFacilityUtilities(val, token).catch(() => {
-        error = true;
-      });
-    }
+    await this.props.postFacilityUtilities(data, token).catch(() => {
+      error = true;
+    });
 
     if (error) {
       this.onError();
@@ -297,11 +296,9 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     //   });
     // }
 
-    for (let val of data) {
-      await this.props.patchFacilityServices(val, token).catch(() => {
-        error = true;
-      });
-    }
+    await this.props.postFacilityServices(data, token).catch(() => {
+      error = true;
+    });
 
     if (error) {
       this.onError();
@@ -399,6 +396,9 @@ type Props = {
   patchFacilityUtilities: Function;
   deleteFacilityUtilities: Function;
   patchFacilityServices: Function;
+  postFacilityServices: Function;
+  postFacilityUtilities: Function;
+  postFacilityResources: Function;
   deleteFacilityServices: Function;
   history?: any;
   loading: any;
@@ -419,7 +419,10 @@ export default withRouter(
       patchFacilityUtilities,
       deleteFacilityUtilities,
       deleteFacilityServices,
-      patchFacilityServices
+      patchFacilityServices,
+      postFacilityServices,
+      postFacilityUtilities,
+      postFacilityResources
     }
   )(index)
 );
