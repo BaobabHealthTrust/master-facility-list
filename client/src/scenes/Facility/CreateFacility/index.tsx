@@ -181,7 +181,12 @@ export class index extends Component<Props> {
     return addFacility;
   };
 
-  onSubmit = async (values: any, key: string, nextTab: string) => {
+  onSubmit = async (
+    values: any,
+    setSubmitting: Function,
+    key: string,
+    nextTab: string
+  ) => {
     this.setFacilityDetails(key, values);
     if (nextTab == "Finish") {
       if (!(await this.handleSubmit())) {
