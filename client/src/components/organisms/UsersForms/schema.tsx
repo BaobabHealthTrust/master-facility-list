@@ -32,7 +32,7 @@ export const userSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .typeError("Passwords do not match")
-    .oneOf([yup.ref("password"), null], "Passwords do not match")
+    .oneOf([yup.ref("password"), ""], "Passwords do not match")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
@@ -76,7 +76,7 @@ export const changePasswordSchema = yup.object().shape({
   confirmNewPassword: yup
     .string()
     .typeError("Passwords do not match")
-    .oneOf([yup.ref("newPassword"), null], "Passwords do not match")
+    .oneOf([yup.ref("newPassword"), ""], "Passwords do not match")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
@@ -97,7 +97,7 @@ export const resetPasswordSchema = yup.object().shape({
   confirmNewPassword: yup
     .string()
     .typeError("Passwords do not match")
-    .oneOf([yup.ref("newPassword"), null], "Passwords do not match")
+    .oneOf([yup.ref("newPassword"), ""], "Passwords do not match")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
