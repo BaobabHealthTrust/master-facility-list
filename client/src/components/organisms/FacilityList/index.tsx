@@ -13,6 +13,8 @@ const FacilityList = (props: Props) => {
     { name: "type", title: "TYPE" },
     { name: "status", title: "STATUS" },
     { name: "district", title: "DISTRICT" },
+    { name: "latitude", title: "LATITUDE" },
+    { name: "longitude", title: "LONGITUDE" },
     { name: "dateOpened", title: "DATE OPENED" }
   ];
 

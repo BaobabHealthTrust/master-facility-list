@@ -6,8 +6,8 @@ import { createLogger } from "redux-logger";
 const Store = createStore(
   rootReducer,
   compose(
-    applyMiddleware(promiseMiddleware, createLogger({ collapsed: true }))
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    applyMiddleware(promiseMiddleware)
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),createLogger({ collapsed: true })
   )
 );
 
