@@ -33,7 +33,7 @@ const FilterDrawer = (props: Props) => {
 type Props = {
   classes?: any;
   open: boolean;
-  dependancies: any;
+  dependancies?: any;
   filterOptions: Array<any>;
   onAddFilter: Function;
   onRemoveFilter: Function;
