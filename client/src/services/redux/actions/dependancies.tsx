@@ -10,7 +10,8 @@ import {
   getOperationalStatuses,
   getDistricts,
   getOwners,
-  getFacilityTypes
+  getFacilityTypes,
+  getUserRoles
 } from "../../api";
 
 export const fetchUtilities = () => {
@@ -45,6 +46,13 @@ export const fetchResources = () => {
   return {
     type: actions.fetchResources,
     payload: getResources()
+  };
+};
+
+export const fetchUserRoles = () => {
+  return {
+    type: actions.fetchUserRoles,
+    payload: getUserRoles()
   };
 };
 

@@ -11,10 +11,12 @@ import {
   Input
 } from "@material-ui/core";
 import styled from "styled-components";
-import { renderOptions } from "../../../services/helpers";
+import { renderOptions, getUser } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
 // @ts-ignore
 import { isEmpty } from "lodash";
+import InputError from "../../atoms/InputError";
+import Ac from "../../atoms/Ac";
 
 export function Form(props: any) {
   let {
@@ -26,7 +28,8 @@ export function Form(props: any) {
     handleBlur,
     isSubmitting,
     setFieldValue,
-    fromAdd
+    fromAdd,
+    roles
   } = props;
   return (
     <form onSubmit={handleSubmit}>
@@ -90,6 +93,34 @@ export function Form(props: any) {
               )}
             </FormControl>
           </Grid>
+          <Ac
+            role={getUser().role}
+            action="user:update"
+            allowed={() => (
+              <Grid item sm={12} md={12}>
+                <InputLabel htmlFor="facilityType">User Group</InputLabel>
+                <FormControl className="mfl-max-width">
+                  <Select
+                    data-test="userGroup"
+                    value={values.role}
+                    onBlur={handleBlur}
+                    error={errors.role && touched.role}
+                    onChange={(e: any) => setFieldValue("role", e.target.value)}
+                    inputProps={{
+                      id: "role",
+                      name: "role"
+                    }}
+                  >
+                    {renderOptions(roles, "name")}
+                  </Select>
+                  {errors.role && touched.role && (
+                    <InputError error={errors.role} for="role" />
+                  )}
+                </FormControl>
+              </Grid>
+            )}
+          />
+
           {fromAdd && (
             <>
               <Grid item sm={12} md={12}>

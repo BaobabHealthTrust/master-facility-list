@@ -27,6 +27,7 @@ import MobileMenu from "../../molecules/MobileMenu";
 import SearchContainer from "./SearchContainer";
 import BaselineMenu from "../../molecules/MobileBaselineMenu";
 import ChangePassword from "../../../scenes/Users/ChangePassword";
+import { acActions } from "../../../acl";
 
 library.add(faAlignJustify);
 
@@ -68,7 +69,8 @@ const Header = (props: Props) => {
       name: "Users",
       active: isActivePage("Users"),
       icon: <People />,
-      link: `/users`
+      link: `/users`,
+      aclAction: "user:view" as acActions
     },
     {
       text: "More",

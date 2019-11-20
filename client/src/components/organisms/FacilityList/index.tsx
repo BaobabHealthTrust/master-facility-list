@@ -9,7 +9,6 @@ const FacilityList = (props: Props) => {
     { name: "code", title: "NEW CODE" },
     { name: "code", title: "OLD CODE" },
     { name: "name", title: "NAME" },
-
     { name: "district", title: "DISTRICT" },
     { name: "ownership", title: "OWNERSHIP" },
     { name: "type", title: "TYPE" },

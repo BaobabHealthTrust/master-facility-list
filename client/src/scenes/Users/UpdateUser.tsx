@@ -116,7 +116,8 @@ class SystemsModal extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-  errors: state.errors.putUser
+  errors: state.errors.putUser,
+  roles: state.dependancies.roles.list
 });
 export default connect(
   mapStateToProps,

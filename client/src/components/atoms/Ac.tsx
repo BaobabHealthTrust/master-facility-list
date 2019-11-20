@@ -1,5 +1,5 @@
 import React from "react";
-import { acl, aclActions } from "../../acl";
+import { acl, acActions } from "../../acl";
 
 const check = (rules: any, role: any, action: string, data: any) => {
   const permissions = rules[role];
@@ -15,21 +15,21 @@ const check = (rules: any, role: any, action: string, data: any) => {
   return false;
 };
 
-const Acl = (props: Props) =>
+const Ac = (props: Props) =>
   check(acl, props.role, props.action, props.data)
     ? props.allowed && props.allowed()
     : props.denied && props.denied();
 
-Acl.defaultProps = {
+Ac.defaultProps = {
   allowed: () => null,
   denied: () => null
 };
 
 type Props = {
   role: string;
-  action: aclActions;
+  action: acActions;
   allowed?: Function;
   denied?: Function;
   data?: any;
 };
-export default Acl;
+export default Ac;

@@ -10,9 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../atoms/Card";
 import UpdateUser from "../../scenes/Users/UpdateUser";
+import { getUser } from "../../services/helpers";
+import Ac from "../atoms/Ac";
 
 function UserCard(props: Props) {
   const { user, onDelete } = props;
+  const User = getUser();
   return (
     <Card style={{ padding: "10px" }}>
       <UserDetailsContainer>
@@ -34,13 +37,21 @@ function UserCard(props: Props) {
         <FontAwesomeIcon icon={faEnvelope} /> {user.email}
       </Contacts>
       <Footer>
-        <UpdateUser user={user} />
-        <i onClick={() => onDelete(user.id)}>
-          <FontAwesomeIcon
-            style={{ margin: "0px 10px", cursor: "pointer" }}
-            icon={faTrashAlt}
-          />
-        </i>
+        <Ac
+          role={User.role}
+          action="user:update"
+          allowed={() => (
+            <>
+              <UpdateUser user={user} />
+              <i onClick={() => onDelete(user.id)}>
+                <FontAwesomeIcon
+                  style={{ margin: "0px 10px", cursor: "pointer" }}
+                  icon={faTrashAlt}
+                />
+              </i>
+            </>
+          )}
+        ></Ac>
       </Footer>
     </Card>
   );

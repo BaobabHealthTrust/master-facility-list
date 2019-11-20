@@ -59,6 +59,8 @@ export default {
   setActivePage: "SET_ACTIVE_PAGE",
   setActiveFacilityPage: "SET_ACTIVE_FACILITY_PAGE",
 
+  fetchUserRoles: "FETCH_USER_ROLES",
+
   fetchUsers: "FETCH_USERS",
   addUser: "ADD_USER",
   putUser: "PUT_USER",

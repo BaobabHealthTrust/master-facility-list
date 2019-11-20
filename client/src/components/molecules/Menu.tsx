@@ -1,20 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 import MenuItem from "../atoms/MenuItem";
+import Ac from "../atoms/Ac";
+import { getUser } from "../../services/helpers";
+import { acActions } from "../../acl";
 
 function Menu(props: Props) {
   const { items } = props;
   return (
     <Container className="hide-on-med-and-down">
-      {items.map((item, index) => (
-        <MenuItem
-          key={index}
-          body={item.text}
-          active={item.active}
-          item={item}
-          dropdown={item.options ? true : false}
-        />
-      ))}
+      {items.map((item, index) =>
+        item.aclAction ? (
+          <Ac
+            role={getUser().role}
+            action={item.aclAction}
+            allowed={() => (
+              <MenuItem
+                key={index}
+                body={item.text}
+                active={item.active}
+                item={item}
+                dropdown={item.options ? true : false}
+              />
+            )}
+          />
+        ) : (
+          <MenuItem
+            key={index}
+            body={item.text}
+            active={item.active}
+            item={item}
+            dropdown={item.options ? true : false}
+          />
+        )
+      )}
     </Container>
   );
 }
@@ -29,6 +48,7 @@ type Props = {
     link?: string;
     name: string;
     options?: Array<any>;
+    aclAction?: acActions;
   }>;
 };
 

@@ -32,7 +32,8 @@ import {
   fetchDistricts,
   fetchOperationalStatuses,
   dispatchDependancyError,
-  fetchFacilityTypes
+  fetchFacilityTypes,
+  fetchUserRoles
 } from "../services/redux/actions/dependancies";
 import ReactGA from "react-ga";
 import { fetchFacilities } from "../services/redux/actions/facilities";
@@ -171,6 +172,7 @@ const App: React.FC = (props: any) => {
                 component={UpdateFacility}
               />
             )}
+
             {props.isAuthenticated && (
               <Route exact path="/users" component={Users} />
             )}

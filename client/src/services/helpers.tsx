@@ -168,3 +168,8 @@ export const hasFilterValuesForType = (type: string, values: Array<any>) => {
 };
 
 export const isAdmin = () => sessionStorage.getItem("token");
+
+export const getUser = () => {
+  const user = sessionStorage.getItem("user");
+  return user ? JSON.parse(user) : { role: "public" };
+};

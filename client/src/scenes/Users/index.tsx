@@ -2,12 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Users from "./Users";
 import { fetchUsers, delUser } from "../../services/redux/actions/users";
+import {
+  fetchUserRoles,
+  dispatchDependancyError
+} from "../../services/redux/actions/dependancies";
 // @ts-ignore
 import { sortBy } from "lodash";
 import { toast } from "react-toastify";
 import Notification from "../../components/atoms/Notification";
 import swal from "sweetalert";
 import RedirectOnMobile from "../../components/atoms/RedirectOnMobile";
+import { getUser } from "../../services/helpers";
+import Ac from "../../components/atoms/Ac";
 
 export class index extends Component<Props> {
   state = {
@@ -72,17 +78,29 @@ export class index extends Component<Props> {
         this.props.fetchUsers(token);
       }
     }
+    if (this.props.roles.length === 0) {
+      this.props.fetchUserRoles &&
+        this.props.fetchUserRoles().catch(() => {
+          dispatchDependancyError();
+        });
+    }
   }
   render() {
     const users = this.getUsers();
     return (
       <>
         <RedirectOnMobile />
-        <Users
-          users={users}
-          onFilter={this.onFilter}
-          onSort={this.onSort}
-          onDeleteUser={this.onDeleteUser}
+        <Ac
+          role={getUser().role}
+          action="user:view"
+          allowed={() => (
+            <Users
+              users={users}
+              onFilter={this.onFilter}
+              onSort={this.onSort}
+              onDeleteUser={this.onDeleteUser}
+            />
+          )}
         />
       </>
     );
@@ -92,14 +110,17 @@ export class index extends Component<Props> {
 type Props = {
   users: Array<any>;
   fetchUsers: Function;
+  fetchUserRoles?: Function;
   delUser: Function;
+  roles: Array<any>;
 };
 
 const mapStateToProps = (state: any) => ({
-  users: state.users.users
+  users: state.users.users,
+  roles: state.dependancies.roles.list
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUsers, delUser }
+  { fetchUsers, delUser, fetchUserRoles, dispatchDependancyError }
 )(index);

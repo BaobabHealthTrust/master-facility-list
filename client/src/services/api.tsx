@@ -2,6 +2,10 @@ import axios from "axios";
 
 const API = process.env.REACT_APP_API_URL;
 
+export const getUserRoles = () => {
+  const url = `${API}/Roles`;
+  return axios.get(url);
+};
 export const getUtilities = () => {
   const url = `${API}/Utilities`;
   return axios.get(url);
@@ -146,7 +150,7 @@ export const getUsers = (token: string) => {
 };
 
 export const addUser = (data: any, token: string) => {
-  const url = `${API}/clients/createAdmin`;
+  const url = `${API}/clients/createUser`;
   const header = {
     headers: {
       Authorization: `${token}`

@@ -7,18 +7,26 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import CreateUserModal from "./CreateUser";
 import OptionsBar from "../../components/molecules/UsersOptionsBar";
 import UsersList from "../../components/organisms/UsersList";
-import { isAdmin } from "../../services/helpers";
+import { isAdmin, getUser } from "../../services/helpers";
 import RedirectOnMobile from "../../components/atoms/RedirectOnMobile";
+import Ac from "../../components/atoms/Ac";
 
 function Users(props: Props) {
   const { users, onFilter, onSort, onDeleteUser } = props;
+  const User = getUser();
   return (
     <Container style={{ paddingTop: "25px" }}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12}>
           <PageTitle
             title="User Management"
-            options={<div>{isAdmin() && <CreateUserModal />}</div>}
+            options={
+              <Ac
+                role={User.role}
+                action="user:create"
+                allowed={() => <CreateUserModal />}
+              />
+            }
             icon={<FontAwesomeIcon icon={faUsers} />}
           />
         </Grid>

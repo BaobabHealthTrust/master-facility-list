@@ -1,4 +1,4 @@
-export type aclActions =
+export type acActions =
   | "facility:licensing_status"
   | "facility:basic_details:create"
   | "facility:basic_details:update"
@@ -13,6 +13,7 @@ export type aclActions =
   | "facility:services:create"
   | "facility:services:update"
   | "facility:services:delete"
+  | "user:view"
   | "user:create"
   | "user:update"
   | "user:delete";
@@ -34,13 +35,19 @@ export const acl = {
       "facility:services:create",
       "facility:services:update",
       "facility:services:delete",
+      "user:view",
       "user:create",
       "user:update",
       "user:delete"
     ]
   },
   medical_council: {
-    static: ["facility:licensing_status"]
+    static: ["facility:licensing_status"],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   },
   cmed: {
     static: [
@@ -57,7 +64,12 @@ export const acl = {
       "facility:services:create",
       "facility:services:update",
       "facility:services:delete"
-    ]
+    ],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   },
   dho: {
     static: [
@@ -74,7 +86,12 @@ export const acl = {
       "facility:services:create",
       "facility:services:update",
       "facility:services:delete"
-    ]
+    ],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   },
   public: {
     static: []
@@ -84,13 +101,23 @@ export const acl = {
       "facility:services:create",
       "facility:services:update",
       "facility:services:delete"
-    ]
+    ],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   },
   infrastructure_department: {
     static: [
       "facility:resources:create",
       "facility:resources:update",
       "facility:resources:delete"
-    ]
+    ],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   }
 };

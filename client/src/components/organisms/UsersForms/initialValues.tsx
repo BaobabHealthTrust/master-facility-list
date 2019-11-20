@@ -13,6 +13,7 @@ export const userInitialValues = (
         username: user === null ? null : user.username,
         email: user === null ? null : user.email,
         password: user === null ? null : user.password,
-        confirmPassword: user === null ? null : user.password
+        confirmPassword: user === null ? null : user.password,
+        role: user === null ? null : user.role
       };
 };

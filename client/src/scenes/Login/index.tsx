@@ -26,17 +26,17 @@ export class index extends Component<Props> {
       this.props.auth.authDetails.id
     );
 
-    await this.persistUserDetails(this.props.auth.authDetails.id);
+    await this.persistUserDetails(this.props.auth.authDetails);
 
     this.props.history.push("/");
     this.props.setActivePage("home");
   };
 
-  persistUserDetails = async (tokenId: string) => {
-    await sessionStorage.setItem("token", tokenId);
+  persistUserDetails = async (details: any) => {
+    await sessionStorage.setItem("token", details.id);
     await sessionStorage.setItem(
       "user",
-      JSON.stringify(this.props.auth.details)
+      JSON.stringify({ ...this.props.auth.details, role: details.role })
     );
   };
 
