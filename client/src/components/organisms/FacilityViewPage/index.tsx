@@ -21,8 +21,9 @@ import styled from "styled-components";
 import { FacilityPages } from "../../../services/utils";
 import Button from "../../atoms/Button";
 import { Link } from "react-router-dom";
-import { isAdmin } from "../../../services/helpers";
+import { isAdmin, getUser } from "../../../services/helpers";
 import EmptyState from "../../atoms/FacilityDetailsEmptyState";
+import Ac from "../../atoms/Ac";
 
 library.add(faHospital, faEdit);
 
@@ -54,13 +55,17 @@ function index(props: Props) {
             sub={basic.common_name ? basic.common_name : ""}
             icon={<FontAwesomeIcon icon={faHospital} />}
             options={
-              isAdmin() && (
-                <Link to="/facilities/add">
-                  <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
-                    Add Facility
-                  </Button>
-                </Link>
-              )
+              <Ac
+                role={getUser().role}
+                action="facility:basic_details:create"
+                allowed={() => (
+                  <Link to="/facilities/add">
+                    <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
+                      Add Facility
+                    </Button>
+                  </Link>
+                )}
+              />
             }
           />
         </Grid>

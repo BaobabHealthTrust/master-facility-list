@@ -1,7 +1,12 @@
 import React from "react";
 import { acl, acActions } from "../../acl";
 
-const check = (rules: any, role: any, action: string, data: any) => {
+export const check = (
+  rules: any = acl,
+  role: any,
+  action: acActions,
+  data: any = null
+) => {
   const permissions = rules[role];
 
   if (!permissions) return false;

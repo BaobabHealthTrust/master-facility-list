@@ -1,5 +1,5 @@
 export type acActions =
-  | "facility:licensing_status"
+  | "facility:basic_details:licensing_status"
   | "facility:basic_details:create"
   | "facility:basic_details:update"
   | "facility:contact_location_details:create"
@@ -21,7 +21,6 @@ export type acActions =
 export const acl = {
   admin: {
     static: [
-      "facility:licensing_status",
       "facility:basic_details:create",
       "facility:basic_details:update",
       "facility:contact_location_details:create",
@@ -42,7 +41,7 @@ export const acl = {
     ]
   },
   medical_council: {
-    static: ["facility:licensing_status"],
+    static: ["facility:basic_details:licensing_status"],
     dynamic: {
       "user:update": ({ currentUserId, userId }: any) => {
         return currentUserId === userId;

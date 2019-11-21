@@ -9,7 +9,8 @@ import {
   faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { isAdmin } from "../../services/helpers";
+import { isAdmin, getUser } from "../../services/helpers";
+import Ac from "../atoms/Ac";
 
 library.add(faPlus, faFilePdf, faFileExcel);
 
@@ -39,16 +40,22 @@ function FacilityToolbar(props: Props) {
       </DownloadButtonsContainer>
       {isAdmin() && (
         <AddButtonContainer>
-          <Link to="/facilities/add">
-            <Button
-              style={{ marginRight: "0px" }}
-              theme="primary"
-              icon={<FontAwesomeIcon icon={faPlus} />}
-              data-test="addFacilityBtn"
-            >
-              Add Facility
-            </Button>
-          </Link>
+          <Ac
+            role={getUser().role}
+            action="facility:basic_details:create"
+            allowed={() => (
+              <Link to="/facilities/add">
+                <Button
+                  style={{ marginRight: "0px" }}
+                  theme="primary"
+                  icon={<FontAwesomeIcon icon={faPlus} />}
+                  data-test="addFacilityBtn"
+                >
+                  Add Facility
+                </Button>
+              </Link>
+            )}
+          />
         </AddButtonContainer>
       )}
     </ButtonsContainer>

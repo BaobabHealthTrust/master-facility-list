@@ -11,11 +11,13 @@ import {
   Input
 } from "@material-ui/core";
 import styled from "styled-components";
-import { renderOptions } from "../../../services/helpers";
+import { renderOptions, getUser } from "../../../services/helpers";
 import FormButtons from "../../atoms/FacilityFormButtons";
 import FacilityCodesForm from "./FacilityCodes";
 import TextInput from "../../atoms/TextInput";
 import InputError from "../../atoms/InputError";
+import Ac, { check } from "../../atoms/Ac";
+import { acActions } from "../../../acl";
 
 function Basic(props: Props) {
   const { initialValues, schema, onSubmit } = props;
@@ -55,6 +57,12 @@ export function Form(props: any) {
     onCancel,
     fromAdd
   } = props;
+
+  const isDisabled = (action: acActions): boolean => {
+    const role = getUser().role;
+    return !check(undefined, role, action);
+  };
+
   return (
     <>
       <FormWrapper>
@@ -69,6 +77,7 @@ export function Form(props: any) {
               onBlur={handleBlur}
               touched={touched.facilityName}
               name="facilityName"
+              disabled={isDisabled("facility:basic_details:create")}
             />
           </Grid>
           <Grid item sm={12} md={6}>
@@ -81,12 +90,14 @@ export function Form(props: any) {
               touched={touched.commonName}
               onChange={handleChange}
               onBlur={handleBlur}
+              disabled={isDisabled("facility:basic_details:create")}
             />
           </Grid>
           <Grid item sm={12} md={6}>
             <InputLabel htmlFor="facilityType">Facility Type</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                disabled={isDisabled("facility:basic_details:create")}
                 data-test="facilityType"
                 value={values.facilityType}
                 onBlur={handleBlur}
@@ -113,6 +124,7 @@ export function Form(props: any) {
             <InputLabel>Operational Status</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                disabled={isDisabled("facility:basic_details:create")}
                 data-test="operationalStatus"
                 onBlur={handleBlur}
                 error={errors.operationalStatus && touched.operationalStatus}
@@ -147,6 +159,7 @@ export function Form(props: any) {
             <InputLabel>Regulatory Status</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                disabled={isDisabled("facility:basic_details:licensing_status")}
                 data-test="regulatoryStatus"
                 onBlur={handleBlur}
                 error={errors.regulatoryStatus && touched.regulatoryStatus}
@@ -167,6 +180,7 @@ export function Form(props: any) {
                   "facility_regulatory_status"
                 )}
               </Select>
+
               {errors.operationalStatus && touched.regulatoryStatus && (
                 <InputError
                   error={errors.regulatoryStatus}
@@ -180,6 +194,7 @@ export function Form(props: any) {
             <InputLabel>Facility Owner</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                disabled={isDisabled("facility:basic_details:create")}
                 data-test="facilityOwner"
                 onBlur={handleBlur}
                 error={errors.facilityOwner && touched.facilityOwner}
@@ -206,6 +221,7 @@ export function Form(props: any) {
             <InputLabel>District</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
+                disabled={isDisabled("facility:basic_details:create")}
                 data-test="district"
                 onBlur={handleBlur}
                 error={errors.district && touched.district}
@@ -228,6 +244,7 @@ export function Form(props: any) {
           </Grid>
           <Grid item sm={12} md={3}>
             <TextInput
+              disabled={isDisabled("facility:basic_details:create")}
               value={values.registrationNumber}
               name="registrationNumber"
               label="Registration Number"
@@ -241,6 +258,7 @@ export function Form(props: any) {
           <Grid item sm={12} md={3}>
             <FormControl className="mfl-max-width">
               <TextField
+                disabled={isDisabled("facility:basic_details:create")}
                 id="date"
                 name="dateOpened"
                 label="Date Opened"
@@ -254,9 +272,15 @@ export function Form(props: any) {
           </Grid>
           <Grid item sm={12} md={3}>
             {!fromAdd && (
-              <FacilityCodesForm
-                systems={values.facility_code_mapping}
-                setFieldValue={setFieldValue}
+              <Ac
+                role={getUser().role}
+                action="facility:contact_location_details:create"
+                allowed={() => (
+                  <FacilityCodesForm
+                    systems={values.facility_code_mapping}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
               />
             )}
           </Grid>
