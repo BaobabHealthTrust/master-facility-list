@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 import { isAdmin, getUser } from "../../../services/helpers";
 import EmptyState from "../../atoms/FacilityDetailsEmptyState";
 import Ac from "../../atoms/Ac";
+import { acActions } from "../../../acl";
 
 library.add(faHospital, faEdit);
 
@@ -45,7 +46,12 @@ function index(props: Props) {
           lng: parseFloat(basic.geolocations.longitude)
         }
       : { lat: -13.9626121, lng: 33.7741195 };
-
+  const acAction =
+    activePage == FacilityPages.summary
+      ? "basic_details"
+      : activePage == FacilityPages.contact
+      ? "contact_location_details"
+      : activePage;
   return (
     <Container style={{ padding: "16px" }}>
       <Grid container spacing={3}>
@@ -90,16 +96,22 @@ function index(props: Props) {
                       <CardTitle>
                         <div>{pageHeader}</div>
                         {isAdmin() && (
-                          <Link
-                            to={`/facilities/${basic.id}/${activePage}/edit`}
-                          >
-                            <Button
-                              theme="secondary"
-                              icon={<FontAwesomeIcon icon={faEdit} />}
-                            >
-                              Update Facility
-                            </Button>
-                          </Link>
+                          <Ac
+                            role={getUser().role}
+                            action={`facility:${acAction}:update` as acActions}
+                            allowed={() => (
+                              <Link
+                                to={`/facilities/${basic.id}/${activePage}/edit`}
+                              >
+                                <Button
+                                  theme="secondary"
+                                  icon={<FontAwesomeIcon icon={faEdit} />}
+                                >
+                                  Update Facility
+                                </Button>
+                              </Link>
+                            )}
+                          />
                         )}
                       </CardTitle>
                     }

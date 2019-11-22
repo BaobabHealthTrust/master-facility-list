@@ -22,6 +22,7 @@ export const acl = {
   admin: {
     static: [
       "facility:basic_details:create",
+      "facility:basic_details:licensing_status",
       "facility:basic_details:update",
       "facility:contact_location_details:create",
       "facility:contact_location_details:update",
@@ -41,7 +42,10 @@ export const acl = {
     ]
   },
   medical_council: {
-    static: ["facility:basic_details:licensing_status"],
+    static: [
+      "facility:basic_details:update",
+      "facility:basic_details:licensing_status"
+    ],
     dynamic: {
       "user:update": ({ currentUserId, userId }: any) => {
         return currentUserId === userId;

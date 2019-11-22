@@ -26,6 +26,10 @@ import { Grid } from "@material-ui/core";
 import Card from "../../../components/atoms/Card";
 import OptionsBar from "../../../components/molecules/FacilityViewOptionsBar";
 import { FacilityPages as pages } from "../../../services/utils";
+import Ac from "../../../components/atoms/Ac";
+import { getUser } from "../../../services/helpers";
+import { acActions } from "../../../acl";
+import Unauthorized from "../../Error/401";
 
 library.add(faHospital);
 
@@ -42,6 +46,13 @@ function UpdateFacility(props: Props) {
     onCancel,
     downloadFacility
   } = props;
+
+  const acAction =
+    activePage == pages.summary
+      ? "basic_details"
+      : activePage == pages.contact
+      ? "contact_location_details"
+      : activePage;
   return (
     <>
       {facility.id && (
@@ -72,58 +83,68 @@ function UpdateFacility(props: Props) {
                   />
                 </Card>
               </Grid>
-              {activePage == pages.summary && (
-                <BasicDetailsForm
-                  onCancel={onCancel}
-                  initialValues={basic(facility)}
-                  schema={basicSchema}
-                  onSubmit={onSubmit}
-                  networkError={[]}
-                  dependancies={dependancies}
-                />
-              )}
-              {activePage == pages.contact && (
-                <ContactDetailsForm
-                  onCancel={onCancel}
-                  initialValues={contact(facility)}
-                  schema={contactSchema}
-                  onSubmit={onSubmit}
-                  networkError={[]}
-                  dependancies={dependancies}
-                />
-              )}
-              {activePage == pages.resources && (
-                <ResourceDetails
-                  onCancel={onCancel}
-                  initialValues={resources(
-                    dependancies.resources.list,
-                    facility.resources
-                  )}
-                  schema={getResourcesSchema(dependancies.resources.list)}
-                  onSubmit={onSubmit}
-                  networkError={[]}
-                  dependancies={dependancies}
-                />
-              )}
-              {activePage == pages.utilities && (
-                <UtilitiesForm
-                  onCancel={onCancel}
-                  initialValues={utilities(facility.utilities)}
-                  onSubmit={onSubmit}
-                  networkError={[]}
-                  dependancies={dependancies}
-                />
-              )}
-              {activePage == pages.services &&
-                !loadingStates.fetchCurrentServices && (
-                  <ServicesForm
-                    onCancel={onCancel}
-                    initialValues={services(facility.services)}
-                    onSubmit={onSubmit}
-                    networkError={[]}
-                    dependancies={dependancies}
-                  />
+
+              <Ac
+                role={getUser().role}
+                action={`facility:${acAction}:update` as acActions}
+                allowed={() => (
+                  <>
+                    {activePage == pages.summary && (
+                      <BasicDetailsForm
+                        onCancel={onCancel}
+                        initialValues={basic(facility)}
+                        schema={basicSchema}
+                        onSubmit={onSubmit}
+                        networkError={[]}
+                        dependancies={dependancies}
+                      />
+                    )}
+                    {activePage == pages.contact && (
+                      <ContactDetailsForm
+                        onCancel={onCancel}
+                        initialValues={contact(facility)}
+                        schema={contactSchema}
+                        onSubmit={onSubmit}
+                        networkError={[]}
+                        dependancies={dependancies}
+                      />
+                    )}
+                    {activePage == pages.resources && (
+                      <ResourceDetails
+                        onCancel={onCancel}
+                        initialValues={resources(
+                          dependancies.resources.list,
+                          facility.resources
+                        )}
+                        schema={getResourcesSchema(dependancies.resources.list)}
+                        onSubmit={onSubmit}
+                        networkError={[]}
+                        dependancies={dependancies}
+                      />
+                    )}
+                    {activePage == pages.utilities && (
+                      <UtilitiesForm
+                        onCancel={onCancel}
+                        initialValues={utilities(facility.utilities)}
+                        onSubmit={onSubmit}
+                        networkError={[]}
+                        dependancies={dependancies}
+                      />
+                    )}
+                    {activePage == pages.services &&
+                      !loadingStates.fetchCurrentServices && (
+                        <ServicesForm
+                          onCancel={onCancel}
+                          initialValues={services(facility.services)}
+                          onSubmit={onSubmit}
+                          networkError={[]}
+                          dependancies={dependancies}
+                        />
+                      )}
+                  </>
                 )}
+                denied={() => <Unauthorized />}
+              />
             </Grid>
           </Grid>
         </Container>
