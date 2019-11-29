@@ -31,7 +31,7 @@ class SystemsModal extends React.Component<Props> {
     let data = {
       ...value,
       firstname: value.name.split(" ")[0],
-      lastname: value.name.split(" ").length > 0 ? value.name.split(" ")[1] : ""
+      lastname: value.name.split(" ").length > 1 ? value.name.split(" ")[1] : ""
     };
 
     let token = sessionStorage.getItem("token");
@@ -61,8 +61,9 @@ class SystemsModal extends React.Component<Props> {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Button
+          data-test="addUserButton"
           icon={<FontAwesomeIcon icon={faPlusCircle} />}
           onClick={() => {
             this.setOpen(true);
@@ -71,7 +72,7 @@ class SystemsModal extends React.Component<Props> {
           Add New User
         </Button>
         <StyledModal open={this.state.open}>
-          <ModalContainer>
+          <ModalContainer data-test="addUserModal">
             <Paper>
               <Formik
                 enableReinitialize={true}
@@ -87,15 +88,17 @@ class SystemsModal extends React.Component<Props> {
                     >
                       <AddForm {...this.props} {...formikProps} fromAdd />{" "}
                     </Card>
-                    <ModalFooter>
+                    <ModalFooter data-test="modalFooter">
                       <Button
                         type="submit"
                         onClick={formikProps.handleSubmit}
                         disabled={formikProps.isSubmitting}
+                        data-test="addUserButton1"
                       >
                         Add User
                       </Button>
                       <Button
+                        data-test="cancelDataTest"
                         theme="default"
                         onClick={() => {
                           this.setOpen(false);
@@ -110,7 +113,7 @@ class SystemsModal extends React.Component<Props> {
             </Paper>
           </ModalContainer>
         </StyledModal>
-      </React.Fragment>
+      </>
     );
   }
 }

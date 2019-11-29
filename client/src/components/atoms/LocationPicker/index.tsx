@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import Map from "./Map";
-import styled from "styled-components";
+import { CoordinatesContainer } from "./styles";
+
+type Props = {
+  position: { lat: any; lng: any };
+  isMarkerShown?: boolean;
+  onChange: Function;
+};
 
 export class index extends Component<Props> {
   state = {
@@ -32,15 +38,4 @@ export class index extends Component<Props> {
     );
   }
 }
-
-type Props = {
-  position: { lat: any; lng: any };
-  isMarkerShown?: boolean;
-  onChange: Function;
-};
 export default index;
-
-const CoordinatesContainer = styled.div`
-  text-align: center;
-  padding: 10px;
-`;

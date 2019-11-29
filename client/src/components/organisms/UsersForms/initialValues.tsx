@@ -6,7 +6,8 @@ export const userInitialValues = (
     ? {
         name: user === null ? null : `${user.firstname} ${user.lastname}`,
         username: user === null ? null : user.username,
-        email: user === null ? null : user.email
+        email: user === null ? null : user.email,
+        role: user === null ? 1 : user.role ? user.role : 1
       }
     : {
         name: user === null ? null : `${user.firstname} ${user.lastname}`,
@@ -14,6 +15,6 @@ export const userInitialValues = (
         email: user === null ? null : user.email,
         password: user === null ? null : user.password,
         confirmPassword: user === null ? null : user.password,
-        role: user === null ? null : user.role
+        role: user === null ? 1 : user.role
       };
 };

@@ -21,6 +21,7 @@ export default (
         [`${formattedActionGroup}`]: []
       };
     case `${actionGroup}_REJECTED`:
+      console.log(action.payload);
       return {
         ...state,
         [formattedActionGroup]: action.error

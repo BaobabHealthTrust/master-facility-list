@@ -161,6 +161,7 @@ export const addUser = (data: any, token: string) => {
 
 export const putUser = (userId: number, data: any, token: string) => {
   const url = `${API}/clients/${userId}`;
+
   const header = {
     headers: {
       Authorization: `${token}`

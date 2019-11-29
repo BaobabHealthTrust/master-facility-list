@@ -31,7 +31,7 @@ class SystemsModal extends React.Component<Props> {
     let data = {
       ...value,
       firstname: value.name.split(" ")[0],
-      lastname: value.name.split(" ").length > 0 ? value.name.split(" ")[1] : ""
+      lastname: value.name.split(" ").length > 1 ? value.name.split(" ")[1] : ""
     };
 
     let token = sessionStorage.getItem("token");
@@ -43,11 +43,12 @@ class SystemsModal extends React.Component<Props> {
         resetForm();
         this.setOpen(false);
       })
-      .catch(() => {
+      .catch((res: any) => {
         let errors = this.props.errors.addUser;
+
         setErrors({
-          username: errors.username ? errors.username : "",
-          email: errors.email ? errors.email : ""
+          username: errors && errors.username ? errors.username : "",
+          email: errors && errors.email ? errors.email : ""
         });
         toast.info(
           <Notification

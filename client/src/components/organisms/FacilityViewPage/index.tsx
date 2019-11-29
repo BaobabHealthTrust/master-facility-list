@@ -105,7 +105,12 @@ function index(props: Props) {
                               >
                                 <Button
                                   theme="secondary"
-                                  icon={<FontAwesomeIcon icon={faEdit} />}
+                                  icon={
+                                    <FontAwesomeIcon
+                                      icon={faEdit}
+                                      data-test="facilityUpdateButton"
+                                    />
+                                  }
                                 >
                                   Update Facility
                                 </Button>

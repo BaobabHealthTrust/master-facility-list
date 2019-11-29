@@ -47,10 +47,9 @@ export function Form(props: any) {
                 onBlur={handleBlur}
                 aria-describedby="component-error-text"
               />
+
               {errors.name && touched.name && (
-                <FormHelperText id="component-error-text">
-                  {errors.name}
-                </FormHelperText>
+                <InputError error={errors.name} for="name"></InputError>
               )}
             </FormControl>
           </Grid>
@@ -68,9 +67,7 @@ export function Form(props: any) {
                 aria-describedby="component-error-text"
               />
               {errors.username && touched.username && (
-                <FormHelperText id="component-error-text">
-                  {errors.username}
-                </FormHelperText>
+                <InputError error={errors.username} for="username"></InputError>
               )}
             </FormControl>
           </Grid>
@@ -87,9 +84,7 @@ export function Form(props: any) {
                 aria-describedby="component-error-text"
               />
               {errors.email && touched.email && (
-                <FormHelperText id="component-error-text">
-                  {errors.email}
-                </FormHelperText>
+                <InputError error={errors.email} for="email"></InputError>
               )}
             </FormControl>
           </Grid>
@@ -101,7 +96,7 @@ export function Form(props: any) {
                 <InputLabel htmlFor="facilityType">User Group</InputLabel>
                 <FormControl className="mfl-max-width">
                   <Select
-                    data-test="userGroup"
+                    data-test="role"
                     value={values.role}
                     onBlur={handleBlur}
                     error={errors.role && touched.role}
@@ -137,9 +132,10 @@ export function Form(props: any) {
                     aria-describedby="component-error-text"
                   />
                   {errors.password && touched.password && (
-                    <FormHelperText id="component-error-text">
-                      {errors.password}
-                    </FormHelperText>
+                    <InputError
+                      error={errors.password}
+                      for="password"
+                    ></InputError>
                   )}
                 </FormControl>
               </Grid>
@@ -157,9 +153,10 @@ export function Form(props: any) {
                     aria-describedby="component-error-text"
                   />
                   {errors.confirmPassword && touched.confirmPassword && (
-                    <FormHelperText id="component-error-text">
-                      {errors.confirmPassword}
-                    </FormHelperText>
+                    <InputError
+                      error={errors.confirmPassword}
+                      for="confirmPassword"
+                    ></InputError>
                   )}
                 </FormControl>
               </Grid>

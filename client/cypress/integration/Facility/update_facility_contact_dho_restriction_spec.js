@@ -15,7 +15,7 @@ const clear = fieldName => {
     .clear()
     .blur();
 };
-describe("Updates Facility Contacts and Locations", () => {
+describe("Updates Facility Contacts and Locations DHO", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   var details = {
     postalAddress: "P.O.Box 1",
@@ -56,7 +56,7 @@ describe("Updates Facility Contacts and Locations", () => {
   var facility;
   context("Navigates to the update form", () => {
     it("Renders facility details page", () => {
-      cy.login(credentials);
+      cy.login(credentials, "public");
       cy.visit(`${FRONTEND_URL}/facilities`);
       // get random facility index
 
@@ -83,7 +83,15 @@ describe("Updates Facility Contacts and Locations", () => {
         );
       });
     });
-    it("Renders the update facility contact details form", () => {
+
+    it("Restrict update facility details form for unathorized", () => {
+      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/summary/edit`);
+      cy.get("[data-test='unauthorised']").should("be.visible");
+    });
+
+    it("Renders the update facility contact details form for DHO", () => {
+      cy.login(credentials, "dho");
+      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/contact`);
       cy.get("[data-test='facilityUpdateButton']").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(
