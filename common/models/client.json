@@ -62,11 +62,18 @@
       "permission": "ALLOW",
       "property": "createAdmin"
     },
+
     {
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "createUser"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "updateUser"
     },
     {
       "principalType": "ROLE",
