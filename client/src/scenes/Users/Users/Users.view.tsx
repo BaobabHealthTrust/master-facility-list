@@ -1,17 +1,16 @@
 import React from "react";
-import Container from "../../components/atoms/Container";
+import Container from "../../../components/atoms/Container";
 import { Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PageTitle from "../../components/molecules/PageTitle";
+import PageTitle from "../../../components/molecules/PageTitle";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
-import CreateUserModal from "./CreateUser";
-import OptionsBar from "../../components/molecules/UsersOptionsBar";
-import UsersList from "../../components/organisms/UsersList";
-import { isAdmin, getUser } from "../../services/helpers";
-import RedirectOnMobile from "../../components/atoms/RedirectOnMobile";
-import Ac from "../../components/atoms/Ac";
+import CreateUserModal from "../CreateUser";
+import OptionsBar from "../../../components/molecules/UsersOptionsBar";
+import UsersList from "../../../components/organisms/UsersList";
+import { getUser } from "../../../services/helpers";
+import Ac from "../../../components/atoms/Ac";
 
-function Users(props: Props) {
+function UsersView(props: Props) {
   const { users, onFilter, onSort, onDeleteUser } = props;
   const User = getUser();
   return (
@@ -47,4 +46,4 @@ type Props = {
   onSort: Function;
   onDeleteUser: Function;
 };
-export default Users;
+export default UsersView;

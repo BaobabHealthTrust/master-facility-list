@@ -28,6 +28,7 @@ import SearchContainer from "./SearchContainer";
 import BaselineMenu from "../../molecules/MobileBaselineMenu";
 import ChangePassword from "../../../scenes/Users/ChangePassword";
 import { acActions } from "../../../acl";
+import { changePassword } from "../../../services/api";
 
 library.add(faAlignJustify);
 
@@ -44,7 +45,7 @@ const Header = (props: Props) => {
   } = props;
 
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 
   const isActivePage = (page: string) =>
     page.toLowerCase() == activePage.toLowerCase();
@@ -94,7 +95,10 @@ const Header = (props: Props) => {
       icon: <AccountCircle />,
       options: [
         { text: "Logout", link: `/`, onClick: logout },
-        { text: "Change Password", onClick: () => setModalOpen(true) }
+        {
+          text: "Change Password",
+          onClick: () => setChangePasswordModalOpen(true)
+        }
       ]
     }
   ];
@@ -223,9 +227,8 @@ const Header = (props: Props) => {
             </div>
             <Menu items={menuItems} />
             <ChangePassword
-              open={modalOpen}
-              setOpen={setModalOpen}
-              onSubmit={onPasswordChange}
+              open={changePasswordModalOpen}
+              setOpen={setChangePasswordModalOpen}
             />
           </MenuContainer>
         </StyledToolbar>

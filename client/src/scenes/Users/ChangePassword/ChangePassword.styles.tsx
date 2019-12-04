@@ -1,0 +1,25 @@
+import styled from "styled-components";
+import { Modal, withStyles } from "@material-ui/core";
+
+export const StyledModal = withStyles({
+  root: {
+    zIndex: 1500,
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
+    "& :active": {
+      outline: "none"
+    }
+  }
+})(Modal);
+
+export const ModalContainer = styled.div`
+  width: 800px;
+  margin: auto;
+`;
+
+export const ModalFooter = styled.div`
+  padding: 20px;
+  background: #eaeaea;
+  text-align: right;
+`;
