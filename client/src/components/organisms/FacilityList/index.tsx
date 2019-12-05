@@ -13,9 +13,10 @@ const FacilityList = (props: Props) => {
     { name: "ownership", title: "OWNERSHIP" },
     { name: "type", title: "TYPE" },
     { name: "status", title: "STATUS" },
-    { name: "longitude", title: "POPULATION" },
+    { name: "district", title: "DISTRICT" },
     { name: "latitude", title: "LATITUDE" },
-    { name: "longitude", title: "LONGITUDE" }
+    { name: "longitude", title: "LONGITUDE" },
+    { name: "dateOpened", title: "DATE OPENED" }
   ];
 
   const facilitiesGridSorting = [{ columnName: "name", direction: "asc" }];
