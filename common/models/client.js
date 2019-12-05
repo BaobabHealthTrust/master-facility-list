@@ -157,4 +157,57 @@ module.exports = function(Client) {
     }
     ctx.result.setAttribute("role", role.name);
   });
+  Client.afterRemote("find", async function(ctx) {
+    const mapUsers = async users => {
+      const roles = await server.models.Role.find();
+      const roleMappings = await server.models.RoleMapping.find();
+      const mappedUsers = users.map(user => {
+        const mappedUser = {};
+        const roleMapping = roleMappings.find(
+          roleMapping => roleMapping.principalId == user.id
+        );
+        if (roleMapping) {
+          const role = roles.find(role => role.id == roleMapping.roleId);
+          if (role) {
+            const { id, name } = role;
+            mappedUser.role = {
+              id,
+              name
+            };
+          }
+        }
+        //TODO: this could be done better
+        const {
+          username,
+          password,
+          firstname,
+          lastname,
+          email,
+          archived_date,
+          created_at,
+          realm,
+          emailVerified,
+          id,
+          verificationToken
+        } = user;
+        return {
+          ...mappedUser,
+          username,
+          password,
+          firstname,
+          lastname,
+          email,
+          archived_date,
+          created_at,
+          realm,
+          emailVerified,
+          id,
+          verificationToken
+        };
+      });
+      return mappedUsers;
+    };
+    const mappedUsers = ctx.result ? await mapUsers(ctx.result) : [];
+    ctx.result = mappedUsers;
+  });
 };

@@ -229,6 +229,7 @@ const Header = (props: Props) => {
             <ChangePassword
               open={changePasswordModalOpen}
               setOpen={setChangePasswordModalOpen}
+              onSubmit={onPasswordChange}
             />
           </MenuContainer>
         </StyledToolbar>

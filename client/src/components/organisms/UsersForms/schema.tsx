@@ -110,3 +110,50 @@ export const resetPasswordSchema = yup.object().shape({
     )
     .required("Password confirm is required")
 });
+
+export const changePasswordSchema = yup.object().shape({
+  oldPassword: yup
+    .string()
+    .typeError("Current Password required")
+    .min(3)
+    .required("Current Password required"),
+  newPassword: yup
+    .string()
+    .typeError("atleast 8 characters long")
+    .min(8, "atleast 8 characters long")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
+      passwordValidationMessage
+    )
+    .required("password is required"),
+  confirmNewPassword: yup
+    .string()
+    .typeError("Passwords do not match")
+    .oneOf([yup.ref("newPassword"), ""], "Passwords do not match")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
+      passwordValidationMessage
+    )
+    .required("Password confirm is required")
+});
+
+export const resetPasswordSchema = yup.object().shape({
+  newPassword: yup
+    .string()
+    .typeError("atleast 8 characters long")
+    .min(8, "atleast 8 characters long")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
+      passwordValidationMessage
+    )
+    .required("password is required"),
+  confirmNewPassword: yup
+    .string()
+    .typeError("Passwords do not match")
+    .oneOf([yup.ref("newPassword"), ""], "Passwords do not match")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
+      passwordValidationMessage
+    )
+    .required("Password confirm is required")
+});

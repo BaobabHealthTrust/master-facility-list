@@ -172,7 +172,6 @@ const App: React.FC = (props: any) => {
                 component={UpdateFacility}
               />
             )}
-
             {props.isAuthenticated && (
               <Route exact path="/users" component={Users} />
             )}
