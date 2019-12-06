@@ -21,6 +21,7 @@ function UpdateUserContainer(props: Props) {
     };
 
     let token = sessionStorage.getItem("token");
+    console.log(data);
     props
       .updateUser(props.user.id, data, token)
       .then(() => {

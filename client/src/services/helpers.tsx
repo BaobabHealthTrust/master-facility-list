@@ -5,8 +5,12 @@ import { intersection, slice, uniqWith } from "lodash";
 
 export const renderOptions = (dependancy: any, entityName: string) => {
   return dependancy.map((entity: any) => (
-    <MenuItem key={entity.id} value={entity.id}>
-      {entity[entityName]}
+    <MenuItem
+      key={entity.id}
+      value={entity.id}
+      style={{ textTransform: "capitalize" }}
+    >
+      {entity[entityName].replace("_", " ")}
     </MenuItem>
   ));
 };
