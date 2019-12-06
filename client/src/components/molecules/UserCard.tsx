@@ -31,7 +31,7 @@ function UserCard(props: Props) {
             </div>
           </UserName>
         </div>
-        <div>System Admin</div>
+        <UserRole>{user.role.name.replace("_", " ")}</UserRole>
       </UserDetailsContainer>
       <Contacts>
         <FontAwesomeIcon icon={faEnvelope} /> {user.email}
@@ -86,4 +86,7 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   color: #505050;
+`;
+const UserRole = styled.div`
+  text-transform: capitalize;
 `;
