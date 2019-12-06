@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -45,7 +45,13 @@ const Header = (props: Props) => {
   } = props;
 
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([] as any);
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
+
+  useEffect(() => {
+    const menu = auth.authenticated ? adminMenuItems : publicMenuItems;
+    setMenuItems(menu);
+  }, [activePage, auth]);
 
   const isActivePage = (page: string) =>
     page.toLowerCase() == activePage.toLowerCase();
@@ -175,8 +181,6 @@ const Header = (props: Props) => {
       icon: <FontAwesomeIcon style={{ fontSize: "24px" }} icon={faBullhorn} />
     }
   ];
-
-  const menuItems = auth.authenticated ? adminMenuItems : publicMenuItems;
 
   return (
     <Container>

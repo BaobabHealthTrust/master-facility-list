@@ -23,7 +23,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     this.props.setActivePage("facilities");
     this.props.toggleSearch();
   };
-
+  // TODO: implement password change
   onPasswordChange = (
     value: any,
     { setSubmitting, setErrors, resetForm }: any

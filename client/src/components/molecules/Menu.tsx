@@ -7,16 +7,17 @@ import { acActions } from "../../acl";
 
 function Menu(props: Props) {
   const { items } = props;
+
   return (
     <Container className="hide-on-med-and-down">
       {items.map((item, index) =>
         item.aclAction ? (
           <Ac
+            key={`${index}${item.text}`}
             role={getUser().role}
             action={item.aclAction}
             allowed={() => (
               <MenuItem
-                key={index}
                 body={item.text}
                 active={item.active}
                 item={item}
@@ -26,7 +27,7 @@ function Menu(props: Props) {
           />
         ) : (
           <MenuItem
-            key={index}
+            key={`${index}${item.text}`}
             body={item.text}
             active={item.active}
             item={item}

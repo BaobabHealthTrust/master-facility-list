@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { LoginSchema } from "./Login.schema";
 import { Formik } from "formik";
 import LoginView from "./Login.view";
+import { isAdmin } from "../../services/helpers";
 
 function LoginContainer(props: Props) {
   const { userLogin, fetchUserDetails, setActivePage, auth, history } = props;
@@ -12,13 +13,17 @@ function LoginContainer(props: Props) {
   useEffect(() => {
     if (logged) {
       fetchUserDetails(auth.authDetails.userId, auth.authDetails.id);
-
-      persistUserDetails(auth.authDetails);
-
-      history.push("/");
-      setActivePage("home");
     }
   }, [logged]);
+
+  useEffect(() => {
+    if (logged) {
+      persistUserDetails(auth.authDetails);
+
+      setActivePage("home");
+      history.push("/");
+    }
+  }, [auth]);
 
   const onSubmit = async (values: any, { setSubmitting }: any) => {
     await attemptLogin(values);
