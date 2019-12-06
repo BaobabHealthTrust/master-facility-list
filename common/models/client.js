@@ -179,7 +179,6 @@ module.exports = function(Client) {
         //TODO: this could be done better
         const {
           username,
-          password,
           firstname,
           lastname,
           email,
@@ -187,13 +186,11 @@ module.exports = function(Client) {
           created_at,
           realm,
           emailVerified,
-          id,
-          verificationToken
+          id
         } = user;
         return {
           ...mappedUser,
           username,
-          password,
           firstname,
           lastname,
           email,
@@ -201,8 +198,7 @@ module.exports = function(Client) {
           created_at,
           realm,
           emailVerified,
-          id,
-          verificationToken
+          id
         };
       });
       return mappedUsers;
