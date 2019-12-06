@@ -31,7 +31,7 @@ type Props = {
   classes?: any;
   open: boolean;
   dependancies?: any;
-  filterOptions: Array<any>;
+  filterOptions?: any;
   onAddFilter: Function;
 };
 const styles: any = (theme: any) => ({
