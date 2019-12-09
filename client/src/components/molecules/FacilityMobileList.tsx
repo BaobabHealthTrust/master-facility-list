@@ -4,7 +4,6 @@ import { Grid } from "@material-ui/core";
 import Pagination from "../atoms/Pagination";
 // @ts-ignore
 import { chunk } from "lodash";
-import Facility from "../../scenes/Facility/Facility";
 
 const FacilityMobileList = (props: Props) => {
   const [page, setPage] = useState(1);
