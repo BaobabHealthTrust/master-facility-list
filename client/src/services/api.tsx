@@ -160,13 +160,13 @@ export const addUser = (data: any, token: string) => {
 };
 
 export const putUser = (userId: number, data: any, token: string) => {
-  const url = `${API}/clients/${userId}`;
+  const url = `${API}/clients/${userId}/updateUser`;
   const header = {
     headers: {
       Authorization: `${token}`
     }
   };
-  return axios.patch(url, data, header);
+  return axios.patch(url, { data }, header);
 };
 
 export const publishFacility = (data: any, token: string) => {
