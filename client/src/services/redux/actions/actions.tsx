@@ -68,6 +68,8 @@ export default {
   userLogin: "USER_LOGIN",
   userLogout: "USER_LOGOUT",
   fetchUserDetails: "FETCH_USER_DETAILS",
+  requestResetPassword: "REQUEST_RESET_PASSWORD",
+  resetPassword: "RESET_PASSWORD",
 
   fetchFeedbackTypes: "FETCH_FEEDBACK_TYPES",
   sendFeedback: "SEND_FEEDBACK",

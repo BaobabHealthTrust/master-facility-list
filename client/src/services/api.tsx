@@ -6,6 +6,7 @@ export const getUserRoles = () => {
   const url = `${API}/Roles`;
   return axios.get(url);
 };
+
 export const getUtilities = () => {
   const url = `${API}/Utilities`;
   return axios.get(url);
@@ -120,6 +121,21 @@ export const getFacilityUtilities = (
       ? `${API}/FacilityUtilities/latest?id=${facilityId}`
       : `${API}/FacilityUtilities?filter=${JSON.stringify(filter)}`;
   return axios.get(url);
+};
+
+export const requestResetPassword = (data: { email: any }) => {
+  const url = `${API}/Clients/requestPasswordReset `;
+  return axios.post(url, data);
+};
+
+export const resetPassword = (data: { newPassword: String }, token: String) => {
+  const url = `${API}/Clients/reset-password `;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
 };
 
 export const authenticateUser = (credentials: {

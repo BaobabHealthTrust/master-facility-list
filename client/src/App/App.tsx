@@ -18,8 +18,8 @@ import Help from "../scenes/Help";
 import NotFound from "../scenes/Error/404";
 import Preloader from "../components/atoms/Preloader";
 import ErrorScreen from "../scenes/Error/500";
-import ForgotPassword from "../scenes/Users/ForgotPassword";
-import ResetPassword from "../scenes/Users/ResetPassword";
+import ForgotPassword from "../scenes/Users/PasswordReset/ForgotPassword.container";
+import ResetPassword from "../scenes/Users/PasswordReset/ResetPassword.container";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
