@@ -21,9 +21,9 @@ function UpdateUserContainer(props: Props) {
     };
 
     let token = sessionStorage.getItem("token");
-    const { role } = data;
+    const { role, firstname, lastname } = data;
     props
-      .updateUser(props.user.id, { role }, token)
+      .updateUser(props.user.id, { role, firstname, lastname }, token)
       .then(() => {
         toast.info(<Notification message="User Updated Successfully!!!" />);
         props.fetchUsers(token);

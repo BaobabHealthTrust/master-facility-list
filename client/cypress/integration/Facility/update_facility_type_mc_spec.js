@@ -9,7 +9,17 @@ const type = (fieldName, value) => {
     .blur();
 };
 
-describe("Update Facility Basics DHO", () => {
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
+describe("Update Facility Basics", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   var details = {
     commonName: "kuunika",
@@ -44,8 +54,8 @@ describe("Update Facility Basics DHO", () => {
 
   var facility;
   context("Navigates to the update form", () => {
-    it("Renders facility details page)", () => {
-      cy.login(credentials, "public");
+    it("Renders facility details page", () => {
+      cy.login(credentials, "medical_council");
       cy.visit(`${FRONTEND_URL}/facilities`);
       // get random facility index
 
@@ -70,15 +80,7 @@ describe("Update Facility Basics DHO", () => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/${facility.id}`);
       });
     });
-    it("Restrict update facility details form for unathorized", () => {
-      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/summary/edit`);
-      cy.get("[data-test='unauthorised']").should("be.visible");
-    });
-
-    it("Renders update facility details form for DHO", () => {
-      cy.login(credentials, "dho");
-      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/summary`);
-
+    it("Renders the update facility details form", () => {
       cy.get("[data-test='facilityUpdateButton']").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(
@@ -88,27 +90,8 @@ describe("Update Facility Basics DHO", () => {
     });
   });
 
-  context("Validates input in front-end", () => {
-    it("Validates facility name", () => {
-      type("facilityName", "ku");
-
-      cy.get(`[data-test=fieldErrorfacilityName]`)
-        .first()
-        .should("be.visible")
-        .contains(errors.facilityName);
-    });
-    it("Validates facility common name", () => {
-      type("commonName", "ku");
-
-      cy.get(`[data-test=fieldErrorcommonName]`)
-        .first()
-        .should("be.visible")
-        .contains(errors.facilityCommon);
-    });
-  });
-
   context("Updates Facility Basics", () => {
-    it("Successfully Updates Facility Basics", () => {
+    it("Successfully Updates Facility Type", () => {
       cy.server({
         status: 200
       });
@@ -118,9 +101,7 @@ describe("Update Facility Basics DHO", () => {
         "fixture:update_facility_basics_success.json"
       ).as("update");
 
-      type("facilityName", "kuunika");
-
-      type("commonName", "kuunika");
+      selectFirst("facilityType");
 
       cy.get("[data-test='saveBtn']").click();
 
@@ -133,8 +114,7 @@ describe("Update Facility Basics DHO", () => {
       cy.get("@update").then(xhr => {
         const { body } = xhr.request;
 
-        cy.expect(body.facility_name).to.equal(details.facilityName);
-        cy.expect(body.common_name).to.equal(details.commonName);
+        cy.expect(body.facility_type_id).to.equal(details.regulatoryStatus);
       });
     });
   });

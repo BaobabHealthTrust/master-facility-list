@@ -52,8 +52,8 @@ describe("Updates Facility Utilities", () => {
       cy.get("[data-test='unauthorised']").should("be.visible");
     });
 
-    it("Renders update facility details", () => {
-      cy.login(credentials, "admin");
+    it("Renders update facility details form for DHO", () => {
+      cy.login(credentials, "dho");
       cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/utilities`);
 
       cy.get("[data-test='facilityUpdateButton']").click();
@@ -64,7 +64,31 @@ describe("Updates Facility Utilities", () => {
       });
     });
   });
-  // TODO: validate
+
+  context("Validates input in front-end", () => {
+    it("Validates resources values", () => {
+      cy.get("div[data-test='utilitiesForm'] span.MuiButtonBase-root").each(
+        el => {
+          cy.wrap(el).click();
+          cy.wrap(el)
+            .invoke("attr", "class")
+            .then(cls => {
+              if (cls.includes("Mui-checked")) {
+                cy.wrap(el).click({ force: true });
+              }
+            });
+        }
+      );
+      //   cy.get("[data-test='saveBtn']")
+      //     .first()
+      //     .click();
+
+      // cy.get("div[data-test='utilitiesForm']").contains(
+      //   "Energy Proovider,Water Provider,Waste Disposal,Network Provider"
+      // );
+    });
+  });
+
   context("Updates Facility Utilities", () => {
     it("Successfully Updates Facility Utilities", () => {
       cy.server({
@@ -74,18 +98,9 @@ describe("Updates Facility Utilities", () => {
         success: "done"
       }).as("update");
 
-      cy.get("div[data-test='utilitiesForm'] span.MuiButtonBase-root").each(
-        el => {
-          cy.wrap(el).click();
-          cy.wrap(el)
-            .invoke("attr", "class")
-            .then(cls => {
-              if (!cls.includes("Mui-checked")) {
-                cy.wrap(el).click({ force: true });
-              }
-            });
-        }
-      );
+      cy.get("div[data-test='utilitiesForm'] input").each(el => {
+        cy.wrap(el).click();
+      });
 
       cy.get("[data-test='saveBtn']")
         .first()

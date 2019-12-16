@@ -154,16 +154,8 @@ describe("Add Facility Workflow", () => {
           .contains(errors.basics.facilityCommon);
       });
 
-      it("Validates facility type", () => {
-        validateSelect("facilityType", errors.basics.empty);
-      });
-
       it("Validates Operational Status", () => {
         validateSelect("operationalStatus", errors.basics.empty);
-      });
-
-      it("Validates regulatory status", () => {
-        validateSelect("regulatoryStatus", errors.basics.empty);
       });
 
       it("Validates facility owner", () => {
@@ -176,11 +168,6 @@ describe("Add Facility Workflow", () => {
 
       it("Validates Registration", () => {
         type("registrationNumber", "1");
-
-        cy.get(`[data-test=fieldErrorregistrationNumber]`)
-          .first()
-          .should("be.visible")
-          .contains(errors.basics.registrationNumber);
       });
     });
 

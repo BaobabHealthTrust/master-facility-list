@@ -97,7 +97,7 @@ export function Form(props: any) {
             <InputLabel htmlFor="facilityType">Facility Type</InputLabel>
             <FormControl className="mfl-max-width">
               <Select
-                disabled={isDisabled("facility:basic_details:create")}
+                disabled={isDisabled("facility:basic_details:facility_type")}
                 data-test="facilityType"
                 value={values.facilityType}
                 onBlur={handleBlur}
@@ -244,7 +244,9 @@ export function Form(props: any) {
           </Grid>
           <Grid item sm={12} md={3}>
             <TextInput
-              disabled={isDisabled("facility:basic_details:create")}
+              disabled={isDisabled(
+                "facility:basic_details:registration_number"
+              )}
               value={values.registrationNumber}
               name="registrationNumber"
               label="Registration Number"

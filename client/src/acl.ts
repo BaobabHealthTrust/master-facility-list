@@ -1,5 +1,7 @@
 export type acActions =
   | "facility:basic_details:licensing_status"
+  | "facility:basic_details:registration_number"
+  | "facility:basic_details:facility_type"
   | "facility:basic_details:create"
   | "facility:basic_details:update"
   | "facility:contact_location_details:create"
@@ -23,6 +25,8 @@ export const acl = {
     static: [
       "facility:basic_details:create",
       "facility:basic_details:licensing_status",
+      "facility:basic_details:registration_number",
+      "facility:basic_details:facility_type",
       "facility:basic_details:update",
       "facility:contact_location_details:create",
       "facility:contact_location_details:update",
@@ -39,13 +43,15 @@ export const acl = {
       "user:create",
       "user:update",
       "user:delete"
-    ]
+    ] as Array<acActions>
   },
   medical_council: {
     static: [
       "facility:basic_details:update",
-      "facility:basic_details:licensing_status"
-    ],
+      "facility:basic_details:licensing_status",
+      "facility:basic_details:facility_type",
+      "facility:basic_details:registration_number"
+    ] as Array<acActions>,
     dynamic: {
       "user:update": ({ currentUserId, userId }: any) => {
         return currentUserId === userId;
@@ -76,6 +82,7 @@ export const acl = {
   },
   dho: {
     static: [
+      "facility:basic_details:facility_type",
       "facility:basic_details:create",
       "facility:basic_details:update",
       "facility:contact_location_details:create",
@@ -89,7 +96,7 @@ export const acl = {
       "facility:services:create",
       "facility:services:update",
       "facility:services:delete"
-    ],
+    ] as Array<acActions>,
     dynamic: {
       "user:update": ({ currentUserId, userId }: any) => {
         return currentUserId === userId;

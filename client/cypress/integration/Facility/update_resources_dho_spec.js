@@ -72,8 +72,8 @@ describe("Updates Facility Resources", () => {
       cy.get("[data-test='unauthorised']").should("be.visible");
     });
 
-    it("Renders update facility resources form", () => {
-      cy.login(credentials, "admin");
+    it("Renders update facility resources form for DHO", () => {
+      cy.login(credentials, "dho");
       cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/resources`);
 
       cy.get("[data-test='facilityUpdateButton']").click();

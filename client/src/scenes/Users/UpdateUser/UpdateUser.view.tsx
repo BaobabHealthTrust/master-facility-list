@@ -12,6 +12,7 @@ function UpdateUserView(props: Props) {
   return (
     <>
       <Button
+        data-test="updateUserBtn"
         icon={<FontAwesomeIcon icon={faEdit} />}
         onClick={() => {
           setOpen(true);
@@ -20,7 +21,7 @@ function UpdateUserView(props: Props) {
         Update
       </Button>
       <StyledModal open={open}>
-        <ModalContainer>
+        <ModalContainer data-test="updateUserModal">
           <Paper>
             <Card
               style={{ minHeight: "300px" }}
@@ -31,6 +32,7 @@ function UpdateUserView(props: Props) {
             </Card>
             <ModalFooter>
               <Button
+                data-test="saveUserBtn"
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
