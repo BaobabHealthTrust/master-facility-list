@@ -15,7 +15,7 @@ function Login(props: Props) {
       .then(() => {
         setMessage({
           type: "success",
-          msg: "Check your email for the reset link"
+          msg: "Check your mail box for the reset link"
         });
       })
       .catch(() => {
@@ -42,8 +42,7 @@ function Login(props: Props) {
             <Title>Password Recovery</Title>
             Enter Your Email below to recover your password.
             <ForgotPasswordForm {...formikProps} />
-            {/* TODO: make a compnent */}
-            <div>{message.msg}</div>
+            <Message type={message.type as any}>{message.msg}</Message>
             <Button
               disabled={formikProps.isSubmitting}
               type="submit"
@@ -98,4 +97,9 @@ const NotificationContainer = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+`;
+
+const Message = styled("div")<{ type: "error" | "success" }>`
+  color: ${props => (props.type === "error" ? "red" : "#0d47a1")};
+  padding: 2px 10px;
 `;

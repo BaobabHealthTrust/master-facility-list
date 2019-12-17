@@ -28,7 +28,7 @@ function Login(props: Props) {
       .catch(() => {
         setMessage({
           type: "error",
-          msg: "Token expired."
+          msg: "Sorry. Your Token Expired. Please Request a New Token"
         });
       });
     setSubmitting(false);
@@ -44,11 +44,15 @@ function Login(props: Props) {
           <LoginContainer>
             <Title>Password Reset</Title>
             <ResetPasswordForm {...formikProps} />
-            {/* TODO: make a compnent */}
-            <div>
+            <Message type={message.type as any}>
               {`${message.msg}`}{" "}
-              {message.type === "success" && <Link to="/login"> Login</Link>}
-            </div>
+              {message.type === "success" && (
+                <Link to="/login">
+                  {" "}
+                  Click <span style={{ color: "#82b1ff" }}>Here</span> To Login
+                </Link>
+              )}
+            </Message>
             <Button
               disabled={formikProps.isSubmitting}
               type="submit"
@@ -103,4 +107,9 @@ const NotificationContainer = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+`;
+
+const Message = styled("div")<{ type: "error" | "success" }>`
+  color: ${props => (props.type === "error" ? "red" : "#0d47a1")};
+  padding: 2px 10px;
 `;
