@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHospital,
   faEdit,
-  faPlusCircle
+  faPlusCircle,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import Container from "../../atoms/Container";
 import OptionsBar from "../../molecules/FacilityViewOptionsBar";
@@ -55,11 +56,20 @@ function index(props: Props) {
             icon={<FontAwesomeIcon icon={faHospital} />}
             options={
               isAdmin() && (
-                <Link to="/facilities/add">
-                  <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
-                    Add Facility
+                <>
+                  <Link to="/facilities/add">
+                    <Button icon={<FontAwesomeIcon icon={faPlusCircle} />}>
+                      Add Facility
+                    </Button>
+                  </Link>
+                  <Button
+                    icon={<FontAwesomeIcon icon={faTrash} />}
+                    theme="danger"
+                    onClick={props.archiveFacility}
+                  >
+                    Archive Facility
                   </Button>
-                </Link>
+                </>
               )
             }
           />
@@ -139,6 +149,7 @@ function index(props: Props) {
 }
 
 type Props = {
+  archiveFacility: Function;
   activePage: string;
   pageHeader: string;
   basic: any;

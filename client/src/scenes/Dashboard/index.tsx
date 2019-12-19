@@ -174,7 +174,7 @@ class index extends Component<any> {
     },
     {
       count: this.getFacilitiesOfType("District Hospital"),
-      title: "Dist Hospitals",
+      title: "Hospitals",
       type: "District Hospital",
       icon: "district.svg",
       onClick: () => {}

@@ -175,6 +175,20 @@ export const publishFacility = (data: any, token: string) => {
   return axios.post(url, data, header);
 };
 
+export const archiveFacility = (
+  data: { id: any; archived_date: any },
+  token: string
+) => {
+  const url = `${API}/Facilities/${data.id}`;
+  const { archived_date } = data;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.patch(url, { archived_date }, header);
+};
+
 export const postBasicDetails = (data: any, token: string) => {
   const url = `${API}/Facilities`;
   const header = {

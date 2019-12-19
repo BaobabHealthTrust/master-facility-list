@@ -37,6 +37,7 @@ export default {
   postFacilityServices: "POST_FACILITY_SERVICES",
   putFacilityServices: "PUT_FACILITY_SERVICES",
   deleteFacilityServices: "DELETE_FACILITY_SERVICES",
+  archiveFacility: "ARCHIVE_FACILITY",
 
   addFilterValue: "ADD_FILTER_VALUE",
   removeFilterValue: "REMOVE_FILTER_VALUE",
