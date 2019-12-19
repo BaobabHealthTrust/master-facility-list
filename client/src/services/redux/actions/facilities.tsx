@@ -17,7 +17,8 @@ import {
   putUtilities,
   deleteUtilities,
   putServices,
-  deleteServices
+  deleteServices,
+  archiveFacility as archFacility
 } from "../../api";
 import { groupIntersect, hasFilterValuesForType } from "../../helpers";
 
@@ -156,6 +157,17 @@ export const publishFacility = (data: any, token: string) => {
   return {
     type: actions.publishFacility,
     payload: publish(data, token)
+  };
+};
+
+export const archiveFacility = (data: { id: any }, token: string) => {
+  data = {
+    ...data,
+    archived_date: new Date()
+  } as any;
+  return {
+    type: actions.archiveFacility,
+    payload: archFacility(data as any, token)
   };
 };
 

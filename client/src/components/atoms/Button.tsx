@@ -49,7 +49,13 @@ type Props = {
   color?: string;
   icon?: any;
   iconPosition?: "right" | "left";
-  theme?: "primary" | "secondary" | "warning" | "success" | "default";
+  theme?:
+    | "primary"
+    | "secondary"
+    | "warning"
+    | "success"
+    | "default"
+    | "danger";
   disabled?: boolean;
   type?: string;
   id?: any;
@@ -95,6 +101,9 @@ const themes: any = {
   },
   warning: {
     background: "#c38665"
+  },
+  danger: {
+    background: "#fc0401"
   },
   success: {
     background: "#517c4f"

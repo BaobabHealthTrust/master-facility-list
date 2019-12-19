@@ -32,6 +32,12 @@ export default (
         ...state,
         list: action.payload.data.data
       };
+
+    case actions.archiveFacility + "_FULFILLED":
+      return {
+        ...state,
+        list: state.list.filter((f: any) => f.id != action.payload.data.id)
+      };
     case actions.setSearchValue:
       return {
         ...state,
