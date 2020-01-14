@@ -79,6 +79,13 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "archiveUser"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "requestPasswordReset"
     }
   ],
   "methods": {}

@@ -1,6 +1,8 @@
 const server = require("../../server/server");
 const Joi = require("joi");
 const PasswordComplexity = require("joi-password-complexity");
+const util = require("util");
+const nodemailer = require("nodemailer");
 
 ("use strict");
 
@@ -200,6 +202,60 @@ module.exports = function(Client) {
     http: {
       verb: "put"
     }
+  });
+
+  Client.requestPasswordReset = async (email, cb) => {
+    util.promisify(Client.resetPassword);
+    const resetRequest = await Client.resetPassword({ email }).catch(e => e);
+    if (resetRequest instanceof Error) {
+      const error422 = new Error(resetRequest.message);
+      error422.status = 422;
+      cb(error422);
+      return;
+    }
+    return {
+      message: "Password reset email sent"
+    };
+  };
+
+  Client.remoteMethod("requestPasswordReset", {
+    accepts: [{ arg: "email", type: "string", required: true }],
+    returns: {
+      arg: "response",
+      type: "string"
+    },
+    http: {
+      verb: "post"
+    }
+  });
+
+  Client.on("resetPasswordRequest", async function(info) {
+    var transport = nodemailer.createTransport({
+      host: process.env.MHFR_SMTP_HOST,
+      port: process.env.MHFR_SMTP_PORT,
+      auth: {
+        user: process.env.MHFR_SMTP_USER,
+        pass: process.env.MHFR_SMTP_USER_PASSWORD
+      }
+    });
+
+    const url = `${process.env.MHFR_HOST}/resetPassword/${info.accessToken.id}`;
+    const html = `
+      Good day ${info.user.firstname},
+      <p>You requested to have your password changed.</p>
+      If you did not initiate the request, just ignore this email.
+      <p>please <a href=${url}>follow this link</a> to reset your password</p>
+    `;
+
+    await transport
+      .sendMail({
+        from: process.env.MHFR_SMTP_EMAIL_ADD,
+        to: info.email,
+        subject: "Password Reset",
+        text: "Follow the instructions to reset you password",
+        html
+      })
+      .catch(e => console.log(e.message));
   });
 
   Client.afterRemote("login", async function(ctx) {
