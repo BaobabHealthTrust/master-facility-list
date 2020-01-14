@@ -72,6 +72,12 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
+      "property": "updateUser"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
       "property": "archiveUser"
     }
   ],

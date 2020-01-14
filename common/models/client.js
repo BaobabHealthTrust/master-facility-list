@@ -100,6 +100,69 @@ module.exports = function(Client) {
     http: { verb: "post" }
   });
 
+  Client.updateUser = async (id, data, cb) => {
+    const schema = Joi.object({
+      firstname: Joi.string(),
+      lastname: Joi.string(),
+      role: Joi.number()
+    });
+    const result = schema.validate(data);
+    if (result.error) {
+      const message = result.error.details.reduce(
+        (acc, cur) => `${acc} ${cur.message} \n`,
+        ""
+      );
+      const error400 = new Error(message);
+      error400.status = 400;
+      cb(error400);
+      return;
+    }
+
+    const user = await server.models.Client.findById(id);
+
+    const error404 = new Error();
+    error404.status = 404;
+
+    if (!user) {
+      error404.message = "User not found";
+      cb(error404);
+      return;
+    }
+    await user.updateAttributes({
+      ...data
+    });
+    const { role = null } = data;
+
+    if (role) {
+      console.log(role);
+      const roleMapping = await server.models.RoleMapping.findOne({
+        where: { principalId: id }
+      });
+      if (!roleMapping) {
+        error404.message = "No role mapping found";
+        cb(error404);
+        return;
+      }
+      const _role = await server.models.Role.findById(role);
+      if (!_role) {
+        error404.message = "Role not found";
+        cb(error404);
+        return;
+      }
+      roleMapping.updateAttribute("roleId", role);
+    }
+    return user;
+  };
+
+  Client.remoteMethod("updateUser", {
+    accepts: [
+      { arg: "id", type: "number", required: true },
+      { arg: "data", type: "object", required: true }
+    ],
+    returns: { arg: "response", type: "object" },
+    http: { verb: "patch", path: "/:id/updateUser" }
+  });
+
   Client.archiveUser = async (data, cb) => {
     // const {user_id, archived_user_id} = data;
     if (user_id == archived_user_id) {
@@ -156,5 +219,54 @@ module.exports = function(Client) {
       throw preconditionError;
     }
     ctx.result.setAttribute("role", role.name);
+  });
+  Client.afterRemote("find", async function(ctx) {
+    const mapUsers = async users => {
+      const roles = await server.models.Role.find();
+      const roleMappings = await server.models.RoleMapping.find();
+      const mappedUsers = users.map(user => {
+        const mappedUser = {};
+        const roleMapping = roleMappings.find(
+          roleMapping => roleMapping.principalId == user.id
+        );
+        if (roleMapping) {
+          const role = roles.find(role => role.id == roleMapping.roleId);
+          if (role) {
+            const { id, name } = role;
+            mappedUser.role = {
+              id,
+              name
+            };
+          }
+        }
+        //TODO: this could be done better
+        const {
+          username,
+          firstname,
+          lastname,
+          email,
+          archived_date,
+          created_at,
+          realm,
+          emailVerified,
+          id
+        } = user;
+        return {
+          ...mappedUser,
+          username,
+          firstname,
+          lastname,
+          email,
+          archived_date,
+          created_at,
+          realm,
+          emailVerified,
+          id
+        };
+      });
+      return mappedUsers;
+    };
+    const mappedUsers = ctx.result ? await mapUsers(ctx.result) : [];
+    ctx.result = mappedUsers;
   });
 };

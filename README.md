@@ -6,8 +6,8 @@ This project is the first deliverable under the [Kuunika Data For Action](http:/
 
 # Dependancies
 
-* [NodeJS > v8.11.3](https://nodejs.org/en/download/ "node")
-* [MySQL v5.5](https://dev.mysql.com/downloads/mysql/ "mysql")
+- [NodeJS > v8.11.3](https://nodejs.org/en/download/ "node")
+- [MySQL v5.5](https://dev.mysql.com/downloads/mysql/ "mysql")
 
 # Setup
 
@@ -30,6 +30,10 @@ cd master-facility-list
 ## Step 2 dependancies
 
 Install all the dependancies for the main (backend project).
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/create-user
 ```sh
 # install backend dependancies
 npm install
@@ -53,10 +57,18 @@ This applies to both the backend and the frontend.
 ## Step 3 tests
 
 Run the tests and make sure they are all passing:
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/create-user
 ```sh
 # Run tests
 npm test
 ```
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/create-user
 If they are not passing, please check whether your environment has all the dependancies installed correctly.
 
 ## Step 4 database
@@ -85,8 +97,13 @@ Create a `.env` file with the contents of your .env.example file.
 cp .env.example .env
 ```
 
+<<<<<<< HEAD
 Modify the `.env` file and make sure it reflects your MySQL Database Settings. 
 Furthermore, set the port  and the host of the server in the same file `.env` <br />
+=======
+Modify the `.env` file and make sure it reflects your MySQL Database Settings.
+Furthermore, set the port and the host of the server in the same file `.env` <br />
+>>>>>>> origin/create-user
 
 Change NODE environment in the `.env`. Set the environment to staging, testing or production.
 This notifies loopback the environment you are running. In the `.env` file, set `NODE_ENV=staging`
@@ -139,6 +156,10 @@ cp .env.example .env
 ## Step 8 run frontend server
 
 You are now ready to start the front end application as follows, `npm start` (while in `client` directory)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/create-user
 ```sh
 # start frontend server
 npm start
