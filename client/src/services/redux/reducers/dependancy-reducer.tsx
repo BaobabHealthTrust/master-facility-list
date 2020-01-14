@@ -29,6 +29,9 @@ const initialState = {
   },
   facilityTypes: {
     list: []
+  },
+  roles: {
+    list: []
   }
 };
 export default (
@@ -123,6 +126,13 @@ export default (
       return {
         ...state,
         operationalStatuses: {
+          list: action.payload.data
+        }
+      };
+    case actions.fetchUserRoles + "_FULFILLED":
+      return {
+        ...state,
+        roles: {
           list: action.payload.data
         }
       };

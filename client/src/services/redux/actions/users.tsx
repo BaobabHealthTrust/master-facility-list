@@ -5,7 +5,9 @@ import {
   getUsers,
   addUser,
   putUser,
-  deleteUser
+  deleteUser,
+  requestResetPassword,
+  resetPassword
 } from "../../api";
 
 export const userLogin = (credencials: {
@@ -70,5 +72,19 @@ export const delUser = (userId: number, token: string) => {
   return {
     type: actions.deleteUser,
     payload: deleteUser(userId, token)
+  };
+};
+
+export const requestPasswordReset = (data: { email: any }) => {
+  return {
+    type: actions.requestResetPassword,
+    payload: requestResetPassword(data)
+  };
+};
+
+export const passwordReset = (data: { newPassword: String }, token: String) => {
+  return {
+    type: actions.resetPassword,
+    payload: resetPassword(data, token)
   };
 };

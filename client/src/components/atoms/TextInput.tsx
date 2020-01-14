@@ -23,6 +23,7 @@ function TextInput(props: Props) {
         error={touched && typeof error != "undefined"}
         onChange={onChange}
         onBlur={onBlur}
+        {...props}
       />
       {error && touched && <InputError error={error} for={name}></InputError>}
     </FormControl>
@@ -34,9 +35,10 @@ type Props = {
   name: string;
   label: string;
   touched: boolean | undefined;
-  error: string | undefined;
+  error: any;
   onChange: any;
   onBlur?: any;
   placeholder?: string;
+  disabled?: any;
 };
 export default TextInput;

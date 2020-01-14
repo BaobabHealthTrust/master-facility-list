@@ -49,7 +49,11 @@ function CreateFacility(props: Props) {
         <Container>
           {active == sections[0] && (
             <BasicDetailsForm
-              initialValues={basic()}
+              initialValues={basic(
+                null,
+                dependancies.regulatoryStatuses.list,
+                dependancies.facilityTypes.list
+              )}
               schema={basicSchema}
               onSubmit={onSubmit}
               networkError={[]}

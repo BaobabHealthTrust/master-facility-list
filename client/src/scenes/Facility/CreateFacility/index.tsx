@@ -22,6 +22,9 @@ import { toast } from "react-toastify";
 import Notification from "../../../components/atoms/Notification";
 import RedirectOnMobile from "../../../components/atoms/RedirectOnMobile";
 import swal from "sweetalert";
+import Ac from "../../../components/atoms/Ac";
+import { getUser } from "../../../services/helpers";
+import Unauthorized from "../../Error/401";
 
 export class index extends Component<Props> {
   state = {
@@ -235,17 +238,24 @@ export class index extends Component<Props> {
     return (
       <>
         <RedirectOnMobile />
-        <CreateFacility
-          sections={this.formSections}
-          active={this.state.active}
-          onSubmit={this.onSubmit}
-          onCancel={this.onCancel}
-          dependancies={this.props.dependancies}
-          facility={this.state.newFacility}
-          errors={{
-            networkError: this.state.networkError,
-            networkErrorSavingDetails: this.state.networkErrorSavingDetails
-          }}
+        <Ac
+          role={getUser().role}
+          action="facility:basic_details:create"
+          allowed={() => (
+            <CreateFacility
+              sections={this.formSections}
+              active={this.state.active}
+              onSubmit={this.onSubmit}
+              onCancel={this.onCancel}
+              dependancies={this.props.dependancies}
+              facility={this.state.newFacility}
+              errors={{
+                networkError: this.state.networkError,
+                networkErrorSavingDetails: this.state.networkErrorSavingDetails
+              }}
+            />
+          )}
+          denied={() => <Unauthorized />}
         />
       </>
     );

@@ -1,4 +1,14 @@
 /// <reference types="Cypress" />
+
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
+    .first()
+    .click()
+    .clear()
+    .type(value)
+    .blur();
+};
+
 describe("Update Facility Basics", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   var details = {
@@ -34,15 +44,8 @@ describe("Update Facility Basics", () => {
 
   var facility;
   context("Navigates to the update form", () => {
-    it("Navigates to the facilities page", () => {
-      cy.login(credentials);
-      cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.location().should(loc => {
-        expect(loc.href).to.equal(`${FRONTEND_URL}/facilities`);
-      });
-    });
     it("Renders facility details page", () => {
+      cy.login(credentials);
       cy.visit(`${FRONTEND_URL}/facilities`);
       // get random facility index
 
@@ -52,7 +55,7 @@ describe("Update Facility Basics", () => {
             ? Math.floor(Math.random() * 9)
             : Math.floor(Math.random() * (res.length - 1));
         facility = res[facilityIndex];
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
           .eq(facilityIndex)
           .click();
       });
@@ -62,68 +65,46 @@ describe("Update Facility Basics", () => {
       cy.fetch_facility_details(facility.id).then(res => {
         facility = res;
       });
-      cy.get(`.nav-wrapper ul li a[href='${ref}']`)
-        .first()
-        .click();
+
       cy.location().should(loc => {
-        expect(loc.href).to.equal(
-          `${FRONTEND_URL}/facilities/${facility.id}/summary`
-        );
+        expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/${facility.id}`);
       });
-      cy.get(".container.mfl-titles")
-        .first()
-        .should("contain", facility.code);
     });
     it("Renders the update facility details form", () => {
-      cy.get(".mfl-download")
-        .first()
-        .trigger("mouseover");
-      cy.wait(60 * 60);
-      cy.get(".mfl-download")
-        .first()
-        .find("ul li")
-        .eq(1)
-        .click();
+      cy.get("[data-test='facilityUpdateButton']").click();
+      cy.location().should(loc => {
+        expect(loc.href).to.equal(
+          `${FRONTEND_URL}/facilities/${facility.id}/summary/edit`
+        );
+      });
     });
   });
 
   context("Validates input in front-end", () => {
     it("Validates facility name", () => {
-      cy.get("div.input-field input[name='facilityName']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
+      type("facilityName", "ku");
 
-      cy.get(`label[data-error='${errors.facilityName}']`)
+      cy.get(`[data-test=fieldErrorfacilityName]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.facilityName);
     });
     it("Validates facility common name", () => {
-      cy.get("div.input-field input[name='commonName']")
-        .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
+      type("commonName", "ku");
 
-      cy.get(`label[data-error='${errors.facilityCommon}']`)
+      cy.get(`[data-test=fieldErrorcommonName]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.facilityCommon);
     });
 
     it("Validates Registration", () => {
-      cy.get("div.input-field input[name='registrationNumber']")
-        .first()
-        .click()
-        .clear()
-        .type("1")
-        .blur();
+      type("registrationNumber", "1");
 
-      cy.get(`label[data-error='${errors.registrationNumber}']`)
+      cy.get(`[data-test=fieldErrorregistrationNumber]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.registrationNumber);
     });
   });
 
@@ -138,28 +119,13 @@ describe("Update Facility Basics", () => {
         "fixture:update_facility_basics_success.json"
       ).as("update");
 
-      cy.get("div.input-field input[name='facilityName']")
-        .first()
-        .click()
-        .clear()
-        .type("kuunika");
+      type("facilityName", "kuunika");
 
-      cy.get("div.input-field input[name='commonName']")
-        .first()
-        .click()
-        .clear()
-        .type("kuunika");
+      type("commonName", "kuunika");
 
-      cy.get("div.input-field input[name='registrationNumber']")
-        .first()
-        .click()
-        .clear()
-        .type("11111111");
+      type("registrationNumber", "11111111");
 
-      cy.get("div[test-id='basicDetailsForm']")
-        .find("button")
-        .first()
-        .click();
+      cy.get("[data-test='saveBtn']").click();
 
       cy.get("button.swal-button.swal-button--confirm")
         .first()

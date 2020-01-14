@@ -1,16 +1,36 @@
 import moment from "moment";
 import { getServicesLeaves } from "../../../services/helpers";
 
-export const basic = (facility: any = null) => {
+export const basic = (
+  facility: any = null,
+  regulatoryStatuses: any = [],
+  facilityTypes: any = []
+) => {
+  const defaultStatus = regulatoryStatuses.find(
+    (r: any) => r.facility_regulatory_status === "Not Registered"
+  );
+  const defaultType = facilityTypes.find(
+    (r: any) => r.facility_type === "Unclassified"
+  );
+
   return {
     facilityName: facility == null ? null : facility.facility_name,
     commonName: facility == null ? null : facility.common_name,
     operationalStatus:
       facility == null ? null : facility.facility_operational_status_id,
     district: facility == null ? null : facility.district_id,
-    facilityType: facility == null ? null : facility.facility_type_id,
+    facilityType:
+      facility == null
+        ? defaultType
+          ? defaultType.id
+          : null
+        : facility.facility_type_id,
     regulatoryStatus:
-      facility == null ? null : facility.facility_regulatory_status_id,
+      facility == null
+        ? defaultStatus
+          ? defaultStatus.id
+          : null
+        : facility.facility_regulatory_status_id,
     facilityOwner: facility == null ? null : facility.facility_owner_id,
     dateOpened:
       facility == null

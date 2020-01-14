@@ -1,10 +1,18 @@
 /// <reference types="Cypress" />
-const type = (cy, field, value) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
     .first()
     .click()
     .clear()
-    .type(`${value}`)
+    .type(value)
+    .blur();
+};
+
+const clear = fieldName => {
+  cy.get(`input[name=${fieldName}]`)
+    .first()
+    .click()
+    .clear()
     .blur();
 };
 describe("Updates Facility Contacts and Locations", () => {
@@ -47,15 +55,8 @@ describe("Updates Facility Contacts and Locations", () => {
 
   var facility;
   context("Navigates to the update form", () => {
-    it("Navigates to the facilities page", () => {
-      cy.login(credentials);
-      cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.location().should(loc => {
-        expect(loc.href).to.equal(`${FRONTEND_URL}/facilities`);
-      });
-    });
     it("Renders facility details page", () => {
+      cy.login(credentials);
       cy.visit(`${FRONTEND_URL}/facilities`);
       // get random facility index
 
@@ -65,200 +66,105 @@ describe("Updates Facility Contacts and Locations", () => {
             ? Math.floor(Math.random() * 9)
             : Math.floor(Math.random() * (res.length - 1));
         facility = res[facilityIndex];
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
           .eq(facilityIndex)
           .click();
       });
     });
-    it("Renders the facility details page", () => {
+    it("Renders the facility locations page", () => {
       var ref = `/facilities/${facility.id}/locations`;
       cy.fetch_facility_details(facility.id).then(res => {
         facility = res;
       });
-      cy.get(`.nav-wrapper ul li a[href='${ref}']`)
-        .first()
-        .click();
+      cy.get("[data-test='FacilityContacts']").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(
-          `${FRONTEND_URL}/facilities/${facility.id}/locations`
+          `${FRONTEND_URL}/facilities/${facility.id}/contact`
         );
       });
-      cy.get(".container.mfl-titles")
-        .first()
-        .should("contain", facility.code);
     });
-    it("Renders the update facility details form", () => {
-      cy.get(".mfl-download")
-        .first()
-        .trigger("mouseover");
-      cy.wait(60 * 60);
-      cy.get(".mfl-download")
-        .first()
-        .find("ul li")
-        .eq(1)
-        .click();
+    it("Renders the update facility contact details form", () => {
+      cy.get("[data-test='facilityUpdateButton']").click();
+      cy.location().should(loc => {
+        expect(loc.href).to.equal(
+          `${FRONTEND_URL}/facilities/${facility.id}/contact/edit`
+        );
+      });
     });
   });
 
   context("Validates input in front-end", () => {
     it("Validates address", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .first()
-        .find("label")
-        .first()
-        .click();
+      type("postalAddress", "ku");
 
-      cy.get("div.input-field input[name='postalAddress']")
+      cy.get(`[data-test=fieldErrorpostalAddress]`)
         .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.postalAddress}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.postalAddress);
     });
     it("Validates facility physical address", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(1)
-        .find("label")
-        .first()
-        .click();
+      type("physicalAddress", "ku");
 
-      cy.get("div.input-field input[name='physicalAddress']")
+      cy.get(`[data-test=fieldErrorphysicalAddress]`)
         .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.physicalAddress}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.physicalAddress);
     });
     it("Validates facility contact name", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(2)
-        .find("label")
-        .first()
-        .click();
+      type("contactName", "ku");
 
-      cy.get("div.input-field input[name='contactName']")
+      cy.get(`[data-test=fieldErrorcontactName]`)
         .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.contactName}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.contactName);
     });
     it("Validates phone number", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(3)
-        .find("label")
-        .first()
-        .click();
+      type("contactPhoneNumber", "ku");
 
-      cy.get("div.input-field input[name='contactPhoneNumber']")
+      cy.get(`[data-test=fieldErrorcontactPhoneNumber]`)
         .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.contactPhoneNumber}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.contactPhoneNumber);
     });
     it("Validates email", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(4)
-        .find("label")
-        .first()
-        .click();
+      type("contactEmail", "ku");
 
-      cy.get("div.input-field input[name='contactEmail']")
+      cy.get(`[data-test=fieldErrorcontactEmail]`)
         .first()
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.contactEmail}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.contactEmail);
     });
     it("Validates catchment area", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(5)
-        .find("label")
-        .first()
-        .click();
+      type("catchmentArea", "ku");
 
-      cy.get("div.input-field input[name='catchmentArea']")
+      cy.get(`[data-test=fieldErrorcatchmentArea]`)
         .first()
-        .click()
-        .clear()
-        .type("1")
-        .blur();
-
-      cy.get(`label[data-error="${errors.catchmentArea}"]`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.catchmentArea);
     });
     it("Validates catchment area pupulation", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(6)
-        .find("label")
-        .first()
-        .click();
+      clear("catchmentPopulation");
 
-      cy.get("div.input-field input[name='catchmentPopulation']")
+      cy.get(`[data-test=fieldErrorcatchmentPopulation]`)
         .first()
-        .click()
-        .clear()
-        .blur();
-
-      cy.get(`label[data-error="${errors.catchmentPopulation}"]`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.catchmentPopulation);
     });
     it("Validates longitude", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(7)
-        .find("label")
-        .first()
-        .click();
+      clear("longitude");
 
-      cy.get("div.input-field input[name='longitude']")
+      cy.get(`[data-test=fieldErrorlongitude]`)
         .first()
-        .click()
-        .clear()
-        .blur();
-
-      cy.get(`label[data-error="${errors.longitude}"]`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.longitude);
     });
     it("Validates latitude", () => {
-      cy.get("div[test-id='contactDetailsForm'] div.input-field")
-        .eq(8)
-        .find("label")
-        .first()
-        .click();
+      clear("latitude");
 
-      cy.get("div.input-field input[name='latitude']")
+      cy.get(`[data-test=fieldErrorlatitude]`)
         .first()
-        .click()
-        .clear()
-        .blur();
-
-      cy.get(`label[data-error="${errors.latitude}"]`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.latitude);
     });
   });
 
@@ -273,20 +179,17 @@ describe("Updates Facility Contacts and Locations", () => {
         "fixture:add_facility_basics_success.json"
       ).as("update");
 
-      type(cy, "postalAddress", details.postalAddress);
-      type(cy, "physicalAddress", details.physicalAddress);
-      type(cy, "contactName", details.contactName);
-      type(cy, "contactPhoneNumber", details.contactPhoneNumber);
-      type(cy, "contactEmail", details.contactEmail);
-      type(cy, "catchmentArea", details.catchmentArea);
-      type(cy, "catchmentPopulation", details.catchmentPopulation);
-      type(cy, "longitude", details.longitude);
-      type(cy, "latitude", details.latitude);
+      type("postalAddress", details.postalAddress);
+      type("physicalAddress", details.physicalAddress);
+      type("contactName", details.contactName);
+      type("contactPhoneNumber", details.contactPhoneNumber);
+      type("contactEmail", details.contactEmail);
+      type("catchmentArea", details.catchmentArea);
+      type("catchmentPopulation", details.catchmentPopulation);
+      type("longitude", details.longitude);
+      type("latitude", details.latitude);
 
-      cy.get("div[test-id='contactDetailsForm']")
-        .find("button")
-        .first()
-        .click();
+      cy.get("[data-test='saveBtn']").click();
 
       cy.get("button.swal-button.swal-button--confirm")
         .first()

@@ -7,7 +7,7 @@ function Unauthorized() {
     window.history.back();
   };
   return (
-    <Container>
+    <Container data-test="unauthorised">
       <div style={{ textAlign: "center" }}>
         <Img src="/static/images/networkError.svg" />
         <Code>401</Code>

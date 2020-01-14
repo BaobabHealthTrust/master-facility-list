@@ -2,11 +2,16 @@ import React from "react";
 import { MenuItem } from "@material-ui/core";
 // @ts-ignore
 import { intersection, slice, uniqWith } from "lodash";
+import store from "../services/redux/store.js";
 
 export const renderOptions = (dependancy: any, entityName: string) => {
   return dependancy.map((entity: any) => (
-    <MenuItem key={entity.id} value={entity.id}>
-      {entity[entityName]}
+    <MenuItem
+      key={entity.id}
+      value={entity.id}
+      style={{ textTransform: "capitalize" }}
+    >
+      {entity[entityName].replace("_", " ")}
     </MenuItem>
   ));
 };
@@ -168,3 +173,17 @@ export const hasFilterValuesForType = (type: string, values: Array<any>) => {
 };
 
 export const isAdmin = () => sessionStorage.getItem("token");
+
+export const getUser = () => {
+  const state: any = store ? store.getState() : null;
+
+  const user =
+    state &&
+    state.users &&
+    state.users.currentUser &&
+    state.users.currentUser.authenticated
+      ? state.users.currentUser.authDetails
+      : null;
+
+  return user ? user : { role: "public" };
+};

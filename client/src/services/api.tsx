@@ -2,6 +2,11 @@ import axios from "axios";
 
 const API = process.env.REACT_APP_API_URL;
 
+export const getUserRoles = () => {
+  const url = `${API}/Roles`;
+  return axios.get(url);
+};
+
 export const getUtilities = () => {
   const url = `${API}/Utilities`;
   return axios.get(url);
@@ -118,6 +123,21 @@ export const getFacilityUtilities = (
   return axios.get(url);
 };
 
+export const requestResetPassword = (data: { email: any }) => {
+  const url = `${API}/Clients/requestPasswordReset `;
+  return axios.post(url, data);
+};
+
+export const resetPassword = (data: { newPassword: String }, token: String) => {
+  const url = `${API}/Clients/reset-password `;
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.post(url, data, header);
+};
+
 export const authenticateUser = (credentials: {
   username: string;
   password: string;
@@ -146,7 +166,7 @@ export const getUsers = (token: string) => {
 };
 
 export const addUser = (data: any, token: string) => {
-  const url = `${API}/clients/createAdmin`;
+  const url = `${API}/clients/createUser`;
   const header = {
     headers: {
       Authorization: `${token}`
@@ -156,13 +176,13 @@ export const addUser = (data: any, token: string) => {
 };
 
 export const putUser = (userId: number, data: any, token: string) => {
-  const url = `${API}/clients/${userId}`;
+  const url = `${API}/clients/${userId}/updateUser`;
   const header = {
     headers: {
       Authorization: `${token}`
     }
   };
-  return axios.patch(url, data, header);
+  return axios.patch(url, { data }, header);
 };
 
 export const publishFacility = (data: any, token: string) => {

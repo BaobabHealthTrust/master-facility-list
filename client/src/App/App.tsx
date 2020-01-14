@@ -18,8 +18,8 @@ import Help from "../scenes/Help";
 import NotFound from "../scenes/Error/404";
 import Preloader from "../components/atoms/Preloader";
 import ErrorScreen from "../scenes/Error/500";
-import ForgotPassword from "../scenes/Users/ForgotPassword";
-import ResetPassword from "../scenes/Users/ResetPassword";
+import ForgotPassword from "../scenes/Users/PasswordReset/ForgotPassword.container";
+import ResetPassword from "../scenes/Users/PasswordReset/ResetPassword.container";
 import { connect } from "react-redux";
 import {
   fetchUtilities,
@@ -32,12 +32,15 @@ import {
   fetchDistricts,
   fetchOperationalStatuses,
   dispatchDependancyError,
-  fetchFacilityTypes
+  fetchFacilityTypes,
+  fetchUserRoles
 } from "../services/redux/actions/dependancies";
+import { fetchUserDetails } from "../services/redux/actions/users";
 import ReactGA from "react-ga";
 import { fetchFacilities } from "../services/redux/actions/facilities";
 import { ToastContainer, cssTransition } from "react-toastify";
 import { createBrowserHistory } from "history";
+import { isAdmin } from "../services/helpers";
 
 const history: any = createBrowserHistory();
 
@@ -117,6 +120,20 @@ const App: React.FC = (props: any) => {
     fetchFacilityTypes().catch(() => {
       dispatchDependancyError();
     });
+
+    if (isAdmin) {
+      let user: any = sessionStorage.getItem("user");
+      user = user ? JSON.parse(user) : false;
+
+      if (!user) {
+        sessionStorage.clear();
+      } else {
+        fetchUserDetails(
+          user.id as any,
+          sessionStorage.getItem("token") as any
+        );
+      }
+    }
   }, []);
 
   const isLoading = () => facilities.length == 0 && loading.fetchFacilities;
@@ -203,6 +220,7 @@ export default connect(
     fetchOperationalStatuses,
     dispatchDependancyError,
     fetchFacilities,
-    fetchFacilityTypes
+    fetchFacilityTypes,
+    fetchUserDetails
   }
 )(App);

@@ -73,6 +73,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^3.7.0",
     "dotenv": "^8.0.0",
     "redux-logger": "^3.0.6"
   }

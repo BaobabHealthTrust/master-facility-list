@@ -60,6 +60,8 @@ export default {
   setActivePage: "SET_ACTIVE_PAGE",
   setActiveFacilityPage: "SET_ACTIVE_FACILITY_PAGE",
 
+  fetchUserRoles: "FETCH_USER_ROLES",
+
   fetchUsers: "FETCH_USERS",
   addUser: "ADD_USER",
   putUser: "PUT_USER",
@@ -67,6 +69,8 @@ export default {
   userLogin: "USER_LOGIN",
   userLogout: "USER_LOGOUT",
   fetchUserDetails: "FETCH_USER_DETAILS",
+  requestResetPassword: "REQUEST_RESET_PASSWORD",
+  resetPassword: "RESET_PASSWORD",
 
   fetchFeedbackTypes: "FETCH_FEEDBACK_TYPES",
   sendFeedback: "SEND_FEEDBACK",

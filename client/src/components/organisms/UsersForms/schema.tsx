@@ -2,33 +2,37 @@ import * as yup from "yup";
 
 const passwordValidationMessage =
   "Weak password, The password must be a combination of numbers, letters , and special characters";
-
+const name = "Please put you full name separated by a space";
 export const userSchema = yup.object().shape({
+  // TODO: validate name
   name: yup
     .string()
-    .typeError("First name is required")
-    .min(3)
-    .required("First name is required"),
+    .typeError("Name is required")
+    .min(7, "Name must be at least 7 characters")
+    .required("Name is required"),
+  // .matches(/^([a-zA-Z].{2,})[\s]([a-zA-Z].{2,})$/g, name),
   username: yup
     .string()
-    .typeError("username is required")
-    .min(6)
-    .required("username is required"),
+    .typeError("Username is required")
+    .min(6, "Username must be at least 6 characters")
+    .required("Username is required"),
   email: yup
     .string()
-    .typeError("enter a valid email address")
-    .email("enter a valid email address")
-    .required("email is required"),
+    .typeError("Enter a valid email address")
+    .email("Enter a valid email address")
+    .required("Email is required"),
+
+  role: yup.string().required("Email is required"),
 
   password: yup
     .string()
-    .typeError("atleast 8 characters long")
-    .min(8, "atleast 8 characters long")
+    .typeError("Atleast 8 characters long")
+    .min(8, "Atleast 8 characters long")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
     )
-    .required("password is required"),
+    .required("Password is required"),
   confirmPassword: yup
     .string()
     .typeError("Passwords do not match")
@@ -41,21 +45,23 @@ export const userSchema = yup.object().shape({
 });
 
 export const updateSchema = yup.object().shape({
+  // TODO: validate name
   name: yup
     .string()
-    .typeError("First name is required")
+    .typeError("Name is required")
     .min(3)
-    .required("First name is required"),
+    .required("Name is required"),
+  //.matches(/^[a-zA-Z]{3,}\s[a-zA-Z]{3,}$/g, name),
   username: yup
     .string()
-    .typeError("username is required")
+    .typeError("Username is required")
     .min(6)
-    .required("username is required"),
+    .required("Username is required"),
   email: yup
     .string()
-    .typeError("enter a valid email address")
-    .email("enter a valid email address")
-    .required("email is required")
+    .typeError("Enter a valid email address")
+    .email("Enter a valid email address")
+    .required("Email is required")
 });
 
 export const changePasswordSchema = yup.object().shape({
@@ -66,13 +72,13 @@ export const changePasswordSchema = yup.object().shape({
     .required("Current Password required"),
   newPassword: yup
     .string()
-    .typeError("atleast 8 characters long")
-    .min(8, "atleast 8 characters long")
+    .typeError("Atleast 8 characters long")
+    .min(8, "Atleast 8 characters long")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
     )
-    .required("password is required"),
+    .required("Password is required"),
   confirmNewPassword: yup
     .string()
     .typeError("Passwords do not match")
@@ -87,13 +93,13 @@ export const changePasswordSchema = yup.object().shape({
 export const resetPasswordSchema = yup.object().shape({
   newPassword: yup
     .string()
-    .typeError("atleast 8 characters long")
+    .typeError("Atleast 8 characters long")
     .min(8, "atleast 8 characters long")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/gim,
       passwordValidationMessage
     )
-    .required("password is required"),
+    .required("Password is required"),
   confirmNewPassword: yup
     .string()
     .typeError("Passwords do not match")

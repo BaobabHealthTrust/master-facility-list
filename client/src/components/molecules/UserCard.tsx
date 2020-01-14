@@ -10,9 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../atoms/Card";
 import UpdateUser from "../../scenes/Users/UpdateUser";
+import { getUser } from "../../services/helpers";
+import Ac from "../atoms/Ac";
 
 function UserCard(props: Props) {
   const { user, onDelete } = props;
+  const User = getUser();
   return (
     <Card style={{ padding: "10px" }}>
       <UserDetailsContainer>
@@ -28,19 +31,27 @@ function UserCard(props: Props) {
             </div>
           </UserName>
         </div>
-        <div>System Admin</div>
+        <UserRole>{user.role.name.replace("_", " ")}</UserRole>
       </UserDetailsContainer>
       <Contacts>
         <FontAwesomeIcon icon={faEnvelope} /> {user.email}
       </Contacts>
       <Footer>
-        <UpdateUser user={user} />
-        <i onClick={() => onDelete(user.id)}>
-          <FontAwesomeIcon
-            style={{ margin: "0px 10px", cursor: "pointer" }}
-            icon={faTrashAlt}
-          />
-        </i>
+        <Ac
+          role={User.role}
+          action="user:update"
+          allowed={() => (
+            <>
+              <UpdateUser user={user} />
+              <i onClick={() => onDelete(user.id)}>
+                <FontAwesomeIcon
+                  style={{ margin: "0px 10px", cursor: "pointer" }}
+                  icon={faTrashAlt}
+                />
+              </i>
+            </>
+          )}
+        ></Ac>
       </Footer>
     </Card>
   );
@@ -75,4 +86,7 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   color: #505050;
+`;
+const UserRole = styled.div`
+  text-transform: capitalize;
 `;

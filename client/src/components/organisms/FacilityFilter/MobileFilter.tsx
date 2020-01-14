@@ -21,7 +21,7 @@ const FilterDrawer = (props: Props) => {
     <FilterContainer open={open}>
       <SearchTabs
         dependancies={dependancies}
-        filterOptions={filterOptions}
+        filterOptions={filterOptions ? filterOptions : []}
         onAddFilter={onAddFilter}
         onRemoveFilter={onRemoveFilter}
         mobile
@@ -33,8 +33,8 @@ const FilterDrawer = (props: Props) => {
 type Props = {
   classes?: any;
   open: boolean;
-  dependancies: any;
-  filterOptions: Array<any>;
+  dependancies?: any;
+  filterOptions?: Array<any>;
   onAddFilter: Function;
   onRemoveFilter: Function;
 };

@@ -94,7 +94,6 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
   registrationNumber: yup
     .string()
     .typeError(INVALID_TEXT)
-    .required(REQUIRED_MESSAGE)
     .min(4, "Invalid Registration Number")
 });
 

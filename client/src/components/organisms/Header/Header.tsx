@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -27,6 +27,8 @@ import MobileMenu from "../../molecules/MobileMenu";
 import SearchContainer from "./SearchContainer";
 import BaselineMenu from "../../molecules/MobileBaselineMenu";
 import ChangePassword from "../../../scenes/Users/ChangePassword";
+import { acActions } from "../../../acl";
+import { changePassword } from "../../../services/api";
 
 library.add(faAlignJustify);
 
@@ -43,7 +45,13 @@ const Header = (props: Props) => {
   } = props;
 
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([] as any);
+  const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
+
+  useEffect(() => {
+    const menu = auth.authenticated ? adminMenuItems : publicMenuItems;
+    setMenuItems(menu);
+  }, [activePage, auth]);
 
   const isActivePage = (page: string) =>
     page.toLowerCase() == activePage.toLowerCase();
@@ -68,7 +76,8 @@ const Header = (props: Props) => {
       name: "Users",
       active: isActivePage("Users"),
       icon: <People />,
-      link: `/users`
+      link: `/users`,
+      aclAction: "user:view" as acActions
     },
     {
       text: "More",
@@ -92,7 +101,10 @@ const Header = (props: Props) => {
       icon: <AccountCircle />,
       options: [
         { text: "Logout", link: `/`, onClick: logout },
-        { text: "Change Password", onClick: () => setModalOpen(true) }
+        {
+          text: "Change Password",
+          onClick: () => setChangePasswordModalOpen(true)
+        }
       ]
     }
   ];
@@ -170,8 +182,6 @@ const Header = (props: Props) => {
     }
   ];
 
-  const menuItems = auth.authenticated ? adminMenuItems : publicMenuItems;
-
   return (
     <Container>
       <AppBar>
@@ -221,8 +231,8 @@ const Header = (props: Props) => {
             </div>
             <Menu items={menuItems} />
             <ChangePassword
-              open={modalOpen}
-              setOpen={setModalOpen}
+              open={changePasswordModalOpen}
+              setOpen={setChangePasswordModalOpen}
               onSubmit={onPasswordChange}
             />
           </MenuContainer>

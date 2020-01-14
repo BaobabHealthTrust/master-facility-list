@@ -1,4 +1,24 @@
 /// <reference types="Cypress" />
+
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
+    .first()
+    .click()
+    .clear()
+    .type(value)
+    .blur();
+};
+
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
 describe("Updates User", () => {
   const FRONTEND_URL = "http://localhost:3000";
   var userIndex;
@@ -14,7 +34,7 @@ describe("Updates User", () => {
   it("Navigates to the users page", () => {
     cy.login(credentials);
     cy.visit(FRONTEND_URL);
-    cy.get("#nav-mobile li a[href='/users']").click();
+    cy.get("[data-test='menuUsers']").click();
     cy.location().should(loc => {
       expect(loc.href).to.equal(`${FRONTEND_URL}/users`);
     });
@@ -28,13 +48,12 @@ describe("Updates User", () => {
           ? Math.floor(Math.random() * 9)
           : Math.floor(Math.random() * (res.length - 1));
       user = res[userIndex];
-      cy.get("table tbody .MuiTableRow-root-32")
+
+      cy.get("button[data-test='updateUserBtn']")
         .eq(userIndex)
         .click();
 
-      cy.get("button[test-id='updateUserBtn']").click();
-
-      cy.get("div[class='modal open']");
+      cy.get("[data-test='updateUserModal']");
     });
   });
   it("Failes to Update User", () => {
@@ -44,41 +63,75 @@ describe("Updates User", () => {
 
     cy.route(
       "PATCH",
-      `http://127.0.0.1:4000/api/Clients/${user.id}`,
+      `http://127.0.0.1:4000/api/clients/*/updateUser`,
       "fixture:update_user_error.json"
     ).as("error");
 
-    cy.get("div[class='modal open']")
-      .find("input[name='firstname']")
-      .clear()
-      .type("kuunika");
+    it("Validates Name", () => {
+      type("name", "ku");
 
-    cy.get("div[class='modal open']")
-      .find("input[name='lastname']")
-      .clear()
-      .type("malawi");
+      cy.get(`[data-test=fieldErrorname]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.name);
+    });
 
-    cy.get("div[class='modal open']")
-      .find("input[name='username']")
-      .clear()
-      .type("kuunikauser");
+    it("Validates username", () => {
+      type("username", "kuuni");
 
-    cy.get("div[class='modal open']")
-      .find("input[name='email']")
-      .clear()
-      .type("kuunika@gmail.com");
+      cy.get(`[data-test=fieldErrorusername]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.username);
+    });
+    it("Validates email", () => {
+      type("email", "kuunika.com");
 
-    cy.get("div[class='modal open']")
-      .find("div[class='modal-footer']")
-      .find("button")
-      .eq(1)
-      .click();
+      cy.get(`[data-test=fieldErroremail]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.email);
+    });
+
+    it("Validates password", () => {
+      type("password", "1234");
+
+      cy.get(`[data-test=fieldErrorpassword]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.password.length);
+
+      type("password", "12345678");
+
+      cy.get(`[data-test=fieldErrorpassword]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.password.combo);
+    });
+
+    it("Validates password confirm", () => {
+      type("confirmPassword", "1password#");
+
+      cy.get(`[data-test=fieldErrorconfirmPassword]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.confirmPassword.combo);
+    });
+    it("Form not submitted", () => {
+      cy.get("[data-test='addUserButton1']").click();
+
+      cy.get("[data-test='addUserModal']");
+    });
+
+    cy.get("[data-test=saveUserBtn]").click();
     cy.wait("@error");
 
     cy.get("@error").then(xhr => {
       const { body } = xhr.request;
-      cy.expect(body.username).to.equal("kuunikauser");
-      cy.get("label[data-error='Email already exists']");
+
+      cy.get("[data-test='fieldErroremail']")
+        .should("be.visible")
+        .contains("Email already exists");
     });
   });
 
@@ -89,43 +142,22 @@ describe("Updates User", () => {
     });
     cy.route(
       "PATCH",
-      `http://127.0.0.1:4000/api/Clients/${user.id}`,
+      `http://127.0.0.1:4000/api/clients/*/updateUser`,
       "fixture:add_user_success.json"
     ).as("update");
+    type("name", "kuunika malawi");
+    selectFirst("role");
 
-    cy.get("div[class='modal open']")
-      .find("input[name='firstname']")
-      .clear()
-      .type("kuunika");
-
-    cy.get("div[class='modal open']")
-      .find("input[name='lastname']")
-      .clear()
-      .type("malawi");
-
-    cy.get("div[class='modal open']")
-      .find("input[name='username']")
-      .clear()
-      .type("kuunikauser");
-
-    cy.get("div[class='modal open']")
-      .find("input[name='email']")
-      .clear()
-      .type("kuunika@gmail.com");
-
-    cy.get("div[class='modal open']")
-      .find("div[class='modal-footer']")
-      .find("button")
-      .eq(1)
-      .click();
+    cy.get("[data-test=saveUserBtn]").click();
     cy.wait("@update");
 
     cy.get("@update").then(xhr => {
       const { body } = xhr.request;
-      cy.expect(body.username).to.equal("kuunikauser");
-      cy.expect(body.firstname).to.equal("kuunika");
-      cy.expect(body.lastname).to.equal("malawi");
-      cy.expect(body.email).to.equal("kuunika@gmail.com");
+      cy.fetch_user_groups().then(groups => {
+        cy.expect(body.data.firstname).to.equal("kuunika");
+        cy.expect(body.data.lastname).to.equal("malawi");
+        cy.expect(body.data.role).to.equal(groups[0].id);
+      });
     });
   });
 });

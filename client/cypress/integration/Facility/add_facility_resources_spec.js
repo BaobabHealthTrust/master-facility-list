@@ -58,7 +58,7 @@ describe("Add Facility Resources", () => {
       });
     });
 
-    it("Shows facility contacts form", () => {
+    it("Shows facility resorces form", () => {
       cy.get("button.swal-button.swal-button--confirm")
         .first()
         .click();

@@ -1,24 +1,43 @@
 /// <reference types="Cypress" />
+
+const type = (fieldName, value) => {
+  cy.get(`input[name=${fieldName}]`)
+    .first()
+    .click()
+    .clear()
+    .type(value)
+    .blur();
+};
+const selectFirst = fieldName => {
+  cy.get(`[data-test=${fieldName}]`)
+    .first()
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
+    .first()
+    .click();
+};
+
 describe("Adds User", () => {
   const FRONTEND_URL = "http://localhost:3000";
   const errors = {
-    firstname: "firstname must be at least 3 characters",
-    lastname: "lastname must be at least 3 characters",
-    username: "username must be at least 6 characters",
+    name: "Name must be at least 7 characters",
+    username: "Username must be at least 6 characters",
     backend: {
       username: "User already exists",
       email: "Email already exists"
     },
-    email: "enter a valid email address",
+    email: "Enter a valid email address",
     password: {
-      length: "atleast 8 characters long",
+      length: "Atleast 8 characters long",
       combo:
         "Weak password, The password must be a combination of numbers, letters , and special characters"
     },
     confirmPassword: {
       length: "Atleast 8 characters long",
       combo: "Passwords do not match"
-    }
+    },
+    empty: "You can't leave this field blank"
   };
 
   before(() => {
@@ -34,130 +53,72 @@ describe("Adds User", () => {
     it("Navigates to the users page", () => {
       cy.login(credentials);
       cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/users']").click();
+      cy.get("[data-test='menuUsers']").click();
       cy.location().should(loc => {
         expect(loc.href).to.equal(`${FRONTEND_URL}/users`);
       });
     });
-    it("Shows user update modal", () => {
-      cy.get("button[icon='add']").click();
-      cy.get("div[class='modal open']");
+    it("Shows user add modal", () => {
+      cy.get("[data-test='addUserButton']").click();
+      cy.get("[data-test='addUserModal']");
     });
   });
 
   context("Validates input in front-end", () => {
-    it("Validates firstname", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
+    it("Validates Name", () => {
+      type("name", "ku");
+
+      cy.get(`[data-test=fieldErrorname]`)
         .first()
-        .click();
-
-      cy.get("div[class='modal open']")
-        .find("input[name='firstname']")
-        .click()
-        .clear()
-        .type("ku")
-        .blur();
-
-      cy.get(`label[data-error='${errors.firstname}']`)
-        .first()
-        .should("be.visible");
-    });
-    it("Validates lastname", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(1)
-        .click();
-
-      cy.get("div[class='modal open']")
-        .find("input[name='lastname']")
-        .click()
-        .clear()
-        .type("ma")
-        .blur();
-
-      cy.get(`label[data-error='${errors.lastname}']`)
-        .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.name);
     });
 
     it("Validates username", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(2)
-        .click();
+      type("username", "kuuni");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='username']")
-        .click()
-        .clear()
-        .type("kuuni")
-        .blur();
-
-      cy.get(`label[data-error='${errors.username}']`)
+      cy.get(`[data-test=fieldErrorusername]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.username);
     });
     it("Validates email", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(3)
-        .click();
+      type("email", "kuunika.com");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='email']")
-        .click()
-        .clear()
-        .type("kuunikagmail.com")
-        .blur();
-      cy.get(`label[data-error='${errors.email}']`)
+      cy.get(`[data-test=fieldErroremail]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.email);
     });
 
     it("Validates password", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(4)
-        .click();
+      type("password", "1234");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='password']")
-        .click()
-        .clear()
-        .type("1234")
-        .blur();
-
-      cy.get(`label[data-error='${errors.password.length}']`)
+      cy.get(`[data-test=fieldErrorpassword]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.password.length);
+
+      type("password", "12345678");
+
+      cy.get(`[data-test=fieldErrorpassword]`)
+        .first()
+        .should("be.visible")
+        .contains(errors.password.combo);
     });
 
     it("Validates password confirm", () => {
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(5)
-        .click();
+      type("confirmPassword", "1password#");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='confirmPassword']")
-        .click()
-        .clear()
-        .type("password8#")
-        .blur();
-
-      cy.get(`label[data-error='${errors.confirmPassword.combo}']`)
+      cy.get(`[data-test=fieldErrorconfirmPassword]`)
         .first()
-        .should("be.visible");
+        .should("be.visible")
+        .contains(errors.confirmPassword.combo);
     });
     it("Form not submitted", () => {
-      cy.get("div[class='modal open']")
-        .find("div[class='modal-footer']")
-        .find("button")
-        .eq(1)
-        .click();
+      cy.get("[data-test='addUserButton1']").click();
 
-      cy.get("div[class='modal open']");
+      cy.get("[data-test='addUserModal']");
     });
   });
   context("Validates input in back-end", () => {
@@ -167,74 +128,38 @@ describe("Adds User", () => {
       });
       cy.route(
         "POST",
-        `http://127.0.0.1:4000//api/Clients/createAdmin`,
+        `http://127.0.0.1:4000//api/clients/createUser`,
         "fixture:add_user_error.json"
       ).as("error");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='firstname']")
-        .click()
-        .clear()
-        .type("kuunika");
+      type("name", "kuunika malawi");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='lastname']")
-        .click()
-        .clear()
-        .type("malawi");
+      type("username", "kuunikauser");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='username']")
-        .click()
-        .clear()
-        .type("kuunikauser");
+      type("email", "kuunika@gmail.com");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='email']")
-        .click()
-        .clear()
-        .type("kuunika@gmail.com");
+      selectFirst("role");
 
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(4)
-        .click();
+      type("password", "1password#");
 
-      cy.get("div[class='modal open']")
-        .find("input[name='password']")
-        .click()
-        .clear()
-        .type("password8#");
+      type("confirmPassword", "1password#");
 
-      cy.get("div[class='modal open']")
-        .find("label")
-        .eq(5)
-        .click();
-
-      cy.get("div[class='modal open']")
-        .find("input[name='confirmPassword']")
-        .click()
-        .clear()
-        .type("password8#");
-
-      cy.get("div[class='modal open']")
-        .find("div[class='modal-footer']")
-        .find("button")
-        .eq(1)
-        .click();
+      cy.get("[data-test=addUserButton1]").click();
 
       cy.wait("@error");
       cy.get("@error").then(() => {
-        cy.get(`label[data-error='${errors.backend.username}']`)
+        cy.get(`[data-test=fieldErrorusername]`)
           .first()
-          .should("be.visible");
+          .should("be.visible")
+          .contains(errors.backend.username);
 
-        cy.get(`label[data-error='${errors.backend.email}']`)
+        cy.get(`[data-test=fieldErroremail]`)
           .first()
-          .should("be.visible");
+          .should("be.visible")
+          .contains(errors.backend.email);
       });
 
-      cy.get("div[class='modal open']");
+      cy.get("[data-test='addUserModal']");
     });
   });
   context("Adds User", () => {
@@ -245,15 +170,11 @@ describe("Adds User", () => {
       });
       cy.route(
         "POST",
-        `http://127.0.0.1:4000//api/Clients/createAdmin`,
+        `http://127.0.0.1:4000//api/clients/createUser`,
         "fixture:add_user_success.json"
       ).as("add");
 
-      cy.get("div[class='modal open']")
-        .find("div[class='modal-footer']")
-        .find("button")
-        .eq(1)
-        .click();
+      cy.get("[data-test=addUserButton1]").click();
 
       cy.wait("@add");
       cy.get("@add").then(xhr => {

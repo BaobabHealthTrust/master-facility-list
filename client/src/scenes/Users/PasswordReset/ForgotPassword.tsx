@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/atoms/Button";
+import Button from "../../../components/atoms/Button";
 import { Formik } from "formik";
 import * as yup from "yup";
-import ForgotPasswordForm from "../../components/organisms/UsersForms/ForgotPasswordForm";
+import ForgotPasswordForm from "../../../components/organisms/UsersForms/ForgotPasswordForm";
 
-function Login(props: any) {
-  //   const { error } = props;
+function Login(props: Props) {
   const initialValues: any = { email: null };
-  const onSubmit = async (values: any, { setSubmitting }: any) => {
-    console.log(values);
+  const [message, setMessage] = useState({ type: "success", msg: "" });
+
+  const onSubmit = async (values: any, { setSubmitting, setErrors }: any) => {
+    props
+      .requestPasswordReset(values)
+      .then(() => {
+        setMessage({
+          type: "success",
+          msg: "Check your mail box for the reset link"
+        });
+      })
+      .catch(() => {
+        setErrors({ email: "Invalid email address" });
+      });
+    setSubmitting(false);
   };
 
   const schema: yup.ObjectSchema<any> = yup.object().shape({
@@ -30,6 +42,7 @@ function Login(props: any) {
             <Title>Password Recovery</Title>
             Enter Your Email below to recover your password.
             <ForgotPasswordForm {...formikProps} />
+            <Message type={message.type as any}>{message.msg}</Message>
             <Button
               disabled={formikProps.isSubmitting}
               type="submit"
@@ -50,6 +63,10 @@ function Login(props: any) {
     />
   );
 }
+type Props = {
+  history: any;
+  requestPasswordReset: Function;
+};
 
 export default Login;
 
@@ -67,7 +84,8 @@ const LoginContainer = styled.div`
   margin: 10% auto;
   padding: 30px;
   border-top: 6px solid #82b1ff;
-
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   background-color: white;
 `;
 
@@ -79,4 +97,9 @@ const NotificationContainer = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+`;
+
+const Message = styled("div")<{ type: "error" | "success" }>`
+  color: ${props => (props.type === "error" ? "red" : "#0d47a1")};
+  padding: 2px 10px;
 `;

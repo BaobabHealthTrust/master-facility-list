@@ -1,18 +1,20 @@
 /// <reference types="Cypress" />
-const type = (cy, field, value) => {
-  cy.get(`div.input-field input[name='${field}']`)
+const type = (fieldName, value) => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear()
     .type(`${value}`)
     .blur();
 };
-const clear = (cy, field) => {
-  cy.get(`div.input-field input[name='${field}']`)
+
+const clear = fieldName => {
+  cy.get(`input[name='${fieldName}']`)
     .first()
     .click()
     .clear();
 };
+
 describe("Updates Facility Resources", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   var details = {};
@@ -36,15 +38,8 @@ describe("Updates Facility Resources", () => {
 
   var facility;
   context("Navigates to the update form", () => {
-    it("Navigates to the facilities page", () => {
-      cy.login(credentials);
-      cy.visit(FRONTEND_URL);
-      cy.get("#nav-mobile li a[href='/facilities']").click();
-      cy.location().should(loc => {
-        expect(loc.href).to.equal(`${FRONTEND_URL}/facilities`);
-      });
-    });
-    it("Renders facility details page", () => {
+    it("Renders facility details page)", () => {
+      cy.login(credentials, "public");
       cy.visit(`${FRONTEND_URL}/facilities`);
       // get random facility index
 
@@ -54,64 +49,62 @@ describe("Updates Facility Resources", () => {
             ? Math.floor(Math.random() * 9)
             : Math.floor(Math.random() * (res.length - 1));
         facility = res[facilityIndex];
-        cy.get("table tbody .MuiTableRow-root-32")
+        cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
           .eq(facilityIndex)
           .click();
       });
     });
-    it("Renders the facility details page", () => {
+    it("Renders the facility resources page", () => {
       var ref = `/facilities/${facility.id}/resources`;
       cy.fetch_facility_details(facility.id).then(res => {
         facility = res;
       });
-      cy.get(`.nav-wrapper ul li a[href='${ref}']`)
-        .first()
-        .click();
+      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/resources`);
+
       cy.location().should(loc => {
         expect(loc.href).to.equal(
           `${FRONTEND_URL}/facilities/${facility.id}/resources`
         );
       });
-      cy.get(".container.mfl-titles")
-        .first()
-        .should("contain", facility.code);
     });
-    it("Renders the update facility details form", () => {
-      cy.get(".mfl-download")
-        .first()
-        .trigger("mouseover");
-      cy.wait(60 * 10);
-      cy.get(".mfl-download")
-        .first()
-        .find("ul li")
-        .eq(1)
-        .click();
-      cy.get("div[test-id='resourcesForm'] div.input-field").each(
-        (el, index) => {
-          cy.wrap(el)
-            .find("input")
-            .first()
-            .invoke("attr", "name")
-            .then(val => {
-              fields.push(val);
-              details[val] = "10";
-              clear(cy, val);
-            });
-        }
-      );
+    it("Restrict update facility resources form for unathorized", () => {
+      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/resources/edit`);
+      cy.get("[data-test='unauthorised']").should("be.visible");
+    });
+
+    it("Renders update facility resources form", () => {
+      cy.login(credentials, "admin");
+      cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/resources`);
+
+      cy.get("[data-test='facilityUpdateButton']").click();
+      cy.location().should(loc => {
+        expect(loc.href).to.equal(
+          `${FRONTEND_URL}/facilities/${facility.id}/resources/edit`
+        );
+      });
+
+      cy.get("[data-test='resourcesForm'] input").each((el, index) => {
+        cy.wrap(el)
+          .invoke("attr", "name")
+          .then(val => {
+            fields.push(val);
+            details[val] = "10";
+            clear(val);
+          });
+      });
     });
   });
   context("Validates input in front-end", () => {
     it("Validates resources values", () => {
-      for (let index = 0; index < fields.length; index++) {
-        cy.get("div[test-id='resourcesForm']")
-          .find("button")
-          .first()
-          .click();
+      cy.get("[data-test='saveBtn']")
+        .first()
+        .click();
 
-        cy.get(`label[data-error="${errors.empty}"]`)
-          .first(index)
-          .should("be.visible");
+      for (let field of fields) {
+        cy.get(`[data-test="fieldError${field}"]`)
+          .first()
+          .should("be.visible")
+          .contains("Invalid number");
       }
     });
   });
@@ -121,18 +114,15 @@ describe("Updates Facility Resources", () => {
       cy.server({
         status: 200
       });
-      cy.route(
-        "POST",
-        `http://127.0.0.1:4000/api/FacilityResources/replaceOrCreate`,
-        { success: "done" }
-      ).as("update");
+      cy.route("POST", `http://127.0.0.1:4000/api/FacilityResources`, {
+        success: "done"
+      }).as("update");
 
       for (let field of fields) {
-        type(cy, field, details[field]);
+        type(field, details[field]);
       }
 
-      cy.get("div[test-id='resourcesForm']")
-        .find("button")
+      cy.get("[data-test='saveBtn']")
         .first()
         .click();
 
@@ -141,24 +131,18 @@ describe("Updates Facility Resources", () => {
         .click();
 
       cy.fetch_resources().then(resources => {
-        for (let resource of resources) {
-          cy.wait("@update");
-          cy.get("@update").then(xhr => {
-            const { body } = xhr.request;
-            cy.expect(body).to.have.deep.keys({
-              client_id: 1,
-              created_date: "2019-04-03T07:12:51.174Z",
-              description: "",
-              facility_id: 249,
-              id: null,
-              quantity: 10,
-              resource_id: 1
-            });
-            cy.expect(body.quantity).to.be.equal(
-              Number(details[`resource_${resource.id}`])
-            );
-          });
-        }
+        cy.wait("@update");
+        cy.get("@update").then(xhr => {
+          const { body } = xhr.request;
+
+          cy.expect(resources.map(r => r.id)).to.include.members(
+            body.map(r => r.resource_id)
+          );
+
+          cy.expect(body.map(r => r.quantity)[0]).to.be.equal(
+            Number(details[`resource_${resources[0].id}`])
+          );
+        });
       });
     });
   });
