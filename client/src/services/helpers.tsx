@@ -187,3 +187,13 @@ export const getUser = () => {
 
   return user ? user : { role: "public" };
 };
+
+export const OrderEntities = (
+  orderBy: string,
+  entities: Array<any>,
+  dir = "asc" as "asc" | "desc"
+) => {
+  return dir == "asc"
+    ? entities.sort((a, b) => (a[orderBy].trim() > b[orderBy].trim() ? 1 : -1))
+    : entities.sort((a, b) => (a[orderBy].trim() > b[orderBy].trim() ? -1 : 1));
+};
