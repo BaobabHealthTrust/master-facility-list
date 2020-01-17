@@ -56,7 +56,7 @@ export function Form(props: any) {
                   value={values && values[`resource_${resource.id}`]}
                   name={`resource_${resource.id}`}
                   label={`${resource.resource_name}`}
-                  placeholder="Enter Facility Postal Address"
+                  placeholder={`Enter Number of ${resource.resource_name}`}
                   error={
                     values &&
                     touched[`resource_${resource.id}`] &&
