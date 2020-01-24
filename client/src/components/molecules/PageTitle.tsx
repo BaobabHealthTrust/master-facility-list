@@ -7,8 +7,10 @@ function index(props: Props) {
     <Container>
       <TitleContainer>
         <Icon>{icon}</Icon>
-        {title && title.toUpperCase()}
-        {sub ? <SubTitle>{` (${sub})`}</SubTitle> : ""}
+        <div>
+          {title && title.toUpperCase()}
+          {sub ? <SubTitle>{` (${sub})`}</SubTitle> : ""}
+        </div>
       </TitleContainer>
       {options && <div>{options}</div>}
     </Container>
