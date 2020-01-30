@@ -54,7 +54,7 @@ function FacilityDetails(props: Props) {
         )}
         {facility.regulatoryStatus && (
           <FacilityDetail
-            label="Registration Status"
+            label="License Status"
             text={facility.regulatoryStatus.facility_regulatory_status}
           />
         )}
