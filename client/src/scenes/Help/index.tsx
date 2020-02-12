@@ -214,15 +214,12 @@ function index() {
             <Heading>Useful Links</Heading>
             <TextContainer>
               <div>
-                <a href="/">
+                <a
+                  href="https://drive.google.com/file/d/1Im155hlUhucY1dbjflKy3R5OqlIeTdnY/view?usp=sharing"
+                  target="_blank"
+                >
                   <Icon icon={faFilePdf} />
                   Guidelines
-                </a>
-              </div>
-              <div>
-                <a href="/">
-                  <Icon icon={faFileAlt} />
-                  Instruction Manual
                 </a>
               </div>
             </TextContainer>

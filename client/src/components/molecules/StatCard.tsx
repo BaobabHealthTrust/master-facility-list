@@ -31,7 +31,8 @@ type Props = {
 const Container = styled<any>("div")`
   cursor: pointer;
   padding: 15px;
-  min-height: 140px;
+  height: 160px;
+  overflow: hidden;
   color: ${props => (props.highlight ? "#0f52ba" : "inherit")};
 `;
 const TopContainer = styled<any>("div")`

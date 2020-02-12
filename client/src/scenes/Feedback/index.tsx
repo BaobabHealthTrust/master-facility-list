@@ -17,7 +17,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDownload,
   faQuestionCircle,
-  faInfoCircle
+  faInfoCircle,
+  faBuilding,
+  faDesktop
 } from "@fortawesome/free-solid-svg-icons";
 
 class index extends React.Component<any> {
@@ -76,21 +78,15 @@ class index extends React.Component<any> {
               <Heading>Useful Links</Heading>
               <TextContainer>
                 <div>
-                  <a href="/">
-                    <Icon icon={faDownload} />
-                    Download Guides
-                  </a>
-                </div>
-                <div>
-                  <a href="/">
+                  <a href="https://www.health.gov.mw/" target="_blank">
                     <Icon icon={faInfoCircle} />
                     About Ministry of Health
                   </a>
                 </div>
                 <div>
-                  <a href="/">
-                    <Icon icon={faQuestionCircle} />
-                    Help
+                  <a href="https://www.kuunika.org/" target="_blank">
+                    <Icon icon={faInfoCircle} />
+                    About Kuunika
                   </a>
                 </div>
               </TextContainer>
