@@ -114,7 +114,7 @@ export class index extends Component<any> {
     // @ts-ignore
     swal({
       icon: "warning",
-      title: `Are you sure you want to delete ${this.props.facility.facility_name}?`,
+      title: `Are you sure you want to archive ${this.props.facility.facility_name}?`,
       buttons: {
         cancel: { text: "Cancel", closeModal: true, visible: true },
         confirm: { text: "Delete" }
@@ -125,7 +125,7 @@ export class index extends Component<any> {
         // @ts-ignore
         swal({
           icon: "info",
-          title: `Deleting Facility. Please wait...`
+          title: `Archiving Facility. Please wait...`
         });
         this.props
           .archiveFacility({ id: this.state.facilityId }, token)

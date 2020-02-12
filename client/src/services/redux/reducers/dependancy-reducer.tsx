@@ -1,37 +1,38 @@
 import actions from "../actions/actions";
 import { getServicesHierachy } from "../../helpers";
+import apiAdaptor from "../../apiAdaptor";
 
 const initialState = {
   utilities: {
-    list: [],
-    types: []
+    list: [] as Array<any>,
+    types: [] as Array<any>
   },
   services: {
-    list: [],
-    hierachy: [],
-    types: []
+    list: [] as Array<any>,
+    hierachy: [] as Array<any>,
+    types: [] as Array<any>
   },
   resources: {
-    list: [],
-    types: []
+    list: [] as Array<any>,
+    types: [] as Array<any>
   },
   regulatoryStatuses: {
-    list: []
+    list: [] as Array<any>
   },
   operationalStatuses: {
-    list: []
+    list: [] as Array<any>
   },
   districts: {
-    list: []
+    list: [] as Array<any>
   },
   owners: {
-    list: []
+    list: [] as Array<any>
   },
   facilityTypes: {
-    list: []
+    list: [] as Array<any>
   },
   roles: {
-    list: []
+    list: [] as Array<any>
   }
 };
 export default (
@@ -44,7 +45,7 @@ export default (
         ...state,
         utilities: {
           ...state.utilities,
-          list: action.payload.data
+          list: apiAdaptor.getUtilities(action.payload.data)
         }
       };
     case actions.fetchUtilityTypes + "_FULFILLED":
@@ -52,7 +53,7 @@ export default (
         ...state,
         utilities: {
           ...state.utilities,
-          types: action.payload.data
+          types: apiAdaptor.getUtilityTypes(action.payload.data)
         }
       };
 
@@ -61,8 +62,10 @@ export default (
         ...state,
         services: {
           ...state.services,
-          list: action.payload.data,
-          hierachy: getServicesHierachy(action.payload.data)
+          list: apiAdaptor.getServices(action.payload.data),
+          hierachy: apiAdaptor.getServices(
+            getServicesHierachy(action.payload.data)
+          )
         }
       };
     case actions.fetchServiceTypes + "_FULFILLED":
@@ -70,7 +73,7 @@ export default (
         ...state,
         services: {
           ...state.services,
-          types: action.payload.data
+          types: apiAdaptor.getServiceTypes(action.payload.data)
         }
       };
 
@@ -79,7 +82,7 @@ export default (
         ...state,
         resources: {
           ...state.resources,
-          list: action.payload.data
+          list: apiAdaptor.getResources(action.payload.data)
         }
       };
     case actions.fetchResourceTypes + "_FULFILLED":
@@ -87,7 +90,7 @@ export default (
         ...state,
         resources: {
           ...state.resources,
-          types: action.payload.data
+          types: apiAdaptor.getResourceTypes(action.payload.data)
         }
       };
 
@@ -95,7 +98,7 @@ export default (
       return {
         ...state,
         regulatoryStatuses: {
-          list: action.payload.data
+          list: apiAdaptor.getRegulatoryStatuses(action.payload.data)
         }
       };
 
@@ -103,7 +106,7 @@ export default (
       return {
         ...state,
         districts: {
-          list: action.payload.data
+          list: apiAdaptor.getDistricts(action.payload.data)
         }
       };
 
@@ -111,7 +114,7 @@ export default (
       return {
         ...state,
         facilityTypes: {
-          list: action.payload.data
+          list: apiAdaptor.getFacilityTypes(action.payload.data)
         }
       };
 
@@ -119,21 +122,21 @@ export default (
       return {
         ...state,
         owners: {
-          list: action.payload.data
+          list: apiAdaptor.getOwners(action.payload.data)
         }
       };
     case actions.fetchOperationalStatuses + "_FULFILLED":
       return {
         ...state,
         operationalStatuses: {
-          list: action.payload.data
+          list: apiAdaptor.getOperationalStatuses(action.payload.data)
         }
       };
     case actions.fetchUserRoles + "_FULFILLED":
       return {
         ...state,
         roles: {
-          list: action.payload.data
+          list: apiAdaptor.getUserRoles(action.payload.data as Array<any>)
         }
       };
     default:
