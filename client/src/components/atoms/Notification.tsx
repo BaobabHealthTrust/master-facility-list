@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 function Notification(props: Props) {
   const error = props.error;
-  const title = props.title || (error ? "Wooops" : "Congratulations");
+  const title = props.title || (error ? "Wooops" : "Success");
   const message =
     props.message || (error ? "Something went wrong" : "Operation Successful");
   return (
