@@ -62,12 +62,7 @@ function index() {
                   About Ministry of Health
                 </a>
               </div>
-              <div>
-                <a href="/">
-                  <Icon icon={faDesktop} />
-                  CMED Portal
-                </a>
-              </div>
+              
               <div>
                 <a href="https://www.kuunika.org/" target="_blank">
                   <Icon icon={faInfoCircle} />
