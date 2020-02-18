@@ -16,20 +16,26 @@ module.exports = function(facilities, callback) {
 
   const body = [
     [
-      {text: "CODE", style: "tableHeader"},
-      {text: "NAME", style: "tableHeader"},
-      {text: "COMMON NAME", style: "tableHeader"},
-      {text: "OWNERSHIP", style: "tableHeader"},
-      {text: "TYPE", style: "tableHeader"},
-      {text: "STATUS", style: "tableHeader"},
-      {text: "ZONE", style: "tableHeader"},
-      {text: "DISTRICT", style: "tableHeader"},
-      {text: "DATE OPENED", style: "tableHeader"}
+      { text: "CODE", style: "tableHeader" },
+      { text: "NAME", style: "tableHeader" },
+      { text: "COMMON NAME", style: "tableHeader" },
+      { text: "OWNERSHIP", style: "tableHeader" },
+      { text: "TYPE", style: "tableHeader" },
+      { text: "STATUS", style: "tableHeader" },
+      { text: "ZONE", style: "tableHeader" },
+      { text: "DISTRICT", style: "tableHeader" },
+      { text: "LATITUDE", style: "tableHeader" },
+      { text: "LAONGITUDE", style: "tableHeader" },
+      { text: "DATE OPENED", style: "tableHeader" }
     ]
   ];
 
   facilities.forEach(facility => {
     let data = facility.toJSON();
+    const { latitude, longitude } = data.geolocations || {
+      latitude: "",
+      longitude: ""
+    };
     body.push([
       data.facility_code,
       data.facility_name,
@@ -39,6 +45,8 @@ module.exports = function(facilities, callback) {
       data.operationalStatus.facility_operational_status,
       data.district.zone.zone_name,
       data.district.district_name,
+      latitude,
+      longitude,
       moment(data.facility_date_opened).format("MMM Do YY")
     ]);
   });
@@ -62,8 +70,8 @@ module.exports = function(facilities, callback) {
     pageSize: "A4",
     footer: function(currentPage, pageCount) {
       return {
-        margin: [0, 6, 0, 0],
-        fontSize: 9,
+        margin: [0, 2, 0, 0],
+        fontSize: 8,
         text: [
           {
             text: currentPage.toString() + " of " + pageCount.toString()
@@ -75,20 +83,20 @@ module.exports = function(facilities, callback) {
     content: [
       {
         image: "./images/malawi.png",
-        width: 90,
-        margin: [0, 20, 0, 20],
+        width: 80,
+        margin: [0, 15, 0, 15],
         alignment: "center"
       },
       {
         text: "MASTER HEALTH FACILITY REGISTRY",
         bold: true,
-        margin: [0, 0, 0, 4],
+        margin: [0, 0, 0, 2],
         alignment: "center"
       },
       {
         text: "LIST OF HEALTH FACILITIES",
         bold: true,
-        margin: [0, 0, 0, 20],
+        margin: [0, 0, 0, 15],
         alignment: "center"
       },
       {
@@ -96,7 +104,7 @@ module.exports = function(facilities, callback) {
         alignment: "right"
       },
       {
-        margin: [0, 0, 0, 8],
+        margin: [0, 0, 0, 4],
         canvas: [
           {
             type: "line",
@@ -118,7 +126,7 @@ module.exports = function(facilities, callback) {
           {
             width: "auto",
             style: "tableExample",
-            fontSize: 10,
+            fontSize: 9,
             table: {
               headerRows: 1,
               body

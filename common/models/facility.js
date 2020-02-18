@@ -277,7 +277,10 @@ module.exports = Facility => {
 
   // TODO: Protect these remote methods from unauthorized users
   Facility.remoteMethod("updateContactDetails", {
-    accepts: [{ arg: "data", type: "object" }, { arg: "id", type: "number" }],
+    accepts: [
+      { arg: "data", type: "object" },
+      { arg: "id", type: "number" }
+    ],
     returns: { arg: "response", type: "string" }
   });
 
@@ -299,7 +302,10 @@ module.exports = Facility => {
   });
 
   Facility.remoteMethod("contactDetails", {
-    accepts: [{ arg: "data", type: "object" }, { arg: "id", type: "number" }],
+    accepts: [
+      { arg: "data", type: "object" },
+      { arg: "id", type: "number" }
+    ],
     returns: { arg: "response", type: "string" }
   });
 
@@ -431,6 +437,7 @@ module.exports = Facility => {
           "operationalStatus",
           "owner",
           "facilityType",
+          "geolocations",
           { district: "zone" }
         ]
       }).catch(err => cb(err));
