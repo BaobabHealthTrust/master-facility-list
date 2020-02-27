@@ -22,7 +22,9 @@ describe("Test Dashboard Charts", () => {
       .first()
       .find(".recharts-legend-item .recharts-legend-item-text")
       .each((el, index, list) => {
-        pieLegend.push(el.context.innerHTML);
+        cy.wrap(el)
+          .invoke("text")
+          .then(text => pieLegend.push(text));
       })
       .then(() => {
         expect(["Registered", "Pending", "Not Registered"]).to.be.members(
@@ -38,7 +40,9 @@ describe("Test Dashboard Charts", () => {
       .first()
       .find(".recharts-legend-item .recharts-legend-item-text")
       .each((el, index, list) => {
-        pieLegend.push(el.context.innerHTML);
+        cy.wrap(el)
+          .invoke("text")
+          .then(text => pieLegend.push(text));
       })
       .then(() => {
         expect(["Functional", "Closed (Temporary)", "Closed"]).to.be.members(
