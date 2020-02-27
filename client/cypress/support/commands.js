@@ -13,14 +13,14 @@
 const END_POINT = `${Cypress.env("API_URL")}/`;
 
 Cypress.Commands.add("login", (credentials, userRole = null) => {
-  const RESOURCE = `Clients/login/`;
+  const RESOURCE = `clients/login`;
   const URL = `${END_POINT}${RESOURCE}`;
   cy.request("POST", URL, credentials).then(resp => {
     const token = resp.body.id;
     const role = userRole ? userRole : resp.body.role;
     const userId = resp.body.userId;
 
-    const USER_RESOURCE = `Clients/${userId}`;
+    const USER_RESOURCE = `clients/${userId}`;
 
     const header = {
       Authorization: `${token}`
