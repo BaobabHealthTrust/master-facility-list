@@ -29,11 +29,11 @@ describe("Tests Facility Contacts Page", () => {
     });
   });
 
-  it("Shows Valid Facility Code", () => {
-    cy.get("[data-test=facilityHeader]")
-      .first()
-      .should("contain", facility.code);
-  });
+  // it("Shows Valid Facility Code", () => {
+  //   cy.get("[data-test=facilityHeader]")
+  //     .first()
+  //     .should("contain", facility.code);
+  // });
 
   it("Shows Valid Basic Details", () => {
     cy.fetch_current_facility(facility.id).then(curFacility => {
