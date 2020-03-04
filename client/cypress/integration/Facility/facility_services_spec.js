@@ -15,14 +15,15 @@ const serviceSpec = (service, level = 0, cy) => {
     let services = [];
     cy.get(`[data-test=serviceDetail${level}]`)
       .each(el => {
-        let name =
-          el.context.innerHTML.indexOf("<") > -1
-            ? el.context.innerHTML.substring(
-                0,
-                el.context.innerHTML.indexOf("<")
-              )
-            : el.context.innerText;
-        services.push(name);
+        cy.wrap(el)
+          .invoke("text")
+          .then(text => {
+            let name =
+              text.indexOf("<") > -1
+                ? text.substring(0, text.indexOf("<"))
+                : text;
+            services.push(name);
+          });
       })
       .then(() => {
         expect(services).to.include.members([service.service.service_name]);
@@ -30,13 +31,17 @@ const serviceSpec = (service, level = 0, cy) => {
     return;
   }
   let services = [];
-  cy.get(`[data-test=serviceDetail${level}]`)
+  cy.get(`[data-test='serviceDetail${level}']`)
     .each(el => {
-      let name =
-        el.context.innerHTML.indexOf("<") > -1
-          ? el.context.innerHTML.substring(0, el.context.innerHTML.indexOf("<"))
-          : el.context.innerText;
-      services.push(name);
+      cy.wrap(el)
+        .invoke("text")
+        .then(text => {
+          let name =
+            text.indexOf("<") > -1
+              ? text.substring(0, text.indexOf("<"))
+              : text;
+          services.push(name);
+        });
     })
     .then(() => {
       expect(services).to.include.members([service.service.service_name]);
@@ -74,11 +79,11 @@ describe("Tests Facility Services Page", () => {
     });
   });
 
-  it("Shows Valid Facility Code", () => {
-    cy.get("[data-test=facilityHeader]")
-      .first()
-      .should("contain", facility.code);
-  });
+  // it("Shows Valid Facility Code", () => {
+  //   cy.get("[data-test=facilityHeader]")
+  //     .first()
+  //     .should("contain", facility.code);
+  // });
 
   it("Renders facility services", () => {
     cy.fetch_current_services(facility.id).then(services => {

@@ -105,8 +105,6 @@ function FacilityDetails(props: Props) {
     );
   };
 
-  console.log(services);
-
   const presentTypes = services ? getServiceTypes() : [];
 
   return (
