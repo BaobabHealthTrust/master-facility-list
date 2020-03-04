@@ -30,11 +30,11 @@ describe("Tests Facility Details Page", () => {
     });
   });
 
-  it("Shows Valid Facility Code", () => {
-    cy.get("[data-test=facilityHeader]")
-      .first()
-      .should("contain", facility.code);
-  });
+  // it("Shows Valid Facility Code", () => {
+  //   cy.get("[data-test=facilityHeader]")
+  //     .first()
+  //     .should("contain", facility.code);
+  // });
 
   it("Shows Valid Basic Details", () => {
     cy.fetch_current_facility(facility.id).then(curFacility => {
@@ -64,7 +64,7 @@ describe("Tests Facility Details Page", () => {
         moment(curFacility.body.facility_date_opened).format("MMMM DD YYYY")
       );
       // reg status
-      cy.get("[data-test=detailLabelRegistrationStatus]").should(
+      cy.get("[data-test=detailLabelLicenseStatus]").should(
         "contain",
         curFacility.body.regulatoryStatus.facility_regulatory_status
       );
