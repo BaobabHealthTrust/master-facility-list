@@ -74,6 +74,7 @@ function FacilityBasicFilterTab(props: Props) {
             model={districts}
             modelName="districts"
             onChange={onChange}
+            data-test="districts"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -83,6 +84,7 @@ function FacilityBasicFilterTab(props: Props) {
             model={facilityTypes}
             modelName="facilityTypes"
             onChange={onChange}
+            data-test="facilityTypes"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -92,6 +94,7 @@ function FacilityBasicFilterTab(props: Props) {
             model={regulatoryStatuses}
             modelName="regulatoryStatuses"
             onChange={onChange}
+            data-test="regulatoryStatuses"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -101,6 +104,7 @@ function FacilityBasicFilterTab(props: Props) {
             model={operationalStatuses}
             modelName="operationalStatuses"
             onChange={onChange}
+            data-test="operationalStatuses"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -110,6 +114,7 @@ function FacilityBasicFilterTab(props: Props) {
             model={facilityOwners}
             modelName="facilityOwners"
             onChange={onChange}
+            data-test="facilityOwners"
           />
         </Grid>
       </Grid>

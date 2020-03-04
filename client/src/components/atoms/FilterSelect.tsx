@@ -8,6 +8,7 @@ function SelectField(props: SelectProps) {
       <InputLabel htmlFor="facilityType">{label}</InputLabel>
       <FormControl className="mfl-max-width">
         <Select
+          data-test={props["data-test"] || "input"}
           value={values[modelName]}
           onChange={(e: any) => {
             onChange(e, model, modelName);
@@ -35,4 +36,5 @@ type SelectProps = {
   model: Array<any>;
   modelName: string;
   label: string;
+  "data-test"?: any;
 };

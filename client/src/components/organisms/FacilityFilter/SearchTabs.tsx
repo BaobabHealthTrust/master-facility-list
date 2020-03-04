@@ -37,6 +37,7 @@ class SearchTabs extends React.Component<Props> {
           value={value}
           onChange={this.handleChange}
           classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+          data-test="advanced_search_container"
         >
           <Tooltip title="Filter By Basic Details">
             <Tab

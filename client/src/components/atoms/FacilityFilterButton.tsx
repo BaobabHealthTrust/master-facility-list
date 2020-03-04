@@ -11,6 +11,7 @@ export default function SearchButton(props: Props) {
   return (
     <ButtonContainer title="Advanced Search">
       <Button
+        data-test="search_drawer_btn"
         style={{
           borderRadius: "0px",
           width: props.open ? "340px" : "",

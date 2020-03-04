@@ -8,6 +8,7 @@ function DashboardFilterTags(props: Props) {
     <Container>
       {filterOptions.map(option => (
         <Chip
+          data-test={(option.label as string).replace(/ /gi, "_")}
           style={{ margin: "0px 5px" }}
           key={JSON.stringify(option)}
           label={option.label}
