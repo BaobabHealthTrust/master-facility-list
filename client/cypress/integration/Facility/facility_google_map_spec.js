@@ -3,31 +3,33 @@ describe("Tests Facility Contacts Page", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
 
   var facility;
-  it("Renders facility contacts page", () => {
+  it("Renders facility details page", () => {
     cy.visit(`${FRONTEND_URL}/facilities`);
-    // get random facility index
 
+    var facilityIndex = 0;
     cy.fetch_facilieties_list().then(res => {
-      var facilityIndex =
+      // get random facility index
+      facilityIndex =
         res.length >= 10
           ? Math.floor(Math.random() * 9)
           : Math.floor(Math.random() * (res.length - 1));
+
       facility = res[facilityIndex];
-      cy.get("table tbody .MuiTableRow-root-32")
+      cy.get("[class*='MuiTable'] tbody [class*=MuiTableRow]")
         .eq(facilityIndex)
         .click();
     });
   });
-  it("Shows facility on google maps", () => {
-    var ref = `/facilities/${facility.id}/locations`;
-    cy.get(`.nav-wrapper ul li a[href='${ref}']`)
-      .first()
-      .click();
+  it("Renders the facility contacts page", () => {
+    cy.get(`[data-test=FacilityContacts]`).click();
+
     cy.location().should(loc => {
       expect(loc.href).to.equal(
-        `${FRONTEND_URL}/facilities/${facility.id}/locations`
+        `${FRONTEND_URL}/facilities/${facility.id}/contact`
       );
     });
+  });
+  it("Shows facility on google maps", () => {
     cy.fetch_current_facility(facility.id).then(locationDetails => {
       const location =
         locationDetails.body.geolocations &&
