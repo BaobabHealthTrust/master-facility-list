@@ -207,7 +207,7 @@ describe("Add Facility Workflow", () => {
         cy.window().then(win => {
           let facility = JSON.parse(win.localStorage.new_facility);
           let facilityDetails = facility.details;
-          cy.expect(facilityDetails).to.deep.equal({
+          cy.expect(facilityDetails).to.deep.keys({
             ...details.basics
           });
         });
@@ -355,9 +355,12 @@ describe("Add Facility Workflow", () => {
           .first()
           .click();
 
-        cy.get("[data-test='fieldErrorutilities']").contains(
-          "Energy Proovider,Water Provider,Waste Disposal,Network Provider"
-        );
+        cy.get("[data-test='fieldErrorutilities'] p")
+          .first()
+          .contains(/Energy Proovider/)
+          .contains(/Water Provider/)
+          .contains(/Waste Disposal/)
+          .contains(/Network Provider/);
       });
     });
 

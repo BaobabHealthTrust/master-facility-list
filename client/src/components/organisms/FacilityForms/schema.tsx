@@ -1,4 +1,6 @@
 import * as yup from "yup";
+import { check } from "../../atoms/Ac";
+import { getUser } from "../../../services/helpers";
 
 const REQUIRED_MESSAGE = "You can't leave this field blank";
 const PHONE_MIN_MESSAGE = "Invalid phone number";
@@ -91,10 +93,16 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
     .typeError(REQUIRED_MESSAGE)
     .required(REQUIRED_MESSAGE)
     .min(1, "Please select a district"),
-  registrationNumber: yup
-    .string()
-    .typeError(INVALID_TEXT)
-    .min(4, "Invalid Registration Number")
+  registrationNumber: check(
+    undefined,
+    getUser().role,
+    "facility:basic_details:registration_number"
+  )
+    ? yup
+        .string()
+        .typeError(INVALID_TEXT)
+        .min(4, "Invalid Registration Number")
+    : yup.string().nullable()
 });
 
 export const getResourcesSchema: any = (resources: any) => {

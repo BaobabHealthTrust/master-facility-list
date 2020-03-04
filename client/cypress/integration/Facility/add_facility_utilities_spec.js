@@ -51,9 +51,12 @@ describe("Add Facility Utilities", () => {
         .first()
         .click();
 
-      cy.get("[data-test='fieldErrorutilities']").contains(
-        "Energy Proovider,Water Provider,Waste Disposal,Network Provider"
-      );
+      cy.get("[data-test='fieldErrorutilities'] p")
+        .first()
+        .contains(/Energy Proovider/)
+        .contains(/Water Provider/)
+        .contains(/Waste Disposal/)
+        .contains(/Network Provider/);
     });
   });
 
