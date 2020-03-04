@@ -12,21 +12,25 @@ describe("Facility List Spec", () => {
   });
   it("Shows Correct table headers", () => {
     const expectedTableHeaders = [
-      "CODE",
+      "NEW CODE",
+      "OLD CODE",
       "NAME",
-      "COMMON NAME",
+      "DISTRICT",
       "OWNERSHIP",
       "TYPE",
       "STATUS",
-      "DISTRICT",
+      "LATITUDE",
+      "LONGITUDE",
       "DATE OPENED"
     ];
     var tableHeaders = [];
     cy.get("[class*=MuiTableHead] tr")
       .first()
-      .find("th span>span")
+      .find("th")
       .each((el, index, lis) => {
-        tableHeaders.push(el.context.innerHTML);
+        cy.wrap(el)
+          .invoke("text")
+          .then(text => tableHeaders.push(text));
       })
       .then(() => {
         expect(expectedTableHeaders).to.be.members(tableHeaders);
@@ -54,49 +58,42 @@ describe("Facility List Spec", () => {
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(1)
-          .should("contain", res[facilityIndex].name);
-
-        // check common name
-        cy.get(rowSelector)
-          .eq(facilityIndex)
-          .find("td")
           .eq(2)
-          .should("contain", res[facilityIndex].common);
+          .should("contain", res[facilityIndex].name);
 
         // check ownership
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(3)
+          .eq(4)
           .should("contain", res[facilityIndex].ownership);
 
         // check type
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(4)
+          .eq(5)
           .should("contain", res[facilityIndex].type);
 
         // check status
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(5)
+          .eq(6)
           .should("contain", res[facilityIndex].status);
 
         // check district
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(6)
+          .eq(3)
           .should("contain", res[facilityIndex].district);
 
         // check date opened
         cy.get(rowSelector)
           .eq(facilityIndex)
           .find("td")
-          .eq(7)
+          .eq(9)
           .should("contain", res[facilityIndex].dateOpened);
       }
     });
