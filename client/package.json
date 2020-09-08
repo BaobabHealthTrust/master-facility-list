@@ -33,7 +33,7 @@
     "react": "^16.8.6",
     "react-compound-slider": "^1.2.1",
     "react-dom": "^16.8.6",
-    "react-ga": "^2.6.0",
+    "react-ga": "^2.7.0",
     "react-google-maps": "^9.4.5",
     "react-materialize": "^2.6.0",
     "react-redux": "^7.0.3",

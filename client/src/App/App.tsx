@@ -32,26 +32,12 @@ import {
   fetchDistricts,
   fetchOperationalStatuses,
   dispatchDependancyError,
-  fetchFacilityTypes,
-  fetchUserRoles
+  fetchFacilityTypes
 } from "../services/redux/actions/dependancies";
 import { fetchUserDetails } from "../services/redux/actions/users";
-import ReactGA from "react-ga";
 import { fetchFacilities } from "../services/redux/actions/facilities";
 import { ToastContainer, cssTransition } from "react-toastify";
-import { createBrowserHistory } from "history";
 import { isAdmin } from "../services/helpers";
-
-const history: any = createBrowserHistory();
-
-const trackingId = "UA-128959156-2"; // Replace with your Google Analytics tracking ID
-ReactGA.initialize(trackingId);
-
-// Initialize google analytics page view tracking
-history.listen((location: any) => {
-  ReactGA.set({ page: location.pathname });
-  ReactGA.pageview(location.pathname);
-});
 
 const Slide = cssTransition({
   enter: "slideIn",
