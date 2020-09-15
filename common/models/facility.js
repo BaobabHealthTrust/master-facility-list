@@ -9,6 +9,10 @@ const _ = require("lodash");
 const moment = require("moment");
 const fhirCompliantFacility = require("./fhir-compliant-facility");
 const fhirCompliantFacilities = require("./fhir-compliant-facilities");
+const filterParameterArray = require("../../helpers/url-filters.helper");
+const generateConditionClause = require("../../helpers/generate-query-condition.helper");
+const urlParameter = require("../../helpers/url-parameter-mapper");
+const { locationFilterMapData } = require("../../helpers/mapData");
 
 const { District } = server.models;
 
@@ -630,8 +634,18 @@ module.exports = Facility => {
   });
 
   // FHIR Compliant endpoints
-  Facility.fhirAllLocations = async cb => {
-    return fhirCompliantFacilities();
+  Facility.fhirAllLocations = async (arg, cb) => {
+    let whereClause = "";
+
+    if (arg !== undefined) {
+      let filterArray = filterParameterArray(arg[0]);
+
+      filterArray = await urlParameter(filterArray, locationFilterMapData);
+
+      whereClause = generateConditionClause(filterArray);
+    }
+
+    return fhirCompliantFacilities(whereClause);
   };
 
   Facility.remoteMethod("fhirAllLocations", {
@@ -640,6 +654,7 @@ module.exports = Facility => {
       path: "/fhir/location/_history",
       verb: "get"
     },
+    accepts: [{ arg: "filter", type: "array" }],
     returns: [
       {
         arg: "response",
@@ -649,7 +664,11 @@ module.exports = Facility => {
   });
 
   Facility.fhirLocation = async (id, cb) => {
-    return fhirCompliantFacility(id);
+    try {
+      return fhirCompliantFacility(id);
+    } catch (e) {
+      cb(e);
+    }
   };
 
   Facility.remoteMethod("fhirLocation", {
@@ -658,7 +677,7 @@ module.exports = Facility => {
       path: "/fhir/location/:id",
       verb: "get"
     },
-    accepts: [{ arg: "id", type: "number" }],
+    accepts: [{ arg: "id", type: "string" }],
     returns: [
       {
         arg: "response",
@@ -679,5 +698,19 @@ module.exports = Facility => {
     http: { path: "/total", verb: "get" },
     accepts: [{ arg: "districts", type: "array" }],
     returns: [{ arg: "response", type: "number" }]
+  });
+
+  Facility.filter = async (arg, cb) => {
+    const filterArray = filterParameterArray(arg[0]);
+    const whereClause = generateConditionClause(filterArray);
+
+    return await server.models.Facility.find(whereClause);
+  };
+
+  Facility.remoteMethod("filter", {
+    description: "retrieves facilities based on filters applied",
+    http: { path: "/filter", verb: "get" },
+    accepts: [{ arg: "filter", type: "array" }],
+    returns: { arg: "response", type: "array" }
   });
 };
