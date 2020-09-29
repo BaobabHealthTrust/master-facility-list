@@ -325,4 +325,67 @@ module.exports = function(Client) {
     const mappedUsers = ctx.result ? await mapUsers(ctx.result) : [];
     ctx.result = mappedUsers;
   });
+
+  Client.assignUserRole = async (roleId, userId, cb) => {
+    const { RoleMapping, Role, Client } = server.models;
+
+    const client = await Client.findById(userId);
+
+    if (!client) {
+      return exception(
+        cb,
+        "user with specified ID not found",
+        404,
+        "NOT_FOUND"
+      );
+    }
+
+    const role = await Role.findById(roleId);
+
+    if (!role) {
+      return exception(
+        cb,
+        "role with specified ID not found",
+        404,
+        "NOT_FOUND"
+      );
+    }
+
+    const roleMap = await RoleMapping.find({
+      where: { principalId: userId, roleId: roleId }
+    });
+
+    if (roleMap.length > 0) {
+      console.log(roleMap);
+      return exception(cb, "role already assigned to user", 400, "BAD_REQUEST");
+    }
+
+    return await RoleMapping.create({
+      principalType: "USER",
+      principalId: userId,
+      roleId
+    });
+  };
+
+  Client.remoteMethod("assignUserRole", {
+    accepts: [
+      { arg: "roleId", type: "number", required: true },
+      { arg: "userId", type: "number", required: true }
+    ],
+    returns: {
+      arg: "response",
+      type: "object"
+    },
+    http: {
+      verb: "post"
+    }
+  });
+
+  const exception = (cb, message, status, code) => {
+    const error = new Error(message);
+    error.name = "Error";
+    error.status = status;
+    error.code = code;
+    cb(error);
+  };
 };

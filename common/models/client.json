@@ -86,6 +86,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "requestPasswordReset"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "assignUserRole"
     }
   ],
   "methods": {}

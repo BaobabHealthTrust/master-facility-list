@@ -5,6 +5,7 @@
     }
   },
   "initial": {
+    "./middleware/acl": {},
     "compression": {},
     "cors": {
       "params": {
