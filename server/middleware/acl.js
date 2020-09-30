@@ -1,6 +1,7 @@
 "use strict";
 
 var app = require("../server");
+var rolePermissions = require("../../data/role-permissions");
 
 module.exports = function() {
   return async function acl(req, res, next) {
@@ -11,9 +12,12 @@ module.exports = function() {
 
     const token = req.query.access_token;
 
-    if (!token) {
+    if (req.url.includes("/explorer/")) {
       return next();
-      // unAuthorizedError(next);
+    }
+
+    if (!token) {
+      unAuthorizedError(next);
     }
 
     const tokenInstance = await accessTokenModel.findById(token);
@@ -31,20 +35,9 @@ module.exports = function() {
     let userPermitted = false;
 
     userRoles.every(userRole => {
-      const aclModelConfig = aclConfigs.find(
-        aclConfig => aclConfig.model === model
-      );
-
-      const acl = aclModelConfig.acls.find(acl => {
-        return (
-          acl.method == method &&
-          acl.role == userRole.name &&
-          acl.operation == req.method
-        );
-      });
-
+      const acl = checkPermission(userRole.name, model, method, req.method);
       if (acl) {
-        userPermitted = acl.permission;
+        userPermitted = true;
         return false;
       }
       return true;
@@ -55,7 +48,16 @@ module.exports = function() {
     }
 
     unAuthorizedError(next);
-    // next();
+  };
+};
+
+// helpers
+const getModel = url => {
+  const urlParts = url.split("?")[0].split("/");
+  const filteredParts = urlParts.filter(part => isNaN(part));
+  return {
+    model: filteredParts[1].toLowerCase(),
+    method: filteredParts[2] ? filteredParts[2] : "*"
   };
 };
 
@@ -68,58 +70,25 @@ const unAuthorizedError = next => {
   next(error);
 };
 
-// corresponds to request methods
-const operations = {
-  WRITE: "POST",
-  UPDATE: "PUT",
-  READ: "GET"
-};
+const checkPermission = (role, model, method, operation) => {
+  const rolePermission = rolePermissions.find(
+    rolePermissions => rolePermissions.role === role
+  );
 
-const permissions = {
-  DENY: false,
-  ALLOW: true
-};
-
-// user roles
-const roles = {
-  ADMIN: "admin",
-  CMED: "cmed",
-  DHO: "dho",
-  MEDICAL_COUNCIL: "medical_council",
-  INFRASTRUCTURE_DEPARTMENT: "infrastructure_department"
-};
-
-// acl config
-const aclConfigs = [
-  {
-    model: "facilities",
-    acls: [
-      {
-        method: "*",
-        operation: operations.READ,
-        role: roles.DHO,
-        permission: permissions.ALLOW
-      }
-    ]
-  },
-  {
-    model: "clients",
-    acls: [
-      {
-        method: "assignUserRole",
-        operation: operations.WRITE,
-        role: roles.ADMIN,
-        permission: permissions.ALLOW
-      }
-    ]
+  if (!rolePermission) {
+    return false;
   }
-];
+  const roleModel = rolePermission.acls.find(acl => acl.model === model);
 
-const getModel = url => {
-  const urlParts = url.split("?")[0].split("/");
-  const filteredParts = urlParts.filter(part => isNaN(part));
-  return {
-    model: filteredParts[1].toLowerCase(),
-    method: filteredParts[2] ? filteredParts[2] : "*"
-  };
+  if (!roleModel) {
+    return false;
+  }
+  const roleMethod = roleModel.methods.find(
+    roleMethod => roleMethod.method === method
+  );
+
+  if (!roleMethod) {
+    return false;
+  }
+  return roleMethod.permissions.find(permission => permission === operation);
 };
