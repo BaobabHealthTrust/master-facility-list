@@ -291,6 +291,22 @@ module.exports = (Facility) => {
     returns: { arg: 'response', type: 'string' },
   });
 
+  Facility.remoteMethod('findByCode', {
+    description: 'Fetch facility by code.',
+    accepts: [{ arg: 'code', type: 'string' }],
+    http: { path: '/findByCode/:code', verb: 'get', errorStatus: 404, status: 200 },
+    returns: { root: true, type: 'Facility' },
+  });
+
+  Facility.findByCode = async (code, cb) => {
+    try {
+      return await Facility.findOne({ where: { facility_code: code } });
+    } catch (error) {
+      cb(error);
+    }
+  }
+
+
   Facility.downloadFacility = async (id, cb) => {
     try {
       const error = new Error();
