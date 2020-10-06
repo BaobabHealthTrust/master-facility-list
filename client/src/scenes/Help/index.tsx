@@ -11,11 +11,7 @@ import {
 import Heading from "../../components/atoms/SectionSubHeading";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFileAlt,
-  faFilePdf,
-  faChevronDown
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import FaqPanel from "./components/FaqPanel";
 
 function index() {

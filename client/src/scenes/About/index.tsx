@@ -6,12 +6,7 @@ import { Grid } from "@material-ui/core";
 import Heading from "../../components/atoms/SectionSubHeading";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDownload,
-  faInfoCircle,
-  faQuestionCircle,
-  faDesktop
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 function index() {
   return (
@@ -62,7 +57,7 @@ function index() {
                   About Ministry of Health
                 </a>
               </div>
-              
+
               <div>
                 <a href="https://www.kuunika.org/" target="_blank">
                   <Icon icon={faInfoCircle} />
