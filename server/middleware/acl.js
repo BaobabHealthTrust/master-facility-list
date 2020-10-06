@@ -12,7 +12,7 @@ module.exports = function() {
 
     const token = req.query.access_token;
 
-    if (req.url.includes("/explorer/")) {
+    if (req.url.includes("/explorer")) {
       return next();
     }
     const { method, model } = getModel(req.url);
@@ -61,6 +61,8 @@ module.exports = function() {
 const getModel = url => {
   const urlParts = url.split("?")[0].split("/");
   const filteredParts = urlParts.filter(part => isNaN(part));
+
+  console.log(filteredParts);
   return {
     model: filteredParts[1].toLowerCase(),
     method: filteredParts[2] ? filteredParts[2] : "*"
