@@ -32,6 +32,10 @@ module.exports = function() {
 
     const { method, model } = getModel(req.url);
 
+    if (checkPermission("all", model, method, req.method)) {
+      return next();
+    }
+
     let userPermitted = false;
 
     userRoles.every(userRole => {
@@ -44,6 +48,9 @@ module.exports = function() {
     });
 
     if (userPermitted) {
+      if (req.method == "PUT" || req.method == "PATCH") {
+        checkPermittedFields(req, permittedUpdateFields, next);
+      }
       return next();
     }
 
@@ -70,6 +77,7 @@ const unAuthorizedError = next => {
   next(error);
 };
 
+let permittedUpdateFields = [];
 const checkPermission = (role, model, method, operation) => {
   const rolePermission = rolePermissions.find(
     rolePermissions => rolePermissions.role === role
@@ -90,5 +98,38 @@ const checkPermission = (role, model, method, operation) => {
   if (!roleMethod) {
     return false;
   }
+
+  if (roleMethod.permittedUpdateFields) {
+    permittedUpdateFields = [
+      ...permittedUpdateFields,
+      ...roleMethod.permittedUpdateFields
+    ];
+  }
+
   return roleMethod.permissions.find(permission => permission === operation);
+};
+
+const checkPermittedFields = (req, permittedUpdateFields, next) => {
+  let body = [];
+  req
+    .on("data", chunk => {
+      body.push(chunk);
+    })
+    .on("end", () => {
+      body = Buffer.concat(body).toString();
+
+      Object.keys(JSON.parse(body)).forEach(field => {
+        if (field === "id") return;
+        if (
+          !permittedUpdateFields.find(permittedField => {
+            console.log(permittedField, field);
+            return permittedField === field;
+          })
+        ) {
+          unAuthorizedError(next);
+        }
+      });
+
+      return next();
+    });
 };

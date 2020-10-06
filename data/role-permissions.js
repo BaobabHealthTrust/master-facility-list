@@ -15,6 +15,7 @@ const permissions = {
 
 // user roles
 const roles = {
+  ALL: "all",
   ADMIN: "admin",
   CMED: "cmed",
   DHO: "dho",
@@ -23,15 +24,37 @@ const roles = {
   CLINICAL_DEPARTMENT: "clinical_department"
 };
 
+const facility = {
+  REGULATORY_STATUS: "facility_regulatory_status_id",
+  REGISTRATION_NUMBER: "registration_number",
+  FACILITY_TYPE: "facility_type_id"
+};
+
 const rolePermissions = [
   {
+    role: roles.ALL,
+    acls: [
+      {
+        model: "facilities",
+        methods: [
+          { method: "*", permissions: [operations.READ] },
+          { method: "services", permissions: [operations.READ] },
+          { method: "utilities", permissions: [operations.READ] },
+          { method: "resources", permissions: [operations.READ] }
+        ]
+      }
+    ]
+  },
+  {
     role: roles.ADMIN,
+
     acls: [
       {
         model: "facilities",
         methods: [
           {
             method: "*",
+            permittedUpdateFields: [facility.FACILITY_TYPE],
             permissions: [
               operations.DELETE,
               operations.READ,
@@ -95,6 +118,20 @@ const rolePermissions = [
             permissions: [operations.UPDATE]
           }
         ]
+      },
+      {
+        model: "facilities",
+        permittedUpdateFields: [
+          facility.REGULATORY_STATUS,
+          facility.REGISTRATION_NUMBER,
+          facility.FACILITY_TYPE
+        ],
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.UPDATE]
+          }
+        ]
       }
     ]
   },
@@ -104,6 +141,16 @@ const rolePermissions = [
       {
         model: "facilities",
         methods: [
+          {
+            method: "*",
+            permissions: [
+              operations.DELETE,
+              operations.READ,
+              operations.UPDATE,
+              operations.WRITE
+            ]
+          },
+
           {
             method: "services",
             permissions: [
@@ -180,6 +227,7 @@ const rolePermissions = [
         methods: [
           {
             method: "resources",
+            permittedUpdateFields: [facility.FACILITY_TYPE],
             permissions: [
               operations.DELETE,
               operations.READ,
@@ -207,6 +255,16 @@ const rolePermissions = [
         model: "facilities",
         methods: [
           {
+            method: "*",
+            permittedUpdateFields: [facility.FACILITY_TYPE],
+            permissions: [
+              operations.DELETE,
+              operations.READ,
+              operations.UPDATE,
+              operations.WRITE
+            ]
+          },
+          {
             method: "services",
             permissions: [
               operations.DELETE,
@@ -226,6 +284,7 @@ const rolePermissions = [
           },
           {
             method: "resources",
+
             permissions: [
               operations.DELETE,
               operations.READ,
