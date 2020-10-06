@@ -4,6 +4,7 @@ export type acActions =
   | "facility:basic_details:facility_type"
   | "facility:basic_details:create"
   | "facility:basic_details:update"
+  | "facility:basic_details:delete"
   | "facility:contact_location_details:create"
   | "facility:contact_location_details:update"
   | "facility:resources:create"
@@ -28,6 +29,7 @@ export const acl = {
       "facility:basic_details:registration_number",
       "facility:basic_details:facility_type",
       "facility:basic_details:update",
+      "facility:basic_details:delete",
       "facility:contact_location_details:create",
       "facility:contact_location_details:update",
       "facility:resources:create",
@@ -62,6 +64,7 @@ export const acl = {
     static: [
       "facility:basic_details:create",
       "facility:basic_details:update",
+      "facility:basic_details:delete",
       "facility:contact_location_details:create",
       "facility:contact_location_details:update",
       "facility:resources:create",
@@ -85,6 +88,7 @@ export const acl = {
       "facility:basic_details:facility_type",
       "facility:basic_details:create",
       "facility:basic_details:update",
+      "facility:basic_details:delete",
       "facility:contact_location_details:create",
       "facility:contact_location_details:update",
       "facility:resources:create",

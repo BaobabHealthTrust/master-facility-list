@@ -15,6 +15,11 @@ module.exports = function() {
     if (req.url.includes("/explorer/")) {
       return next();
     }
+    const { method, model } = getModel(req.url);
+
+    if (checkPermission("all", model, method, req.method)) {
+      return next();
+    }
 
     if (!token) {
       unAuthorizedError(next);
@@ -29,12 +34,6 @@ module.exports = function() {
     const userRoles = await Promise.all(
       roleMappings.map(roleMap => roleModel.findById(roleMap.roleId))
     );
-
-    const { method, model } = getModel(req.url);
-
-    if (checkPermission("all", model, method, req.method)) {
-      return next();
-    }
 
     let userPermitted = false;
 

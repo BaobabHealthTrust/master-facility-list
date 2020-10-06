@@ -19,6 +19,7 @@ const roles = {
   ADMIN: "admin",
   CMED: "cmed",
   DHO: "dho",
+  PUBLIC: "public",
   MEDICAL_COUNCIL: "medical_council",
   INFRASTRUCTURE_DEPARTMENT: "infrastructure_department",
   CLINICAL_DEPARTMENT: "clinical_department"
