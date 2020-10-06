@@ -1,6 +1,6 @@
 "use strict";
 const statusFetch = require("./model-status-fetch-helper");
-const server = require("../../server/server");
+const server = require("../server/server");
 
 const locationFilterMapData = {
   name: "facility_name",

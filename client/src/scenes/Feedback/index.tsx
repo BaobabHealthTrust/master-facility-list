@@ -14,13 +14,7 @@ import Notification from "../../components/atoms/Notification";
 import Heading from "../../components/atoms/SectionSubHeading";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDownload,
-  faQuestionCircle,
-  faInfoCircle,
-  faBuilding,
-  faDesktop
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 class index extends React.Component<any> {
   componentDidMount() {
