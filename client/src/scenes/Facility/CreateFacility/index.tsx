@@ -59,15 +59,16 @@ export class index extends Component<Props> {
 
   setInitialState = async () => {
     if (await localStorage.getItem("new_facility")) {
-      let facility: any = JSON.parse((await localStorage.getItem(
-        "new_facility"
-      )) as any);
+      let facility: any = JSON.parse(
+        (await localStorage.getItem("new_facility")) as any
+      );
       // @ts-ignore
       swal({
         icon: "info",
         title: `You Did Not Finish Adding the Facility with name ${facility.details.facilityName}`,
         text:
           "Press Continue to continue from where you stopped or cancel to restart",
+        // @ts-ignore
         buttons: {
           cancel: "Cancel",
           confirm: "Continue"
@@ -75,9 +76,9 @@ export class index extends Component<Props> {
         closeOnClickOutside: false
       }).then(async (response: any) => {
         if (response) {
-          this.setNextActiveTab((await localStorage.getItem(
-            "new_facility_active_tab"
-          )) as any);
+          this.setNextActiveTab(
+            (await localStorage.getItem("new_facility_active_tab")) as any
+          );
           this.setState({ facility });
           return;
         }
@@ -223,6 +224,7 @@ export class index extends Component<Props> {
       icon: "warning",
       title: "Are You Sure You Want To Cancel Facility Add ?",
       text: "All data filled in will be lost",
+      // @ts-ignore
       buttons: {
         cancel: "No",
         confirm: "Yes"
@@ -285,16 +287,13 @@ type Props = {
   publishFacility: Function;
   fetchFacilities: Function;
 };
-export default connect(
-  mapStateToProps,
-  {
-    fetchOwners,
-    postFacilityBasicDetails,
-    postFacilityContactDetails,
-    postFacilityResources,
-    postFacilityUtilities,
-    postFacilityServices,
-    publishFacility,
-    fetchFacilities
-  }
-)(index);
+export default connect(mapStateToProps, {
+  fetchOwners,
+  postFacilityBasicDetails,
+  postFacilityContactDetails,
+  postFacilityResources,
+  postFacilityUtilities,
+  postFacilityServices,
+  publishFacility,
+  fetchFacilities
+})(index);

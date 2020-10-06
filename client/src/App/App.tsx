@@ -121,7 +121,7 @@ const App: React.FC = (props: any) => {
       dispatchDependancyError();
     });
 
-    if (isAdmin) {
+    if (isAdmin()) {
       let user: any = sessionStorage.getItem("user");
       user = user ? JSON.parse(user) : false;
 
@@ -206,21 +206,18 @@ const mapStateToProps = (state: any) => ({
   error: state.errors.dependancyError,
   facilities: state.facilities.list
 });
-export default connect(
-  mapStateToProps,
-  {
-    fetchUtilities,
-    fetchUtilityTypes,
-    fetchServiceTypes,
-    fetchServices,
-    fetchResources,
-    fetchResourceTypes,
-    fetchRegulatoryStatuses,
-    fetchDistricts,
-    fetchOperationalStatuses,
-    dispatchDependancyError,
-    fetchFacilities,
-    fetchFacilityTypes,
-    fetchUserDetails
-  }
-)(App);
+export default connect(mapStateToProps, {
+  fetchUtilities,
+  fetchUtilityTypes,
+  fetchServiceTypes,
+  fetchServices,
+  fetchResources,
+  fetchResourceTypes,
+  fetchRegulatoryStatuses,
+  fetchDistricts,
+  fetchOperationalStatuses,
+  dispatchDependancyError,
+  fetchFacilities,
+  fetchFacilityTypes,
+  fetchUserDetails
+})(App);

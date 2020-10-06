@@ -92,6 +92,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     swal({
       icon: "warning",
       title: `Are you sure you want cancel?`,
+      // @ts-ignore
       buttons: {
         cancel: "No",
         confirm: "Yes"
@@ -404,25 +405,22 @@ type Props = {
   loading: any;
 };
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      fetchOwners,
-      fetchCurrentResources,
-      fetchCurrentBasic,
-      fetchCurrentServices,
-      fetchCurrentUtilities,
-      setActiveFacilityPage,
-      patchFacilityBasicDetails,
-      patchFacilityContactDetails,
-      patchFacilityResources,
-      patchFacilityUtilities,
-      deleteFacilityUtilities,
-      deleteFacilityServices,
-      patchFacilityServices,
-      postFacilityServices,
-      postFacilityUtilities,
-      postFacilityResources
-    }
-  )(index)
+  connect(mapStateToProps, {
+    fetchOwners,
+    fetchCurrentResources,
+    fetchCurrentBasic,
+    fetchCurrentServices,
+    fetchCurrentUtilities,
+    setActiveFacilityPage,
+    patchFacilityBasicDetails,
+    patchFacilityContactDetails,
+    patchFacilityResources,
+    patchFacilityUtilities,
+    deleteFacilityUtilities,
+    deleteFacilityServices,
+    patchFacilityServices,
+    postFacilityServices,
+    postFacilityUtilities,
+    postFacilityResources
+  })(index)
 );

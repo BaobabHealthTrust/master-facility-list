@@ -13,7 +13,7 @@
     "@material-ui/icons": "^3.0.2",
     "@material-ui/styles": "^4.0.1",
     "@types/classnames": "^2.2.7",
-    "@types/jest": "24.0.13",
+    "@types/jest": "25.2.1",
     "@types/node": "12.0.2",
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
@@ -46,8 +46,8 @@
     "redux": "^4.0.1",
     "redux-promise-middleware": "^6.1.0",
     "styled-components": "^4.2.0",
-    "sweetalert": "^2.1.2",
-    "typescript": "3.4.5",
+    "sweetalert": "2.1.2",
+    "typescript": "3.8",
     "yup": "^0.27.0"
   },
   "scripts": {
