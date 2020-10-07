@@ -41,7 +41,8 @@ const rolePermissions = [
           { method: "*", permissions: [operations.READ] },
           { method: "services", permissions: [operations.READ] },
           { method: "utilities", permissions: [operations.READ] },
-          { method: "resources", permissions: [operations.READ] }
+          { method: "resources", permissions: [operations.READ] },
+          { method: "list", permissions: [operations.READ] }
         ]
       },
       {
