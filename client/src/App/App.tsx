@@ -157,7 +157,11 @@ const App: React.FC = (props: any) => {
         }}
         transition={Slide}
       />
-      <Router>
+
+      <Router
+        //@ts-ignore
+        history={history}
+      >
         <Header />
         <Content>
           <Switch>
