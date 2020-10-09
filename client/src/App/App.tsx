@@ -44,8 +44,8 @@ import { isAdmin } from "../services/helpers";
 
 const history: any = createBrowserHistory();
 
-const trackingId = "UA-128959156-2"; // Replace with your Google Analytics tracking ID
-ReactGA.initialize(trackingId);
+const trackingId = "UA-128959156-4"; // Replace with your Google Analytics tracking ID
+ReactGA.initialize(trackingId, { gaOptions: { siteSpeedSampleRate: 100 } });
 
 // Initialize google analytics page view tracking
 history.listen((location: any) => {
