@@ -41,8 +41,89 @@ const rolePermissions = [
           { method: "*", permissions: [operations.READ] },
           { method: "services", permissions: [operations.READ] },
           { method: "utilities", permissions: [operations.READ] },
-          { method: "resources", permissions: [operations.READ] }
+          { method: "resources", permissions: [operations.READ] },
+          { method: "list", permissions: [operations.READ] }
         ]
+      },
+      {
+        model: "facilityutilities",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "facilityresources",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "facilityservices",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "facilitytypes",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "districts",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "addresses",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "contactpeople",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "feedbacks",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "feedbacktypes",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "geolocations",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "locations",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "operationalstatuses",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "owners",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "regulatorystatuses",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "resources",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "resourcetypes",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "services",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "utilities",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "utilitytypes",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "zones",
+        methods: [{ method: "*", permissions: [operations.READ] }]
       }
     ]
   },

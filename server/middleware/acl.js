@@ -62,7 +62,6 @@ const getModel = url => {
   const urlParts = url.split("?")[0].split("/");
   const filteredParts = urlParts.filter(part => isNaN(part));
 
-  console.log(filteredParts);
   return {
     model: filteredParts[1].toLowerCase(),
     method: filteredParts[2] ? filteredParts[2] : "*"
@@ -123,7 +122,6 @@ const checkPermittedFields = (req, permittedUpdateFields, next) => {
         if (field === "id") return;
         if (
           !permittedUpdateFields.find(permittedField => {
-            console.log(permittedField, field);
             return permittedField === field;
           })
         ) {
