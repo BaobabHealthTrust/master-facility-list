@@ -47,7 +47,7 @@
     "redux-promise-middleware": "^6.1.0",
     "styled-components": "^4.2.0",
     "sweetalert": "^2.1.2",
-    "typescript": "3.4.5",
+    "typescript": "3.8",
     "yup": "^0.27.0"
   },
   "scripts": {

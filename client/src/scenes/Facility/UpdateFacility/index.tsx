@@ -92,6 +92,7 @@ export class index extends Component<Props & RouteComponentProps<{}>> {
     swal({
       icon: "warning",
       title: `Are you sure you want cancel?`,
+      // @ts-ignore
       buttons: {
         cancel: "No",
         confirm: "Yes"
