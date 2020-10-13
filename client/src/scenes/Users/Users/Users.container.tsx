@@ -42,6 +42,7 @@ function UsersContainer(props: Props) {
     swal({
       icon: "warning",
       title: `Are You Sure You Want To Delete the user ?`,
+      // @ts-ignore
       buttons: {
         cancel: "No",
         confirm: "Yes"

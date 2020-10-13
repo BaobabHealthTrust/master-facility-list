@@ -92,17 +92,7 @@ export const basicSchema: yup.ObjectSchema<any> = yup.object().shape({
     .number()
     .typeError(REQUIRED_MESSAGE)
     .required(REQUIRED_MESSAGE)
-    .min(1, "Please select a district"),
-  registrationNumber: check(
-    undefined,
-    getUser().role,
-    "facility:basic_details:registration_number"
-  )
-    ? yup
-        .string()
-        .typeError(INVALID_TEXT)
-        .min(4, "Invalid Registration Number")
-    : yup.string().nullable()
+    .min(1, "Please select a district")
 });
 
 export const getResourcesSchema: any = (resources: any) => {

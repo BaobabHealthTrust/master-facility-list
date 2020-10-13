@@ -30,8 +30,9 @@ const type = (fieldName, value) => {
 const selectFirst = fieldName => {
   cy.get(`[data-test=${fieldName}]`)
     .first()
-    .click()
-    .get(`[id=menu-${fieldName}] ul li`)
+    .click();
+
+  cy.get(`[id=menu-${fieldName}] ul li`)
     .first()
     .click();
 };
@@ -50,21 +51,21 @@ const clear = fieldName => {
     .clear();
 };
 
-describe("Add Facility Workflow DHO", () => {
+describe("Add Facility Workflow OIC", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   const BACKEND_URL = Cypress.env("API_URL");
 
   const resourcesFields = [];
   let serviceTypes = [];
-  let utilityCount = 0;
-  let details = {
+  var utilityCount = 0;
+  var details = {
     basics: {
       commonName: "kuunika",
       dateOpened: "1975-01-01",
       district: 1,
       facilityName: "kuunika",
       facilityOwner: 1,
-      facilityType: 1,
+      facilityType: 9,
       facility_code_mapping: null,
       operationalStatus: 1,
       publishedDate: null,
@@ -133,7 +134,7 @@ describe("Add Facility Workflow DHO", () => {
   context("Adds Basics", () => {
     context("Navigates to the add form", () => {
       it("Navigates to the facilities page", () => {
-        cy.login(credentials, "dho");
+        cy.login(credentials, "officer_in_charge");
         cy.visit(FRONTEND_URL);
         cy.get(`[data-test=menuFacilities]`).click();
         cy.get("[data-test=addFacilityBtn]").click();
@@ -207,7 +208,7 @@ describe("Add Facility Workflow DHO", () => {
           .clear()
           .type("kuunika");
 
-        selectFirst("facilityType");
+        // selectFirst("facilityType");
 
         selectFirst("operationalStatus");
 
@@ -227,7 +228,7 @@ describe("Add Facility Workflow DHO", () => {
         cy.window().then(win => {
           let facility = JSON.parse(win.localStorage.new_facility);
           let facilityDetails = facility.details;
-          cy.expect(facilityDetails).to.have.deep.keys({
+          cy.expect(facilityDetails).to.deep.equal({
             ...details.basics
           });
         });
@@ -312,212 +313,6 @@ describe("Add Facility Workflow DHO", () => {
           cy.expect(facilityContacts).to.deep.equal({
             ...details.contacts
           });
-        });
-      });
-    });
-  });
-
-  context("Adds Facility Resources", () => {
-    context("Navigates to the add form", () => {
-      it("Shows facility resources form", () => {
-        cy.get("[data-test='resourcesForm'] input").each((el, index) => {
-          cy.wrap(el)
-            .invoke("attr", "name")
-            .then(val => {
-              resourcesFields.push(val);
-              details.resources[val] = "10";
-              clear(val);
-            });
-        });
-      });
-    });
-    context("Validates resources input in front-end", () => {
-      it("Validates resources values", () => {
-        cy.get("[data-test='saveBtn']")
-          .first()
-          .click();
-
-        for (let field of resourcesFields) {
-          cy.get(`[data-test="fieldError${field}"]`)
-            .first()
-            .should("be.visible")
-            .contains(errors.resources.empty);
-        }
-      });
-    });
-
-    context("Adds Facility Resources", () => {
-      it("Successfully Adds Facility Resources", () => {
-        for (let field of resourcesFields) {
-          type(field, details.resources[field]);
-        }
-      });
-
-      it("Successfully Adds Facility Resources", () => {
-        cy.get("[data-test='saveBtn']")
-          .first()
-          .click();
-
-        cy.fetch_add_facility().then(facility => {
-          let facilityResources = facility.resources;
-          cy.expect(facilityResources).to.deep.equal({
-            ...details.resources
-          });
-        });
-      });
-    });
-  });
-
-  context("Adds Facility Utilities", () => {
-    context("Validates utilities input in front-end", () => {
-      it("Validates utilities values", () => {
-        cy.get("[data-test='saveBtn']")
-          .first()
-          .click();
-
-        cy.get("[data-test='fieldErrorutilities'] p")
-          .first()
-          .contains(/Energy Proovider/)
-          .contains(/Water Provider/)
-          .contains(/Waste Disposal/)
-          .contains(/Network Provider/);
-      });
-    });
-
-    context("Adds Facility Utilities", () => {
-      it("Successfully Adds Facility Utilities", () => {
-        cy.get("[data-test='utilitiesForm'] input").each(el => {
-          cy.wrap(el).click();
-          utilityCount++;
-        });
-
-        cy.get("[data-test='saveBtn']")
-          .first()
-          .click();
-
-        cy.fetch_add_facility().then(facility => {
-          let facilityUtilities = facility.utilities;
-          cy.expect(utilityCount).to.equal(facilityUtilities.length);
-        });
-      });
-    });
-  });
-
-  context("Adds Services", () => {
-    context("Validates services input in front-end", () => {
-      it("Validates services values", () => {
-        cy.fetch_service_types().then(serviceTypesData => {
-          serviceTypes = serviceTypesData;
-        });
-        cy.get("[data-test='saveBtn']")
-          .first()
-          .click();
-
-        cy.get(`[data-test="fieldErrorservices"]`)
-          .first()
-          .should("be.visible")
-          .contains("Please Select Atleast One Service");
-      });
-    });
-  });
-
-  context("Post Facility Details", () => {
-    it("Posts facility details", () => {
-      cy.server({
-        status: 200
-      });
-      cy.route(
-        "POST",
-        `${BACKEND_URL}/Facilities`,
-        "fixture:add_facility_basics_success.json"
-      ).as("basics");
-
-      cy.route(
-        "POST",
-        `${BACKEND_URL}/Facilities/contactDetails`,
-        "fixture:add_facility_basics_success.json"
-      ).as("contacts");
-
-      cy.route("POST", `${BACKEND_URL}/FacilityResources`, {
-        success: "done"
-      }).as("resources");
-
-      cy.route("POST", `${BACKEND_URL}/FacilityUtilities`, {
-        success: "done"
-      }).as("utilities");
-
-      cy.route("POST", `${BACKEND_URL}/FacilityServices`, {
-        success: "done"
-      }).as("services");
-
-      cy.route("POST", `${BACKEND_URL}/Facilities/publish`, {
-        success: "done"
-      }).as("publish");
-
-      for (let serviceType of serviceTypes) {
-        selectFirst(serviceType.service_type.replace(/ /g, ""));
-
-        cy.get(`[id=menu-${serviceType.service_type.replace(/ /g, "")}]`)
-          .first()
-          .click();
-        cy.get("[data-test=formFooter]")
-          .first()
-          .click();
-      }
-
-      cy.get("[data-test='saveBtn']")
-        .first()
-        .click();
-
-      cy.wait("@basics");
-      cy.wait("@contacts");
-      cy.wait("@resources");
-      cy.wait("@utilities");
-      cy.wait("@services");
-      cy.wait("@publish");
-
-      cy.get("@basics").then(xhr => {
-        const { body } = xhr.request;
-
-        cy.expect(body.facility_name).to.equal(details.basics.facilityName);
-        cy.expect(body.common_name).to.equal(details.basics.commonName);
-        cy.expect(details.basics.registrationNumber).to.equal(null);
-      });
-
-      cy.get("@contacts").then(xhr => {
-        const { body } = xhr.request;
-        delete body.data.updated_at;
-        delete body.data.client;
-        cy.expect(body.data).to.deep.equal(details.contacts);
-      });
-
-      cy.get("@resources").then(xhr => {
-        const { body } = xhr.request;
-        cy.expect(Number(body[0].quantity)).to.equal(
-          Number(details.resources[resourcesFields[0]])
-        );
-      });
-
-      cy.get("@utilities").then(xhr => {
-        const { body } = xhr.request;
-        for (let utility of body) {
-          cy.expect(utility).to.have.deep.keys({
-            client_id: 1,
-            created_date: "2019-04-02T12:16:28.577Z",
-            facility_id: 1,
-            utility_id: 4
-          });
-        }
-      });
-
-      cy.get("@services").then(xhr => {
-        const { body } = xhr.request;
-        delete body[0].updated_at;
-        delete body[0].client;
-        cy.expect(body[0]).to.have.deep.keys({
-          client_id: 1,
-          facility_id: 1,
-          service_id: 1
         });
       });
     });

@@ -107,7 +107,7 @@ const App: React.FC = (props: any) => {
       dispatchDependancyError();
     });
 
-    if (isAdmin) {
+    if (isAdmin()) {
       let user: any = sessionStorage.getItem("user");
       user = user ? JSON.parse(user) : false;
 
