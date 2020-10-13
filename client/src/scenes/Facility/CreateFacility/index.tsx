@@ -68,6 +68,7 @@ export class index extends Component<Props> {
         title: `You Did Not Finish Adding the Facility with name ${facility.details.facilityName}`,
         text:
           "Press Continue to continue from where you stopped or cancel to restart",
+        // @ts-ignore
         buttons: {
           cancel: "Cancel",
           confirm: "Continue"
@@ -223,6 +224,7 @@ export class index extends Component<Props> {
       icon: "warning",
       title: "Are You Sure You Want To Cancel Facility Add ?",
       text: "All data filled in will be lost",
+      // @ts-ignore
       buttons: {
         cancel: "No",
         confirm: "Yes"

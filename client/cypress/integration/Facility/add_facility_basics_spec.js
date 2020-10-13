@@ -103,17 +103,17 @@ describe("Add Facility Basics", () => {
         .contains(errors.facilityCommon);
     });
 
-    it("Validates facility type", () => {
-      validateSelect("facilityType", errors.empty);
-    });
+    // it("Validates facility type", () => {
+    //   validateSelect("facilityType", errors.empty);
+    // });
 
     it("Validates Operational Status", () => {
       validateSelect("operationalStatus", errors.empty);
     });
 
-    it("Validates regulatory status", () => {
-      validateSelect("regulatoryStatus", errors.empty);
-    });
+    // it("Validates regulatory status", () => {
+    //   validateSelect("regulatoryStatus", errors.empty);
+    // });
 
     it("Validates facility owner", () => {
       validateSelect("facilityOwner", errors.empty);
