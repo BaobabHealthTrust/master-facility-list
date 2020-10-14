@@ -43,15 +43,15 @@ describe("Add Facility Basics", () => {
   var details = {
     commonName: "kuunika",
     dateOpened: "1975-01-01",
-    district: 1,
+    district: 18,
     facilityName: "kuunika",
-    facilityOwner: 1,
-    facilityType: 1,
+    facilityOwner: 8,
+    facilityType: 9,
     facility_code_mapping: null,
-    operationalStatus: 1,
+    operationalStatus: 5,
     publishedDate: null,
     registrationNumber: "11111111",
-    regulatoryStatus: 1
+    regulatoryStatus: 5
   };
 
   const credentials = {

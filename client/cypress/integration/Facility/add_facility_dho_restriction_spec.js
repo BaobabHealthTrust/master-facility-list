@@ -61,12 +61,12 @@ describe("Add Facility Workflow DHO", () => {
     basics: {
       commonName: "kuunika",
       dateOpened: "1975-01-01",
-      district: 1,
+      district: 18,
       facilityName: "kuunika",
-      facilityOwner: 1,
-      facilityType: 1,
+      facilityOwner: 8,
+      facilityType: 9,
       facility_code_mapping: null,
-      operationalStatus: 1,
+      operationalStatus: 5,
       publishedDate: null,
       registrationNumber: null,
       regulatoryStatus: 5
