@@ -132,9 +132,7 @@ export const acl = {
   },
   officer_in_charge: {
     static: [
-      "facility:basic_details:create",
       "facility:basic_details:update",
-      "facility:contact_location_details:create",
       "facility:contact_location_details:update"
     ],
     dynamic: {
