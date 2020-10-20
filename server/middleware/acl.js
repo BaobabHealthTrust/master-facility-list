@@ -3,7 +3,7 @@
 var app = require("../server");
 var rolePermissions = require("../../data/role-permissions");
 
-module.exports = function() {
+module.exports = function () {
   return async function acl(req, res, next) {
     const accessTokenModel = app.models.AccessToken;
     const userModel = app.models.Client;

@@ -50,6 +50,13 @@ const rolePermissions = [
         methods: [{ method: "*", permissions: [operations.READ] }]
       },
       {
+        model: "clients",
+        methods: [
+          { method: "login", permissions: [operations.WRITE] },
+          { method: "*", permissions: [operations.READ] }
+        ]
+      },
+      {
         model: "facilityresources",
         methods: [{ method: "*", permissions: [operations.READ] }]
       },
@@ -123,6 +130,10 @@ const rolePermissions = [
       },
       {
         model: "zones",
+        methods: [{ method: "*", permissions: [operations.READ] }]
+      },
+      {
+        model: "servicetypes",
         methods: [{ method: "*", permissions: [operations.READ] }]
       }
     ]
