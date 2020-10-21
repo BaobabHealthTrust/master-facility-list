@@ -209,6 +209,20 @@ const rolePermissions = [
             ]
           }
         ]
+      },
+      {
+        model: "roles",
+        methods: [
+          {
+            method: "*",
+            permissions: [
+              operations.DELETE,
+              operations.READ,
+              operations.UPDATE,
+              operations.WRITE
+            ]
+          }
+        ]
       }
     ]
   },
