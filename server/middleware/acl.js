@@ -3,42 +3,65 @@
 var app = require("../server");
 var rolePermissions = require("../../data/role-permissions");
 
+
+
+
 module.exports = function () {
   return async function acl(req, res, next) {
     const accessTokenModel = app.models.AccessToken;
     const userModel = app.models.Client;
     const roleMappingModel = app.models.RoleMapping;
     const roleModel = app.models.Role;
+    let roleMappings;
+    let userInstance;
+    let userRoles = []
 
     const token = req.query.access_token;
+
+    // return next()
+
 
     if (req.url.includes("/explorer")) {
       return next();
     }
+
     const { method, model } = getModel(req.url);
 
-    if (checkPermission("all", model, method, req.method)) {
+
+
+
+    if (checkPermission("all", model, method, req)) {
       return next();
     }
 
-    if (!token) {
+
+    if (token) {
+      const tokenInstance = await accessTokenModel.findById(token);
+      userInstance = await userModel.findById(tokenInstance.userId);
+      roleMappings = await roleMappingModel.find({
+        where: { principalId: userInstance.id }
+      });
+
+      userRoles = await Promise.all(
+        roleMappings.map(roleMap => roleModel.findById(roleMap.roleId))
+      );
+
+
+      if (checkPermission("all", model, method, req, userInstance.id, userRoles)) {
+        return next();
+      }
+    } else {
       unAuthorizedError(next);
     }
 
-    const tokenInstance = await accessTokenModel.findById(token);
-    const userInstance = await userModel.findById(tokenInstance.userId);
-    const roleMappings = await roleMappingModel.find({
-      where: { principalId: userInstance.id }
-    });
 
-    const userRoles = await Promise.all(
-      roleMappings.map(roleMap => roleModel.findById(roleMap.roleId))
-    );
+
+
 
     let userPermitted = false;
 
     userRoles.every(userRole => {
-      const acl = checkPermission(userRole.name, model, method, req.method);
+      const acl = checkPermission(userRole.name, model, method, req, userInstance.id);
       if (acl) {
         userPermitted = true;
         return false;
@@ -64,7 +87,7 @@ const getModel = url => {
 
   return {
     model: filteredParts[1].toLowerCase(),
-    method: filteredParts[2] ? filteredParts[2] : "*"
+    method: filteredParts[2] ? filteredParts[2] : "*",
   };
 };
 
@@ -78,7 +101,7 @@ const unAuthorizedError = next => {
 };
 
 let permittedUpdateFields = [];
-const checkPermission = (role, model, method, operation) => {
+const checkPermission = (role, model, method, req, loggedUserId = 0, userRoles = []) => {
   const rolePermission = rolePermissions.find(
     rolePermissions => rolePermissions.role === role
   );
@@ -99,6 +122,34 @@ const checkPermission = (role, model, method, operation) => {
     return false;
   }
 
+  // if (req.method === "OPTIONS") {
+  //   return true
+  // }
+
+
+  if (roleMethod.customCheck) {
+    const userUrlId = req._parsedUrl.pathname.split("/")[3];
+
+
+    if (userRoles.length === 0) {
+      return false
+    }
+
+
+
+    let isPermitted = false;
+    userRoles.forEach(userRole => {
+      if (isPermitted) {
+        return
+      }
+      isPermitted = roleMethod.customCheck(loggedUserId, parseInt(userUrlId), userRole.name)
+
+    })
+
+    return isPermitted
+
+  }
+
   if (roleMethod.permittedUpdateFields) {
     permittedUpdateFields = [
       ...permittedUpdateFields,
@@ -106,7 +157,9 @@ const checkPermission = (role, model, method, operation) => {
     ];
   }
 
-  return roleMethod.permissions.find(permission => permission === operation);
+
+
+  return roleMethod.permissions.find(permission => permission === req.method);
 };
 
 const checkPermittedFields = (req, permittedUpdateFields, next) => {

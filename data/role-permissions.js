@@ -5,7 +5,8 @@ const operations = {
   WRITE: "POST",
   UPDATE: "PUT",
   READ: "GET",
-  DELETE: "DELETE"
+  DELETE: "DELETE",
+  OPTIONS: "OPTIONS",
 };
 
 const permissions = {
@@ -31,6 +32,17 @@ const facility = {
   FACILITY_TYPE: "facility_type_id"
 };
 
+const customCheck = (loggedUserId, userUrlId, role) => {
+
+  if (role === roles.ADMIN) {
+
+    return true
+  }
+
+  return loggedUserId === userUrlId
+
+}
+
 const rolePermissions = [
   {
     role: roles.ALL,
@@ -52,8 +64,8 @@ const rolePermissions = [
       {
         model: "clients",
         methods: [
-          { method: "login", permissions: [operations.WRITE] },
-          { method: "*", permissions: [operations.READ] }
+          { method: "login", permissions: [operations.WRITE, operations.OPTIONS] },
+          { method: "*", permissions: [operations.READ, operations.OPTIONS], customCheck }
         ]
       },
       {
