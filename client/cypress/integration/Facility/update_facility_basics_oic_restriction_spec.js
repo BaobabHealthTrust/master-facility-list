@@ -9,7 +9,7 @@ const type = (fieldName, value) => {
     .blur();
 };
 
-describe("Update Facility Basics DHO", () => {
+describe("Update Facility Basics OIC", () => {
   const FRONTEND_URL = Cypress.env("FRONT_END_URL");
   var details = {
     commonName: "kuunika",
@@ -75,8 +75,8 @@ describe("Update Facility Basics DHO", () => {
       cy.get("[data-test='unauthorised']").should("be.visible");
     });
 
-    it("Renders update facility details form for DHO", () => {
-      cy.login(credentials, "dho");
+    it("Renders update facility details form for OIC", () => {
+      cy.login(credentials, "officer_in_charge");
       cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/summary`);
 
       cy.get("[data-test='facilityUpdateButton']").click();

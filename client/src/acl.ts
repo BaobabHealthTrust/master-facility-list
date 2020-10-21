@@ -133,5 +133,16 @@ export const acl = {
         return currentUserId === userId;
       }
     }
+  },
+  officer_in_charge: {
+    static: [
+      "facility:basic_details:update",
+      "facility:contact_location_details:update"
+    ],
+    dynamic: {
+      "user:update": ({ currentUserId, userId }: any) => {
+        return currentUserId === userId;
+      }
+    }
   }
 };

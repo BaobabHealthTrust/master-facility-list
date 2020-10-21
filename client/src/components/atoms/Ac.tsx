@@ -14,8 +14,8 @@ export const check = (
   if (permissions.static && permissions.static.includes(action)) return true;
 
   if (permissions.dynamic) {
-    if (!permissions.dynamic["action"]) return false;
-    return permissions.dynamic["action"](data);
+    if (!permissions.dynamic[`${action}`]) return false;
+    return permissions.dynamic[`${action}`](data);
   }
   return false;
 };
