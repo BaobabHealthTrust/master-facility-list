@@ -5,7 +5,7 @@
     }
   },
   "initial": {
-    "./middleware/acl": {},
+
     "compression": {},
     "cors": {
       "params": {
@@ -29,7 +29,8 @@
     "helmet#noSniff": {},
     "helmet#noCache": {
       "enabled": false
-    }
+    },
+    "./middleware/acl": {}
   },
   "session": {},
   "auth": {},

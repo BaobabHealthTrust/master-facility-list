@@ -16,18 +16,19 @@ module.exports = function () {
     let userInstance;
     let userRoles = []
 
-    const token = req.query.access_token;
 
-    // return next()
+
+    const token = req.headers.authorization ?
+      req.headers.authorization : req.query.access_token;
+
 
 
     if (req.url.includes("/explorer")) {
       return next();
     }
 
+
     const { method, model } = getModel(req.url);
-
-
 
 
     if (checkPermission("all", model, method, req)) {
@@ -53,9 +54,6 @@ module.exports = function () {
     } else {
       unAuthorizedError(next);
     }
-
-
-
 
 
     let userPermitted = false;
