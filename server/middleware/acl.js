@@ -16,12 +16,8 @@ module.exports = function () {
     let userInstance;
     let userRoles = []
 
-
-
     const token = req.headers.authorization ?
       req.headers.authorization : req.query.access_token;
-
-
 
     if (req.url.includes("/explorer")) {
       return next();
@@ -80,11 +76,13 @@ module.exports = function () {
 
 // helpers
 const getModel = url => {
+
+
   const urlParts = url.split("?")[0].split("/");
   const filteredParts = urlParts.filter(part => isNaN(part));
 
   return {
-    model: filteredParts[1].toLowerCase(),
+    model: filteredParts[1] ? filteredParts[1].toLowerCase() : "/",
     method: filteredParts[2] ? filteredParts[2] : "*",
   };
 };
@@ -120,11 +118,6 @@ const checkPermission = (role, model, method, req, loggedUserId = 0, userRoles =
     return false;
   }
 
-  // if (req.method === "OPTIONS") {
-  //   return true
-  // }
-
-
   if (roleMethod.customCheck) {
     const userUrlId = req._parsedUrl.pathname.split("/")[3];
 
@@ -132,8 +125,6 @@ const checkPermission = (role, model, method, req, loggedUserId = 0, userRoles =
     if (userRoles.length === 0) {
       return false
     }
-
-
 
     let isPermitted = false;
     userRoles.forEach(userRole => {

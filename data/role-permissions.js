@@ -6,7 +6,7 @@ const operations = {
   UPDATE: "PUT",
   READ: "GET",
   DELETE: "DELETE",
-  OPTIONS: "OPTIONS",
+  OPTIONS: "OPTIONS"
 };
 
 const permissions = {
@@ -33,15 +33,12 @@ const facility = {
 };
 
 const customCheck = (loggedUserId, userUrlId, role) => {
-
   if (role === roles.ADMIN) {
-
-    return true
+    return true;
   }
 
-  return loggedUserId === userUrlId
-
-}
+  return loggedUserId === userUrlId;
+};
 
 const rolePermissions = [
   {
@@ -54,27 +51,49 @@ const rolePermissions = [
           { method: "services", permissions: [operations.READ] },
           { method: "utilities", permissions: [operations.READ] },
           { method: "resources", permissions: [operations.READ] },
-          { method: "list", permissions: [operations.READ] }
+          { method: "list", permissions: [operations.READ] },
+          { method: "filter", permissions: [operations.READ] }
         ]
       },
       {
         model: "facilityutilities",
-        methods: [{ method: "*", permissions: [operations.READ] }]
+        methods: [
+          { method: "*", permissions: [operations.READ] },
+          { method: "latest", permissions: [operations.READ] }
+        ]
       },
       {
         model: "clients",
         methods: [
-          { method: "login", permissions: [operations.WRITE, operations.OPTIONS] },
-          { method: "*", permissions: [operations.READ, operations.OPTIONS], customCheck }
+          {
+            method: "login",
+            permissions: [operations.WRITE, operations.OPTIONS]
+          },
+          {
+            method: "requestPasswordReset",
+            permissions: [operations.WRITE]
+          },
+
+          {
+            method: "*",
+            permissions: [operations.READ, operations.OPTIONS],
+            customCheck
+          }
         ]
       },
       {
         model: "facilityresources",
-        methods: [{ method: "*", permissions: [operations.READ] }]
+        methods: [
+          { method: "*", permissions: [operations.READ] },
+          { method: "latest", permissions: [operations.READ] }
+        ]
       },
       {
         model: "facilityservices",
-        methods: [{ method: "*", permissions: [operations.READ] }]
+        methods: [
+          { method: "*", permissions: [operations.READ] },
+          { method: "latest", permissions: [operations.READ] }
+        ]
       },
       {
         model: "facilitytypes",
@@ -94,7 +113,10 @@ const rolePermissions = [
       },
       {
         model: "feedbacks",
-        methods: [{ method: "*", permissions: [operations.READ] }]
+        methods: [
+          { method: "*", permissions: [operations.READ] },
+          { method: "feedback", permissions: [operations.WRITE] }
+        ]
       },
       {
         model: "feedbacktypes",
@@ -197,7 +219,35 @@ const rolePermissions = [
         ]
       },
       {
-        model: "users",
+        model: "facilityResources",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+
+      {
+        model: "facilityServices",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+
+      {
+        model: "clients",
         methods: [
           {
             method: "*",
@@ -307,6 +357,45 @@ const rolePermissions = [
             permissions: [operations.UPDATE]
           }
         ]
+      },
+      {
+        model: "facilityServices",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+      {
+        model: "facilityResources",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+      {
+        model: "facilityUtilities",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
       }
     ]
   },
@@ -324,6 +413,19 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          }
+        ]
+      },
+      {
+        model: "facilityServices",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
           }
         ]
       },
@@ -353,6 +455,19 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          }
+        ]
+      },
+      {
+        model: "facilityUtilities",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
           }
         ]
       },
@@ -410,6 +525,46 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          }
+        ]
+      },
+      {
+        model: "facilityResources",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+      {
+        model: "facilityServices",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
+          }
+        ]
+      },
+
+      {
+        model: "facilityUtilities",
+        methods: [
+          {
+            method: "*",
+            permissions: [operations.READ, operations.UPDATE, operations.WRITE]
+          },
+          {
+            method: "replaceOrCreate",
+            permission: [operations.WRITE]
           }
         ]
       },
