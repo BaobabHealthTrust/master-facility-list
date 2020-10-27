@@ -193,6 +193,10 @@ const rolePermissions = [
             ]
           },
           {
+            method: "updateContactDetails",
+            permissions: [operations.WRITE]
+          },
+          {
             method: "services",
             permissions: [
               operations.DELETE,
