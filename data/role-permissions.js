@@ -202,6 +202,10 @@ const rolePermissions = [
             ]
           },
           {
+            method: "publish",
+            permissions: [operations.WRITE]
+          },
+          {
             method: "utilities",
             permissions: [
               operations.DELETE,
@@ -260,6 +264,15 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          },
+          {
+            method: "createUser",
+            permissions: [operations.WRITE]
+          },
+          {
+            method: "updateUser",
+            permittedUpdateFields: ["all"],
+            permissions: [operations.PATCH, operations.UPDATE]
           }
         ]
       },
