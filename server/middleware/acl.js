@@ -16,6 +16,10 @@ module.exports = function () {
     let userInstance;
     let userRoles = []
 
+
+
+    // return next()
+
     const token = req.headers.authorization ?
       req.headers.authorization : req.query.access_token;
 
@@ -65,6 +69,11 @@ module.exports = function () {
 
     if (userPermitted) {
       if (req.method == "PUT" || req.method == "PATCH") {
+
+        if (permittedUpdateFields[0] === 'all') {
+          return next();
+        }
+
         checkPermittedFields(req, permittedUpdateFields, next);
       }
       return next();
@@ -159,6 +168,8 @@ const checkPermittedFields = (req, permittedUpdateFields, next) => {
     })
     .on("end", () => {
       body = Buffer.concat(body).toString();
+
+
 
       Object.keys(JSON.parse(body)).forEach(field => {
         if (field === "id") return;

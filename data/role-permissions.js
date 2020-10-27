@@ -6,7 +6,8 @@ const operations = {
   UPDATE: "PUT",
   READ: "GET",
   DELETE: "DELETE",
-  OPTIONS: "OPTIONS"
+  OPTIONS: "OPTIONS",
+  PATCH: "PATCH"
 };
 
 const permissions = {
@@ -23,10 +24,12 @@ const roles = {
   PUBLIC: "public",
   MEDICAL_COUNCIL: "medical_council",
   INFRASTRUCTURE_DEPARTMENT: "infrastructure_department",
-  CLINICAL_DEPARTMENT: "clinical_department"
+  CLINICAL_DEPARTMENT: "clinical_department",
+  FACILITY_IN_CHARGE: "facility_in_charge"
 };
 
 const facility = {
+  ALL_FIELDS: "all",
   REGULATORY_STATUS: "facility_regulatory_status_id",
   REGISTRATION_NUMBER: "registration_number",
   FACILITY_TYPE: "facility_type_id"
@@ -477,6 +480,21 @@ const rolePermissions = [
           {
             method: "*",
             permissions: [operations.UPDATE]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    role: roles.FACILITY_IN_CHARGE,
+    acls: [
+      {
+        model: "facilities",
+        methods: [
+          {
+            method: "*",
+            permittedUpdateFields: [facility.ALL_FIELDS],
+            permissions: [operations.UPDATE, operations.PATCH]
           }
         ]
       }
