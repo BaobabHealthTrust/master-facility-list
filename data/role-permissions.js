@@ -193,6 +193,10 @@ const rolePermissions = [
             ]
           },
           {
+            method: "updateContactDetails",
+            permissions: [operations.WRITE]
+          },
+          {
             method: "services",
             permissions: [
               operations.DELETE,
@@ -200,6 +204,10 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          },
+          {
+            method: "publish",
+            permissions: [operations.WRITE]
           },
           {
             method: "utilities",
@@ -260,6 +268,15 @@ const rolePermissions = [
               operations.UPDATE,
               operations.WRITE
             ]
+          },
+          {
+            method: "createUser",
+            permissions: [operations.WRITE]
+          },
+          {
+            method: "updateUser",
+            permittedUpdateFields: ["all"],
+            permissions: [operations.PATCH, operations.UPDATE]
           }
         ]
       },
