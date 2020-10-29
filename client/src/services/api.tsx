@@ -4,7 +4,13 @@ const API = process.env.REACT_APP_API_URL;
 
 export const getUserRoles = () => {
   const url = `${API}/Roles`;
-  return axios.get(url);
+  const token = sessionStorage.getItem("token");
+  const header = {
+    headers: {
+      Authorization: `${token}`
+    }
+  };
+  return axios.get(url, header);
 };
 
 export const getUtilities = () => {
@@ -356,7 +362,7 @@ export const postFeedback = (data: any) => {
 };
 
 export const changePassword = (data: any, userId: number, token: string) => {
-  const url = `${API}/Client/${userId}`;
+  const url = `${API}/Clients/${userId}`;
   const header = {
     headers: {
       Authorization: `${token}`
