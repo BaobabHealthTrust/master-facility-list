@@ -2,7 +2,17 @@
 
 const server = require("../../server/server");
 
+const { markFacilityAsUpdated } = require('../utils/');
+
 module.exports = function(Facilityservice) {
+  Facilityservice.observe('after update', async function (ctx) {
+    if (ctx.instance) await markFacilityAsUpdated(ctx.instance.facility_id);
+  });
+
+  Facilityservice.observe('after save', async function (ctx) {
+    if (ctx.instance) await markFacilityAsUpdated(ctx.instance.facility_id);
+  });
+
   Facilityservice.observe("before delete", async function deleteDependants(
     ctx
   ) {
