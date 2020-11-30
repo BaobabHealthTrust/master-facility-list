@@ -134,10 +134,15 @@ export const acl = {
       }
     }
   },
-  officer_in_charge: {
+  facility_in_charge: {
     static: [
+      "facility:basic_details:create",
       "facility:basic_details:update",
-      "facility:contact_location_details:update"
+      "facility:contact_location_details:create",
+      "facility:contact_location_details:update",
+      "facility:resources:update",
+      "facility:utilities:update",
+      "facility:services:update"
     ],
     dynamic: {
       "user:update": ({ currentUserId, userId }: any) => {

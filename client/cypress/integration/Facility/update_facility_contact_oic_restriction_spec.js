@@ -90,7 +90,7 @@ describe("Updates Facility Contacts and Locations OIC", () => {
     });
 
     it("Renders the update facility contact details form for OIC", () => {
-      cy.login(credentials, "officer_in_charge");
+      cy.login(credentials, "facility_in_charge");
       cy.visit(`${FRONTEND_URL}/facilities/${facility.id}/contact`);
       cy.get("[data-test='facilityUpdateButton']").click();
       cy.location().should(loc => {

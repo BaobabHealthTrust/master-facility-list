@@ -59,6 +59,7 @@ export function ActionButtons(props: Props) {
   return (
     <div style={{ whiteSpace: "nowrap", textAlign: "right" }}>
       <Button
+        data-test="download-btn"
         style={{ marginLeft: "0px" }}
         theme="warning"
         icon={<FontAwesomeIcon icon={faFilePdf} />}

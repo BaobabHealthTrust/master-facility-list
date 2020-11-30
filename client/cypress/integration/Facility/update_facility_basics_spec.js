@@ -98,14 +98,14 @@ describe("Update Facility Basics", () => {
         .contains(errors.facilityCommon);
     });
 
-    it("Validates Registration", () => {
-      type("registrationNumber", "1");
+    //   it("Validates Registration", () => {
+    //     type("registrationNumber", "1");
 
-      cy.get(`[data-test=fieldErrorregistrationNumber]`)
-        .first()
-        .should("be.visible")
-        .contains(errors.registrationNumber);
-    });
+    //     cy.get(`[data-test=fieldErrorregistrationNumber]`)
+    //       .first()
+    //       .should("be.visible")
+    //       .contains(errors.registrationNumber);
+    //   });
   });
 
   context("Updates Facility Basics", () => {

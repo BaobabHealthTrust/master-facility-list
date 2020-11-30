@@ -134,10 +134,104 @@ describe("Add Facility Workflow OIC", () => {
   context("Adds Basics", () => {
     context("Navigates to the add form", () => {
       it("Navigates to the facilities page", () => {
-        cy.login(credentials, "officer_in_charge");
+        cy.login(credentials, "dho");
         cy.visit(FRONTEND_URL);
-        cy.visit(`${FRONTEND_URL}/facilities/add`);
-        cy.get("[data-test='unauthorised']").should("be.visible");
+        cy.get(`[data-test=menuFacilities]`).click();
+        cy.get("[data-test=addFacilityBtn]").click();
+        cy.location().should(loc => {
+          expect(loc.href).to.equal(`${FRONTEND_URL}/facilities/add`);
+        });
+      });
+    });
+
+    context("Validates basic input in front-end", () => {
+      it("Validates facility name", () => {
+        type("facilityName", "ku");
+
+        cy.get(`[data-test=fieldErrorfacilityName`)
+          .first()
+          .should("be.visible")
+          .contains(errors.basics.facilityName);
+      });
+      it("Validates facility common name", () => {
+        type("commonName", "ku");
+
+        cy.get(`[data-test=fieldErrorcommonName]`)
+          .first()
+          .should("be.visible")
+          .contains(errors.basics.facilityCommon);
+      });
+
+      // it("Validates facility type", () => {
+      //   validateSelect("facilityType", errors.basics.empty);
+      // });
+
+      it("Validates Operational Status", () => {
+        validateSelect("operationalStatus", errors.basics.empty);
+      });
+
+      // it("Validates regulatory status", () => {
+      //   cy.get("[data-test=regulatoryStatus] input")
+      //     .first()
+      //     .should("have.attr", "type", "hidden");
+      // });
+
+      it("Validates facility owner", () => {
+        validateSelect("facilityOwner", errors.basics.empty);
+      });
+
+      it("Validates district", () => {
+        validateSelect("district", errors.basics.empty);
+      });
+
+      // it("Validates Registration", () => {
+      //   type("registrationNumber", "1");
+
+      //   cy.get(`[data-test=fieldErrorregistrationNumber]`)
+      //     .first()
+      //     .should("be.visible")
+      //     .contains(errors.registrationNumber);
+      // });
+    });
+
+    context("Adds Facility Basics", () => {
+      it("Successfully Adds Facility Basics", () => {
+        cy.get("input[name='facilityName']")
+          .first()
+          .click()
+          .clear()
+          .type("kuunika");
+
+        cy.get("input[name='commonName']")
+          .first()
+          .click()
+          .clear()
+          .type("kuunika");
+
+        selectFirst("facilityType");
+
+        selectFirst("operationalStatus");
+
+        selectFirst("facilityOwner");
+
+        selectFirst("district");
+
+        // cy.get("input[name='registrationNumber']")
+        //   .first()
+        //   .click()
+        //   .clear()
+        //   .type("11111111");
+
+        cy.get("[data-test='saveBtn']")
+          .first()
+          .click();
+        cy.window().then(win => {
+          let facility = JSON.parse(win.localStorage.new_facility);
+          let facilityDetails = facility.details;
+          cy.expect(facilityDetails).to.have.deep.keys({
+            ...details.basics
+          });
+        });
       });
     });
   });
